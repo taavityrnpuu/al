@@ -1,0 +1,177 @@
+<project basedir="." default="help" name="Alkor webservice build">
+
+	<!-- seadistuste import -->
+	<property file="../../build.properties" />
+
+	<!-- projekti juurkaust -->
+	<property name="root.dir" location="${basedir}/../../" />
+
+	<!-- projektis vajaminevate teekide kaust -->
+	<property name="lib.dir" location="${root.dir}/lib" />
+
+	<!-- lähtematerjalide asukohad -->
+	<property name="src.dir" location="${basedir}/src/main/java" />
+	<property name="res.dir" location="${basedir}/src/main/resources" />
+	<property name="test.src.dir" location="${basedir}/src/test" />
+	<property name="test.res.dir" location="${basedir}/src/test/resources" />
+	<property name="test.dir" location="${basedir}/test" />
+
+	<!-- väljundkaustade asukohad -->
+	<property name="build.dir" location="${root.dir}/build" />
+	<property name="jar.dir" location="${build.dir}/lib" />
+	<property name="classes.dir" location="${build.dir}/modules/webservice" /> <!-- <<<<<<<< -->
+
+	<!-- väljundpaki asukoht koos nimega -->
+	<property name="package.file" location="${jar.dir}/alkor-xtee.jar" />
+
+
+	<target name="help" description="Kuvab abiinfot kasutamise kohta.">
+		<echo level="info">
+            help - kuvab abiinfo (see sama)
+            compile - kompileerib java failid class failideks
+            jar - teeb kompileeritud failidest jar paki
+            clean - kustutab selle build failiga tekitatud kompileeritud failide kausta (${classes.dir}) ja jar-faili (${package.file}), kui nad eksisteerivad
+			teised vist ei tööta, ei ole proovinud vähemalt
+			
+			root.dir: ${root.dir}
+			lib.dir: ${lib.dir}
+			src.dir: ${src.dir}
+			res.dir: ${res.dir}
+			test.src.dir: ${test.src.dir}
+			test.res.dir: ${test.res.dir}
+			test.dir: ${test.dir}
+
+			build.dir: ${build.dir}
+			jar.dir: ${jar.dir}
+			classes.dir: ${classes.dir}
+		</echo>
+	</target>
+	
+    <target name="compile" depends="">
+		<echo level="info">mode: ${mode}</echo> <!-- lihtsalt kontrolliks -->
+    	<mkdir dir="${build.dir}" />
+    	<mkdir dir="${classes.dir}" />
+        <javac classpath="lib.dir" debug="on"
+        	encoding="UTF-8" includeDestClasses="true"
+        	deprecation="off" destdir="${classes.dir}"
+        	includes="**/*.java" optimize="off"
+        	srcdir="${src.dir}">
+        	<classpath>
+        		<fileset dir="${jar.dir}" includes="*.jar" />
+        		<fileset dir="${lib.dir}" includes="*.jar" />
+        	</classpath>
+		</javac>
+		<echo level="info">url: ${xtee.serviceEndpointURL.2}</echo> <!-- lihtsalt kontrolliks -->
+    </target>
+	
+    <target name="jar"  depends="compile">
+    	<mkdir dir="${jar.dir}" />
+    	<filter filtersfile="../../build.properties" /> <!-- FUDGE FACTOR < - - - - - - - - - - - SEE MÕJUTAB SERVICE ENDPOINTE -->
+        <copy todir="${classes.dir}" verbose="true" filtering="true">
+            <fileset dir="${res.dir}">
+                <include name="webserviceContext.xml" />
+                <include name="alkor2.wsdl" />
+                 <include name="alkor2_xroad6.wsdl" />
+                <include name="*.vm" />
+                <include name="*.properties" />
+            </fileset>
+        </copy>
+    	<jar basedir="${classes.dir}" destfile="${package.file}"></jar>
+    </target>
+	
+    <target name="gen_arsrc"  depends="">
+        <java classname="org.apache.axis.wsdl.WSDL2Java" fork="true">
+        	<classpath>
+        		<fileset dir="${lib.dir}" includes="*.jar" />
+        	</classpath>
+            <arg line="-T 1.2 -o ${src.dir} ${res.dir}/ar_lihtparing.wsdl"/>
+        </java>
+    </target>
+    <target name="gen_mtrsrc"  depends="">
+        <java classname="org.apache.axis.wsdl.WSDL2Java" fork="true" classpathref="compile.dependency.path">
+            <arg line="-T 1.2 -o ${src.dir} ${res.dir}/mtr.wsdl"/>
+        </java>
+    </target>
+    <target name="gen_alsrc"  depends="">
+        <java classname="org.apache.axis.wsdl.WSDL2Java" fork="true" classpathref="compile.dependency.path">
+            <arg line="-T 1.2 -o ${src.dir} ${res.dir}/agriAktsiisiladu.wsdl"/>
+        </java>
+    </target>
+    <target name="gen_eitsrc"  depends="">
+        <java classname="org.apache.axis.wsdl.WSDL2Java" fork="true" classpathref="compile.dependency.path">
+            <arg line="-T 1.2 -s --skeletonDeploy true  -o ${src.dir} ${res.dir}/alkor2.wsdl"/>
+        </java>
+        <move todir="${res.dir}" >
+            <fileset dir="${src.dir}/ee/riik/xtee/alkor2/producers/producer/alkor2">
+                <include name="*.wsdd" />
+            </fileset>
+        </move>
+    </target>
+	
+    <!--target name="install" depends="jar">
+    	<artifact:install file="${build.dir}/${project.artifactId}-${project.version}.jar">
+    	    <pom refid="project"/>
+    	 </artifact:install>
+    </target-->
+	
+    <target name="deploy" depends="">
+        <java classname="org.apache.axis.client.AdminClient" fork="true" 
+        	classpathref="compile.dependency.path"
+        	dir="${res.dir}">
+            <arg line="-lhttp://localhost:8080/alkor/services/AdminService deploy.wsdd deploy.wsdd"/>
+        </java>
+    </target>
+	
+    <target name="deploy-monitor" depends="">
+        <java classname="org.apache.axis.client.AdminClient" fork="true" 
+        	classpathref="compile.dependency.path"
+        	dir="${res.dir}">
+            <arg line="-lhttp://localhost:8080/alkor/services/AdminService deploy-monitor.wsdd"/>
+        </java>
+    </target>
+	
+    <target name="test" depends="jar" description="Run the local test suite">
+    	<!--mkdir dir="${test.dir}/target" />
+        <javac debug="on"
+        	deprecation="on" destdir="${test.dir}/target"
+        	includes="test/*Test.java" optimize="off"
+        	srcdir="${test.src.dir}/java" >
+            <classpath>
+                <pathelement path="${test.dir}/target" />
+                <path refid="compile.dependency.path" />
+                <pathelement location="${build.dir}/${project.artifactId}-${project.version}.jar" />
+            </classpath>
+        </javac>
+         <copy todir="${test.dir}/target" >
+            <fileset dir="${test.res.dir}">
+                <include name="aruanne.csv" />
+            </fileset>
+        </copy>
+
+         <junit printsummary="yes" fork="yes" haltonfailure="yes" dir="${test.dir}/target">
+            <classpath>
+                <pathelement path="${test.dir}/target" />
+                <path refid="compile.dependency.path" />
+                <pathelement location="${build.dir}/${project.artifactId}-${project.version}.jar" />
+            </classpath>
+            <formatter type="plain" /-->
+            <!--formatter type="xml"/-->
+            <!--batchtest fork="yes" todir="${test.dir}/target" haltonfailure="no">
+                <fileset dir="${test.dir}/target">
+                    <include name="test/XteeTest.class" /> 
+                	
+                    <include name="test/AretoServiceTest.class" />
+                    
+               </fileset>
+            </batchtest>
+        </junit-->
+    </target>
+
+	
+    <target name="clean" depends="">
+		<delete dir="${classes.dir}" />
+    	<delete dir="${test.dir}" />
+	    <delete file="${package.file}" />
+    </target>
+
+</project>

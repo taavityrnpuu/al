@@ -1,0 +1,2 @@
+insert into classificator (id,name,category,active,code,cat_name)
+values (nextval('classificator_seq'),'Tootenäidist ei pea esitama','ProductExamplesDecisionType',true,'PEN','Toote näite tagastamise otsuse liik');

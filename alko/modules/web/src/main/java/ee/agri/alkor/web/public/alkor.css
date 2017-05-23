@@ -1,0 +1,524 @@
+@CHARSET "UTF-8";
+
+TD {
+	font-family: Verdana, Arial, sans-serif;
+	font-size: 11px;
+}
+
+HTML {
+	height: 90%;
+}
+
+.Left {
+	background-color: #4AA02C;
+}
+
+.MenuOpenHide {
+	cursor: pointer;
+	margin: 10px 10px;
+}
+
+.Menu {
+	padding-top: 5px;
+}
+
+.MainMenu {
+	cursor: pointer;
+	padding: 2px 0px;
+}
+
+.MainMenu IMG {
+	margin: 0px 5px 0px 25px;
+}
+
+.MainMenu DIV {
+	color: #FFFFFF;
+	font-weight: bold;
+	margin-right: 10px;
+}
+
+.OpenMenu {
+	cursor: pointer;
+	padding: 2px 0px;
+	border-bottom: 1px solid #44AF32;
+}
+
+.OpenMenu IMG {
+	margin: 0px 5px 0px 25px;
+}
+
+.OpenMenu DIV {
+	color: #FFFFFF;
+	font-weight: bold;
+	margin-right: 10px;
+}
+
+.SubMenu {
+	cursor: pointer;
+	background-color: #3F962C;
+	padding: 2px 0px;
+	border-bottom: 1px solid #44AF32;
+	font-weight: bold;
+}
+
+.SubMenu IMG {
+	margin: 0px 5px 0px 40px;
+}
+
+.SubMenu DIV {
+	color: #FFFFFF;
+	margin-right: 10px;
+}
+
+.SelectedMenu DIV {
+	color: #FFB100;
+}
+
+.Title {
+	font-size: 13px;
+	font-weight: bold;
+	padding: 20px 40px;
+	
+}
+.Title2{
+    background-image: url('images/0_veterinaar_3lovi_est.png');
+	background-repeat: no-repeat;
+	background-position: left top;
+	margin-left:40px;
+	height:85px;
+	}
+
+.OpenCloseTitle {
+	font-size: 13px;
+	font-weight: bold;
+	padding: 10px;
+	background-image: url('images/pealkirja_taust.gif');
+	background-repeat: repeat-x;
+	background-position: bottom;
+}
+
+.SubTitle PRE {
+	font-size: 14px;
+	font-family: Verdana;
+	width: 100%;
+	height: auto;
+	color: #4AA02C;
+	font-weight: bold;
+	margin: 0px;
+	padding: 0px;
+}
+
+.SubTitle{
+	font-size: 14px;
+	font-family: Verdana;
+	width: 100%;
+	height: auto;
+	color: #4AA02C;
+	font-weight: bold;
+	margin: 0px;
+	padding: 0px;
+}
+
+.SelectButton {
+	background-color: #FFFFFF;
+	border: 1px solid #3F962C;
+	color: #3F962C;
+	font-weight: bold;
+}
+
+.CorrectionPrintButton {
+  background-image: url('images/print.gif');
+  background-repeat: no-repeat;
+  height: 18px;
+  width: 18px;
+  border: none;
+  cursor: pointer;
+}
+
+.DecisionPrintButton {
+  background-image: url('images/print.gif');
+  background-repeat: no-repeat;
+  height: 18px;
+  width: 18px;
+  border: none;
+  cursor: pointer;
+}
+
+.Form {
+	margin: 30px 40px;
+}
+
+.FormFiles {
+	margin: 10px 40px;
+}
+
+.Form .Label {
+	font-weight: bold;
+	white-space: nowrap;
+}
+
+.Form .DisabledTextBox {
+	background-color: #EEEEEE;
+}
+
+.Result {
+	margin: 0px 10px;
+}
+
+.Classificator {
+	margin: 0px 46px;
+}
+
+.RolePrivileges {
+	margin: 0px 40px;
+}
+
+.gwt-Button {
+	background-color: #3F962C;
+	border: 0px none;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 12px;
+	white-space: nowrap;
+}
+
+.gwt-TextBox {
+	font-size: 11px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.gwt-PasswordTextBox {
+	font-size: 11px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+.gwt-ListBox {
+	font-size: 11px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.DisabledTextBox {
+	font-size: 11px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+}
+
+.DisabledTBTest {
+	font-size: 11px;
+	padding-top: 0px;
+	padding-bottom: 0px;
+	color: red;
+	background-color: gray;
+}
+
+.Url {
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.Table {
+	margin: 0px 10px;
+}
+
+.Table .Header {
+	background-color: #3F962C;
+	cursor: pointer;
+}
+
+.Table .Header TD {
+	text-decoration: underline;
+	font-weight: bold;
+}
+
+.Table .Odd {
+	color: #000000;
+}
+.Table .selectedRow {
+	background-color: 	#A8A8A8;
+}
+
+.Table .Even {
+	background-color: #EEEEEE;
+	color: #000000;
+}
+
+.Table .Red {
+	color: #DC143C;
+}
+
+.Table .Green {
+	color: #008000;
+}
+
+.Table .Blue {
+	color: #1E90FF;
+}
+
+.Table .Purple {
+	color: #990CE4;
+}
+
+.Table .lightGreen {
+	color: #16A616;
+}
+
+.Table .Link {
+	text-decoration: underline;
+	color: #4AA02C;
+	cursor: pointer;
+}
+
+.NumberOfRecords {
+	font-size: 12px;
+	padding: 10px 40px;
+	width: 100%;
+}
+
+.News PRE {
+	font-size: 12px;
+	font-family: Verdana;
+	margin: 0px;
+	padding: 0px;
+}
+
+.Navbar {
+	color: #4AA02C;
+	padding: 10px 10px;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.Dialog {
+	border: 1px solid;
+	background-color: #FFFFFF;
+}
+
+.Dialog .gwt-TextBox {
+	border: 1px solid #4AA02C;
+}
+
+.Dialog .ScrollPanel {
+	border: 1px solid #4AA02C;
+}
+
+.Dialog .ScrollPanel TD {
+	cursor: pointer;
+}
+
+.LabelPointer {
+	cursor: pointer;
+}
+
+.Dialog .Selected {
+	background-color: #007900;
+}
+
+.Dialog .Unselected {
+	background-color: #FFFFFF;
+}
+
+.Dialog .Heading {
+	font-weight: bold;
+	font-size: 14px;
+}
+
+.Dialog .Text {
+	font-size: 10px;
+}
+
+.DialogTitle PRE {
+	font-size: 12px;
+	font-weight: bold;
+	margin: 5px;
+	padding: 0px;
+}
+
+.RightLine {
+	background-image: url('images/p2is_taust.gif');
+	background-repeat: repeat-x;
+}
+
+.CalendarBox IMG {
+	cursor: pointer;
+}
+
+.Calendar {
+	border: 1px solid #41A42F;
+	background-color: #41A42F;
+}
+
+.Calendar .Navbar {
+	background-color: #41A42F;
+	color: white;
+	text-decoration: none;
+	cursor: text;
+	margin: 0px 10px;
+}
+
+.Calendar .Navbar IMG {
+	cursor: pointer;
+	vertical-align: middle;
+}
+
+.Calendar .Days {
+	background-color: #41A42F;
+}
+
+.Calendar .Days TD {
+	text-align: center;
+	vertical-align: middle;
+}
+
+.Calendar .Days .Header {
+	background-color: #4EC43B;
+	color: white;
+}
+
+.Calendar .Days .Weekdays {
+	background-color: #FFFFFF;
+	cursor: pointer;
+}
+
+.Calendar .Days .Weekends {
+	background-color: #D8F3D3;
+	cursor: pointer;
+}
+
+.Calendar .Days .OWeekdays {
+	color: #777777;
+	background-color: #FFFFFF;
+}
+
+.Calendar .Days .OWeekends {
+	color: #777777;
+	background-color: #D8F3D3;
+}
+
+.Calendar .Days .Today {
+	background-color: #41A42F;
+	text-decoration: underline;
+	cursor: pointer;
+}
+
+.ErrorStyle {
+	padding: 0px 10px;
+	color: #FF0000;
+}
+
+.InfoStyle {
+	padding: 0px 10px;
+	color: #008400;
+	font: bold;
+	font-weight: bold;
+}
+
+.RightLine .estButtonSelected {
+	background-color: #3F962C;
+	border: 0px none;
+	color: #FFB100;
+	font-weight: bold;
+	font-size: 12px;
+	white-space: nowrap;
+	margin-right: 5px;
+}
+
+.RightLine .estButton {
+	background-color: #3F962C;
+	border: 0px none;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 12px;
+	white-space: nowrap;
+	margin-right: 5px;
+}
+
+.RightLine .engButtonSelected {
+	background-color: #3F962C;
+	border: 0px none;
+	color: #FFB100;
+	font-weight: bold;
+	font-size: 12px;
+	white-space: nowrap;
+	margin-right: 30px;
+}
+
+.RightLine .engButton {
+	background-color: #3F962C;
+	border: 0px none;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 12px;
+	white-space: nowrap;
+	margin-right: 30px;
+}
+
+.RightLine .helpButton {
+	background-color: #3F962C;
+	border: 0px none;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 12px;
+	white-space: nowrap;
+	margin-right: 5px;
+}
+
+.RightLine .loginButton {
+	background-color: #3F962C;
+	border: 0px none;
+	color: #FFFFFF;
+	font-weight: bold;
+	font-size: 12px;
+	white-space: nowrap;
+	margin-right: 80px;
+}
+
+.NoWrap {
+	white-space: nowrap;
+}
+
+.applicationsearch1{
+	text-align: left;
+}
+.applicationsearch2{
+	text-align: right;
+}
+.EnterpriseOrMtrSelection {
+	border:1px solid #0F0F0F;
+	background-color: #FFFFFF;
+}
+.EnterpriseOrMtrSelectionContainer {
+    border-width: 0px;
+    padding: 4px 4px 4px 4px;
+}
+.EnterpriseOrMtrSelectionButtonContainer {
+    border-width: 0px;
+    padding: 0px 10px 0px 0px;
+}
+.EnterpriseOrMtrSelectionTable {
+    border-width: 0px;
+    padding: 0px 0px 4px 0px;
+}
+.EnterpriseOrMtrSelectionButton {
+}
+.EnterpriseOrMtrSelectionButton:disabled { 
+    color: gray;
+}
+.EnterpriseOrMtrSelectionHeader {
+	font-weight: bold;
+	text-align: left;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.EnterpriseOrMtrSelectionLabel {
+	text-align: left;
+	white-space: nowrap;
+	cursor: pointer;
+}
+.popBackground {
+	background-color: #000000;
+	opacity: 0.5;
+	filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+

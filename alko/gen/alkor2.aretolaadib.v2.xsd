@@ -1,0 +1,96 @@
+<pseudoroot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
+<!-- aretolaadib PARING -->
+	<xsd:element name="aretolaadib">
+		<xsd:complexType >
+            <xsd:sequence>
+               <xsd:element name="aruandja"
+                  type="tns:aruandjakoodigaareto">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aruande esitaja</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+		       <!-- Defineeritud üleval -->
+               <xsd:element name="period" type="tns:aruandeperioodReq"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aruandeperiood</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="aruanne" type="xsd:base64Binary"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Alkoholi liikumise aruanne CSV-kujul failina
+                        </xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+	</xsd:element>
+	
+
+	    <xsd:complexType name="aruandjakoodigaareto">
+            <xsd:sequence>
+               <xsd:element name="id" type="xsd:string"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:visibility>0</xrd:visibility>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="reg_nr" type="xsd:string"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Äriregistrikood</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="name" type="xsd:string"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Ettevõtte nimi</xrd:title>
+                        <xrd:fieldsize>50</xrd:fieldsize>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+
+	<!-- aretolaadib PARING LOPP -->
+	
+	<!-- aretolaadib PARINGU VASTUS -->
+	<xsd:element name="aretolaadibResponse">
+		<xsd:complexType>
+            <xsd:sequence>
+               <xsd:element name="teade" type="xsd:string" />
+               <xsd:element name="vead" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:complexContent>
+                        <xsd:restriction base="SOAP-ENC:Array">
+                           <xsd:sequence>
+							  <!-- Defineeritud üleval -->
+                              <xsd:element name="reaviga" minOccurs="0"
+                                 maxOccurs="unbounded"
+                                 type="tns:reaviga" />
+                           </xsd:sequence>
+                        </xsd:restriction>
+                     </xsd:complexContent>
+                  </xsd:complexType>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+	</xsd:element>	
+	<!-- aretolaadib PARINGU VASTUS LOPP -->
+		
+</pseudoroot>

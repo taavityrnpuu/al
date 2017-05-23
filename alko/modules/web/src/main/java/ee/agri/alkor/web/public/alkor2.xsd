@@ -1,0 +1,4845 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<xs:schema 
+	targetNamespace="http://alkor2.x-road.eu/types"
+	xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
+	xmlns:xs="http://www.w3.org/2001/XMLSchema"
+	xmlns:tns="http://alkor2.x-road.eu/types"
+	xmlns:id="http://x-road.eu/xsd/identifiers"
+	xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+	>
+
+	
+   <xs:import namespace="http://x-road.eu/xsd/xroad.xsd" schemaLocation="http://x-road.eu/xsd/xroad.xsd"/>
+
+   <xs:element name="listMethods">
+		<xs:complexType>
+			<xs:sequence />			
+		</xs:complexType>
+	</xs:element>
+	
+	<xs:element name="allowedMethods">
+		<xs:complexType>
+				<xs:sequence />
+		</xs:complexType>
+	</xs:element>	
+	
+	<xs:element name="listMethodsResponse" type="tns:MethodListType"/>
+	<xs:element name="allowedMethodsResponse" type="tns:MethodListType"/>
+	
+	<xs:complexType name="MethodListType">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="0"
+			name="service" type="id:XRoadServiceIdentifierType"/>
+		</xs:sequence>
+	</xs:complexType>
+	
+	<xs:element name="testSystem" nillable="true"/>
+	<xs:element name="testSystemResponse" nillable="true"/>
+	
+	<!-- MOKAQUERY (transactionStatement) PARING -->
+	<xs:element name="transactionStatement">
+	   <xs:complexType>
+            <xs:sequence>
+               <xs:element name="Moka" type="tns:MokaType" />
+            </xs:sequence>
+         </xs:complexType>
+	</xs:element>
+	
+	
+		<xs:complexType name="MokaType">
+            <xs:annotation>
+               <xs:documentation>
+                  Asutustele kontoliikumistest teavitamise formaat
+               </xs:documentation>
+            </xs:annotation>
+            <xs:all>
+               <xs:element name="Treasury" type="tns:Treasury" />
+               <xs:element name="Payer" type="tns:Payer">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Maksja info</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="Receiver" type="tns:Receiver">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saaja info</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="Payment" type="tns:Payment" />
+               <xs:element name="TreasuryClassif" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Eelarveklassifikaator, mis näitab, millise
+                           eelarvereaga on tehing seotud
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="0" />
+                        <xs:maxLength value="100" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="PaymentDesc" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tehinguinfo / maksjapoolne selgitus.
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="0" />
+                        <xs:maxLength value="255" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+            </xs:all>
+         </xs:complexType>
+	
+	
+	
+		<xs:complexType name="Treasury">
+            <xs:all>
+               <xs:element name="DocumentNum">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Dokumendi number.</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="0" />
+                        <xs:maxLength value="50" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="OrderNum">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tehingu Riigikassapoolne unikaalne töökood
+                           (arhiveerimistunnus).
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="1" />
+                        <xs:maxLength value="20" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="BankRef">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tehingu pangapoolne arhiveerimistunnus juhul,
+                           kui on sooritatud panga vahendusel.
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="0" />
+                        <xs:maxLength value="20" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+            </xs:all>
+         </xs:complexType>
+	
+		 
+	
+         <xs:complexType name="Payer">
+            <xs:all>
+               <xs:element name="Name">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Maksja nimi.</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="0" />
+                        <xs:maxLength value="80" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="RegNum">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Maksja id.-kood (isikukood, asutuse/ettevõtte
+                           reg. nr.).
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="0" />
+                        <xs:maxLength value="15" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="AccountNum" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Maksja arvelduskonto number.
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="0" />
+                        <xs:maxLength value="35" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="RefNum" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Maksja viitenumber, mille alusel saab tehingu
+                           siduda teise infosysteemiga.
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="0" />
+                        <xs:maxLength value="20" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="TransmissionDate" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tehingu Maksjapoolne väärtuspäev.
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:length value="10" />
+                        <xs:pattern value="\d{2}\.\d{2}\.\d{4}" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+            </xs:all>
+         </xs:complexType>
+	
+		 <xs:complexType name="Receiver">
+            <xs:all>
+               <xs:element name="Name" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saaja nimi.</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="0" />
+                        <xs:maxLength value="80" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="RegNum" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Saaja id.-kood (isikukood, asutuse/ettevõtte
+                           reg. nr.).
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="0" />
+                        <xs:maxLength value="15" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="AccountNum" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Saaja arvelduskonto number.
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="0" />
+                        <xs:maxLength value="35" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="RefNum" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saaja viitenumber.</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:minLength value="0" />
+                        <xs:maxLength value="20" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="ReceptionDate" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tehingu teostamise kuupäev.
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:length value="10" />
+                        <xs:pattern value="\d{2}\.\d{2}\.\d{4}" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+            </xs:all>
+         </xs:complexType>
+
+
+	
+        <xs:complexType name="Payment">
+            <xs:all>
+               <xs:element name="Type" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tehingu tüüp C või D näitab, kas tegemist on
+                           kreedit- või deebetkandega konto omaniku
+                           (asutuse) poolt vaadatuna.
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="BaseCurrencyAmount">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Summa baasvaluutas.</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:decimal">
+                        <xs:totalDigits value="15" />
+                        <xs:fractionDigits value="2" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="Amount">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Summa valuutas.</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:decimal">
+                        <xs:totalDigits value="15" />
+                        <xs:fractionDigits value="2" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+               <xs:element name="Currency">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Valuuta kood ISO 4217 formaadis.
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+                  <xs:simpleType>
+                     <xs:restriction base="xs:string">
+                        <xs:pattern value="[a-zA-Z]{3}" />
+                     </xs:restriction>
+                  </xs:simpleType>
+               </xs:element>
+            </xs:all>
+         </xs:complexType>
+
+	<!-- MOKAQUERY (transactionStatement) PARING LOPP -->
+	
+	<!-- MOKAQUERY (transactionStatement) PARINGU VASTUS -->
+	<xs:element name="transactionStatementResponse">
+	    <xs:complexType>
+            <xs:all>
+               <xs:element name="Message" type="xs:string"
+                  nillable="true">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Teade</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="Code" type="xs:int">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>kood</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:all>
+         </xs:complexType>
+	</xs:element>
+	<!-- MOKAQUERY (transactionStatement) PARINGU VASUTS LOPP -->
+	
+	<!-- ARUANDEPARING -->
+	<xs:element name="aruandeparing">
+		<xs:complexType>
+            <xs:sequence>
+               <xs:element name="l_date_from" type="xs:date"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Sisestatud alates</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="l_date_to" type="xs:date"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Sisestatud kuni</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="periodStart" type="tns:aruandeperiood">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aruandeperiood alates</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               
+               <xs:element name="periodEnd" type="tns:aruandeperiood">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aruandeperiood kuni</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="resp_attach" type="xs:boolean">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Vastus failina</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+        </xs:complexType>
+	</xs:element>
+
+	<xs:complexType name="aruandeperiood">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xrd:title>Aruandeperiood</xrd:title>
+               </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+               <xs:element name="rep_year" minOccurs="0"
+                  type="tns:kalendriaasta">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aasta</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="rep_month" minOccurs="0"
+                  type="tns:kalendrikuu">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kuu</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+		</xs:complexType>
+   
+
+		<xs:simpleType name="kalendriaasta">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xrd:title>Aasta</xrd:title>
+               </xs:appinfo>
+            </xs:annotation>
+            <xs:restriction base="xs:string">
+               <xs:pattern value="\d{4}" />
+            </xs:restriction>
+         </xs:simpleType>
+	
+	
+         <xs:simpleType name="kalendrikuu">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xrd:title>Kuu</xrd:title>
+               </xs:appinfo>
+            </xs:annotation>
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="1">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Jaanuar</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="2">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Veebruar</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="3">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Märts</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="4">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aprill</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="5">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Mai</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="6">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Juuni</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="7">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Juuli</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="8">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>August</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="9">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>September</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="10">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Oktoober</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="11">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>November</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="12">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Detsember</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+            </xs:restriction>
+         </xs:simpleType>
+	        
+	<!-- ARUANDEPARING LOPP -->
+	
+	<!-- ARUANDEPARING VASTUS ALGUS -->
+	<xs:element name="aruandeparingResponse">
+		<xs:complexType>
+            <xs:sequence>
+               <xs:element name="teade" type="xs:string" />
+
+               <xs:element name="aruanded" minOccurs="0">
+                  <xs:complexType>
+                     <xs:complexContent>
+                        <xs:restriction base="SOAP-ENC:Array">
+                           <xs:sequence>
+                              <xs:element name="vastuserida"
+                                 minOccurs="0" maxOccurs="unbounded"
+                                 type="tns:aruandeparing_vastuserida" />
+                           </xs:sequence>
+                        </xs:restriction>
+                     </xs:complexContent>
+                  </xs:complexType>
+               </xs:element>
+
+               <xs:element name="aruanded_csv" type="tns:csv">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aruanded</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+	</xs:element>
+   
+   <xs:simpleType name="csv">
+      <xs:annotation>
+         <xs:appinfo>
+            <xrd:title>CSV-vormingus fail</xrd:title>
+         </xs:appinfo>
+      </xs:annotation>
+      <xs:restriction base="xs:string"/>
+   </xs:simpleType>
+	
+
+	    <xs:complexType name="aruandeparing_vastuserida">
+            <xs:sequence>
+               <xs:element name="ent_name" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Esitaja nimi</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="ent_reg_nr" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Esitaja registrikood</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="ent_contact" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kontaktandmed</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="load_date" type="xs:date"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title xml:lang="et">
+                           Sisestamise kuupäev
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+			   <!-- Defineeritud aruandeparingu juures -->			   
+               <xs:element name="period" type="tns:aruandeperiood" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aruandeperiood</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="load_user" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Sisestaja isikukood</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="rcd_count" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aruande ridade arv</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="report_id" type="xs:int" >
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:visibility>0</xrd:visibility>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+            </xs:sequence>
+         </xs:complexType>
+	
+	<!-- ARUANDEPARING VASTUS LOPP -->
+	
+	<!-- EITLAADIB PARING -->
+	<xs:element name="eitlaadib">
+		<xs:complexType>
+            <xs:sequence>
+               <!--
+                  <xs:element name="aruandja" type="tns:aruandja">
+                  <xs:annotation>
+                  <xs:appinfo>
+                  <xrd:title>Aru andva firma andmed</xrd:title>
+                  </xs:appinfo>
+                  </xs:annotation>
+                  </xs:element>
+               -->
+               <xs:element name="period" type="tns:aruandeperioodReq">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aruandeperiood</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="aruanne" minOccurs="0"
+                  type="xs:base64Binary">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Alkoholi liikumise aruanne CSV-kujul failina
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>	
+	</xs:element>
+	
+
+		<xs:complexType name="aruandeperioodReq">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xrd:title>Aruandeperiood</xrd:title>
+               </xs:appinfo>
+            </xs:annotation>
+            <xs:sequence>
+			   <!-- Defineeritud üleval -->
+               <xs:element name="rep_year" minOccurs="0"
+                  type="tns:kalendriaasta">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aasta *</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+			   <!-- Defineeritud üleval -->
+               <xs:element name="rep_month" minOccurs="0"
+                  type="tns:kalendrikuu">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kuu *</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+
+	<!-- EITLAADIB PARING LOPP -->
+	
+	<!-- EITLAADIB PARINGU VASTUS -->
+	<xs:element name="eitlaadibResponse">
+		<xs:complexType>
+            <xs:sequence>
+               <xs:element name="teade" type="xs:string" />
+               <xs:element name="vead" minOccurs="0">
+                  <xs:complexType>
+                     <xs:complexContent>
+                        <xs:restriction base="SOAP-ENC:Array">
+                           <xs:sequence>
+                              <xs:element name="reaviga" minOccurs="0"
+                                 maxOccurs="unbounded"
+                                 type="tns:reaviga" />
+                           </xs:sequence>
+                        </xs:restriction>
+                     </xs:complexContent>
+                  </xs:complexType>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+	</xs:element>
+	
+	
+		<xs:complexType name="reaviga">
+            <xs:sequence>
+               <xs:element name="rida" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Rea nr</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="mure" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Viga</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+	
+	<!-- EITLAADIB PARINGU VASTUS LOPP -->
+	
+	<!-- aretolaadib PARING -->
+	<xs:element name="aretolaadib">
+		<xs:complexType >
+            <xs:sequence>
+               <xs:element name="aruandja"
+                  type="tns:aruandjakoodigaareto">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aruande esitaja</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+		       <!-- Defineeritud üleval -->
+               <xs:element name="period" type="tns:aruandeperioodReq"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aruandeperiood</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="aruanne" type="xs:base64Binary"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Alkoholi liikumise aruanne CSV-kujul failina
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+	</xs:element>
+	
+
+	    <xs:complexType name="aruandjakoodigaareto">
+            <xs:sequence>
+               <xs:element name="id" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:visibility>0</xrd:visibility>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="reg_nr" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Äriregistrikood</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="name" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Ettevõtte nimi</xrd:title>
+                        <xrd:fieldsize>50</xrd:fieldsize>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+
+	<!-- aretolaadib PARING LOPP -->
+	
+	<!-- aretolaadib PARINGU VASTUS -->
+	<xs:element name="aretolaadibResponse">
+		<xs:complexType>
+            <xs:sequence>
+               <xs:element name="teade" type="xs:string" />
+               <xs:element name="vead" minOccurs="0">
+                  <xs:complexType>
+                     <xs:complexContent>
+                        <xs:restriction base="SOAP-ENC:Array">
+                           <xs:sequence>
+							  <!-- Defineeritud üleval -->
+                              <xs:element name="reaviga" minOccurs="0"
+                                 maxOccurs="unbounded"
+                                 type="tns:reaviga" />
+                           </xs:sequence>
+                        </xs:restriction>
+                     </xs:complexContent>
+                  </xs:complexType>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+	</xs:element>	
+	<!-- aretolaadib PARINGU VASTUS LOPP -->
+		
+	<!-- kammparing PARING -->
+	<xs:element name="kammparing">
+		<xs:complexType>
+            <xs:sequence>
+               <xs:element name="reg_book_nr" type="xs:string" minOccurs="1">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Alkoholi registrikande nr
+                        </xrd:title>
+                        <xrd:notes>Kolmeosaline kood</xrd:notes>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="reg_date" type="xs:date"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kuupäev</xrd:title>
+                        <xrd:notes xml:lang="et">
+                           Kuupäev, mille järgi kontrollitakse
+                           kehtivust(dd.mm.yyyy)
+                        </xrd:notes>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+	</xs:element>
+	<!-- kammparing PARING LOPP -->
+	
+	<!-- kammparing PARINGU VASTUS -->	
+	<xs:element name="kammparingResponse">
+		<xs:complexType>
+            <xs:sequence>
+               <xs:element name="status" type="tns:status_t" />
+               <xs:element name="item" type="tns:item"
+                  minOccurs="0" />
+            </xs:sequence>
+         </xs:complexType>
+	</xs:element>
+	
+	   <xs:simpleType name="status_t">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xrd:title>Staatus</xrd:title>
+               </xs:appinfo>
+            </xs:annotation>
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="OK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           On olemas kehtiv registreering antud
+                           kuupäeval
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+               <xs:enumeration value="NOK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Kehtiv registreering antud kuupäeval puudub
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+            </xs:restriction>
+         </xs:simpleType>
+
+	
+	
+		<xs:complexType name="item">
+            <xs:sequence>
+               <xs:element name="item_name" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Toote nimetus</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="volume" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kangus mahuprotsentides</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="capacity" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Maht</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="producttype" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Liik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="reg_date" type="xs:date" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Registreerimise kuupäev</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="cn_code" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>CN kood</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="app_reg_nr" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Taotleja MTRi number</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="app_actor_name" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Taotleja nimi</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+
+               <xs:element name="man_actor_name" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tootja nimi</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="country" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tootja riik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+
+	<!-- kammparing PARINGU VASTUS LOPP -->
+	
+	<!-- tooteparing PARING -->
+	<xs:element name="tooteparing">
+		<xs:complexType>
+            <xs:sequence>
+
+               <xs:element name="reg_book_nr" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Registrikande number
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="date_fromS" type="xs:date"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kande kehtivuse algus alates</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="date_toS" type="xs:date"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>kuni</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="date_fromE" type="xs:date"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kande kehtivuse lõpp alates</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="date_toE" type="xs:date"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>kuni</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               
+               <xs:element name="item_name" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Toote nimi</xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               
+               <xs:element name="producttype" type="tns:tooteliik" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Toote liik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               
+                <xs:element name="man_actor_name" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tootja nimi</xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="country" type="tns:CountryType" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tootjariik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>             
+               
+               <xs:element name="volume" type="tns:CapacityType" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Maht</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               
+              <xs:element name="ethanol_vol" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Etanoolisisaldus, %vol</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               
+               <xs:element name="desc" type="xs:string" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Staatus:</xrd:title>
+                        <xrd:fieldtype>comment</xrd:fieldtype>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               
+               
+               <xs:element name="status1" type="xs:boolean" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Registrisse kantud alkohol</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               
+               <xs:element name="status2" type="xs:boolean" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kehtetud kanded</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="resp_attach" type="xs:boolean">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Vastus failina</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+	</xs:element>
+	
+	<xs:simpleType name="tooteliik">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xrd:title>Tooteliik</xrd:title>
+               </xs:appinfo>
+            </xs:annotation>
+            <xs:restriction base="xs:string">
+                              <xs:enumeration value="85">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Akvavit</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="17">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aniisimaitseline piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="64">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Armagnac</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="51">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aromaatne kvaliteetvahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="56">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aromatiseeritud puuviljavein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="53">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aromatiseeritud vein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="54">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aromatiseeritud veinijook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="55">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aromatiseeritud veinikokteil</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="88">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Bierbrand</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="18">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Bitter</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="6">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Brandy</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="12">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Calvados</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="7">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Cognac</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="13">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Emajuurepiiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="31">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Gaseeritud poolvahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="39">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Gaseeritud puuviljavein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="30">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Gaseeritud vahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="78">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Geograafilise tähisega vein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="15">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Gin</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="80">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Grappa</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="60">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kadakamarjamaitseline piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="79">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kaitstud geograafilise tähisega poolvahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="86">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kaitstud geograafilise tähisega vahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="77">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kaitstud geograafilise tähisega vein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="72">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kaitstud päritolunimetusega aromaatne kvaliteetvahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="75">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kaitstud päritolunimetusega gaseeritud poolvahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="71">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kaitstud päritolunimetusega kvaliteetvahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="70">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kaitstud päritolunimetusega liköörvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="74">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kaitstud päritolunimetusega poolvahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="73">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kaitstud päritolunimetusega vahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="69">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kaitstud päritolunimetusega vein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="41">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kangendatud puuviljavein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="16">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Köömnemaitseline piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="84">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kuivatatud viinamarjadest valmistatud vein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="28">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kvaliteetvahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="14">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Leotamise ja destillerimise teel saadud piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="19">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Liköör</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="26">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Liköörvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="40">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Maitsestatud puuviljavein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="10">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Maitsestatud viin</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="34">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Mõdu</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="63">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Mõrumaitseline piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="20">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Munaliköör</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="46">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Muu alkohoolne jook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="21">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Muu piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="37">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Õlu</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="83">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Osaliselt kääritatud viinamarjavirre</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="61">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Õuntest ja  pirnidest valmistatud piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="62">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Perry</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="59">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Piiritus</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="87">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Põllumajandusliku päritoluga destillaat</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="29">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Poolvahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="9">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Puuviljade pressjääkidest valmistatud piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="11">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Puuviljadest valmistatud piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="35">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Puuvilja- ja marjavein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="57">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Puuviljavahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="68">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Rosinatest valmistatud piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="2">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Rumm</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="67">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Sake</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="36">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Siider</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="4">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Teraviljast valmistatud piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="76">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Üleküpsenud viinamarjadest valmistatud vein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="38">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Vahutav puuviljavein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="27">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Vahuvein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="24">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Vein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="5">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Veinist valmistatud piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="82">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Vermut</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="1">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Viin</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="8">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Viinamarjade pressjääkidest valmistatud piiritusjook</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="3">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Whisky</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                           </xs:restriction>
+         </xs:simpleType>
+	
+	
+		<xs:simpleType name="CountryType">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xrd:title>Riik *</xrd:title>
+               </xs:appinfo>
+            </xs:annotation>
+            <xs:restriction base="xs:string">
+                              <xs:enumeration value="AF">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Afganistan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Albaania</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="DZ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Alžeeria</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AS">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Ameerika Samoa (USA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="US">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Ameerika Ühendriigid</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AD">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Andorra</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AO">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Angola</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AI">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Anguilla (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AQ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Antarktis</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Antigua ja Barbuda</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Araabia Ühendemiraadid</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Argentina</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Armeenia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AW">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aruba (NLD)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AZ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aserbaidžaan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AU">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Austraalia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AT">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Austria</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BS">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Bahama</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BH">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Bahrein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BD">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Bangladesh</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BB">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Barbados</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="PW">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Belau</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Belgia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BZ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Belize</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BJ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Benin</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Bermuda (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BT">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Bhutan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BOL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Boliivia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BQ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Bonaire, Sint Eustatius ja Saba (NLD)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Bosnia ja Hertsegoviina</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BW">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Botswana</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BV">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Bouvet’ saar (NOR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Brasiilia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="IO">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Briti India ookeani ala (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="VG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Briti Neitsisaared (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Brunei</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Bulgaaria</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BF">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Burkina Faso</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BI">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Burundi</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CO">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Colombia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Cooki saared (NZL)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Costa Rica</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CW">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Curaçao (NLD)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="DJ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Djibouti</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="DM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Dominica</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="DO">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Dominikaani Vabariik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="EC">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Ecuador</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="EE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Eesti</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="EG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Egiptus</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GQ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Ekvatoriaal-Guinea</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CI">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Elevandiluurannik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SV">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>El Salvador</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="ER">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Eritrea</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="ET">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Etioopia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="EU">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Euroopa Ühendus</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="FO">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Fääri saared (DNK)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="FK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Falklandi (Malviini) saared (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="FJ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Fidži</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="PH">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Filipiinid</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Gabon</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Gambia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GH">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Ghana</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GI">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Gibraltar (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GD">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Grenada</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Gröönimaa (DNK)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Gruusia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GP">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Guadeloupe (FRA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GU">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Guam (USA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GT">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Guatemala</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Guernsey (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Guinea</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GW">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Guinea-Bissau</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Guyana</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="HT">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Haiti</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="HM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Heard ja McDonald (AUS) ISLANDS</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Hiina</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="ES">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Hispaania</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="NL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Holland</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="AN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Hollandi Antillid</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="HN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Honduras</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="HK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Hongkong (CHN)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="HR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Horvaatia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="IE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Iirimaa</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="IL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Iisrael</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="IN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>India</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="ID">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Indoneesia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="IQ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Iraak</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="IR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Iraan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="IS">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Island</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="IT">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Itaalia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="JP">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Jaapan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="JM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Jamaica</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="YE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Jeemen</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="JE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Jersey (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="JO">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Jordaania</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CX">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Jõulusaar (AUS)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="KY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kaimanisaared (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="KH">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kambodža</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kamerun</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kanada</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CBI">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kariibi Saared</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="KZ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kasahstan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="QA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Katar</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="KE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kenya</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CF">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kesk-Aafrika Vabariik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="KI">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kiribati</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="KM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Komoorid</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CD">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kongo DV</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kongo Vabariik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CC">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kookossaared (Keelingi saared) (AUS)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="KP">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Korea RDV</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="KR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Korea Vabariik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="KG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kõrgõzstan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="XK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kosovo</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kreeka</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Küpros</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CU">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kuuba</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="KW">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kuveit</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="WI">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Lääne-India saarestik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="EH">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Lääne-Sahara (MAR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="LA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Laos</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="LV">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Läti</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="LT">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Leedu</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="LS">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Lesotho</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="LR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Libeeria</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="LI">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Liechtenstein</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="LB">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Liibanon</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="LY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Liibüa</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="ZA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Lõuna-Aafrika Vabariik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GS">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Lõuna-Georgia ja Lõuna-Sandwichi saared (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SS">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Lõuna-Sudaan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="LU">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Luksemburg</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MO">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Macau (Aomen) (CHN)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Madagaskar</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Makedoonia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Malaisia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MW">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Malawi</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MV">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Maldiivid</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="ML">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Mali</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MT">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Malta</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="IM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Mani saar (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Maroko</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MH">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Marshalli Saared</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MQ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Martinique (FRA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Mauritaania</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MU">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Mauritius</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="YT">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Mayotte (FRA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MX">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Mehhiko</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="FM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Mikroneesia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MD">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Moldova</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MC">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Monaco</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Mongoolia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="ME">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Montenegro</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MS">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Montserrat (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MZ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Mosambiik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Myanmar (Birma)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="NA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Namiibia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="NR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Nauru</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="NP">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Nepal</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="NI">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Nicaragua</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="NG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Nigeeria</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="NE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Niger</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="NU">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Niue (NZL)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="KK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>No Country</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="NF">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Norfolk (AUS)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="NO">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Norra</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="OM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Omaan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="PG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Paapua Uus-Guinea</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="PK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Pakistan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="PA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Panama</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="PY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Paraguay</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="PE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Peruu</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="PN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Pitcairn (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MP">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Põhja-Mariaanid (USA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="PL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Poola</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="PT">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Portugal</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="FR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Prantsusmaa</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="PR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Puerto Rico</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="VA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Püha Tool (Vatikan)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="RE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Réunion (FRA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CV">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Roheneemesaared</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Rootsi</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="RO">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Rumeenia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="RW">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Rwanda</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SB">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saalomoni Saared</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saint-Barthélemy (FRA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SH">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saint Helena (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="KN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saint Kitts ja Nevis</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="LC">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saint Lucia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="MF">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saint-Martin (Prantsuse osa) (FRA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="PM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saint-Pierre ja Miquelon (FRA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="VC">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saint Vincent ja Grenadiinid</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="DE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saksamaa</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="ZM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Sambia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="WS">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Samoa</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>San Marino</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="ST">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>São Tomé ja Príncipe</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saudi Araabia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SC">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Seišellid</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Senegal</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="XS">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Serbia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Sierra Leone</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Singapur</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SX">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Sint Maarten (NLD)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Slovakkia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SI">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Sloveenia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SO">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Somaalia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="FI">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Soome</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SCO">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Šotimaa, GB</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="LK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Sri Lanka</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SD">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Sudaan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Suriname</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="GB">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Suurbritannia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Süüria</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SZ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Svaasimaa</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="SJ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Svalbard ja Jan Mayen (NOR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CH">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Šveits</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="DK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Taani</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TJ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tadžikistan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TH">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tai</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TW">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Taiwan (CHN)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TZ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tansaania</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Timor-Leste (Ida-Timor)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Togo</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TK">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tokelau (NZL)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TO">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tonga</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TT">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Trinidad ja Tobago</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TD">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tšaad</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CZ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tšehhi</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tšiili</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tuneesia</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TR">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Türgi</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Türkmenistan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TC">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Turks ja Caicos (GBR)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="TV">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tuvalu</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="UG">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Uganda</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="UM">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Ühendriikide hajasaared (USA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="UA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Ukraina</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="HU">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Ungari</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="XX">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Unknown</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="UY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Uruguay</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="VI">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>USA Neitsisaared (USA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="UZ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Usbekistan</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="NC">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Uus-Kaledoonia (FRA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="NZ">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Uus-Meremaa</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="BY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Valgevene</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="VU">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Vanuatu</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="RU">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Venemaa</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="VE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Venezuela</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="VN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Vietnam</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="WF">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Wallis ja Futuna (FRA)</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="ZW">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Zimbabwe</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                           </xs:restriction>
+         </xs:simpleType>
+
+
+		<xs:simpleType name="CapacityType">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xrd:title>Maht *</xrd:title>
+               </xs:appinfo>
+            </xs:annotation>
+            <xs:restriction base="xs:string">
+                <xs:enumeration value="CAP1077">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>100000 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1027">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>1000 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1013">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>100 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1005">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>10 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="1100CL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>1100 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1107">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>1200 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1103">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>120 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP567">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>125</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1041">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>12,5 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP 555">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>125 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1064">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>13 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP142">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>142 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1046">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>149866 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1099">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>150000 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1029">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>1500 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1014">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>150 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP2150">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>150 cl x 2</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP15900">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>15900 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1101">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>15 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1036">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>15 l</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1066">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>160 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="170cl">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>170 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1017">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>175 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1094">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>1800 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1062">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>180 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1087">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>18,5 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1006">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>18,75 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1026">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>18,7 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="1,8CL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>1,8 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="18CL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>18 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1063">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>20000 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1002">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>2000 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1015">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>200 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1093">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>202,5 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP!052">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>2050 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1058">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>205 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1007">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>20 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1047">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>20 cl + 75 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1072">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>20 cl  X 3</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1069">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>210 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="21CL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>21 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1051">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>22000 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1092">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>225 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1068">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>23000 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1096">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>2400000 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="2400CL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>2400 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1048">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>2500000 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1035">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>2500 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1034">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>250 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1008">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>25 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP2700">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>2700 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1030">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>27,5 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="2930cl">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>2930</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1001">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>2 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1033">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>2 cl  X 12</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1065">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>2 cl  X 20</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1024">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>2 cl  X 3</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1040">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>3000 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1021">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>300 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1055">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>30 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="313CL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>31,3 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="31cl">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>31 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1075">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>33,33 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1100">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>33,3 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1106">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>33,5 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1022">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>33 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1090">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>33 cl  X 4</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="34,1CL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>34,1 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1097">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>34 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1067">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>35,5 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1081">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>3,5 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1016">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>35 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1009">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>37,5 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1053">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>375 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1084">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>37 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1044">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>39564 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1020">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>3 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1019">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>400 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1074">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>40 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="41CL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>41 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1073">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>44 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1089">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>4500</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1018">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>450 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1102">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>45 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1098">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>46 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1056">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>47,3 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1057">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>4,75 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="47cl">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>47 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1054">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>48 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1003">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>4 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1023">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>4 cl  X 3</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1042">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>5000 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1025">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>500 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1010">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>50 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1086">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>50 cl  X 2</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1082">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>5100 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1085">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>55 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1105">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>56,8 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1004">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>5 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1079">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>5 cl  X 3</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1028">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>600 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1095">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>60 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1052">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>61 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1000">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>62100 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="62CL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>62 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1078">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>64 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1049">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>65 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1076">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>66 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1039">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>67 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="6 CL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>6 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1011">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>70 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1070">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>70 cl + 75 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1032">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>72 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1043">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>73 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1012">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>75 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1037">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>75 cl  X 2</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1080">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>75 cl  X 3</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="80cl">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>80 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="900cl">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>900 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1091">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>90 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1071">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>95 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1104">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>9,8 cl</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1038">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>lahtine</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1050">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>pidevalt tootmises</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                              <xs:enumeration value="CAP1045">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>vastavalt lepingule</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+                           </xs:restriction>
+         </xs:simpleType>
+
+	<!-- tooteparing PARING LOPP -->
+	
+	<!-- tooteparing PARINGU VASTUS -->
+	<xs:element name="tooteparingResponse">
+		<xs:complexType>
+            <xs:sequence>
+               <xs:element name="teade" type="xs:string" />
+               <xs:element name="tooted" minOccurs="0">
+                  <xs:complexType>
+                     <xs:complexContent>
+                        <xs:restriction base="SOAP-ENC:Array">
+                           <xs:sequence>
+                              <xs:element
+                                 name="tooteparing_vastuserida"
+                                 minOccurs="0" maxOccurs="unbounded"
+                                 type="tns:tooteparing_vastuserida" />
+                           </xs:sequence>
+                        </xs:restriction>
+                     </xs:complexContent>
+                  </xs:complexType>
+               </xs:element>
+
+               <xs:element name="tooted_csv" type="tns:csv">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tooted</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+            </xs:sequence>
+         </xs:complexType>
+	</xs:element>
+	
+
+		<xs:complexType name="tooteparing_vastuserida">
+            <xs:sequence>
+
+               <xs:element name="reg_book_nr" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Registrikande nr</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="reg_start" type="xs:date"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kande kehtivuse algus</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="reg_end" type="xs:date"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Kande kehtivuse lõpp</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="item_name" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Toote nimi</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="man_actor_name" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tootja nimi</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="country" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tootjariik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="creatcountry" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Päritolumaa</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="producttype" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Toote liik</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="capacity" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Maht</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="volume" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Etanoolisisaldus %vol</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+              
+               <xs:element name="state" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Staatus</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               
+               <xs:element name="comment" type="xs:string"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Toote märkus</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+            </xs:sequence>
+         </xs:complexType>
+	
+	<!-- tooteparing PARINGU VASTUS LOPP -->
+	
+	<!-- liikumine PARING -->
+	<xs:element name="liikumineParing">
+		<xs:complexType>
+            <xs:sequence>
+               <xs:element name="reg_book_nr" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Alkoholi registrikande nr
+                        </xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="ent_reg_nr" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saatja registrikood</xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="ent_name" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saatja firma nimi</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="receiver" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title xml:lang="et">
+                           Saaja ettevõtte nimi / Eestist
+                           väljatoimetamisel sihtriik
+                        </xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="market" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tegevuskoha nimetus</xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="addr_county" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tegevuskoha aadress: maakond
+                        </xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="addr_town" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title xml:lang="et">
+                           Tegevuskoha aadress: vald, linn, küla
+                        </xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="addr_str" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tegevuskoha aadress: tänav, nr
+                        </xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="p_nr" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Partii nr</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="p_cnt" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tarbijapakendite kogus (kuu koondarv)
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="l_date_from" type="xs:date"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Sisestatud alates</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="l_date_to" type="xs:date"
+                  minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Sisestatud kuni</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+			   <!-- Defineeritud ülal -->
+               <xs:element name="period" type="tns:aruandeperiood">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aruandeperiood</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="report_id" type="xs:int" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aruande id</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="resp_attach" type="xs:boolean" minOccurs="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Vastus failina</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+            </xs:sequence>
+         </xs:complexType>
+	</xs:element>
+	<!-- liikumine PARING LOPP -->	
+	
+	<!-- liikumine PARINGU VASTUS -->
+	<xs:element name="liikumineParingResponse">
+	    <xs:complexType>
+            <xs:sequence>
+               <xs:element name="teade" type="xs:string" />
+
+               <xs:element name="liikumised" minOccurs="0">
+                  <xs:complexType>
+                     <xs:complexContent>
+                        <xs:restriction base="SOAP-ENC:Array">
+                           <xs:sequence>
+                              <xs:element name="liikumine"
+                                 minOccurs="0" maxOccurs="unbounded"
+                                 type="tns:liikumine" />
+                           </xs:sequence>
+                        </xs:restriction>
+                     </xs:complexContent>
+                  </xs:complexType>
+               </xs:element>
+
+               <xs:element name="liikumised_csv" type="tns:csv">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Liikumised</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+            </xs:sequence>
+         </xs:complexType>
+	</xs:element>
+
+
+	        <xs:complexType name="liikumine">
+            <xs:sequence>
+               <xs:element name="reg_book_nr" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Alkoholi registrikande nr
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="receiver" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Saaja ettevõtte nimi / Eestist
+                           väljatoimetamisel sihtriik
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="market" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Tegevuskoha nimetus</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="addr_county" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tegevuskoha aadress: maakond
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="addr_town" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tegevuskoha aadress: vald, linn, küla
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="addr_str" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tegevuskoha aadress: tänav, nr
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="p_nr" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Partii nr</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="p_cnt" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>
+                           Tarbijapakendite kogus (kuu koondarv)
+                        </xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="ent_name" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Saatja</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+               <xs:element name="report_id" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xrd:title>Aruande id</xrd:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+            </xs:sequence>
+         </xs:complexType>
+
+	<!-- liikumine PARINGU VASUTS LOPP -->
+	
+	<!-- legacy1 PARING -->
+	<xs:element name="legacy1">
+		<xs:complexType>
+			<xs:sequence>
+			   <xs:element type="tns:ArrayOfString" name="keha" />					
+			</xs:sequence>
+		</xs:complexType>
+	</xs:element>
+	
+	<!--
+	<xs:complexType name="ArrayOfString">		
+			<xs:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="xs:string[]"/>	
+	</xs:complexType>
+	-->
+	<xs:complexType name="ArrayOfString">
+		<xs:sequence>
+			<xs:element maxOccurs="unbounded" minOccurs="0"
+			name="item" type="xs:string"/>
+		</xs:sequence>
+	</xs:complexType>
+
+	
+	<!-- originaal
+	<xs:complexType name="ArrayOfString">
+		<xs:complexContent>
+			<xs:restriction base="SOAP-ENC:Array">
+				<xs:attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="xs:string[]"/>
+			</xs:restriction>
+		</xs:complexContent>
+	</xs:complexType>
+	-->
+	<!-- legacy1 lopp -->
+	
+	<xs:element name="legacy1Response">
+		<xs:complexType>
+            <xs:sequence>
+               <xs:element name="teade" type="xs:string"
+                  minOccurs="0" nillable="true" />
+               <xs:element name="url" type="tns:url"
+                  minOccurs="0" nillable="true">
+                  <xs:annotation><xs:appinfo>
+                    <xrd:title>Infosüsteemi sissepääsu URL</xrd:title>
+                 </xs:appinfo></xs:annotation>
+                  </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+	</xs:element>
+	
+	<xs:simpleType name="url">
+		<xs:annotation>
+			<xs:appinfo>
+				<xrd:title>Link</xrd:title>
+				<xrd:technotes>WWW URL</xrd:technotes>
+			</xs:appinfo>
+		</xs:annotation>
+		<xs:restriction base="xs:anyURI"/>
+	</xs:simpleType>
+</xs:schema>

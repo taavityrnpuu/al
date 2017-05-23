@@ -1,0 +1,56 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<SOAP-ENV:Envelope xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:ns4="http://x-tee.riik.ee/xsd/xtee.xsd" xmlns:ns5="http://producers.alkor2.xtee.riik.ee/producer/alkor2" SOAP-ENV:encodingStyle="http://schemas.xmlsoap.org/soap/encoding/">
+
+<SOAP-ENV:Header>
+
+<ns4:asutus xsi:type="xsd:string">70006317</ns4:asutus>
+
+<ns4:andmekogu xsi:type="xsd:string">alkor2</ns4:andmekogu>
+
+<ns4:isikukood xsi:type="xsd:string">EE35907312725</ns4:isikukood>
+
+<ns4:id xsi:type="xsd:string">f82acc1656748b4be87261435c192e1765b70d60</ns4:id>
+
+<ns4:nimi xsi:type="xsd:string">alkor2.eitlaadib.v2</ns4:nimi>
+
+<ns4:allasutus xsi:type="xsd:string">11237490</ns4:allasutus>
+
+<ns4:toimik xsi:type="xsd:string"/>
+
+<ns4:ametnik xmlns:ns4="http://x-tee.riik.ee/xsd/xtee.xsd" xsi:type="xsd:string">35907312725</ns4:ametnik></SOAP-ENV:Header>
+
+<SOAP-ENV:Body>
+
+<ns5:eitlaadib>
+
+<keha>
+
+<aruandja xsi:type="ns5:aruandja">
+
+<name xsi:type="xsd:string">Saku AS</name></aruandja>
+
+<period xsi:type="ns5:aruandeperiood"/>
+
+<aruanne href xsi:nil="true"/></keha></ns5:eitlaadib>
+
+</SOAP-ENV:Body>
+
+</SOAP-ENV:Envelope>
+
+--=_6b6bc980b8932f42110c99848c45c0f6
+
+Content-Disposition:phpypVr9l
+
+Content-Type:application/binary
+
+Content-Transfer-Encoding:base64
+
+Content-ID:<a7a82f53a849c7c6b8afe7b088a60174>
+
+UjA3LzMwMDAxLzM3O1Nha3UgQVM7SuRydmUgU2VsdmVyO0hhcmp1bWFhO1RhbGxp
+
+bm47UORybnUgbW50LiAyMzk7MTAwMzAyNzg7MTANCg==
+
+--=_6b6bc980b8932f42110c99848c45c0f6--
+

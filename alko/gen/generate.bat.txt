@@ -1,0 +1,5 @@
+@rem operatsioonide metadata on operations.xml
+@rem igale operatsioonile peab leiduma xsd fail, mille nimeks on xsd laiendiga xtee-stiilis nimi: nt tam.registriisik.v1.xsd
+@rem lisaks peab olemas olema tamkorduvakasutatavad.xsd
+@rem xsd failidel peab olema Saxonica jaoks <pseudoroot> juur-element vajalike nimeruumidega
+"C:\Program Files\Saxonica\SaxonHE9.7N\bin\Transform.exe" -s:operations.xml -xsl:generation_template.xsl -o:generated.wsdl

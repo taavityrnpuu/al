@@ -1,0 +1,70 @@
+/**
+ * RegistriKanneMIKOTypeTyyp.java
+ *
+ * This file was auto-generated from WSDL
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
+ */
+
+package ee.x_road.mtr.producer;
+
+public class RegistriKanneMIKOTypeTyyp implements java.io.Serializable {
+    private java.lang.String _value_;
+    private static java.util.HashMap _table_ = new java.util.HashMap();
+
+    // Constructor
+    protected RegistriKanneMIKOTypeTyyp(java.lang.String value) {
+        _value_ = value;
+        _table_.put(_value_,this);
+    }
+
+    public static final java.lang.String _Majandustegevusteade = "Majandustegevusteade";
+    public static final java.lang.String _Tegevusluba = "Tegevusluba";
+    public static final RegistriKanneMIKOTypeTyyp Majandustegevusteade = new RegistriKanneMIKOTypeTyyp(_Majandustegevusteade);
+    public static final RegistriKanneMIKOTypeTyyp Tegevusluba = new RegistriKanneMIKOTypeTyyp(_Tegevusluba);
+    public java.lang.String getValue() { return _value_;}
+    public static RegistriKanneMIKOTypeTyyp fromValue(java.lang.String value)
+          throws java.lang.IllegalArgumentException {
+        RegistriKanneMIKOTypeTyyp enumeration = (RegistriKanneMIKOTypeTyyp)
+            _table_.get(value);
+        if (enumeration==null) throw new java.lang.IllegalArgumentException();
+        return enumeration;
+    }
+    public static RegistriKanneMIKOTypeTyyp fromString(java.lang.String value)
+          throws java.lang.IllegalArgumentException {
+        return fromValue(value);
+    }
+    public boolean equals(java.lang.Object obj) {return (obj == this);}
+    public int hashCode() { return toString().hashCode();}
+    public java.lang.String toString() { return _value_;}
+    public java.lang.Object readResolve() throws java.io.ObjectStreamException { return fromValue(_value_);}
+    public static org.apache.axis.encoding.Serializer getSerializer(
+           java.lang.String mechType, 
+           java.lang.Class _javaType,  
+           javax.xml.namespace.QName _xmlType) {
+        return 
+          new org.apache.axis.encoding.ser.EnumSerializer(
+            _javaType, _xmlType);
+    }
+    public static org.apache.axis.encoding.Deserializer getDeserializer(
+           java.lang.String mechType, 
+           java.lang.Class _javaType,  
+           javax.xml.namespace.QName _xmlType) {
+        return 
+          new org.apache.axis.encoding.ser.EnumDeserializer(
+            _javaType, _xmlType);
+    }
+    // Type metadata
+    private static org.apache.axis.description.TypeDesc typeDesc =
+        new org.apache.axis.description.TypeDesc(RegistriKanneMIKOTypeTyyp.class);
+
+    static {
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://mtr.x-road.ee/producer/", ">registriKanneMIKOType>tyyp"));
+    }
+    /**
+     * Return type metadata object
+     */
+    public static org.apache.axis.description.TypeDesc getTypeDesc() {
+        return typeDesc;
+    }
+
+}

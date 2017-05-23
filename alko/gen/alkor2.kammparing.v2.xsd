@@ -1,0 +1,162 @@
+<pseudoroot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
+<!-- kammparing PARING -->
+	<xsd:element name="kammparing">
+		<xsd:complexType>
+            <xsd:sequence>
+               <xsd:element name="reg_book_nr" type="xsd:string" minOccurs="1">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Alkoholi registrikande nr
+                        </xrd:title>
+                        <xrd:notes>Kolmeosaline kood</xrd:notes>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="reg_date" type="xsd:date"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Kuupäev</xrd:title>
+                        <xrd:notes xml:lang="et">
+                           Kuupäev, mille järgi kontrollitakse
+                           kehtivust(dd.mm.yyyy)
+                        </xrd:notes>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+	</xsd:element>
+	<!-- kammparing PARING LOPP -->
+	
+	<!-- kammparing PARINGU VASTUS -->	
+	<xsd:element name="kammparingResponse">
+		<xsd:complexType>
+            <xsd:sequence>
+               <xsd:element name="status" type="tns:status_t" />
+               <xsd:element name="item" type="tns:item"
+                  minOccurs="0" />
+            </xsd:sequence>
+         </xsd:complexType>
+	</xsd:element>
+	
+	   <xsd:simpleType name="status_t">
+            <xsd:annotation>
+               <xsd:appinfo>
+                  <xrd:title>Staatus</xrd:title>
+               </xsd:appinfo>
+            </xsd:annotation>
+            <xsd:restriction base="xsd:string">
+               <xsd:enumeration value="OK">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           On olemas kehtiv registreering antud
+                           kuupäeval
+                        </xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="NOK">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Kehtiv registreering antud kuupäeval puudub
+                        </xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+            </xsd:restriction>
+         </xsd:simpleType>
+
+	
+	
+		<xsd:complexType name="item">
+            <xsd:sequence>
+               <xsd:element name="item_name" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Toote nimetus</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="volume" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Kangus mahuprotsentides</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="capacity" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Maht</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="producttype" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Liik</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="reg_date" type="xsd:date" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Registreerimise kuupäev</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="cn_code" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>CN kood</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="app_reg_nr" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Taotleja MTRi number</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="app_actor_name" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Taotleja nimi</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+
+               <xsd:element name="man_actor_name" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Tootja nimi</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="country" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Tootja riik</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+
+	<!-- kammparing PARINGU VASTUS LOPP -->
+		
+</pseudoroot>

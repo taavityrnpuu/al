@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">@pmr.db.driver@</property>
+        <property name="hibernate.connection.password">@pmr.db.password@</property>
+        <property name="hibernate.connection.url">@pmr.db.url@</property>
+        <property name="hibernate.connection.username">@pmr.db.user@</property>
+        <property name="hibernate.dialect">@pmr.db.dialect@</property>
+        <mapping class="ee.agri.alkor.util.convert.model.pmr.AtReportRcd" />
+        <mapping class="ee.agri.alkor.util.convert.model.pmr.AtReport" />
+        <mapping class="ee.agri.alkor.util.convert.model.pmr.AtEnt" />
+    </session-factory>
+</hibernate-configuration>

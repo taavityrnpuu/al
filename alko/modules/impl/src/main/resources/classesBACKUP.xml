@@ -1,0 +1,3305 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+	<!-- Kasutajate grupid -->
+	<bean id="userGroups" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="group.public"/>
+				<ref bean="group.entRep"/>
+				<ref bean="group.regWorker"/>
+				<ref bean="group.audit"/>
+				<ref bean="group.classAdm"/>
+				<ref bean="group.usrAdm"/>
+				<ref bean="group.docSigner"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="group.public" class="ee.agri.alkor.model.classes.SystemGroup">
+		<property name="categoryName" value="Rollid"/>
+		<property name="code" value="PUB"/>
+		<property name="name" value="Avalik kasutaja"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="group.entRep" class="ee.agri.alkor.model.classes.SystemGroup">
+		<property name="categoryName" value="Rollid"/>
+		<property name="code" value="ENT_REP"/>
+		<property name="name" value="K&#228;itleja"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="group.regWorker" class="ee.agri.alkor.model.classes.SystemGroup">
+		<property name="categoryName" value="Rollid"/>
+		<property name="code" value="REG_WRK"/>
+		<property name="name" value="Registri töötaja"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="group.audit" class="ee.agri.alkor.model.classes.SystemGroup">
+		<property name="categoryName" value="Rollid"/>
+		<property name="code" value="AUDIT"/>
+		<property name="name" value="J&#228;relevalve teostaja"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="group.classAdm" class="ee.agri.alkor.model.classes.SystemGroup">
+		<property name="categoryName" value="Rollid"/>
+		<property name="code" value="CLASS_ADM"/>
+		<property name="name" value="Klassifikaatorite administraatorite grupp"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="group.usrAdm" class="ee.agri.alkor.model.classes.SystemGroup">
+		<property name="categoryName" value="Rollid"/>
+		<property name="code" value="USR_ADM"/>
+		<property name="name" value="Kasutajate administraatorite grupp"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="group.docSigner" class="ee.agri.alkor.model.classes.SystemGroup">
+		<property name="categoryName" value="Rollid"/>
+		<property name="code" value="DOC_SIG"/>
+		<property name="name" value="Dokumentide signeerija"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Korgi kuju -->
+	<bean id="corkShapes" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="corkShapes.fugalshaped"/>
+				<ref bean="corkShapes.acerate"/>
+				<ref bean="corkShapes.beerbottlecork"/>
+				<ref bean="corkShapes.screwable"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="corkShapes.fugalshaped"
+		class="ee.agri.alkor.model.classes.CorkShape">
+		<property name="categoryName" value="Korgi kuju"/>
+		<property name="code" value="FUG"/>
+		<property name="name" value="seenekujuline"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="corkShapes.acerate" class="ee.agri.alkor.model.classes.CorkShape">
+		<property name="categoryName" value="Korgi kuju"/>
+		<property name="code" value="ACE"/>
+		<property name="name" value="piklik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="corkShapes.beerbottlecork"
+		class="ee.agri.alkor.model.classes.CorkShape">
+		<property name="categoryName" value="Korgi kuju"/>
+		<property name="code" value="BEE"/>
+		<property name="name" value="&#245;llepudelikork"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="corkShapes.screwable" class="ee.agri.alkor.model.classes.CorkShape">
+		<property name="categoryName" value="Korgi kuju"/>
+		<property name="code" value="SCR"/>
+		<property name="name" value="keeratav"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Suka v&#228;rvused -->
+	<bean id="stockingColors" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="stockingColors.grey"/>
+				<ref bean="stockingColors.blue"/>
+				<ref bean="stockingColors.black"/>
+				<ref bean="stockingColors.green"/>
+				<ref bean="stockingColors.brown"/>
+				<ref bean="stockingColors.lilac"/>
+				<ref bean="stockingColors.white"/>
+				<ref bean="stockingColors.red"/>
+				<ref bean="stockingColors.yellow"/>
+				<ref bean="stockingColors.golden"/>
+				<ref bean="stockingColors.silvery"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="stockingColors.grey"
+		class="ee.agri.alkor.model.classes.StockingColor">
+		<property name="categoryName" value="Suka v&#228;rv"/>
+		<property name="code" value="GRE"/>
+		<property name="name" value="Hall"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="stockingColors.blue"
+		class="ee.agri.alkor.model.classes.StockingColor">
+		<property name="categoryName" value="Suka v&#228;rv"/>
+		<property name="code" value="BLU"/>
+		<property name="name" value="Sinine"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="stockingColors.black"
+		class="ee.agri.alkor.model.classes.StockingColor">
+		<property name="categoryName" value="Suka v&#228;rv"/>
+		<property name="code" value="BLA"/>
+		<property name="name" value="Must"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="stockingColors.green"
+		class="ee.agri.alkor.model.classes.StockingColor">
+		<property name="categoryName" value="Suka v&#228;rv"/>
+		<property name="code" value="GREE"/>
+		<property name="name" value="Roheline"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="stockingColors.brown"
+		class="ee.agri.alkor.model.classes.StockingColor">
+		<property name="categoryName" value="Suka v&#228;rv"/>
+		<property name="code" value="BRO"/>
+		<property name="name" value="Pruun"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="stockingColors.lilac"
+		class="ee.agri.alkor.model.classes.StockingColor">
+		<property name="categoryName" value="Suka v&#228;rv"/>
+		<property name="code" value="LIL"/>
+		<property name="name" value="Lilla"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="stockingColors.white"
+		class="ee.agri.alkor.model.classes.StockingColor">
+		<property name="categoryName" value="Suka v&#228;rv"/>
+		<property name="code" value="WHI"/>
+		<property name="name" value="Valge"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="stockingColors.red"
+		class="ee.agri.alkor.model.classes.StockingColor">
+		<property name="categoryName" value="Suka v&#228;rv"/>
+		<property name="code" value="RED"/>
+		<property name="name" value="Punane"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="stockingColors.yellow"
+		class="ee.agri.alkor.model.classes.StockingColor">
+		<property name="categoryName" value="Suka v&#228;rv"/>
+		<property name="code" value="YEL"/>
+		<property name="name" value="Kollane"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="stockingColors.golden"
+		class="ee.agri.alkor.model.classes.StockingColor">
+		<property name="categoryName" value="Suka v&#228;rv"/>
+		<property name="code" value="GOL"/>
+		<property name="name" value="Kuldne"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="stockingColors.silvery"
+		class="ee.agri.alkor.model.classes.StockingColor">
+		<property name="categoryName" value="Suka v&#228;rv"/>
+		<property name="code" value="SIL"/>
+		<property name="name" value="H&#245;bedane"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Infop&#228;ringute staatused -->
+	<bean id="queryStates" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="queryStates.unanswered"/>
+				<ref bean="queryStates.answered"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="queryStates.unanswered"
+		class="ee.agri.alkor.model.classes.QueryState">
+		<property name="categoryName" value="Infop&#228;ringute staatused"/>
+		<property name="code" value="UNA"/>
+		<property name="name" value="Vastamata"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="queryStates.answered"
+		class="ee.agri.alkor.model.classes.QueryState">
+		<property name="categoryName" value="Infop&#228;ringute staatused"/>
+		<property name="code" value="ANS"/>
+		<property name="name" value="Vastatud"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Taotluse liigid -->
+	<bean id="applicationTypes" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="applicationTypes.are"/>
+				<ref bean="applicationTypes.arp"/>
+				<ref bean="applicationTypes.arf"/>
+
+			</list>
+		</property>
+	</bean>
+	<bean id="applicationTypes.are"
+		class="ee.agri.alkor.model.classes.ApplicationType">
+		<property name="categoryName" value="Taotluse liigid"/>
+		<property name="code" value="ARE"/>
+		<property name="name" value="Taotlus registrisse kandmiseks"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="applicationTypes.arp"
+		class="ee.agri.alkor.model.classes.ApplicationType">
+		<property name="categoryName" value="Taotluse liigid"/>
+		<property name="code" value="ARP"/>
+		<property name="name" value="Taotlus registrikande pikendamiseks"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="applicationTypes.arf"
+		class="ee.agri.alkor.model.classes.ApplicationType">
+		<property name="categoryName" value="Taotluse liigid"/>
+		<property name="code" value="ARF"/>
+		<property name="name" value="Taotlus registrikande l&#245;petamiseks"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Tarbijapakendi v&#245;i pakendi materjal -->
+	<bean id="packingMaterials" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="packingMaterials.glass"/>
+				<ref bean="packingMaterials.argil"/>
+				<ref bean="packingMaterials.plastic"/>
+				<ref bean="packingMaterials.laminatedcardboard"/>
+				<ref bean="packingMaterials.porcelain"/>
+				<ref bean="packingMaterials.pack"/>
+				<ref bean="packingMaterials.kit"/>
+				<ref bean="packingMaterials.jar"/>
+				<ref bean="packingMaterials.vat"/>
+				<ref bean="packingMaterials.vacuumpack"/>
+				<ref bean="packingMaterials.metal"/>
+				<ref bean="packingMaterials.timberedvat"/>
+				<ref bean="packingMaterials.PET"/>
+				<ref bean="packingMaterials.container"/>
+				<ref bean="packingMaterials.open"/>
+				<ref bean="packingMaterials.tank"/>
+				<ref bean="packingMaterials.canister"/>
+				<ref bean="packingMaterials.aluminumvat"/>
+				<ref bean="packingMaterials.tetrapack"/>
+				<ref bean="packingMaterials.ceramic"/>
+				<ref bean="packingMaterials.concrete"/>
+				<ref bean="packingMaterials.KEG"/>
+				<ref bean="packingMaterials.stainlesstank"/>
+				<ref bean="packingMaterials.stainlessvat"/>
+				<ref bean="packingMaterials.baginbox"/>
+				<ref bean="packingMaterials.tank2"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="packingMaterials.glass"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="GLA"/>
+		<property name="name" value="klaas"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.argil"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="ARG"/>
+		<property name="name" value="savi"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.plastic"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="PLA"/>
+		<property name="name" value="plastik (PET)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.laminatedcardboard"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="LAM"/>
+		<property name="name" value="kiletatud papp"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.porcelain"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="POR"/>
+		<property name="name" value="portselan"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.pack"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="PAC"/>
+		<property name="name" value="pakk"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.kit"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="KIT"/>
+		<property name="name" value="komplekt"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.jar"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="JAR"/>
+		<property name="name" value="purk"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.vat"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="VAT"/>
+		<property name="name" value="vaat"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.vacuumpack"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="VAC"/>
+		<property name="name" value="vaakumpakend"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.metal"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="MET"/>
+		<property name="name" value="metall"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.timberedvat"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="TIV"/>
+		<property name="name" value="puidust vaat"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.PET"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="PET"/>
+		<property name="name" value="PET"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.container"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="CON"/>
+		<property name="name" value="konteiner"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.open"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="OPE"/>
+		<property name="name" value="lahtine"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.tank"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="TAN"/>
+		<property name="name" value="tsistern"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.canister"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="CAN"/>
+		<property name="name" value="kanister"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.aluminumvat"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="ALV"/>
+		<property name="name" value="alumiinium vaat"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.tetrapack"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="TET"/>
+		<property name="name" value="tetrapakk"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.ceramic"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="CER"/>
+		<property name="name" value="keraamiline"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.concrete"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="CONC"/>
+		<property name="name" value="betoon"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.KEG"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="KEG"/>
+		<property name="name" value="KEG"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.stainlesstank"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="SLT"/>
+		<property name="name" value="roostevaba tsistern"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.stainlessvat"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="SLV"/>
+		<property name="name" value="roostevaba vaat"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.baginbox"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="BIB"/>
+		<property name="name" value="bag in box"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="packingMaterials.tank2"
+		class="ee.agri.alkor.model.classes.PackingMaterial">
+		<property name="categoryName" value="Pakendi materjal"/>
+		<property name="code" value="TAN2"/>
+		<property name="name" value="tank"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Pudeli kuju -->
+	<bean id="bottleShapes" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="bottleShapes.bourgogne"/>
+				<ref bean="bottleShapes.bordeaux"/>
+				<ref bean="bottleShapes.portwine"/>
+				<ref bean="bottleShapes.germanwinebottle"/>
+				<ref bean="bottleShapes.sparklingwinebottle"/>
+				<ref bean="bottleShapes.other"/>
+
+			</list>
+		</property>
+	</bean>
+	<bean id="bottleShapes.bourgogne"
+		class="ee.agri.alkor.model.classes.BottleShape">
+		<property name="categoryName" value="Pudeli kuju"/>
+		<property name="code" value="BOU"/>
+		<property name="name" value="Burgundia"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="bottleShapes.bordeaux"
+		class="ee.agri.alkor.model.classes.BottleShape">
+		<property name="categoryName" value="Pudeli kuju"/>
+		<property name="code" value="BOR"/>
+		<property name="name" value="Bordeaux"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="bottleShapes.portwine"
+		class="ee.agri.alkor.model.classes.BottleShape">
+		<property name="categoryName" value="Pudeli kuju"/>
+		<property name="code" value="POR"/>
+		<property name="name" value="Portvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="bottleShapes.germanwinebottle"
+		class="ee.agri.alkor.model.classes.BottleShape">
+		<property name="categoryName" value="Pudeli kuju"/>
+		<property name="code" value="GWB"/>
+		<property name="name" value="Saksa veini pudel"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="bottleShapes.sparklingwinebottle"
+		class="ee.agri.alkor.model.classes.BottleShape">
+		<property name="categoryName" value="Pudeli kuju"/>
+		<property name="code" value="SWB"/>
+		<property name="name" value="Vahuveinipudel"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="bottleShapes.other" class="ee.agri.alkor.model.classes.BottleShape">
+		<property name="categoryName" value="Pudeli kuju"/>
+		<property name="code" value="OTH"/>
+		<property name="name" value="Muu"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Pudeli v&#228;rvused -->
+	<bean id="bottleColors" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="bottleColors.brown"/>
+				<ref bean="bottleColors.green"/>
+				<ref bean="bottleColors.transparent"/>
+				<ref bean="bottleColors.blue"/>
+				<ref bean="bottleColors.painted"/>
+				<ref bean="bottleColors.flowered"/>
+				<ref bean="bottleColors.whitemat"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="bottleColors.brown" class="ee.agri.alkor.model.classes.BottleColor">
+		<property name="categoryName" value="Pudeli v&#228;rvused"/>
+		<property name="code" value="BRO"/>
+		<property name="name" value="Pruun"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="bottleColors.green" class="ee.agri.alkor.model.classes.BottleColor">
+		<property name="categoryName" value="Pudeli v&#228;rvused"/>
+		<property name="code" value="GRE"/>
+		<property name="name" value="Roheline"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="bottleColors.transparent"
+		class="ee.agri.alkor.model.classes.BottleColor">
+		<property name="categoryName" value="Pudeli v&#228;rvused"/>
+		<property name="code" value="TRA"/>
+		<property name="name" value="L&#228;bipaistev"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="bottleColors.blue" class="ee.agri.alkor.model.classes.BottleColor">
+		<property name="categoryName" value="Pudeli v&#228;rvused"/>
+		<property name="code" value="BLU"/>
+		<property name="name" value="Sinine"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="bottleColors.painted"
+		class="ee.agri.alkor.model.classes.BottleColor">
+		<property name="categoryName" value="Pudeli v&#228;rvused"/>
+		<property name="code" value="PAI"/>
+		<property name="name" value="Maalitud"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="bottleColors.flowered"
+		class="ee.agri.alkor.model.classes.BottleColor">
+		<property name="categoryName" value="Pudeli v&#228;rvused"/>
+		<property name="code" value="FLO"/>
+		<property name="name" value="Lillelised"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="bottleColors.whitemat"
+		class="ee.agri.alkor.model.classes.BottleColor">
+		<property name="categoryName" value="Pudeli v&#228;rvused"/>
+		<property name="code" value="WHI"/>
+		<property name="name" value="Valge matt"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Korgi v&#228;rvused -->
+	<bean id="corkColors" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="corkColors.brown"/>
+				<ref bean="corkColors.etc"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="corkColors.brown" class="ee.agri.alkor.model.classes.CorkColor">
+		<property name="categoryName" value="Korgi v&#228;rvused"/>
+		<property name="code" value="BRO"/>
+		<property name="name" value="Pruun"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="corkColors.etc" class="ee.agri.alkor.model.classes.CorkColor">
+		<property name="categoryName" value="Korgi v&#228;rvused"/>
+		<property name="code" value="ETC"/>
+		<property name="name" value="jne."/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Korgi materjal -->
+	<bean id="corkMaterials" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="corkMaterials.cork"/>
+				<ref bean="corkMaterials.metal"/>
+				<ref bean="corkMaterials.plastic"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="corkMaterials.cork"
+		class="ee.agri.alkor.model.classes.CorkMaterial">
+		<property name="categoryName" value="Korgi materjal"/>
+		<property name="code" value="COR"/>
+		<property name="name" value="Korgist"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="corkMaterials.metal"
+		class="ee.agri.alkor.model.classes.CorkMaterial">
+		<property name="categoryName" value="Korgi materjal"/>
+		<property name="code" value="MET"/>
+		<property name="name" value="Metallist"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="corkMaterials.plastic"
+		class="ee.agri.alkor.model.classes.CorkMaterial">
+		<property name="categoryName" value="Korgi materjal"/>
+		<property name="code" value="PLA"/>
+		<property name="name" value="Plastmassist"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Ettev&#245;tte rollid toote suhtes -->
+	<bean id="subjectRoles" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="subjectRoles.applicant"/>
+				<ref bean="subjectRoles.producer"/>
+				<ref bean="subjectRoles.importer"/>
+				<ref bean="subjectRoles.marketer"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="subjectRoles.applicant"
+		class="ee.agri.alkor.model.classes.EnterpriseRole">
+		<property name="categoryName" value="Ettev&#245;tte roll toote suhtes"/>
+		<property name="code" value="APL"/>
+		<property name="name" value="Taotleja"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="subjectRoles.producer"
+		class="ee.agri.alkor.model.classes.EnterpriseRole">
+		<property name="categoryName" value="Ettev&#245;tte roll toote suhtes"/>
+		<property name="code" value="PRO"/>
+		<property name="name" value="Tootja"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="subjectRoles.importer"
+		class="ee.agri.alkor.model.classes.EnterpriseRole">
+		<property name="categoryName" value="Ettev&#245;tte roll toote suhtes"/>
+		<property name="code" value="IMP"/>
+		<property name="name" value="Importija"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="subjectRoles.marketer"
+		class="ee.agri.alkor.model.classes.EnterpriseRole">
+		<property name="categoryName" value="Ettev&#245;tte roll toote suhtes"/>
+		<property name="code" value="MAR"/>
+		<property name="name" value="Turustaja"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Toote liigid -->
+	<bean id="productTypes" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="productTypes.vienna"/>
+				<ref bean="productTypes.otheralcohol"/>
+				<ref bean="productTypes.rum"/>
+				<ref bean="productTypes.whiskey"/>
+				<ref bean="productTypes.cerealalcoholdrink"/>
+				<ref bean="productTypes.winerubbingalcoholdrink"/>
+				<ref bean="productTypes.brandy"/>
+				<ref bean="productTypes.cognac"/>
+				<ref bean="productTypes.vinepressendrubbingalcoholdrink"/>
+				<ref bean="productTypes.fruitberrypressendrubbingalcoholdrink"/>
+				<ref bean="productTypes.raisinrubbingalcoholdrink"/>
+				<ref bean="productTypes.fruitberryvienna"/>
+				<ref bean="productTypes.calvados"/>
+				<ref bean="productTypes.gentsianrubbingalcoholdrink"/>
+				<ref bean="productTypes.fruitorberryrubbingalcoholdrink"/>
+				<ref bean="productTypes.gin"/>
+				<ref bean="productTypes.cumminrubbingalcoholdrink"/>
+				<ref bean="productTypes.aniserubbingalcoholdrink"/>
+				<ref bean="productTypes.bitters"/>
+				<ref bean="productTypes.liqueur"/>
+				<ref bean="productTypes.eggnog"/>
+				<ref bean="productTypes.otherrubbingalcoholdrink"/>
+				<ref bean="productTypes.crudewine"/>
+				<ref bean="productTypes.countywine"/>
+				<ref bean="productTypes.tablewine"/>
+				<ref bean="productTypes.highgradewine"/>
+				<ref bean="productTypes.liqueurwine"/>
+				<ref bean="productTypes.sparklingwine"/>
+				<ref bean="productTypes.highgradesparklingwine"/>
+				<ref bean="productTypes.halfsparklingwine"/>
+				<ref bean="productTypes.carbonatedsparklingwine"/>
+				<ref bean="productTypes.carbonatedhalfsparklingwine"/>
+				<ref bean="productTypes.flavouredwine"/>
+				<ref bean="productTypes.flavouredwinedrink"/>
+				<ref bean="productTypes.flavouredwinecocktail"/>
+				<ref bean="productTypes.fruitandberrywine"/>
+				<ref bean="productTypes.foamingfruitwine"/>
+				<ref bean="productTypes.carbonatedfruitwine"/>
+				<ref bean="productTypes.flavouredfruitwine"/>
+				<ref bean="productTypes.hardfruitwine"/>
+				<ref bean="productTypes.otherfermenteddrinks"/>
+				<ref bean="productTypes.lightalcoholdrink"/>
+				<ref bean="productTypes.rawmaterial"/>
+				<ref bean="productTypes.piquette"/>
+				<ref bean="productTypes.beer"/>
+				<ref bean="productTypes.geographicmarkertablewine"/>
+				<ref bean="productTypes.mpvqualityliqueurwine"/>
+				<ref bean="productTypes.mpvqualitywine"/>
+				<ref bean="productTypes.cider"/>
+				<ref bean="productTypes.mpvqualitysparklingwine"/>
+				<ref bean="productTypes.aromaticqualitysparklingwine"/>
+				<ref bean="productTypes.aromaticmpvqualitysparklingwine"/>
+				<ref bean="productTypes.aromaticwine"/>
+				<ref bean="productTypes.aromaticwinedrink"/>
+				<ref bean="productTypes.aromaticwinecocktail"/>
+				<ref bean="productTypes.aromaticfruitwine"/>
+				<ref bean="productTypes.fruitwine"/>
+				<ref bean="productTypes.until6percentethanoldrink"/>
+				<ref bean="productTypes.rubbingalcohol"/>
+				<ref bean="productTypes.juniperberryrubbingalcoholdrink"/>
+				<ref bean="productTypes.appleorpearwinerubbingalcoholdrink"/>
+				<ref bean="productTypes.perry"/>
+				<ref bean="productTypes.bittertasterubbingalcoholdrink"/>
+				<ref bean="productTypes.armagnac"/>
+				<ref bean="productTypes.winerubbingalcohol"/>
+				<ref bean="productTypes.winedistillate"/>
+				<ref bean="productTypes.sake"/>
+
+			</list>
+		</property>
+	</bean>
+
+	<bean id="productTypes.vienna"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="1"/>
+		<property name="name" value="Viin"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.otheralcohol"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="code" value="46"/>
+		<property name="name" value="Muu alkohoolne jook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.rum" class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="2"/>
+		<property name="name" value="Rumm"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.whiskey"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="3"/>
+		<property name="name" value="Viski"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.cerealalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="4"/>
+		<property name="name" value="Teraviljap&#245;hjaline alkohoolne jook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.winerubbingalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="5"/>
+		<property name="name" value="Veinist valmistatud piiritusjook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.brandy"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="6"/>
+		<property name="name" value="Br&#228;ndi"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.cognac"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="7"/>
+		<property name="name" value="Konjak"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.vinepressendrubbingalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="8"/>
+		<property name="name"
+			value="Viinamarjade pressj&#228;&#228;kidest valmistatud piiritusjook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.fruitberrypressendrubbingalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="9"/>
+		<property name="name"
+			value="Puuviljade-marjade pressj&#228;&#228;kidest valmistatud piiritusjook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.raisinrubbingalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="10"/>
+		<property name="name" value="Rosinatest valmistatud piiritusjook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.fruitberryvienna"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="11"/>
+		<property name="name" value="Puuvilja-marjaviin"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.calvados"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="12"/>
+		<property name="name" value="Kalvados"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.gentsianrubbingalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="13"/>
+		<property name="name" value="Gentsiaanpiiritusjook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.fruitorberryrubbingalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="14"/>
+		<property name="name"
+			value="Puuviljadest v&#245;i marjadest valmistatud piiritusjook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.gin" class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="15"/>
+		<property name="name" value="Džinn"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.cumminrubbingalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="16"/>
+		<property name="name" value="Köömnemaitseline piiritusjook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.aniserubbingalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="17"/>
+		<property name="name" value="Aniisimaitseline piiritusjook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.bitters"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="18"/>
+		<property name="name" value="Bitter"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.liqueur"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="19"/>
+		<property name="name" value="Liköör"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.eggnog"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="20"/>
+		<property name="name" value="Munaliköör"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.otherrubbingalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="21"/>
+		<property name="name" value="Muu piiritusjook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.crudewine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="22"/>
+		<property name="name" value="Toorvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.countywine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="23"/>
+		<property name="name" value="Maakonnavein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.tablewine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="24"/>
+		<property name="name" value="Lauavein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.highgradewine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="25"/>
+		<property name="name" value="Kvaliteetvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.liqueurwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="26"/>
+		<property name="name" value="Liköörvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.sparklingwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="27"/>
+		<property name="name" value="Vahuvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.highgradesparklingwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="28"/>
+		<property name="name" value="Kvaliteetvahuvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.halfsparklingwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="29"/>
+		<property name="name" value="Poolvahuvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.carbonatedsparklingwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="30"/>
+		<property name="name" value="Gaseeritud vahuvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.carbonatedhalfsparklingwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="31"/>
+		<property name="name" value="Gaseeritud poolvahuvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.flavouredwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="32"/>
+		<property name="name" value="Maitsestatud vein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.flavouredwinedrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="33"/>
+		<property name="name" value="Maitsestatud veinip&#245;hjaline jook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.flavouredwinecocktail"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="34"/>
+		<property name="name" value="Maitsestatud veinist valmistatud kokteil"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.fruitandberrywine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="35"/>
+		<property name="name" value="Puuvilja- ja marjavein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.foamingfruitwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="38"/>
+		<property name="name" value="Vahutav puuviljavein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.carbonatedfruitwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="39"/>
+		<property name="name" value="Gaseeritud puuviljavein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.flavouredfruitwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="40"/>
+		<property name="name" value="Maitsestatud puuviljavein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.hardfruitwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="41"/>
+		<property name="name" value="Kangendatud puuviljavein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.otherfermenteddrinks"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="42"/>
+		<property name="name" value="Muud k&#228;&#228;ritatud joogid"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.lightalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="43"/>
+		<property name="name" value="Lahja alkohoolne jook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.rawmaterial"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="44"/>
+		<property name="name" value="Tooraine"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.piquette"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="45"/>
+		<property name="name" value="Piquette"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.beer" class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="37"/>
+		<property name="name" value="&#213;lu"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.geographicmarkertablewine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="47"/>
+		<property name="name" value="Geograafilise t&#228;hisega lauavein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.mpvqualityliqueurwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="49"/>
+		<property name="name" value="Mpv-kvaliteetliköörvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.mpvqualitywine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="48"/>
+		<property name="name" value="Mpv kvaliteetvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.cider" class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="36"/>
+		<property name="name" value="Siider"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.mpvqualitysparklingwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="50"/>
+		<property name="name" value="Mpv-kvaliteetvahuvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.aromaticqualitysparklingwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="51"/>
+		<property name="name" value="Aromaatne kvaliteetvahuvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.aromaticmpvqualitysparklingwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="52"/>
+		<property name="name" value="Aromaatne mpv-kvaliteetvahuvein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.aromaticwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="53"/>
+		<property name="name" value="Aromatiseeritud vein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.aromaticwinedrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="54"/>
+		<property name="name" value="Aromatiseeritud veinijook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.aromaticwinecocktail"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="55"/>
+		<property name="name" value="Aromatiseeritud veinikokteil"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.aromaticfruitwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="56"/>
+		<property name="name" value="Aromatiseeritud puuviljavein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.fruitwine"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="57"/>
+		<property name="name" value="Puuviljavein"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.until6percentethanoldrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="58"/>
+		<property name="name"
+			value="Kuni 6 mahu% etanoolisisaldusega jook / muu alkohoolne jook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.rubbingalcohol"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="59"/>
+		<property name="name" value="Piiritus"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.juniperberryrubbingalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="60"/>
+		<property name="name" value="Kadakamarjamaitseline piiritusjook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.appleorpearwinerubbingalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="61"/>
+		<property name="name"
+			value="&#213;una v&#245;i pirniveinist valmistatud piiritusjook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.perry" class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="62"/>
+		<property name="name" value="Perry"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.bittertasterubbingalcoholdrink"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="63"/>
+		<property name="name" value="M&#245;rumaitseline piiritusjook"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.armagnac"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="64"/>
+		<property name="name" value="Armagnac"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.winerubbingalcohol"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="65"/>
+		<property name="name" value="Veinipiiritus"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.winedistillate"
+		class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="66"/>
+		<property name="name" value="Veini destillaat"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="productTypes.sake" class="ee.agri.alkor.model.classes.ProductType">
+		<property name="categoryName" value="Toote liik"/>
+		<property name="code" value="67"/>
+		<property name="name" value="Sake"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Taotluse staatused -->
+	<bean id="applicationStates"
+		class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="applicationStates.presented" />
+				<ref bean="applicationStates.processing" />
+				<ref bean="applicationStates.control" />
+				<ref bean="applicationStates.needsMore" />
+				<ref bean="applicationStates.regent" />
+				<ref bean="applicationStates.notregent" />
+				<ref bean="applicationStates.canceled" />
+				<ref bean="applicationStates.extended" />
+				<ref bean ="applicationStates.excluded"/>
+				<ref bean="applicationStates.notExtended"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="applicationStates.presented"
+		class="ee.agri.alkor.model.classes.ApplicationState">
+		<property name="categoryName" value="Taotluse staatuse" />
+		<property name="code" value="ADD" />
+		<property name="name" value="Esitatud menetlemiseks" />
+		<property name="active" value="true" />
+	</bean>
+	<bean id="applicationStates.processing"
+		class="ee.agri.alkor.model.classes.ApplicationState">
+		<property name="categoryName" value="Taotluse staatuse" />
+		<property name="code" value="PRO" />
+		<property name="name" value="Menetluses" />
+		<property name="active" value="true" />
+	</bean>
+	<bean id="applicationStates.control"
+		class="ee.agri.alkor.model.classes.ApplicationState">
+		<property name="categoryName" value="Taotluse staatuse" />
+		<property name="code" value="CTL" />
+		<property name="name" value="Kontrollimisel" />
+		<property name="active" value="true" />
+	</bean>
+	<bean id="applicationStates.needsMore"
+		class="ee.agri.alkor.model.classes.ApplicationState">
+		<property name="categoryName" value="Taotluse staatuse" />
+		<property name="code" value="NMO" />
+		<property name="name" value="Vajab t&#228;psustamist" />
+		<property name="active" value="true" />
+	</bean>
+	<bean id="applicationStates.regent"
+		class="ee.agri.alkor.model.classes.ApplicationState">
+		<property name="categoryName" value="Taotluse staatuse" />
+		<property name="code" value="RGE" />
+		<property name="name" value="Registrisse kantud" />
+		<property name="active" value="true" />
+	</bean>
+	<bean id="applicationStates.notregent"
+		class="ee.agri.alkor.model.classes.ApplicationState">
+		<property name="categoryName" value="Taotluse staatuse" />
+		<property name="code" value="RGN" />
+		<property name="name" value="Registrisse mittekantud" />
+		<property name="active" value="true" />
+	</bean>
+	<bean id="applicationStates.canceled"
+		class="ee.agri.alkor.model.classes.ApplicationState">
+		<property name="categoryName" value="Taotluse staatuse" />
+		<property name="code" value="VOID" />
+		<property name="name" value="T&#252;histatud" />
+		<property name="active" value="true" />
+	</bean>
+	<bean id="applicationStates.extended"
+		class="ee.agri.alkor.model.classes.ApplicationState">
+		<property name="categoryName" value="Taotluse staatuse" />
+		<property name="code" value="REXT" />
+		<property name="name" value="Pikendatud" />
+		<property name="active" value="true" />
+	</bean>
+	<bean id="applicationStates.notExtended"
+		class="ee.agri.alkor.model.classes.ApplicationState">
+		<property name="categoryName" value="Taotluse staatuse" />
+		<property name="code" value="REXTN" />
+		<property name="name" value="Mitte pikendatud" />
+		<property name="active" value="true" />
+	</bean>
+
+	<!-- Registri kande otsuse liigid -->
+	<bean id="regEntryDecisionTypes" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="regEntryDecisionTypes.regent"/>
+				<ref bean="regEntryDecisionTypes.notregent"/>
+				<ref bean="regEntryDecisionTypes.extended"/>
+				<ref bean="regEntryDecisionTypes.notExtended"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="regEntryDecisionTypes.regent"
+		class="ee.agri.alkor.model.classes.RegistryEntryDecisionType">
+		<property name="categoryName" value="Registri kande otsuse liik"/>
+		<property name="code" value="RGE"/>
+		<property name="name" value="Registrisse kantud"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="regEntryDecisionTypes.notregent"
+		class="ee.agri.alkor.model.classes.RegistryEntryDecisionType">
+		<property name="categoryName" value="Registri kande otsuse liik"/>
+		<property name="code" value="RGN"/>
+		<property name="name" value="Registrisse mittekantud"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="regEntryDecisionTypes.extended"
+		class="ee.agri.alkor.model.classes.RegistryEntryDecisionType">
+		<property name="categoryName" value="Registri kande otsuse liik"/>
+		<property name="code" value="REXT"/>
+		<property name="name" value="Pikendatud"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="regEntryDecisionTypes.notExtended"
+		class="ee.agri.alkor.model.classes.RegistryEntryDecisionType">
+		<property name="categoryName" value="Registri kande otsuse liik"/>
+		<property name="code" value="REXTN"/>
+		<property name="name" value="Mitte pikendatud"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Toote n&#228;ite tagastamise otsuse liigid -->
+	<bean id="prodExampleDecisionTypes" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="prodExampleDecisionTypes.return"/>
+				<ref bean="prodExampleDecisionTypes.keep"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="prodExampleDecisionTypes.return"
+		class="ee.agri.alkor.model.classes.ProductExamplesDecisionType">
+		<property name="categoryName"
+			value="Toote n&#228;ite tagastamise otsuse liik"/>
+		<property name="code" value="PER"/>
+		<property name="name" value="Tooten&#228;idis tagastada"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="prodExampleDecisionTypes.keep"
+		class="ee.agri.alkor.model.classes.ProductExamplesDecisionType">
+		<property name="categoryName"
+			value="Toote n&#228;ite tagastamise otsuse liik"/>
+		<property name="code" value="PEK"/>
+		<property name="name" value="Tooten&#228;idis s&#228;ilitada"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="prodExampleDecisionTypes.notNeeded"
+		class="ee.agri.alkor.model.classes.ProductExamplesDecisionType">
+		<property name="categoryName"
+			value="Toote n&#228;ite tagastamise otsuse liik" />
+		<property name="code" value="PEN" />
+		<property name="name" value="Tooten&#228;idist ei pea esitama" />
+		<property name="active" value="true" />
+	</bean>
+
+	<!-- Riigid -->
+	<bean id="countries" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="country.afg"/>
+				<ref bean="country.alb"/>
+				<ref bean="country.dza"/>
+				<ref bean="country.asm"/>
+				<ref bean="country.usa"/>
+				<ref bean="country.and"/>
+				<ref bean="country.ago"/>
+				<ref bean="country.aia"/>
+				<ref bean="country.ata"/>
+				<ref bean="country.atg"/>
+				<ref bean="country.are"/>
+				<ref bean="country.arg"/>
+				<ref bean="country.arm"/>
+				<ref bean="country.abw"/>
+				<ref bean="country.aze"/>
+				<ref bean="country.aus"/>
+				<ref bean="country.aut"/>
+				<ref bean="country.bhs"/>
+				<ref bean="country.bhr"/>
+				<ref bean="country.bgd"/>
+				<ref bean="country.brb"/>
+				<ref bean="country.bel"/>
+				<ref bean="country.blz"/>
+				<ref bean="country.ben"/>
+				<ref bean="country.bmu"/>
+				<ref bean="country.btn"/>
+				<ref bean="country.bol"/>
+				<ref bean="country.bih"/>
+				<ref bean="country.bwa"/>
+				<ref bean="country.bvt"/>
+				<ref bean="country.bra"/>
+				<ref bean="country.iot"/>
+				<ref bean="country.brn"/>
+				<ref bean="country.bgr"/>
+				<ref bean="country.bfa"/>
+				<ref bean="country.bdi"/>
+				<ref bean="country.cpv"/>
+				<ref bean="country.col"/>
+				<ref bean="country.cok"/>
+				<ref bean="country.cri"/>
+				<ref bean="country.civ"/>
+				<ref bean="country.dji"/>
+				<ref bean="country.dma"/>
+				<ref bean="country.dom"/>
+				<ref bean="country.ecu"/>
+				<ref bean="country.est"/>
+				<ref bean="country.egy"/>
+				<ref bean="country.kh"/>
+				<ref bean="country.ky"/>
+				<ref bean="country.cm"/>
+				<ref bean="country.gnq"/>
+				<ref bean="country.slv"/>
+				<ref bean="country.eri"/>
+				<ref bean="country.eth"/>
+				<ref bean="country.flk"/>
+				<ref bean="country.fji"/>
+				<ref bean="country.phl"/>
+				<!--ref bean="country.fro"/-->
+				<ref bean="country.gab"/>
+				<ref bean="country.gmb"/>
+				<ref bean="country.gha"/>
+				<ref bean="country.gib"/>
+				<ref bean="country.grd"/>
+				<ref bean="country.geo"/>
+				<ref bean="country.grl"/>
+				<ref bean="country.glp"/>
+				<!--ref bean="country.guf"/-->
+				<ref bean="country.gum"/>
+				<ref bean="country.gtm"/>
+				<ref bean="country.gin"/>
+				<ref bean="country.gnb"/>
+				<ref bean="country.guy"/>
+				<ref bean="country.hti"/>
+				<ref bean="country.hmd"/>
+				<!--ref bean="country.mac"/-->
+				<ref bean="country.hkg"/>
+				<ref bean="country.chn"/>
+				<ref bean="country.esp"/>
+				<ref bean="country.ant"/>
+				<ref bean="country.hnd"/>
+				<ref bean="country.hrv"/>
+				<ref bean="country.irl"/>
+				<ref bean="country.isr"/>
+				<ref bean="country.ind"/>
+				<ref bean="country.idn"/>
+				<ref bean="country.irq"/>
+				<ref bean="country.irn"/>
+				<ref bean="country.isl"/>
+				<ref bean="country.ita"/>
+				<ref bean="country.jpn"/>
+				<ref bean="country.jam"/>
+				<ref bean="country.yem"/>
+				<ref bean="country.jor"/>
+				<!--ref bean="country.cxr"/>
+				<ref bean="country.cym"/>
+				<ref bean="country.khm"/>
+				<ref bean="country.cmr"/-->
+				<ref bean="country.can"/>
+				<ref bean="country.kaz"/>
+				<!--ref bean="country.qat"/-->
+				<ref bean="country.ken"/>
+				<ref bean="country.caf"/>
+				<ref bean="country.kgz"/>
+				<ref bean="country.kir"/>
+				<!--ref bean="country.com"/>
+				<ref bean="country.cod"/>
+				<ref bean="country.cog"/>
+				<ref bean="country.cck"/-->
+				<ref bean="country.prk"/>
+				<ref bean="country.kor"/>
+				<ref bean="country.grc"/>
+				<ref bean="country.cub"/>
+				<ref bean="country.kwt"/>
+				<ref bean="country.cyp"/>
+				<ref bean="country.lao"/>
+				<ref bean="country.ltu"/>
+				<ref bean="country.lso"/>
+				<ref bean="country.lbr"/>
+				<ref bean="country.lie"/>
+				<ref bean="country.lbn"/>
+				<ref bean="country.lux"/>
+				<ref bean="country.zaf"/>
+				<!--ref bean="country.sgs"/-->
+				<ref bean="country.lva"/>
+				<!--ref bean="country.esh"/-->
+				<ref bean="country.mdg"/>
+				<ref bean="country.nld"/>
+				<ref bean="country.mkd"/>
+				<ref bean="country.mys"/>
+				<ref bean="country.mwi"/>
+				<ref bean="country.mdv"/>
+				<ref bean="country.mli"/>
+				<ref bean="country.mlt"/>
+				<ref bean="country.mar"/>
+				<ref bean="country.mhl"/>
+				<ref bean="country.mtq"/>
+				<ref bean="country.mrt"/>
+				<ref bean="country.mus"/>
+				<ref bean="country.myt"/>
+				<ref bean="country.mex"/>
+				<ref bean="country.fsm"/>
+				<ref bean="country.mda"/>
+				<ref bean="country.mco"/>
+				<ref bean="country.mng"/>
+				<ref bean="country.msr"/>
+				<ref bean="country.moz"/>
+				<ref bean="country.xyy"/>
+				<ref bean="country.xxx"/>
+				<ref bean="country.mmr"/>
+				<ref bean="country.nam"/>
+				<ref bean="country.nru"/>
+				<ref bean="country.npl"/>
+				<ref bean="country.nic"/>
+				<ref bean="country.nga"/>
+				<ref bean="country.ner"/>
+				<ref bean="country.niu"/>
+				<ref bean="country.nfk"/>
+				<ref bean="country.nor"/>
+				<ref bean="country.omn"/>
+				<ref bean="country.png"/>
+				<ref bean="country.pak"/>
+				<!--ref bean="country.pse"/-->
+				<ref bean="country.pan"/>
+				<ref bean="country.pry"/>
+				<ref bean="country.per"/>
+				<ref bean="country.pcn"/>
+				<ref bean="country.pol"/>
+				<ref bean="country.prt"/>
+				<!--ref bean="country.atf"/>
+				<ref bean="country.pyf"/-->
+				<ref bean="country.fra"/>
+				<ref bean="country.pri"/>
+				<!--ref bean="country.mnp"/-->
+				<ref bean="country.vat"/>
+				<!--ref bean="country.reu"/-->
+				<ref bean="country.swe"/>
+				<ref bean="country.rom"/>
+				<ref bean="country.rwa"/>
+				<!--ref bean="country.slb"/-->
+				<ref bean="country.kna"/>
+				<!--ref bean="country.shn"/-->
+				<ref bean="country.lca"/>
+				<!--ref bean="country.spm"/-->
+				<ref bean="country.vct"/>
+				<ref bean="country.deu"/>
+				<!--ref bean="country.zmb"/-->
+				<!--ref bean="country.wsm"/-->
+				<ref bean="country.smr"/>
+				<ref bean="country.stp"/>
+				<ref bean="country.sau"/>
+				<ref bean="country.syc"/>
+				<ref bean="country.sen"/>
+				<!--ref bean="country.scg"/-->
+				<ref bean="country.sle"/>
+				<ref bean="country.sgp"/>
+				<ref bean="country.svk"/>
+				<ref bean="country.svn"/>
+				<ref bean="country.som"/>
+				<ref bean="country.fin"/>
+				<ref bean="country.lka"/>
+				<ref bean="country.sdn"/>
+				<ref bean="country.sur"/>
+				<!--ref bean="country.lby"/-->
+				<ref bean="country.gbr"/>
+				<!--ref bean="country.swz"/-->
+				<ref bean="country.sjm"/>
+				<ref bean="country.che"/>
+				<!--ref bean="country.syr"/>
+				<ref bean="country.zwe"/-->
+				<ref bean="country.dnk"/>
+				<ref bean="country.tjk"/>
+				<ref bean="country.tha"/>
+				<ref bean="country.twn"/>
+				<ref bean="country.tza"/>
+				<!--ref bean="country.tls"/-->
+				<ref bean="country.tgo"/>
+				<ref bean="country.tkl"/>
+				<ref bean="country.ton"/>
+				<ref bean="country.tto"/>
+				<!--ref bean="country.tcd"/-->
+				<ref bean="country.cze"/>
+				<ref bean="country.chl"/>
+				<ref bean="country.tun"/>
+				<ref bean="country.tca"/>
+				<ref bean="country.tuv"/>
+				<ref bean="country.tur"/>
+				<ref bean="country.tkm"/>
+				<ref bean="country.uga"/>
+				<ref bean="country.ukr"/>
+				<ref bean="country.hun"/>
+				<ref bean="country.ury"/>
+				<ref bean="country.uzb"/>
+				<!--ref bean="country.ncl"/-->
+				<ref bean="country.nzl"/>
+				<ref bean="country.blr"/>
+				<ref bean="country.vut"/>
+				<ref bean="country.rus"/>
+				<ref bean="country.ven"/>
+				<ref bean="country.vnm"/>
+				<ref bean="country.wlf"/>
+				<ref bean="country.vir"/>
+				<!--ref bean="country.umi"/-->
+			</list>
+		</property>
+	</bean>
+	<bean id="country.afg" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AF"/>
+		<property name="name" value="Afganistani  &#220;lemineku-Islamiriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.alb" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AL"/>
+		<property name="name" value="Albaania Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.dza" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="DZ"/>
+		<property name="name" value="Alžeeria Demokraatlik Rahvavabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.asm" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AS"/>
+		<property name="name" value="Ameerika Samoa (USA)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.usa" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="US"/>
+		<property name="name" value="Ameerika  &#220;hendriigid"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.and" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AD"/>
+		<property name="name" value="Andorra V&#252;rstiriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ago" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AO"/>
+		<property name="name" value="Angola Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.aia" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AI"/>
+		<property name="name" value="Anguilla (GBR)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ata" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AQ"/>
+		<property name="name" value="Antarktis"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.atg" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AG"/>
+		<property name="name" value="Antigua ja Barbuda"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.are" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AE"/>
+		<property name="name" value="Araabia &#220;hendemiraadid"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.arg" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AR"/>
+		<property name="name" value="Argentina Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.arm" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AM"/>
+		<property name="name" value="Armeenia Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.abw" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AW"/>
+		<property name="name" value="Aruba"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.aze" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AZ"/>
+		<property name="name" value="Aserbaidžaani Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.aus" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AU"/>
+		<property name="name" value="Austraalia"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.aut" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AT"/>
+		<property name="name" value="Austria Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bhs" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BS"/>
+		<property name="name" value="Bahama /#220;hendus"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bhr" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BH"/>
+		<property name="name" value="Bahraini Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bgd" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BD"/>
+		<property name="name" value="Bangladeshi Rahvavabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.brb" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BB"/>
+		<property name="name" value="Barbados"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bel" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BE"/>
+		<property name="name" value="Belgia Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.blz" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BZ"/>
+		<property name="name" value="Belize"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ben" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BJ"/>
+		<property name="name" value="Benini Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bmu" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BM"/>
+		<property name="name" value="Bermuda asumaa (GBR)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.btn" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BT"/>
+		<property name="name" value="Bhutani Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bol" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BO"/>
+		<property name="name" value="Boliivia Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bih" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BA"/>
+		<property name="name" value="Bosnia ja Hertsegoviina"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bwa" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BW"/>
+		<property name="name" value="Botswana Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bvt" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BV"/>
+		<property name="name" value="Bouvet' saar (Norra)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bra" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BR"/>
+		<property name="name" value="Brasiilia Liitvabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.iot" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="IO"/>
+		<property name="name" value="Briti India ookeani ala"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.brn" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BN"/>
+		<property name="name" value="Brunei Darussalami Riik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bgr" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BG"/>
+		<property name="name" value="Bulgaaria Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bfa" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BF"/>
+		<property name="name" value="Burkina Faso"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.bdi" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BI"/>
+		<property name="name" value="Burundi Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.kh" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="KH"/>
+		<property name="name" value="Cambodia"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.cm" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CM"/>
+		<property name="name" value="Camerun"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.cpv" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CV"/>
+		<property name="name" value="Cape Verde Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ky" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="KY"/>
+		<property name="name" value="Cayman Islands"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.col" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CO"/>
+		<property name="name" value="Colombia Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.cok" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CK"/>
+		<property name="name" value="Cooki saared"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.cri" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CR"/>
+		<property name="name" value="Costa Rica Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.civ" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CI"/>
+		<property name="name" value="Cote d'Ivoire Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.dji" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="DJ"/>
+		<property name="name" value="Djibouti Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.dma" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="DM"/>
+		<property name="name" value="Dominica &#220;hendus"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.dom" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="DO"/>
+		<property name="name" value="Dominikaani Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ecu" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="EC"/>
+		<property name="name" value="Ecuadori Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.est" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="EE"/>
+		<property name="name" value="Eesti Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.egy" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="EG"/>
+		<property name="name" value="Egiptuse Araabia Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.gnq" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GQ"/>
+		<property name="name" value="Ekvatoriaal-Guinea Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.slv" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SV"/>
+		<property name="name" value="El Salvadori Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.eri" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="ER"/>
+		<property name="name" value="Eritrea Riik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.eth" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="ET"/>
+		<property name="name" value="Etioopia Demokraatlik Liitvabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.flk" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="FK"/>
+		<property name="name"
+			value="Falklandi saared ja s&#245;ltkonnad (GBR, ARG)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.fji" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="FJ"/>
+		<property name="name" value="Fidži Saarte Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.phl" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="ph"/>
+		<property name="name" value="Filipiini Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.fro" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="FR"/>
+		<property name="name" value="F&#228;&#228;ri saared (DNK)"/>
+		<property name="active" value="true"/>
+	</bean-->
+	<bean id="country.gab" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GA"/>
+		<property name="name" value="Gaboni Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.gmb" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GM"/>
+		<property name="name" value="Gambia Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.gha" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GH"/>
+		<property name="name" value="Ghana Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.gib" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GI"/>
+		<property name="name" value="Gibraltar (GBR)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.grd" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GD"/>
+		<property name="name" value="Grenada"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.geo" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GE"/>
+		<property name="name" value="Gruusia"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.grl" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GL"/>
+		<property name="name" value="Gröönimaa (DNK)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.glp" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GP"/>
+		<property name="name"
+			value="Guadeloupe'i ja s&#245;ltkondade departemang (FRA)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.guf" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GY"/>
+		<property name="name" value="Guajaana departemang"/>
+	</bean-->
+	<bean id="country.gum" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GU"/>
+		<property name="name" value="Guami ala"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.gtm" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GT"/>
+		<property name="name" value="Guatemala Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.gin" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GN"/>
+		<property name="name" value="Guinea Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.gnb" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GW"/>
+		<property name="name" value="Guinea-Bissau Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.guy" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GY"/>
+		<property name="name" value="Guyana Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.hti" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="HT"/>
+		<property name="name" value="Haiti Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.hmd" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="HM"/>
+		<property name="name" value="Heardi ja McDonaldi saarte ala"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.mac" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="mac" />
+	<property name="name" value="Hiina erihalduspiirkond Aomen" />
+	</bean-->
+	<bean id="country.hkg" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="HK"/>
+		<property name="name" value="Hiina erihalduspiirkond Hongkong"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.chn" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CN"/>
+		<property name="name" value="Hiina Rahvavabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.esp" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="ES"/>
+		<property name="name" value="Hispaania Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ant" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="AN"/>
+		<property name="name" value="Hollandi Antillid"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.hnd" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="HN"/>
+		<property name="name" value="Hondurase Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.hrv" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="HR"/>
+		<property name="name" value="Horvaatia Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.irl" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="IE"/>
+		<property name="name" value="Iirimaa"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.isr" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="IL"/>
+		<property name="name" value="Iisraeli Riik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ind" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="IN"/>
+		<property name="name" value="India Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.idn" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="ID"/>
+		<property name="name" value="Indoneesia Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.irq" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="IQ"/>
+		<property name="name" value="Iraagi Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.irn" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="IR"/>
+		<property name="name" value="Iraani Islamivabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.isl" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="IS"/>
+		<property name="name" value="Islandi Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ita" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="IT"/>
+		<property name="name" value="Itaalia Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.jpn" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="JP"/>
+		<property name="name" value="Jaapan"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.jam" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="JM"/>
+		<property name="name" value="Jamaica"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.yem" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="JE"/>
+		<property name="name" value="Jeemeni Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.jor" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="JO"/>
+		<property name="name" value="Jordaania Hashimiidi Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.cxr" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="cxr" />
+	<property name="name" value="J&#245;ulusaar (AUS)" />
+	</bean>
+	<bean id="country.cym" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="cym" />
+	<property name="name" value="Kaimanisaared (GBR)" />
+	</bean>
+	<bean id="country.khm" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="khm" />
+	<property name="name" value="Kambodža Kuningriik" />
+	</bean>
+	<bean id="country.cmr" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="cmr" />
+	<property name="name" value="Kameruni Vabariik" />
+	<property name="active" value="true"/>
+	</bean-->
+	<bean id="country.can" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CA"/>
+		<property name="name" value="Kanada"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.kaz" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="KZ"/>
+		<property name="name" value="Kasahstani Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.qat" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="qat" />
+	<property name="name" value="Katari Riik" />
+	<property name="active" value="true"/>
+	</bean-->
+	<bean id="country.ken" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="KE"/>
+		<property name="name" value="Kenya Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.caf" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CF"/>
+		<property name="name" value="Kesk-Aafrika Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.kgz" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="KG"/>
+		<property name="name" value="Kirgiisi Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.kir" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="KI"/>
+		<property name="name" value="Kiribati Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.com" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="com" />
+	<property name="name" value="Komoori Liit" />
+	<property name="active" value="true"/>
+	</bean>
+	<bean id="country.cod" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="cod" />
+	<property name="name" value="Kongo Demokraatlik Vabariik" />
+	<property name="active" value="true"/>
+	</bean>
+	<bean id="country.cog" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="cog" />
+	<property name="name" value="Kongo Vabariik" />
+	<property name="active" value="true"/>
+	</bean>
+	<bean id="country.cck" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="cck" />
+	<property name="name" value="Kookossaarte ala (AUS)" />
+	<property name="active" value="true"/>
+	</bean-->
+	<bean id="country.prk" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="KP"/>
+		<property name="name" value="Korea Rahvademokraatlik Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.kor" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="KR"/>
+		<property name="name" value="Korea Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.grc" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GR"/>
+		<property name="name" value="Kreeka Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.cub" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CU"/>
+		<property name="name" value="Kuuba Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.kwt" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="KW"/>
+		<property name="name" value="Kuveidi Riik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.cyp" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CY"/>
+		<property name="name" value="K&#252;prose Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.lao" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="LA"/>
+		<property name="name" value="Laose Demokraatlik Rahvavabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ltu" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="LT"/>
+		<property name="name" value="Leedu Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.lso" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="LS"/>
+		<property name="name" value="Lesotho Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.lbr" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="LR"/>
+		<property name="name" value="Libeeria Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.lie" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="LI"/>
+		<property name="name" value="Liechtensteini Vyrstiriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.lbn" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="LB"/>
+		<property name="name" value="Liibanoni Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.lux" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="LU"/>
+		<property name="name" value="Luksemburgi Suurhertsogiriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.zaf" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="ZA"/>
+		<property name="name" value="L&#245;una-Aafrika Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.sgs" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="sgs" />
+	<property name="name" value="L&#245;una-Georgia ja L&#245;una-Sandwichi saared" />
+	</bean-->
+	<bean id="country.lva" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="LV"/>
+		<property name="name" value="L&#228;ti Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.esh" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="esh" />
+	<property name="name" value="L&#228;&#228;ne-Sahara" />
+	</bean-->
+	<bean id="country.mdg" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MG"/>
+		<property name="name" value="Madagaskari Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.nld" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="NL"/>
+		<property name="name" value="Madalmaade Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mkd" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MK"/>
+		<property name="name" value="Makedoonia Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mys" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MY"/>
+		<property name="name" value="Malaisia"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mwi" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MW"/>
+		<property name="name" value="Malawi Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mdv" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MV"/>
+		<property name="name" value="Maldiivi Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mli" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="ML"/>
+		<property name="name" value="Mali Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mlt" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MT"/>
+		<property name="name" value="Malta Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mar" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MA"/>
+		<property name="name" value="Maroko Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mhl" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MH"/>
+		<property name="name" value="Marshalli Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mtq" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MQ"/>
+		<property name="name" value="Martinique'i departemang (FRA)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mrt" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MR"/>
+		<property name="name" value="Mauritaania Islamivabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mus" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MU"/>
+		<property name="name" value="Mauritiuse Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.myt" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="YT"/>
+		<property name="name" value="Mayotte'i territoriaal&#252;hendus"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mex" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MX"/>
+		<property name="name" value="Mehhiko &#220;hendriigid"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.fsm" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="FM"/>
+		<property name="name" value="Mikroneesia Liiduriigid"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mda" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MD"/>
+		<property name="name" value="Moldova Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mco" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MC"/>
+		<property name="name" value="Monaco V&#252;rstiriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mng" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MN"/>
+		<property name="name" value="Mongoolia"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.msr" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MS"/>
+		<property name="name" value="Montserrati asumaa (GBR)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.moz" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MZ"/>
+		<property name="name" value="Mosambiigi Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.xyy" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="xyy"/>
+		<property name="name" value="Mujal nimetamata territooriumid"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.xxx" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="xxx"/>
+		<property name="name" value="M&#228;&#228;ramata"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.mmr" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="MM"/>
+		<property name="name" value="Myanmar'i Liit"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.nam" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="NA"/>
+		<property name="name" value="Namiibia Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.nru" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="NR"/>
+		<property name="name" value="Nauru Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.npl" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="NP"/>
+		<property name="name" value="Nepali Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.nic" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="NI"/>
+		<property name="name" value="Nicaragua Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.nga" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="NG"/>
+		<property name="name" value="Nigeeria Liitvabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ner" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="NE"/>
+		<property name="name" value="Nigeri Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.niu" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="NU"/>
+		<property name="name" value="Niue Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.nfk" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="NF"/>
+		<property name="name" value="Norfolki saare ala (AUS)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.nor" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="NO"/>
+		<property name="name" value="Norra Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.omn" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="OM"/>
+		<property name="name" value="Omaani Sultaniriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.png" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="PG"/>
+		<property name="name" value="Paapua Uus-Guinea Iseseisvusriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.pak" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="PK"/>
+		<property name="name" value="Pakistani Islamivabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.pse" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="" />
+	<property name="name" value="Palestiina omavalitsus" />
+	</bean-->
+	<bean id="country.pan" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="PA"/>
+		<property name="name" value="Panama Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.pry" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="PY"/>
+		<property name="name" value="Paraguay Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.per" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="PE"/>
+		<property name="name" value="Peruu Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.pcn" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="PN"/>
+		<property name="name" value="Pitcairn ja s&#245;ltkonnad (GBR)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.pol" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="PL"/>
+		<property name="name" value="Poola Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.prt" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="PT"/>
+		<property name="name" value="Portugali Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.atf" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="atf" />
+	<property name="name" value="Prantsuse Antarktilised ja L&#245;unaalad" />
+	</bean>
+	<bean id="country.pyf" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="pyf" />
+	<property name="name" value="Prantsuse Pol&#252;neesia ala" />
+	</bean-->
+	<bean id="country.fra" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="FR"/>
+		<property name="name" value="Prantsuse Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.pri" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="PR"/>
+		<property name="name" value="Puerto Rico &#220;hendus (USA)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.mnp" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="mnp" />
+	<property name="name" value="P&#245;hja-Mariaani &#220;hendus" />
+	</bean-->
+	<bean id="country.vat" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="VA"/>
+		<property name="name" value="P&#252;ha Tool (Vatikani Linnriik)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.reu" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="reu" />
+	<property name="name" value="Réunioni departemang (FRA)" />
+	</bean-->
+	<bean id="country.swe" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SE"/>
+		<property name="name" value="Rootsi Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.rom" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="RO"/>
+		<property name="name" value="Rumeenia"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.rwa" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="RW"/>
+		<property name="name" value="Rwanda Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.slb" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="slb" />
+	<property name="name" value="Saalomoni Saared" />
+	</bean-->
+	<bean id="country.kna" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="KN"/>
+		<property name="name" value="Saint Christopheri ja Nevise Föderatsioon"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.shn" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="shn" />
+	<property name="name" value="Saint Helena asumaa ja s&#245;ltkonnad (GBR)" />
+	</bean-->
+	<bean id="country.lca" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="LC"/>
+		<property name="name" value="Saint Lucia"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.spm" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="spm" />
+	<property name="name" value="Saint Pierre'i ja Miqueloni territoriaal&#252;hendus (FRA)" />
+	</bean-->
+	<bean id="country.vct" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="VC"/>
+		<property name="name" value="Saint Vincent ja Grenadiinid"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.deu" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="DE"/>
+		<property name="name" value="Saksamaa Liitvabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.zmb" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="zmb" />
+	<property name="name" value="Sambia Vabariik" />
+	</bean>
+	<bean id="country.wsm" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="wsm" />
+	<property name="name" value="Samoa Iseseisvusriik" />
+	</bean-->
+	<bean id="country.smr" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SM"/>
+		<property name="name" value="San Marino Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.stp" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="ST"/>
+		<property name="name" value="Sao Tomé ja Principe Demokraatlik Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.sau" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SA"/>
+		<property name="name" value="Saudi Araabia Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.syc" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SC"/>
+		<property name="name" value="Seishelli Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.sen" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SN"/>
+		<property name="name" value="Senegali Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.scg" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="scg" />
+	<property name="name" value="Serbia ja Montenegro" />
+	</bean-->
+	<bean id="country.sle" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SL"/>
+		<property name="name" value="Sierra Leone Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.sgp" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SG"/>
+		<property name="name" value="Singapuri Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.svk" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SK"/>
+		<property name="name" value="Slovaki Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.svn" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SI"/>
+		<property name="name" value="Sloveenia Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.som" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SO"/>
+		<property name="name" value="Somaalia Demokraatlik Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.fin" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="FI"/>
+		<property name="name" value="Soome Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.lka" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="LK"/>
+		<property name="name"
+			value="Sri Lanka Demokraatlik Sotsialistlik Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.sdn" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SD"/>
+		<property name="name" value="Sudaani Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.sur" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SR"/>
+		<property name="name" value="Suriname Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.lby" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="lby" />
+	<property name="name" value="Suur Liib&#252;a Araabia Sotsialistlik Rahvadžamahirija" />
+	</bean-->
+	<bean id="country.gbr" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="GB"/>
+		<property name="name"
+			value="Suurbritannia ja P&#245;hja-Iiri &#220;hendkuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.swz" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="swz" />
+	<property name="name" value="Svaasimaa Kuningriik" />
+	<property name="active" value="true"/>
+	</bean-->
+	<bean id="country.sjm" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="SJ"/>
+		<property name="name" value="Svalbard ja Jan Mayen (NOR)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.che" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CH"/>
+		<property name="name" value="Shveitsi Konföderatsioon"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.syr" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="syr" />
+	<property name="name" value="S&#252;&#252;ria Araabia Vabariik" />
+	</bean>
+	<bean id="country.zwe" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="zwe" />
+	<property name="name" value="Zimbabwe Vabariik" />
+	</bean-->
+	<bean id="country.dnk" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="DK"/>
+		<property name="name" value="Taani Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.tjk" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TJ"/>
+		<property name="name" value="Tadžikistani Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.tha" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TH"/>
+		<property name="name" value="Tai Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.twn" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TW"/>
+		<property name="name" value="Taiwan, Hiina provints (CHN)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.tza" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TZ"/>
+		<property name="name" value="Tansaania &#220;hendvabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.tls" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="tls" />
+	<property name="name" value="Timor-Leste Demokraatlik Vabariik" />
+	</bean-->
+	<bean id="country.tgo" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TG"/>
+		<property name="name" value="Togo Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.tkl" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TK"/>
+		<property name="name" value="Tokelau (NZL)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ton" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TO"/>
+		<property name="name" value="Tonga Kuningriik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.tto" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TT"/>
+		<property name="name" value="Trinidadi ja Tobago Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.tcd" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="tcd" />
+	<property name="name" value="Tshaadi Vabariik" />
+	</bean-->
+	<bean id="country.cze" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CZ"/>
+		<property name="name" value="Tshehhi Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.chl" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="CL"/>
+		<property name="name" value="Tshiili Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.tun" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TN"/>
+		<property name="name" value="Tuneesia Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.tca" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TC"/>
+		<property name="name" value="Turksi ja Caicose saarte asumaa (GBR)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.tuv" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TV"/>
+		<property name="name" value="Tuvalu"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.tur" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TR"/>
+		<property name="name" value="T&#252;rgi Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.tkm" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="TM"/>
+		<property name="name" value="T&#252;rkmenistan"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.uga" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="UG"/>
+		<property name="name" value="Uganda Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ukr" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="UA"/>
+		<property name="name" value="Ukraina"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.hun" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="HU"/>
+		<property name="name" value="Ungari Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ury" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="UY"/>
+		<property name="name" value="Uruguay Idavabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.uzb" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="UZ"/>
+		<property name="name" value="Usbekistani Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.ncl" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="ncl" />
+	<property name="name" value="Uus-Kaledoonia ja s&#245;ltkondade ala (FRA)" />
+	</bean-->
+	<bean id="country.nzl" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="NZ"/>
+		<property name="name" value="Uus-Meremaa"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.blr" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="BY"/>
+		<property name="name" value="Valgevene Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.vut" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="VU"/>
+		<property name="name" value="Vanuatu Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.rus" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="RU"/>
+		<property name="name" value="Venemaa Föderatsioon"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.ven" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="VE"/>
+		<property name="name" value="Venezuela Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.vnm" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="VN"/>
+		<property name="name" value="Vietnami Sotsialistlik Vabariik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.wlf" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="WF"/>
+		<property name="name" value="Wallise ja Futuna ala (FRA)"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="country.vir" class="ee.agri.alkor.model.classes.Country">
+		<property name="categoryName" value="Riik"/>
+		<property name="code" value="VI"/>
+		<property name="name" value="&#220;hendriikide Neitsisaared"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!--bean id="country.umi" class="ee.agri.alkor.model.classes.Country">
+	<property name="categoryName" value="Riik" />
+	<property name="code" value="umi" />
+	<property name="name" value="&#220;hendriikide v&#228;ikesed hajasaared" />
+	</bean-->
+
+	<!-- Dokumentide liigid -->
+	<bean id="docTypes" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="publicDoc"/>
+				<ref bean="applicationDoc"/>
+				<ref bean="decisionDoc"/>
+				<ref bean="declineDoc"/>
+				<ref bean="correctionDoc"/>
+				<ref bean="arpDoc"/>
+				<ref bean="arfDoc"/>
+				<ref bean="extendDecisionDoc"/>
+				<ref bean="extendDeclineDoc"/>
+				<ref bean="extendCorrectionDoc"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="publicDoc" class="ee.agri.alkor.model.classes.DocumentType">
+		<property name="categoryName" value="Dokumendi liik"/>
+		<property name="code" value="PUB"/>
+		<property name="name" value="Avalik dokument"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="applicationDoc" class="ee.agri.alkor.model.classes.DocumentType">
+		<property name="code" value="ARE"/>
+		<property name="name" value="Taotlus registrisse kandmiseks"/>
+		<property name="systemClass" value="true"/>
+		<property name="categoryName" value="Dokumendi liik"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="decisionDoc" class="ee.agri.alkor.model.classes.DocumentType">
+		<property name="categoryName" value="Dokumendi liik"/>
+		<property name="code" value="DEC"/>
+		<property name="name" value="Otsus"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="extendDecisionDoc" class="ee.agri.alkor.model.classes.DocumentType">
+		<property name="categoryName" value="Dokumendi liik"/>
+		<property name="code" value="EX_DEC"/>
+		<property name="name" value="Pikendamise otsus"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="declineDoc" class="ee.agri.alkor.model.classes.DocumentType">
+		<property name="categoryName" value="Dokumendi liik"/>
+		<property name="code" value="NDEC"/>
+		<property name="name" value="&#196;rakiri"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="extendDeclineDoc" class="ee.agri.alkor.model.classes.DocumentType">
+		<property name="categoryName" value="Dokumendi liik"/>
+		<property name="code" value="EX_NDEC"/>
+		<property name="name" value="Pikendamise &#196;rakiri"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="correctionDoc" class="ee.agri.alkor.model.classes.DocumentType">
+		<property name="categoryName" value="Dokumendi liik"/>
+		<property name="code" value="COR"/>
+		<property name="name" value="&#213;iend"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="extendCorrectionDoc" class="ee.agri.alkor.model.classes.DocumentType">
+		<property name="categoryName" value="Dokumendi liik"/>
+		<property name="code" value="EX_COR"/>
+		<property name="name" value="Pikendamise &#213;iend"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="arpDoc" class="ee.agri.alkor.model.classes.DocumentType">
+		<property name="categoryName" value="Dokumendi liik"/>
+		<property name="code" value="ARP"/>
+		<property name="name" value="Taotlus registrikande pikendamiseks"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="arfDoc" class="ee.agri.alkor.model.classes.DocumentType">
+		<property name="categoryName" value="Dokumendi liik"/>
+		<property name="code" value="ARF"/>
+		<property name="name" value="Taotlus registrikande l&#245;petamiseks"/>
+		<property name="systemClass" value="true"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Riigiloivu m&#228;&#228;rad-->
+	<bean id="taxAmounts" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="regentryTax"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="regentryTax" class="ee.agri.alkor.model.classes.RegistryTax">
+		<property name="categoryName" value="Riigil&#245;ivu m&#228;&#228;r"/>
+		<property name="code" value="RGE"/>
+		<property name="name" value="Registri kande riigil&#245;iv"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<!-- Dokumentide keeled-->
+	<bean id="languages" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="lang.et"/>
+				<ref bean="lang.en"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="lang.et" class="ee.agri.alkor.model.classes.Language">
+		<property name="categoryName" value="Dokumendi keel"/>
+		<property name="code" value="ET"/>
+		<property name="name" value="Eesti"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="lang.en" class="ee.agri.alkor.model.classes.Language">
+		<property name="categoryName" value="Dokumendi keel"/>
+		<property name="code" value="EN"/>
+		<property name="name" value="Inglise"/>
+		<property name="active" value="true"/>
+	</bean>
+	<!-- Autentimise viisid-->
+	<bean id="authTypes" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="authtType.form"/>
+				<ref bean="authtType.cert"/>
+			</list>
+		</property>
+	</bean>
+	<bean id="authtType.form"
+		class="ee.agri.alkor.model.classes.AuthenticationType">
+		<property name="categoryName" value="Autentimise viis"/>
+		<property name="code" value="FORM"/>
+		<property name="name" value="Kasutajanimi ja parool"/>
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="authtType.cert"
+		class="ee.agri.alkor.model.classes.AuthenticationType">
+		<property name="categoryName" value="Autentimise viis"/>
+		<property name="code" value="CLIENT_CERT"/>
+		<property name="name" value="ID kaart"/>
+		<property name="active" value="true"/>
+	</bean>
+
+	<bean id="months" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="month.jan" />
+				<ref bean="month.feb" />
+				<ref bean="month.mar" />
+				<ref bean="month.apr" />
+				<ref bean="month.may" />
+				<ref bean="month.jun" />
+				<ref bean="month.jul" />
+				<ref bean="month.aug" />
+				<ref bean="month.sep" />
+				<ref bean="month.oct" />
+				<ref bean="month.nov" />
+				<ref bean="month.dec" />
+			</list>
+		</property>
+	</bean>
+	<bean id="month.jan" class="ee.agri.alkor.model.classes.Month">
+		<property name="categoryName" value="Kuu" />
+		<property name="code" value="1" />
+		<property name="name" value="Jaanuar" />
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="month.feb" class="ee.agri.alkor.model.classes.Month">
+		<property name="categoryName" value="Kuu" />
+		<property name="code" value="2" />
+		<property name="name" value="Veebruar" />
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="month.mar" class="ee.agri.alkor.model.classes.Month">
+		<property name="categoryName" value="Kuu" />
+		<property name="code" value="3" />
+		<property name="name" value="Märts" />
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="month.apr" class="ee.agri.alkor.model.classes.Month">
+		<property name="categoryName" value="Kuu" />
+		<property name="code" value="4" />
+		<property name="name" value="Aprill" />
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="month.may" class="ee.agri.alkor.model.classes.Month">
+		<property name="categoryName" value="Kuu" />
+		<property name="code" value="5" />
+		<property name="name" value="Mai" />
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="month.jun" class="ee.agri.alkor.model.classes.Month">
+		<property name="categoryName" value="Kuu" />
+		<property name="code" value="6" />
+		<property name="name" value="Juuni" />
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="month.jul" class="ee.agri.alkor.model.classes.Month">
+		<property name="categoryName" value="Kuu" />
+		<property name="code" value="7" />
+		<property name="name" value="Juuli" />
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="month.aug" class="ee.agri.alkor.model.classes.Month">
+		<property name="categoryName" value="Kuu" />
+		<property name="code" value="8" />
+		<property name="name" value="August" />
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="month.sep" class="ee.agri.alkor.model.classes.Month">
+		<property name="categoryName" value="Kuu" />
+		<property name="code" value="9" />
+		<property name="name" value="September" />
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="month.oct" class="ee.agri.alkor.model.classes.Month">
+		<property name="categoryName" value="Kuu" />
+		<property name="code" value="10" />
+		<property name="name" value="Oktoober" />
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="month.nov" class="ee.agri.alkor.model.classes.Month">
+		<property name="categoryName" value="Kuu" />
+		<property name="code" value="11" />
+		<property name="name" value="November" />
+		<property name="active" value="true"/>
+	</bean>
+	<bean id="month.dec" class="ee.agri.alkor.model.classes.Month">
+		<property name="categoryName" value="Kuu" />
+		<property name="code" value="12" />
+		<property name="name" value="Detsember" />
+		<property name="active" value="true"/>
+	</bean>
+</beans>

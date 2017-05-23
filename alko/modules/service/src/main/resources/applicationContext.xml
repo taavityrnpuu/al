@@ -1,0 +1,173 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+
+	<bean id="mySessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+		scope="singleton">
+		<property name="dataSource" ref="myDataSource" />
+		<property name="configLocation"
+			value="classpath:hibernate.cfg.xml" />
+	</bean>
+
+	
+
+	<bean id="jndiSessionFactory"
+		class="org.springframework.jndi.JndiObjectFactoryBean"
+		depends-on="mySessionFactory">
+		<property name="jndiName" value="java:alkorHS" />
+	</bean>
+
+
+	<bean id="registryServiceDelegate"
+		class="ee.agri.alkor.service.RegistryServiceDelegate">
+		<property name="service" ref="myRegistryServiceDao" />
+	</bean>
+
+	<bean id="myRegistryServiceDao"
+		class="ee.agri.alkor.impl.RegistryServiceImpl">
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="docRoot" value="@docRoot@" />
+		<property name="applicationNrBase" value="30000" />
+		<property name="pdfCreator" ref="pdfCreator" />
+	</bean>
+
+	<bean id="pdfCreator" class="ee.agri.alkor.impl.PDFCreator">
+		<property name="defaultFont" value="Helvetica" />
+		<property name="defaultDateFormat" value="dd.MM.yyyy" />
+		<property name="logoUrl"
+			value="http://localhost:8080/pub/newLogo.gif" />
+		<property name="contactInfo">
+			<props>
+				<prop key="regnr">10433711</prop>
+				<prop key="phone">6684221</prop>
+				<prop key="fax">6684229</prop>
+				<prop key="email">areto@areto.ee</prop>
+				<prop key="address">10111 Tallinn, Mere pst. 8a</prop>
+				<prop key="url">http://www.areto.ee</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<bean id="classServiceDelegate"
+		class="ee.agri.alkor.service.ClassificatorServiceDelegate">
+		<property name="service" ref="myClassificatorServiceDao" />
+	</bean>
+
+	<bean id="myClassificatorServiceDao"
+		class="ee.agri.alkor.impl.ClassificatorServiceImpl">
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+	</bean>
+
+	<bean id="userServiceDelegate"
+		class="ee.agri.alkor.service.UserManagerServiceDelegate">
+		<property name="service" ref="myUserServiceDao" />
+	</bean>
+
+	<bean id="myUserServiceDao"
+		class="ee.agri.alkor.impl.UserManagerServiceImpl">
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+	</bean>
+
+	<bean id="userDetailsServiceDao"
+		class="ee.agri.alkor.impl.AuthenticationServiceImpl">
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+	</bean>
+
+	<bean id="velocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<value>
+				resource.loader=class
+				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+			</value>
+		</property>
+	</bean>
+
+
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="relay.agri.ee" />
+		<property name="port" value="25" />
+		<property name="username" value="alkoholi.register" />
+		<property name="password" value="ai03rr09" />
+	</bean>
+
+	<bean id="notificationJobs"
+		class="ee.agri.alkor.impl.EmailNotificationJobs">
+		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
+		<property name="mode" value="@mode@" />
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="mailSender" ref="mailSender" />
+		<property name="velocityEngine" ref="velocityEngine" />
+	</bean>
+	
+	<bean id="ExpiredRegEntryJobs"
+		class="ee.agri.alkor.impl.ExpiredRegEntryJobs">
+		<property name="changeReason" value="Registrikanne on aegunud" />
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+	</bean>
+
+	<bean id="regEntryExpireNotificationJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="notificationJobs" />
+		<property name="targetMethod"
+			value="sendRegistryEntryExpireNotifications" />
+	</bean>
+	
+	<bean id="regEntryExpiredProcessJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="ExpiredRegEntryJobs" />
+		<property name="targetMethod"
+			value="processExpiredRegEntries" />
+	</bean>
+
+	<bean id="cronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="regEntryExpireNotificationJob" />
+		<!-- run every morning at 6 AM -->
+		<property name="cronExpression" value="0 0 6 * * ?" />
+		<!-- for testing purposes - send notifications every minute -->
+		<!-- <property name="cronExpression" value="0 * * * * ?" />-->
+	</bean>
+	
+	<bean id="cronTrigger2"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="regEntryExpiredProcessJob" />
+		<!-- run every morning at 3 AM -->
+		<property name="cronExpression" value="0 0 3 * * ?" />
+		<!-- for testing purposes - send notifications every 3 minutes -->
+		<!--  <property name="cronExpression" value="3 * * * * ?" />-->
+	</bean>
+
+	<bean
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+				<ref bean="cronTrigger2" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="myDataSource"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:alkorDS" />
+	</bean>
+
+	<bean id="myTxManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+	</bean>
+
+	<tx:annotation-driven transaction-manager="myTxManager" />
+
+</beans>

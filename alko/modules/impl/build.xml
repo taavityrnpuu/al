@@ -1,0 +1,211 @@
+<project basedir="." default="help" name="Alkor impl build">
+
+	<!-- seadistuste import -->
+	<property file="../../build.properties" />
+
+	<!-- projekti juurkaust -->
+	<property name="root.dir" location="${basedir}/../../" />
+
+	<!-- projektis vajaminevate teekide kaust -->
+	<property name="lib.dir" location="${root.dir}/lib" />
+
+	<!-- lähtematerjalide asukohad -->
+	<property name="src.dir" location="${basedir}/src/main/java" />
+	<property name="res.dir" location="${basedir}/src/main/resources" />
+	<property name="sql.dir" location="${basedir}/src/main/sql" />
+	<property name="test.src.dir" location="${basedir}/src/test" />
+	<property name="test.res.dir" location="${basedir}/src/test/resources" />
+	<property name="test.dir" location="${basedir}/test" />
+
+	<!-- väljundkaustade asukohad -->
+	<property name="build.dir" location="${root.dir}/build" />
+	<property name="jar.dir" location="${build.dir}/lib" />
+	<property name="classes.dir" location="${build.dir}/modules/impl" /> <!-- <<<<<<<< -->
+
+	<!-- väljundpaki asukoht koos nimega -->
+	<property name="package.file" location="${jar.dir}/alkor-impl.jar" />
+
+	<path id="dependency.path">
+	  <fileset dir="${jar.dir}">
+	    <include name="*.jar"/>
+	  </fileset>
+	  <fileset dir="${lib.dir}">
+	    <include name="*.jar"/>
+	  </fileset>
+	  <pathelement path="${build.dir}"/>
+	</path>
+
+	<target name="help" description="Kuvab abiinfot kasutamise kohta.">
+		<echo level="info">
+            help - kuvab abiinfo (see sama)
+            compile - kompileerib java failid class failideks
+            jar - teeb kompileeritud failidest jar paki
+            clean - kustutab selle build failiga tekitatud kompileeritud failide kausta (${classes.dir}) ja jar-faili (${package.file}), kui nad eksisteerivad
+						create_db - teeb properties failis olevasse andmebaasi tabelid jms valmis
+						schemaexport - ekspordib?
+						test - service klasside testide jooksutamine
+			
+			root.dir: ${root.dir}
+			lib.dir: ${lib.dir}
+			src.dir: ${src.dir}
+			res.dir: ${res.dir}
+			sql.dir: ${sql.dir}
+			test.src.dir: ${test.src.dir}
+			test.res.dir: ${test.res.dir}
+			test.dir: ${test.dir}
+
+			build.dir: ${build.dir}
+			jar.dir: ${jar.dir}
+			classes.dir: ${classes.dir}
+		</echo>
+	</target>
+
+    <target name="compile" depends="">
+		<echo level="info">mode: ${mode}</echo> <!-- lihtsalt kontrolliks -->
+    	<mkdir dir="${build.dir}" />
+    	<mkdir dir="${classes.dir}/" />
+        <javac debug="on"
+        	deprecation="off" destdir="${classes.dir}"
+        	includes="ee/**/*.java" optimize="off"
+        	srcdir="${src.dir}">
+        	<classpath>
+        		<fileset dir="${jar.dir}" includes="*.jar" />
+        		<fileset dir="${lib.dir}" includes="*.jar" />
+        	</classpath>
+		</javac>
+    </target>
+
+    <target name="jar" depends="compile">
+        <filter filtersfile="../../build.properties" />
+        <copy todir="${classes.dir}" filtering="true">
+            <fileset dir="${res.dir}">
+                <include name="hibernate.cfg.xml" />
+                <include name="applicationContext.xml" />
+                <include name="ARE.xml" />
+                <include name="DEC.xml" />
+                <include name="COR.xml" />
+                <include name="LOGO.xml" />
+            	<include name="logo2.xml" />
+            	<include name="logo3.xml" />
+            	<include name="NDEC.xml"/>
+            	<include name="EX_DEC.xml" />
+            	<include name="EX_COR.xml" />
+            	<include name="EX_NDEC.xml" />
+            	<include name="ehcache.xml"/>
+                <include name="*.vm" />
+            </fileset>
+        </copy>
+    	<jar basedir="${classes.dir}" destfile="${package.file}"></jar>
+    </target>
+
+	<target name="schemaexport" depends="compile">
+	<taskdef name="hibernatetool"
+         classname="org.hibernate.tool.ant.HibernateToolTask"
+         classpathref="dependency.path" />
+        <filter filtersfile="../../build.properties" />
+		<copy todir="${build.dir}"  filtering="true">
+			<fileset dir="${res.dir}">
+				<include name="hibernate.cfg.xml" />
+				<include name="log4j.xml" />
+			</fileset>
+		</copy>
+	<hibernatetool destdir="${sql.dir}">
+	 <annotationconfiguration
+	  configurationfile="${build.dir}/hibernate.cfg.xml"/>
+		 <classpath>
+          	<path location="${build.dir}" />
+          	<path location="${classes.dir}" />
+          	<path refid="dependency.path" />
+		 	<!--fileset refid="test.dependency.fileset" /-->
+		 </classpath>
+		 <!-- list exporters here -->
+		 <hbm2ddl export="false"  drop="false" format="true" outputfilename="schema-${db.vendor}.sql"/>
+		</hibernatetool>
+     </target>
+
+	<target name="create_db" depends="jar">
+		<sql driver="${db.driver}" onerror="continue" password="${db.password}" url="${db.url}" userid="${db.user}"  classpathref="dependency.path" encoding="utf8">
+			<transaction src="${sql.dir}/schema-${db.vendor}.sql"/>
+		</sql>
+		<sql driver="${db.driver}" onerror="continue" password="${db.password}" url="${db.url}" userid="${db.user}"  classpathref="dependency.path" encoding="utf8">
+			<transaction src="${sql.dir}/decision_seq.sql"/>
+		</sql>
+		
+		
+		<sql driver="${db.driver}" onerror="continue" password="${db.password}" url="${db.url}" userid="${db.user}"  classpathref="dependency.path" encoding="utf8">
+					<transaction src="${sql.dir}/alkor_index_creation.sql"/>
+				</sql>
+   		<mkdir dir="${test.dir}/target" />
+	   	<filter filtersfile="../../build.properties"/>
+		<copy todir="${test.dir}/target"  filtering="true">
+			<fileset dir="${res.dir}">
+				<include name="classes.xml" />
+				<include name="users.xml" />
+			</fileset>
+			<fileset dir="${test.res.dir}">
+				<include name="log4j.xml" />
+				<include name="hibernate.cfg.xml" />
+				<include name="applicationContext.xml" />
+			</fileset>
+		</copy>
+		<java classname="ee.agri.alkor.impl.AppSetup" fork="yes" dir="${test.dir}/target">
+            <classpath>
+                <path location="${test.dir}/target" />
+                <path refid="dependency.path" />
+                <pathelement location="${build.dir}/${project.artifactId}-${project.version}.jar" />
+            </classpath>
+		</java>
+		<sql driver="${db.driver}" onerror="continue" password="${db.password}" url="${db.url}" userid="${db.user}"  classpathref="dependency.path" encoding="utf8">
+		            <transaction src="${sql.dir}/uuendus.sql"/>
+		</sql>
+		<sql driver="${db.driver}" onerror="continue" password="${db.password}" url="${db.url}" userid="${db.user}"  classpathref="dependency.path" encoding="utf8">
+		                    <transaction src="${sql.dir}/searchview.sql"/>
+		</sql>
+    </target>
+		
+    <target name="test" depends="jar" description="Run the local test suite">
+    	<mkdir dir="${test.dir}/target" />
+    	<echo level="info">${jar.dir}</echo>
+        <javac classpathref="dependency.path" debug="on"
+        	deprecation="on" destdir="${test.dir}/target"
+        	includes="test/*Test.java" optimize="off"
+        	srcdir="${test.src.dir}/java" />
+    	<filter filtersfile="../../build.properties"/>
+		<copy todir="${test.dir}/target"  filtering="true">
+			<fileset dir="${res.dir}">
+				<include name="classes.xml" />
+				<include name="users.xml" />
+			</fileset>
+			<fileset dir="${test.res.dir}">
+				<include name="log4j.xml" />
+				<include name="hibernate.cfg.xml" />
+				<include name="applicationContext.xml" />
+			</fileset>
+		</copy>
+
+         <junit printsummary="yes" showoutput="true"  fork="yes" haltonfailure="yes" dir="${test.dir}/target">
+            <classpath>
+                <pathelement path="${test.dir}/target" />
+                <path refid="dependency.path" />
+                <!--pathelement location="${build.dir}/alkor-impl.jar" /-->
+            </classpath>
+         		<formatter usefile="false" type="brief"/>
+            <!--formatter type="plain" /-->
+            <!--formatter type="xml"/-->
+            <batchtest fork="yes" todir="${test.dir}/target" haltonfailure="no">
+                <fileset dir="${test.dir}/target">
+                    <!--include name="test/Class*Test.class" /-->
+                    <!--include name="test/User*Test.class" /-->
+                  <include name="test/Registry*Test.class" />
+               </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+	<target name="clean" depends="">
+		<delete dir="${classes.dir}" />
+    	<delete dir="${test.dir}" />
+	    <delete file="${package.file}" />
+	</target>
+
+</project>

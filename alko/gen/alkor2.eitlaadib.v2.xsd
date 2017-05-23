@@ -1,0 +1,114 @@
+<pseudoroot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
+
+	<!-- EITLAADIB PARING -->
+	<xsd:element name="eitlaadib">
+		<xsd:complexType>
+            <xsd:sequence>
+               <!--
+                  <xsd:element name="aruandja" type="tns:aruandja">
+                  <xsd:annotation>
+                  <xsd:appinfo>
+                  <xrd:title>Aru andva firma andmed</xrd:title>
+                  </xsd:appinfo>
+                  </xsd:annotation>
+                  </xsd:element>
+               -->
+               <xsd:element name="period" type="tns:aruandeperioodReq">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aruandeperiood</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="aruanne" minOccurs="0"
+                  type="xsd:base64Binary">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Alkoholi liikumise aruanne CSV-kujul failina
+                        </xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>	
+	</xsd:element>
+	
+
+		<xsd:complexType name="aruandeperioodReq">
+            <xsd:annotation>
+               <xsd:appinfo>
+                  <xrd:title>Aruandeperiood</xrd:title>
+               </xsd:appinfo>
+            </xsd:annotation>
+            <xsd:sequence>
+			   <!-- Defineeritud üleval -->
+               <xsd:element name="rep_year" minOccurs="0"
+                  type="tns:kalendriaasta">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aasta *</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+			   <!-- Defineeritud üleval -->
+               <xsd:element name="rep_month" minOccurs="0"
+                  type="tns:kalendrikuu">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Kuu *</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+
+	<!-- EITLAADIB PARING LOPP -->
+	
+	<!-- EITLAADIB PARINGU VASTUS -->
+	<xsd:element name="eitlaadibResponse">
+		<xsd:complexType>
+            <xsd:sequence>
+               <xsd:element name="teade" type="xsd:string" />
+               <xsd:element name="vead" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:complexContent>
+                        <xsd:restriction base="SOAP-ENC:Array">
+                           <xsd:sequence>
+                              <xsd:element name="reaviga" minOccurs="0"
+                                 maxOccurs="unbounded"
+                                 type="tns:reaviga" />
+                           </xsd:sequence>
+                        </xsd:restriction>
+                     </xsd:complexContent>
+                  </xsd:complexType>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+	</xsd:element>
+	
+	
+		<xsd:complexType name="reaviga">
+            <xsd:sequence>
+               <xsd:element name="rida" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Rea nr</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="mure" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Viga</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+	
+	<!-- EITLAADIB PARINGU VASTUS LOPP -->
+		
+</pseudoroot>

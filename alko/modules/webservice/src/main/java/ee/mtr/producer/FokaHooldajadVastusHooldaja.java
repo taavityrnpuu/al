@@ -1,0 +1,254 @@
+/**
+ * FokaHooldajadVastusHooldaja.java
+ *
+ * This file was auto-generated from WSDL
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
+ */
+
+package ee.x_road.mtr.producer;
+
+public class FokaHooldajadVastusHooldaja  implements java.io.Serializable {
+    private java.lang.String nimi;
+
+    private java.lang.String ikood;
+
+    private java.lang.String dok_nr;
+
+    private java.util.Date kehtivuse_algus_kpv;
+
+    private java.util.Date kehtivuse_lopp_kpv;
+
+    private java.lang.String dok_valjastaja_riik;
+
+    private java.lang.String dok_valjastaja_asutus;
+
+    public FokaHooldajadVastusHooldaja() {
+    }
+
+    public FokaHooldajadVastusHooldaja(
+           java.lang.String nimi,
+           java.lang.String ikood,
+           java.lang.String dok_nr,
+           java.util.Date kehtivuse_algus_kpv,
+           java.util.Date kehtivuse_lopp_kpv,
+           java.lang.String dok_valjastaja_riik,
+           java.lang.String dok_valjastaja_asutus) {
+           this.nimi = nimi;
+           this.ikood = ikood;
+           this.dok_nr = dok_nr;
+           this.kehtivuse_algus_kpv = kehtivuse_algus_kpv;
+           this.kehtivuse_lopp_kpv = kehtivuse_lopp_kpv;
+           this.dok_valjastaja_riik = dok_valjastaja_riik;
+           this.dok_valjastaja_asutus = dok_valjastaja_asutus;
+    }
+
+
+    /**
+     * Gets the nimi value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @return nimi
+     */
+    public java.lang.String getNimi() {
+        return nimi;
+    }
+
+
+    /**
+     * Sets the nimi value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @param nimi
+     */
+    public void setNimi(java.lang.String nimi) {
+        this.nimi = nimi;
+    }
+
+
+    /**
+     * Gets the ikood value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @return ikood
+     */
+    public java.lang.String getIkood() {
+        return ikood;
+    }
+
+
+    /**
+     * Sets the ikood value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @param ikood
+     */
+    public void setIkood(java.lang.String ikood) {
+        this.ikood = ikood;
+    }
+
+
+    /**
+     * Gets the dok_nr value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @return dok_nr
+     */
+    public java.lang.String getDok_nr() {
+        return dok_nr;
+    }
+
+
+    /**
+     * Sets the dok_nr value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @param dok_nr
+     */
+    public void setDok_nr(java.lang.String dok_nr) {
+        this.dok_nr = dok_nr;
+    }
+
+
+    /**
+     * Gets the kehtivuse_algus_kpv value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @return kehtivuse_algus_kpv
+     */
+    public java.util.Date getKehtivuse_algus_kpv() {
+        return kehtivuse_algus_kpv;
+    }
+
+
+    /**
+     * Sets the kehtivuse_algus_kpv value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @param kehtivuse_algus_kpv
+     */
+    public void setKehtivuse_algus_kpv(java.util.Date kehtivuse_algus_kpv) {
+        this.kehtivuse_algus_kpv = kehtivuse_algus_kpv;
+    }
+
+
+    /**
+     * Gets the kehtivuse_lopp_kpv value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @return kehtivuse_lopp_kpv
+     */
+    public java.util.Date getKehtivuse_lopp_kpv() {
+        return kehtivuse_lopp_kpv;
+    }
+
+
+    /**
+     * Sets the kehtivuse_lopp_kpv value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @param kehtivuse_lopp_kpv
+     */
+    public void setKehtivuse_lopp_kpv(java.util.Date kehtivuse_lopp_kpv) {
+        this.kehtivuse_lopp_kpv = kehtivuse_lopp_kpv;
+    }
+
+
+    /**
+     * Gets the dok_valjastaja_riik value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @return dok_valjastaja_riik
+     */
+    public java.lang.String getDok_valjastaja_riik() {
+        return dok_valjastaja_riik;
+    }
+
+
+    /**
+     * Sets the dok_valjastaja_riik value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @param dok_valjastaja_riik
+     */
+    public void setDok_valjastaja_riik(java.lang.String dok_valjastaja_riik) {
+        this.dok_valjastaja_riik = dok_valjastaja_riik;
+    }
+
+
+    /**
+     * Gets the dok_valjastaja_asutus value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @return dok_valjastaja_asutus
+     */
+    public java.lang.String getDok_valjastaja_asutus() {
+        return dok_valjastaja_asutus;
+    }
+
+
+    /**
+     * Sets the dok_valjastaja_asutus value for this FokaHooldajadVastusHooldaja.
+     * 
+     * @param dok_valjastaja_asutus
+     */
+    public void setDok_valjastaja_asutus(java.lang.String dok_valjastaja_asutus) {
+        this.dok_valjastaja_asutus = dok_valjastaja_asutus;
+    }
+
+    private java.lang.Object __equalsCalc = null;
+    public synchronized boolean equals(java.lang.Object obj) {
+        if (!(obj instanceof FokaHooldajadVastusHooldaja)) return false;
+        FokaHooldajadVastusHooldaja other = (FokaHooldajadVastusHooldaja) obj;
+        if (obj == null) return false;
+        if (this == obj) return true;
+        if (__equalsCalc != null) {
+            return (__equalsCalc == obj);
+        }
+        __equalsCalc = obj;
+        boolean _equals;
+        _equals = true && 
+            ((this.nimi==null && other.getNimi()==null) || 
+             (this.nimi!=null &&
+              this.nimi.equals(other.getNimi()))) &&
+            ((this.ikood==null && other.getIkood()==null) || 
+             (this.ikood!=null &&
+              this.ikood.equals(other.getIkood()))) &&
+            ((this.dok_nr==null && other.getDok_nr()==null) || 
+             (this.dok_nr!=null &&
+              this.dok_nr.equals(other.getDok_nr()))) &&
+            ((this.kehtivuse_algus_kpv==null && other.getKehtivuse_algus_kpv()==null) || 
+             (this.kehtivuse_algus_kpv!=null &&
+              this.kehtivuse_algus_kpv.equals(other.getKehtivuse_algus_kpv()))) &&
+            ((this.kehtivuse_lopp_kpv==null && other.getKehtivuse_lopp_kpv()==null) || 
+             (this.kehtivuse_lopp_kpv!=null &&
+              this.kehtivuse_lopp_kpv.equals(other.getKehtivuse_lopp_kpv()))) &&
+            ((this.dok_valjastaja_riik==null && other.getDok_valjastaja_riik()==null) || 
+             (this.dok_valjastaja_riik!=null &&
+              this.dok_valjastaja_riik.equals(other.getDok_valjastaja_riik()))) &&
+            ((this.dok_valjastaja_asutus==null && other.getDok_valjastaja_asutus()==null) || 
+             (this.dok_valjastaja_asutus!=null &&
+              this.dok_valjastaja_asutus.equals(other.getDok_valjastaja_asutus())));
+        __equalsCalc = null;
+        return _equals;
+    }
+
+    private boolean __hashCodeCalc = false;
+    public synchronized int hashCode() {
+        if (__hashCodeCalc) {
+            return 0;
+        }
+        __hashCodeCalc = true;
+        int _hashCode = 1;
+        if (getNimi() != null) {
+            _hashCode += getNimi().hashCode();
+        }
+        if (getIkood() != null) {
+            _hashCode += getIkood().hashCode();
+        }
+        if (getDok_nr() != null) {
+            _hashCode += getDok_nr().hashCode();
+        }
+        if (getKehtivuse_algus_kpv() != null) {
+            _hashCode += getKehtivuse_algus_kpv().hashCode();
+        }
+        if (getKehtivuse_lopp_kpv() != null) {
+            _hashCode += getKehtivuse_lopp_kpv().hashCode();
+        }
+        if (getDok_valjastaja_riik() != null) {
+            _hashCode += getDok_valjastaja_riik().hashCode();
+        }
+        if (getDok_valjastaja_asutus() != null) {
+            _hashCode += getDok_valjastaja_asutus().hashCode();
+        }
+        __hashCodeCalc = false;
+        return _hashCode;
+    }
+
+}

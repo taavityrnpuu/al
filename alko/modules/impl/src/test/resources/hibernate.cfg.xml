@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC "-//Hibernate/Hibernate Configuration DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<!-- Generated file - Do not edit! -->
+
+<hibernate-configuration>
+
+	<!-- a SessionFactory instance listed as /jndi/name -->
+	<session-factory>
+
+		<!-- properties -->
+		<property name="dialect">@db.dialect@</property>
+		<property name="show_sql">false</property>
+		<property name="max_fetch_depth">3</property>
+			<property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>            
+			<mapping class="ee.agri.alkor.model.AuthenticationLog"/>
+			<mapping class="ee.agri.alkor.model.Address"/>
+            <mapping class="ee.agri.alkor.model.ContactInfo"/>
+            <mapping class="ee.agri.alkor.model.Person"/>
+            <mapping class="ee.agri.alkor.model.Enterprise"/>
+            <mapping class="ee.agri.alkor.model.ProductEnterpriseRole"/>
+            <mapping class="ee.agri.alkor.model.SystemUser"/>
+            <mapping class="ee.agri.alkor.model.UserGroup"/>
+            <mapping class="ee.agri.alkor.model.Product"/>
+            <mapping class="ee.agri.alkor.model.RegistryDocument"/>
+            <mapping class="ee.agri.alkor.model.RegistryEntry"/>
+            <mapping class="ee.agri.alkor.model.RegistryApplication"/>
+            <mapping class="ee.agri.alkor.model.Decision"/>
+            <mapping class="ee.agri.alkor.model.ProductExamples"/>
+            <mapping class="ee.agri.alkor.model.RegistryPayment"/>
+            <mapping class="ee.agri.alkor.model.News"/>
+            <mapping class="ee.agri.alkor.model.Faq"/>
+            <mapping class="ee.agri.alkor.model.SearchView"/>
+            <mapping class="ee.agri.alkor.model.PaymentMatchingLog"/>
+            <mapping class="ee.agri.alkor.model.ProductMovementReport"/>
+            <mapping class="ee.agri.alkor.model.ProductMovementReportRecord"/>
+            <mapping class="ee.agri.alkor.model.classes.ClassificatorRow"/>
+            <mapping class="ee.agri.alkor.model.classes.BottleColor"/>
+            <mapping class="ee.agri.alkor.model.classes.BottleShape"/>
+            <mapping class="ee.agri.alkor.model.classes.CorkColor"/>
+            <mapping class="ee.agri.alkor.model.classes.CorkShape"/>
+            <mapping class="ee.agri.alkor.model.classes.CorkMaterial"/>
+			<mapping class="ee.agri.alkor.model.classes.Language"/>		
+            <mapping class="ee.agri.alkor.model.classes.Country"/>
+            <mapping class="ee.agri.alkor.model.classes.DocumentState"/>
+            <mapping class="ee.agri.alkor.model.classes.DocumentType"/>
+            <mapping class="ee.agri.alkor.model.classes.EnterpriseRole"/>
+            <mapping class="ee.agri.alkor.model.classes.ProductType"/>
+            <mapping class="ee.agri.alkor.model.classes.RegistryEntryState"/>
+            <mapping class="ee.agri.alkor.model.classes.ApplicationState"/>
+            <mapping class="ee.agri.alkor.model.classes.ApplicationState2"/>
+            <mapping class="ee.agri.alkor.model.classes.StockingColor"/>
+            <mapping class="ee.agri.alkor.model.classes.SystemGroup"/>
+            <mapping class="ee.agri.alkor.model.classes.QueryState"/>
+            <mapping class="ee.agri.alkor.model.classes.ApplicationType"/>
+            <mapping class="ee.agri.alkor.model.classes.PackingMaterial"/>
+			<mapping class="ee.agri.alkor.model.classes.RegistryEntryDecisionType"/>
+			<mapping class="ee.agri.alkor.model.classes.ProductExamplesDecisionType"/>
+			<mapping class="ee.agri.alkor.model.classes.RegistryTax"/>		
+			<mapping class="ee.agri.alkor.model.classes.AuthenticationType"/>		
+			<mapping class="ee.agri.alkor.model.classes.Month"/>
+			<mapping class="ee.agri.alkor.model.classes.Capacity"/>
+         <event type="save-update">
+            <listener class="ee.agri.alkor.impl.ClassificatorSaveListener"/>
+            <listener class="org.hibernate.event.def.DefaultSaveOrUpdateEventListener"/>
+        </event>
+           
+         <event type="flush-entity">
+            <listener class="ee.agri.alkor.impl.ClassificatorFlushListener"/>
+            <listener class="org.hibernate.event.def.DefaultFlushEntityEventListener"/>
+        </event>
+	</session-factory>
+
+</hibernate-configuration>

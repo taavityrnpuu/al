@@ -1,0 +1,188 @@
+<project basedir="." default="help" name="Alkor web build">
+
+	<!-- seadistuste import -->
+	<property file="../../build.properties" />
+
+	<!-- projekti juurkaust -->
+	<property name="root.dir" location="${basedir}/../../" />
+
+	<!-- projektis vajaminevate teekide kaust -->
+	<property name="lib.dir" location="${root.dir}/lib" />
+	
+	<!-- lähtematerjalide asukohad -->
+	<property name="src.dir" location="${basedir}/src/main/java" />
+	<property name="web.src.dir" location="${basedir}/src/main/webapp" />
+	<property name="res.dir" location="${basedir}/src/main/resources" />
+
+	<!-- väljundkaustade asukohad -->
+	<property name="build.dir" location="${root.dir}/build" />
+	<property name="jar.dir" location="${build.dir}/lib" />
+	<property name="classes.dir" location="${build.dir}/modules/web" /> <!-- <<<<<<<< -->
+	<property name="war.dir" location="${build.dir}/war" />
+	<property name="ear.dir" location="${build.dir}/ear" />
+
+	<!-- väljundpaki asukoht koos nimega -->
+	<property name="package.file" location="${ear.dir}/alkor-web.war" />
+
+	
+	<target name="help" description="Kuvab abiinfot kasutamise kohta.">
+		<echo level="info">
+            help - kuvab abiinfo (see sama)
+            compile - kompileerib java failidest class failid
+            jar_only - paneb lihtsalt jari kokku, sõltuvusteta
+			jar_dev - teeb jar-i GWT arendustöödeks (GWT osa ei kompileerita, hosted modes töötamiseks)
+			jar_production - teeb produktsioonipaki (kompileeritakse ka GWT, võtab minuteid)
+            clean - kustutab selle build failiga tekitatud kompileeritud failide kausta (${classes.dir}) ja jar-faili (${package.file}), kui need eksisteerivad
+		</echo>
+	</target>
+
+	<target name="compile" depends="">
+		<echo level="info">mode: ${mode}</echo> <!-- lihtsalt kontrolliks -->
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${classes.dir}" />
+		<javac debug="on"
+			deprecation="off" destdir="${classes.dir}"
+			includes="ee/**/*.java" optimize="off"
+			srcdir="${src.dir}">
+		    <classpath>
+		    	<fileset dir="${jar.dir}" includes="*.jar" />
+		    	<fileset dir="${lib.dir}" includes="*.jar" />
+				<fileset dir="${gwt.installDir}" />
+		    </classpath>
+		</javac>
+	</target>
+
+	<target name="gwtcompile" description="Run GWT compiler" depends="">
+		<mkdir dir="${build.dir}" />
+		<mkdir dir="${build.dir}/generated" />
+		<echo>running google compiler DETAILED MODE</echo>
+		<java classname="com.google.gwt.dev.Compiler" fork="true" spawn="false" maxmemory="512m">
+			<classpath>
+				<pathelement location="${src.dir}" />
+				<fileset dir="${jar.dir}" includes="*.jar" />
+				<fileset dir="${lib.dir}" includes="*.jar" />
+				<fileset dir="${gwt.installDir}">
+					<include name="*.jar" />
+					<!-- exclude not fixed user.jar -->
+					<!--exclude name="*user.jar"/-->
+				</fileset>
+				<!-- add fixed gwt-user.jar -->
+				<!--pathelement location="lib/gwt-user.jar"/-->
+			</classpath>
+			<arg value="-war" />
+			<arg file="${build.dir}/generated" />
+			<arg line="-style DETAILED"/>
+			<!--arg line="-logLevel TRACE"/-->
+			<arg value="ee.agri.alkor.web.Alkor" />
+		</java>
+	</target>
+
+	<target name="gwtshell" description="Run GWT Shell">
+		<java classname="com.google.gwt.dev.DevMode" maxmemory="512M"  fork="true">
+			<!--sysproperty key="java.library.path" value="${gwt.installDir}"/>
+			 <env key="PATH" path="${env.PATH};${gwt.installDir}"/-->
+			<!-- Kui tahad alkreg -i vastu testida-->
+			<!--arg line="-noserver -port 8080  http://alkoreg.agri.ee/alkor/index.html" /-->
+			<arg line="-noserver -port 8443 -codeServerPort 9999 -bindAddress 127.0.0.1 -startupUrl index.html ee.agri.alkor.web.Alkor" />
+			<classpath>
+				<pathelement location="${src.dir}" />
+				<fileset dir="${jar.dir}" includes="*.jar" />
+				<fileset dir="${lib.dir}" includes="*.jar" />
+				<fileset dir="${gwt.installDir}">
+					<include name="*.jar" />
+					<!-- exclude not fixed user.jar -->
+					<!--exclude name="*user.jar"/-->
+				</fileset>
+				<!-- add fixed gwt-user.jar -->
+				<!--pathelement location="lib/gwt-user.jar"/-->
+			</classpath>
+			<jvmarg value="-Xss2048k"/> 
+	        <jvmarg value="-Xdebug" />
+			<jvmarg value="-Xrunjdwp:transport=dt_socket,server=y,suspend=n,address=9990" />
+		</java>
+	</target>
+
+	<target name="jar_production" depends="compile,gwtcompile">
+		<ant target="jar_only" />
+	</target>
+
+	<target name="jar_dev" depends="compile">
+		<ant target="jar_only" />
+	</target>
+		
+	<target name="jar_only" depends="">
+		<mkdir dir="${ear.dir}" />
+		<mkdir dir="${build.dir}/generated/ee.agri.alkor.web.Alkor" />
+		<copy todir="${war.dir}/WEB-INF/lib">
+    		<fileset dir="${jar.dir}" includes="*.jar" />
+			<fileset dir="${lib.dir}" includes="*.jar">
+				<!-- teegid, mis JBossil endal olemas on (konfliktide vältimiseks ei tohi neid deployda)-->
+				<exclude name="commons-logging*" />
+				<exclude name="log4j*" />
+				<exclude name="gwt-user.jar" />
+			</fileset>
+			<fileset dir="${gwt.installDir}" includes="gwt-servlet*.jar" />
+		</copy>
+		<javac
+			nowarn="on"
+			debug="on"
+			deprecation="off"
+			destdir="${war.dir}"
+			optimize="off"
+			srcdir="${src.dir}">
+	        	<classpath>
+	        		<fileset dir="${jar.dir}" includes="*.jar" />
+	        		<fileset dir="${lib.dir}" includes="*.jar" />
+	        	</classpath>
+	    		<include name="SOAPMonitorApplet.java" />
+		</javac>
+
+		<war destfile="${package.file}" webxml="${web.src.dir}/WEB-INF/web.xml">
+			<fileset dir="${web.src.dir}">
+				<include name="**/*.html" />
+				<include name="**/*.jsp" />
+				<include name="**/*.css" />
+				<include name="**/*.js" />
+				<include name="**/*.png" />
+				<include name="**/*.gif" />
+				<include name="**/*.jpg" />
+			</fileset>
+			<fileset dir="${build.dir}/generated/ee.agri.alkor.web.Alkor" />
+			<fileset dir="${war.dir}">
+				<include name="*.class" />
+			</fileset>
+			<fileset dir="${basedir}/../webservice/src/main/resources">
+				<include name="xsd/*.wsdl" />
+			</fileset>
+			<webinf dir="${web.src.dir}/WEB-INF">
+				<include name="*.xml" />
+				<include name="*.tld" />
+				<include name="*.properties" />
+				<include name="*.wsdd" />
+				<include name="*.wsdl" />
+				<exclude name="web.xml" />
+			</webinf>
+			<classes dir="${classes.dir}" />
+			<classes dir="${web.src.dir}/WEB-INF/classes" />
+			<!--
+			<classes dir="${basedir}/../webservice/src/main/resources" >
+				<include name="*.vm" />
+			</classes>-->
+			<lib dir="${war.dir}/WEB-INF/lib" />
+		</war>
+	</target>
+
+	<!--target name="install" depends="jar">
+		<artifact:install file="${build.dir}/${project.artifactId}-${project.version}.war">
+			<pom refid="project" />
+		</artifact:install>
+	</target-->
+
+	<target name="clean" depends="">
+		<delete dir="${classes.dir}" />
+		<delete dir="${war.dir}" />
+		<delete dir="${build.dir}/generated" />
+		<delete file="${package.file}" />
+	</target>
+
+</project>

@@ -1,0 +1,55 @@
+<pseudoroot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd" xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" >
+
+	<xsd:element name="legacy1">
+		<xsd:complexType>
+			<xsd:sequence>
+			   <xsd:element type="xsd:string" name="item" maxOccurs="unbounded" minOccurs="0" />
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+
+
+<!--
+	<xsd:element name="legacy1">
+		<xsd:complexType>
+			<xsd:sequence>
+			   <xsd:element type="tns:ArrayOfString" name="keha" />					
+			</xsd:sequence>
+		</xsd:complexType>
+	</xsd:element>
+	
+	<xsd:complexType name="ArrayOfString">
+		<xsd:sequence>
+			<xsd:element maxOccurs="unbounded" minOccurs="0" name="item" type="xsd:string"/>
+		</xsd:sequence>
+	</xsd:complexType>
+
+-->
+
+	<xsd:element name="legacy1Response">
+		<xsd:complexType>
+            <xsd:sequence>
+               <xsd:element name="teade" type="xsd:string"
+                  minOccurs="0" nillable="true" />
+               <xsd:element name="url" type="tns:url"
+                  minOccurs="0" nillable="true">
+                  <xsd:annotation><xsd:appinfo>
+                    <xrd:title>Infosüsteemi sissepääsu URL</xrd:title>
+                 </xsd:appinfo></xsd:annotation>
+                  </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+	</xsd:element>
+	
+	<xsd:simpleType name="url">
+		<xsd:annotation>
+			<xsd:appinfo>
+				<xrd:title>Link</xrd:title>
+				<xrd:technotes>WWW URL</xrd:technotes>
+			</xsd:appinfo>
+		</xsd:annotation>
+		<xsd:restriction base="xsd:anyURI"/>
+	</xsd:simpleType>
+
+
+</pseudoroot>

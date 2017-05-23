@@ -1,0 +1,420 @@
+<!-- Use this file to deploy some handlers/chains and services      -->
+<!-- Two ways to do this:                                           -->
+<!--   java org.apache.axis.client.AdminClient deploy.wsdd          -->
+<!--      after the axis server is running                          -->
+<!-- or                                                             -->
+<!--   java org.apache.axis.utils.Admin client|server deploy.wsdd   -->
+<!--      from the same directory that the Axis engine runs         -->
+
+<deployment
+    xmlns="http://xml.apache.org/axis/wsdd/"
+    xmlns:java="http://xml.apache.org/axis/wsdd/providers/java">
+
+  <!-- Services from DigiDocService WSDL service -->
+
+  <service name="DigiDocService" provider="java:RPC" style="rpc" use="encoded">
+      <parameter name="wsdlTargetNamespace" value="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"/>
+      <parameter name="wsdlServiceElement" value="DigiDocService"/>
+      <parameter name="schemaQualified" value="http://www.sk.ee:8098/MSSP_GW/MSSP_GW.wsdl"/>
+      <parameter name="schemaUnqualified" value="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"/>
+      <parameter name="wsdlServicePort" value="DigiDocService"/>
+      <parameter name="className" value="ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.DigiDocServiceImpl"/>
+      <parameter name="wsdlPortType" value="DigiDocServicePortType"/>
+      <parameter name="typeMappingVersion" value="1.2"/>
+      <operation name="startSession" qname="operNS:StartSession" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="SigningProfile" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SigDocXML" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="bHoldSession" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="datafile" type="tns:DataFileData" xmlns:tns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignedDocInfo" type="tns:SignedDocInfo" xmlns:tns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" mode="OUT"/>
+      </operation>
+      <operation name="closeSession" qname="operNS:CloseSession" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" returnQName="Status" returnType="rtns:string" xmlns:rtns="http://www.w3.org/2001/XMLSchema" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+      </operation>
+      <operation name="createSignedDoc" qname="operNS:CreateSignedDoc" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Format" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Version" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignedDocInfo" type="tns:SignedDocInfo" xmlns:tns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" mode="OUT"/>
+      </operation>
+      <operation name="addDataFile" qname="operNS:AddDataFile" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="FileName" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="MimeType" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="ContentType" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Size" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="DigestType" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="DigestValue" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Content" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignedDocInfo" type="tns:SignedDocInfo" xmlns:tns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" mode="OUT"/>
+      </operation>
+      <operation name="removeDataFile" qname="operNS:RemoveDataFile" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="DataFileId" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignedDocInfo" type="tns:SignedDocInfo" xmlns:tns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" mode="OUT"/>
+      </operation>
+      <operation name="getSignedDoc" qname="operNS:GetSignedDoc" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignedDocData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="getSignedDocInfo" qname="operNS:GetSignedDocInfo" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignedDocInfo" type="tns:SignedDocInfo" xmlns:tns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" mode="OUT"/>
+      </operation>
+      <operation name="getDataFile" qname="operNS:GetDataFile" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="DataFileId" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="DataFileData" type="tns:DataFileData" xmlns:tns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" mode="OUT"/>
+      </operation>
+      <operation name="getSignersCertificate" qname="operNS:GetSignersCertificate" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignatureId" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="CertificateData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="getNotarysCertificate" qname="operNS:GetNotarysCertificate" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignatureId" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="CertificateData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="getNotary" qname="operNS:GetNotary" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignatureId" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="OcspData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="getTSACertificate" qname="operNS:GetTSACertificate" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="TimestampId" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="CertificateData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="getTimestamp" qname="operNS:GetTimestamp" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="TimestampId" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="TimestampData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="getCRL" qname="operNS:GetCRL" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignatureId" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="CRLData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="getSignatureModules" qname="operNS:GetSignatureModules" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Platform" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Phase" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Type" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="Modules" type="tns:SignatureModulesArray" xmlns:tns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" mode="OUT" itemQName="Modules"/>
+      </operation>
+      <operation name="prepareSignature" qname="operNS:PrepareSignature" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignersCertificate" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignersTokenId" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Role" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="City" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="State" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="PostalCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Country" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SigningProfile" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignatureId" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignedInfoDigest" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="finalizeSignature" qname="operNS:FinalizeSignature" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignatureId" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignatureValue" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignedDocInfo" type="tns:SignedDocInfo" xmlns:tns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" mode="OUT"/>
+      </operation>
+      <operation name="removeSignature" qname="operNS:RemoveSignature" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignatureId" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignedDocInfo" type="tns:SignedDocInfo" xmlns:tns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" mode="OUT"/>
+      </operation>
+      <operation name="getVersion" qname="operNS:GetVersion" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Name" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="Version" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="LibraryVersion" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="mobileSign" qname="operNS:MobileSign" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignerIDCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignersCountry" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignerPhoneNo" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="ServiceName" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="AdditionalDataToBeDisplayed" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Language" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Role" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="City" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="StateOrProvince" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="PostalCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="CountryName" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SigningProfile" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="MessagingMode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="AsyncConfiguration" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="ReturnDocInfo" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="ReturnDocData" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="StatusCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="ChallengeID" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="getStatusInfo" qname="operNS:GetStatusInfo" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="ReturnDocInfo" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="WaitSignature" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="StatusCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignedDocInfo" type="tns:SignedDocInfo" xmlns:tns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" mode="OUT"/>
+      </operation>
+      <operation name="mobileAuthenticate" qname="operNS:MobileAuthenticate" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="IDCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="CountryCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="PhoneNo" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Language" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="ServiceName" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="MessageToDisplay" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SPChallenge" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="MessagingMode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="AsyncConfiguration" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="ReturnCertData" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="ReturnRevocationData" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="UserIDCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="UserGivenname" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="UserSurname" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="UserCountry" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="UserCN" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="CertificateData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="ChallengeID" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="Challenge" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="RevocationData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="getMobileAuthenticateStatus" qname="operNS:GetMobileAuthenticateStatus" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="WaitSignature" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="Signature" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="mobileCreateSignature" qname="operNS:MobileCreateSignature" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="IDCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignersCountry" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="PhoneNo" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Language" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="ServiceName" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="MessageToDisplay" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Role" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="City" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="StateOrProvince" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="PostalCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="CountryName" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SigningProfile" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="DataFiles" type="tns:DataFileDigestList" xmlns:tns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" itemQName="DataFileDigest"/>
+        <parameter qname="Format" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Version" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="SignatureID" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="MessagingMode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="AsyncConfiguration" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="ChallengeID" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="getMobileCreateSignatureStatus" qname="operNS:GetMobileCreateSignatureStatus" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Sesscode" type="tns:int" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="INOUT"/>
+        <parameter qname="WaitSignature" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="Signature" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="getMobileCertificate" qname="operNS:GetMobileCertificate" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="IDCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Country" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="PhoneNo" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="ReturnCertData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="AuthCertStatus" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignCertStatus" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="AuthCertData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="SignCertData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <operation name="checkCertificate" qname="operNS:CheckCertificate" xmlns:operNS="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl" soapAction="" >
+        <parameter qname="Certificate" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="ReturnRevocationData" type="tns:boolean" xmlns:tns="http://www.w3.org/2001/XMLSchema"/>
+        <parameter qname="Status" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="UserIDCode" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="UserGivenname" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="UserSurname" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="UserCountry" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="UserOrganisation" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="UserCN" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="IssuerCN" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="KeyUsage" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="EnhancedKeyUsage" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+        <parameter qname="RevocationData" type="tns:string" xmlns:tns="http://www.w3.org/2001/XMLSchema" mode="OUT"/>
+      </operation>
+      <parameter name="allowedMethods" value="getDataFile addDataFile removeSignature getSignedDocInfo getMobileAuthenticateStatus mobileCreateSignature getTimestamp startSession closeSession getMobileCreateSignatureStatus prepareSignature getSignedDoc getTSACertificate getVersion finalizeSignature mobileAuthenticate mobileSign checkCertificate getCRL getStatusInfo getNotary createSignedDoc removeDataFile getNotarysCertificate getSignersCertificate getSignatureModules getMobileCertificate"/>
+
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:SignerInfo"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.SignerInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:SignatureInfo"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.SignatureInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:DataFileDigest"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.DataFileDigest"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:DataFileData"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.DataFileData"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:DataFileInfo"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.DataFileInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:DataFileDigestList"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.DataFileDigest[]"
+        innerType="cmp-ns:DataFileDigest" xmlns:cmp-ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:ConfirmationInfo"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.ConfirmationInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:Error"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.Error"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:DataFileAttribute"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.DataFileAttribute"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:SignatureProductionPlace"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.SignatureProductionPlace"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:SignedDocInfo"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.SignedDocInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:RevokedInfo"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.RevokedInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <arrayMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:SignatureModulesArray"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.SignatureModule[]"
+        innerType="cmp-ns:SignatureModule" xmlns:cmp-ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:CertificateInfo"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.CertificateInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:CertificatePolicy"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.CertificatePolicy"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:CRLInfo"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.CRLInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:SignerRole"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.SignerRole"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:TstInfo"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.TstInfo"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+      <typeMapping
+        xmlns:ns="http://www.sk.ee/DigiDocService/DigiDocService_2_3.wsdl"
+        qname="ns:SignatureModule"
+        type="java:ee.sk.www.DigiDocService.DigiDocService_2_3_wsdl.SignatureModule"
+        serializer="org.apache.axis.encoding.ser.BeanSerializerFactory"
+        deserializer="org.apache.axis.encoding.ser.BeanDeserializerFactory"
+        encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+      />
+  </service>
+</deployment>

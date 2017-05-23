@@ -1,0 +1,974 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<itext creationdate="Thu Feb 08 15:53:16 EET 2007" producer="iTextXML by lowagie.com">
+	<chapter numberdepth="0" depth="1" indent="0.0">
+		<title leading="27.0" align="Center" font="$font" size="18.0" fontstyle="normal">
+		Registrikande pikendamise taotlus
+		</title>
+		<section numberdepth="0" depth="1" indent="0.0">
+			<title leading="24.0" align="Default" font="$font" size="16.0" fontstyle="normal">
+				<chunk font="$font" size="16.0" fontstyle="normal">I. T&#196;IDAB REGISTRI VOLITATUD T&#214;&#214;TLEJA</chunk>
+			</title>
+			<table columns="3" width="100.0%" align="Center" widths="10.0;45.0;45.0" cellpadding="1.0" cellspacing="0.5"  borderwidth="1.0" left="true" right="true" top="true" bottom="true">
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Center" verticalalign="Default" rowspan="3" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font" fontstyle="bold">1.</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Center" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Taotluse nr
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Center" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font">
+							#if($nr)
+								$nr
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Center" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Taotluse saabumise kuup&#228;ev
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Center" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font">
+								$arrived
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Taotluse vastuv&#245;tja nimi ja allkiri
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font">
+						$receiver.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Center" verticalalign="Default" rowspan="3" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font" fontstyle="bold">2.</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Center" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tooten&#228;idise vastuv&#245;tja nimi ja allkiri
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Center" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font">
+						$exReceiver.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Center" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tooten&#228;idise tagastamine ja kuup&#228;ev
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Center" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font">
+						$exReturned
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tooten&#228;idise tagastaja nimi ja allkiri
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font">
+						$returner.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+			</table>
+		</section>
+		<section numberdepth="0" depth="1" indent="0.0">
+			<title leading="24.0" align="Default" font="$font" size="16.0" fontstyle="normal">
+				<chunk font="$font" size="16.0" fontstyle="normal">II. T&#196;IDAB TAOTLEJA</chunk>
+			</title>
+			<table columns="2" width="100.0%" align="Center" cellpadding="3.0" cellspacing="0.5" widths="50.0;50.0" borderwidth="1.0" left="true" right="true" top="true" bottom="true">
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" colspan="2" leading="12.0">
+						<paragraph leading="12.0" font="$font" fontstyle="bold" align="Default">
+							TAOTLEJA
+						</paragraph>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Nimi
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.applicant.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Aktsiisilao tegevusloa number
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.applicant.exciseStoreHouseNr.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tegevusloa otsuse tegemise kuup&#228;ev ja number
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+						#if($application.applicant.acknowledgementDate)
+							$dateFormat.format($application.applicant.acknowledgementDate)
+						#end $!application.applicant.acknowledgementNr.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Majandustegevuse registreerimise number
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.applicant.MTRCode
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Taotleja aadress
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#set($address = $!application.applicant.address)
+							#if($!address.street)
+								$!address.street.replaceAll("&","&#38;")&#32;
+							#end
+							#if($!address.house)
+								$!address.house.replaceAll("&","&#38;")&#32;
+							#end
+							#if($!address.appartmentNr)
+								$!address.appartmentNr.replaceAll("&","&#38;")&#32;
+							#end
+							#if($$!address.town)
+								 $!address.town.replaceAll("&","&#38;")&#32;
+							#end
+							#if($!address.orgUnit)
+								$!address.orgUnit.replaceAll("&","&#38;")&#32;
+							#end
+							#if($!address.postalIndex)
+								$!address.postalIndex.replaceAll("&","&#38;")&#32;
+							#end
+							#if($!address.district)
+								$!address.district.replaceAll("&","&#38;")&#32;
+							#end
+							#if($!address.country)
+								$!address.country.name.replaceAll("&","&#38;")&#32;
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Telefon / Faks
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#set($contactInfo = $!application.applicant.contactInfo)
+							$!contactInfo.phone.replaceAll("&","&#38;")
+							#if($contactInfo.phone)
+								#if($contactInfo.fax)
+									 /
+								#end
+							#end
+							 $!contactInfo.fax.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							E-post
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!contactInfo.email.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" colspan="2" leading="12.0">
+						<paragraph leading="12.0" font="$font" fontstyle="bold" align="Default">
+							TOODE
+						</paragraph>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Nimi
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							P&#228;ritoluriik / l&#228;htekoht
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.originCountry.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Toote liik
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.type.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tootja 
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.producer.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tootjamaa
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.producer.address.country.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tootja aadress
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.producer.address)
+								#set($address = $!application.product.producer.address)
+								#if($!address.street)
+									$!address.street.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.house)
+									$!address.house.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.appartmentNr)
+									$!address.appartmentNr.replaceAll("&","&#38;")&#32;
+								#end
+								#if($$!address.town)
+									 $!address.town.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.orgUnit)
+									$!address.orgUnit.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.postalIndex)
+									$!address.postalIndex.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.district)
+									$!address.district.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.country)
+									$!address.country.name.replaceAll("&","&#38;")&#32;
+								#end
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tootja telefon/faks
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.producer.contactInfo)
+							#set($contactInfo = $!application.product.producer.contactInfo)
+							$!contactInfo.phone.replaceAll("&","&#38;")
+							#if($contactInfo.phone)
+								#if($contactInfo.fax)
+									 /
+								#end
+							#end
+							 $!contactInfo.fax.replaceAll("&","&#38;")
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tootja e-post
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.producer.contactInfo.email.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Pakendaja nimi
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.packager.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Pakendaja aadress
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.packager.address)
+								#set($address = $!application.product.packager.address)
+								#if($!address.street)
+									$!address.street.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.house)
+									$!address.house.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.appartmentNr)
+									$!address.appartmentNr.replaceAll("&","&#38;")&#32;
+								#end
+								#if($$!address.town)
+									 $!address.town.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.orgUnit)
+									$!address.orgUnit.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.postalIndex)
+									$!address.postalIndex.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.district)
+									$!address.district.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.country)
+									$!address.country.name.replaceAll("&","&#38;")&#32;
+								#end
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Pakendaja asukohariik
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.packager.address.country.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Pakendaja telefon/faks
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.packager.contactInfo)
+							#set($contactInfo = $!application.product.packager.contactInfo)
+							$!contactInfo.phone.replaceAll("&","&#38;")
+							#if($contactInfo.phone)
+								#if($contactInfo.fax)
+									 /
+								#end
+							#end
+							 $!contactInfo.fax.replaceAll("&","&#38;")
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Pakendaja e-post
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.packager.contactInfo.email.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							EL asutatud m&#252;&#252;ja nimi
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.marketer.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							EL asutatud m&#252;&#252;ja aadress
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.marketer.address)
+								#set($address = $!application.product.marketer.address)
+								#if($!address.street)
+									$!address.street.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.house)
+									$!address.house.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.appartmentNr)
+									$!address.appartmentNr.replaceAll("&","&#38;")&#32;
+								#end
+								#if($$!address.town)
+									 $!address.town.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.orgUnit)
+									$!address.orgUnit.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.postalIndex)
+									$!address.postalIndex.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.district)
+									$!address.district.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.country)
+									$!address.country.name.replaceAll("&","&#38;")&#32;
+								#end
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							EL asutatud m&#252;&#252;ja asukohariik
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.marketer.address.country.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							EL asutatud m&#252;&#252;ja telefon/faks
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.marketer.contactInfo)
+							#set($contactInfo = $!application.product.marketer.contactInfo)
+							$!contactInfo.phone.replaceAll("&","&#38;")
+							#if($contactInfo.phone)
+								#if($contactInfo.fax)
+									 /
+								#end
+							#end
+							 $!contactInfo.fax.replaceAll("&","&#38;")
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							EL asutatud m&#252;&#252;ja e-post
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.marketer.contactInfo.email.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Importija nimi
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.importer.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Importija aadress
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.importer.address)
+								#set($address = $!application.product.importer.address)
+								#if($!address.street)
+									$!address.street.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.house)
+									$!address.house.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.appartmentNr)
+									$!address.appartmentNr.replaceAll("&","&#38;")&#32;
+								#end
+								#if($$!address.town)
+									 $!address.town.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.orgUnit)
+									$!address.orgUnit.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.postalIndex)
+									$!address.postalIndex.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.district)
+									$!address.district.replaceAll("&","&#38;")&#32;
+								#end
+								#if($!address.country)
+									$!address.country.name.replaceAll("&","&#38;")&#32;
+								#end
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Importija telefon/faks
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.importer.contactInfo)
+							#set($contactInfo = $!application.product.importer.contactInfo)
+							$!contactInfo.phone.replaceAll("&","&#38;")
+							#if($contactInfo.phone)
+								#if($contactInfo.fax)
+									 /
+								#end
+							#end
+							 $!contactInfo.fax.replaceAll("&","&#38;")
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Importija e-post
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.importer.contactInfo.email.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tarbijapakendi maht
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.packingVolume.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				#if($application.product.ethanolRate)
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Etanoolisisaldus
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$application.product.ethanolRate.stripTrailingZeros().toPlainString().replace('.', ',') %vol
+						</phrase>
+					</cell>
+				</row>
+				#end
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Toote kaheksakohaline kood vastavalt kombineeritud nomenklatuurile
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.code.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tarbijapakendi v&#245;i pakendi materjal
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.packingMaterial.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tarbijapakendi v&#245;i pakendi etikettide arv
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.numberOfLabels
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" colspan="2" leading="12.0">
+						<paragraph leading="12.0" font="$font" fontstyle="bold" align="Default">
+							PUDELI KUJU ja V&#196;RVUS
+						</paragraph>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Pudeli v&#228;rvus
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.bottleColor.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Burgundia
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.bottleShape.code == 'BOU')
+							jah
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Bordeaux
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.bottleShape.code == 'BOR')
+							jah
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Portvein
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.bottleShape.code == 'POR')
+							jah
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Saksa veini pudel
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.bottleShape.code == 'GWB')
+							jah
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Vahuveini pudel
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.bottleShape.code == 'SWB')
+							jah
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Muu
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.bottleShape.code == 'OTH')
+							jah
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" colspan="2" leading="12.0">
+						<paragraph leading="12.0" font="$font" align="Default">
+							KORK
+						</paragraph>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Korgi materjal
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.corkMaterial.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Korgi v&#228;rvus
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.corkColor.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Korgi kuju
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.corkShape.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Suka olemasolul sellekohane m&#228;rge
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.hasStocking)
+							jah
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Suka v&#228;rvus
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							$!application.product.stockingColor.name.replaceAll("&","&#38;")
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" colspan="2" leading="12.0">
+						<paragraph leading="12.0" font="$font" fontstyle="bold" align="Default">
+							ETIKETT
+						</paragraph>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Esietiketi olemasolul sellekohane m&#228;rge
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.hasFrontLabel)
+							jah
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Tagaetiketi olemasolul sellekohane m&#228;rge
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.hasRearLabel)
+							jah
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Kaelaetiketi olemasolul sellekohane m&#228;rge
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.hasNeckLabel)
+							jah
+							#end
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							Muu etiketi olemasolul sellekohane m&#228;rge
+						</phrase>
+					</cell>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="12.0">
+						<phrase leading="12.0" font="$font" size="12.0">
+							#if($!application.product.hasOtherLabel)
+							jah
+							#end
+						</phrase>
+					</cell>
+				</row>
+			</table>
+			<table columns="1" width="100.0%" align="Center" cellpadding="1.0" cellspacing="0.5"  borderwidth="1.0" left="true" right="true" top="true" bottom="true">
+				<row>
+					<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default"  leading="12.0">
+						<paragraph leading="12.0" font="$font" fontstyle="bold" align="Default">
+							TAOTLUSELE LISATUD DOKUMENTIDE ja MATERJALIDE LOETELU
+						</paragraph>
+					</cell>
+				</row>
+				#set ($docNr = 1)
+				#foreach( $document in $documents )
+					<row>
+						<cell borderwidth="0.5" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default"  leading="12.0">
+							<paragraph leading="12.0" font="$font" size="12.0" align="Default">
+								#if($document.docType.code =="COR" || $document.docType.code == "DEC" || $document.docType.code == "NDEC")
+
+								#else
+									$docNr - $document.name.replaceAll("&","&#38;")
+									#set($docNr =$docNr + 1)
+								#end
+							</paragraph>
+						</cell>
+					</row>
+
+				#end
+			</table>
+			<paragraph leading="12.0" font="$font" size="12" align="Default">
+				<newline />
+				<newline />
+				<newline />
+			</paragraph>
+		</section>
+		<section numberdepth="0" depth="1" indent="0.0">
+			<paragraph leading="12.0" font="$font" align="Default">
+				Taotluse esitaja nimi ja ametikoht: $!application.enterpriseRepresentative.firstName.replaceAll("&","&#38;") $!application.enterpriseRepresentative.lastName.replaceAll("&","&#38;") $!application.enterpriseRepresentative.occupation.replaceAll("&","&#38;")
+			</paragraph>
+			<paragraph />
+
+			<paragraph leading="12.0" font="$font" align="Default">
+				Allkiri
+			</paragraph>
+		</section>
+	</chapter>
+</itext>

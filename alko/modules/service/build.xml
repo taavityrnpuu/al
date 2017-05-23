@@ -1,0 +1,68 @@
+<project basedir="." default="help" name="Alkor service build">
+
+	<!-- seadistuste import -->
+	<property file="../../build.properties" />
+
+	<!-- projekti juurkaust -->
+	<property name="root.dir" location="${basedir}/../../" />
+
+	<!-- projektis vajaminevate teekide kaust -->
+	<property name="lib.dir" location="${root.dir}/lib" />
+	
+	<!-- lähtematerjalide asukohad -->
+	<property name="src.dir" location="${basedir}/src/main/java" />
+	<property name="res.dir" location="${basedir}/src/main/resources" />
+
+	<!-- väljundkaustade asukohad -->
+	<property name="build.dir" location="${root.dir}/build" />
+	<property name="jar.dir" location="${build.dir}/lib" />
+	<property name="classes.dir" location="${build.dir}/modules/service" /> <!-- <<<<<<<< -->
+
+	<!-- väljundpaki asukoht koos nimega -->
+	<property name="package.file" location="${jar.dir}/alkor-service.jar" />
+
+	<target name="help" description="Kuvab abiinfot kasutamise kohta.">
+		<echo level="info">
+	      	help - kuvab abiinfo (see sama)
+	        compile - kompileerib java failid class failideks
+	      	jar - teeb kompileeritud failidest jar paki
+			clean - kustutab selle build failiga tekitatud kompileeritud failide kausta (${classes.dir}) ja jar-faili (${package.file}), kui nad eksisteerivad
+
+			root.dir: ${root.dir}
+			lib.dir: ${lib.dir}
+			src.dir: ${src.dir}
+			res.dir: ${res.dir}
+			
+			build.dir: ${build.dir}
+			jar.dir: ${jar.dir}
+			classes.dir: ${classes.dir}
+		</echo>
+	</target>
+
+    <target name="compile" depends="">
+		<echo level="info">mode: ${mode}</echo> <!-- lihtsalt kontrolliks -->
+    	<mkdir dir="${build.dir}" />
+    	<mkdir dir="${classes.dir}" />
+        <javac debug="on"
+        	encoding="UTF-8"
+        	deprecation="off" destdir="${classes.dir}"
+        	includes="ee/**/*.java" optimize="off"
+        	srcdir="${src.dir}">
+        	<classpath>
+        		<fileset dir="${lib.dir}" includes="*.jar" />
+        	</classpath>
+        	<!--compilerarg line="-Xlint:unchecked" /-->
+        </javac>
+    </target>
+
+    <target name="jar"  depends="compile">
+    	<mkdir dir="${jar.dir}" />
+    	<jar basedir="${classes.dir}" destfile="${package.file}"></jar>
+    </target>
+
+    <target name="clean" depends="">
+    	<delete dir="${classes.dir}" />
+    	<delete file="${package.file}" />
+    </target>
+
+</project>

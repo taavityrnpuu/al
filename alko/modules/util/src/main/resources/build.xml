@@ -1,0 +1,38 @@
+<project basedir="." default="" name="Alkor service implementation build" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+    <property file="convert.properties" />
+
+    <property name="lib.dir" location="${basedir}/lib" />
+    <property name="sql.dir" location="${basedir}/sql" />
+
+
+	<path id="class.path">
+		<path location="${basedir}" />
+        <fileset dir="${lib.dir}">
+            <include name="*.jar" />
+        </fileset>
+	</path>
+
+	<target name="create_db" depends="">
+		<sql driver="${alkor2.db.driver}" onerror="continue" password="${alkor2.db.password}" url="${alkor2.db.url}" userid="${alkor2.db.user}"  classpathref="class.path" encoding="utf8">
+			<transaction src="${sql.dir}/schema-${alkor2.db.vendor}.sql"/>
+		</sql>
+		<sql driver="${alkor2.db.driver}" onerror="continue" password="${alkor2.db.password}" url="${alkor2.db.url}" userid="${alkor2.db.user}"  classpathref="class.path" encoding="utf8">
+			<transaction src="${sql.dir}/decision_seq.sql"/>
+		</sql>
+		<java classname="ee.agri.alkor.util.AppSetup" fork="yes" dir="${basedir}">
+            <classpath>
+                <path refid="class.path" />
+            </classpath>
+		</java>
+    </target>
+	<target name="convert1" depends="">
+		<java classname="ee.agri.alkor.util.AppSetup" fork="yes" dir="${basedir}" maxmemory="512m">
+			<arg value="convert1"/>
+			<classpath>
+                <path refid="class.path" />
+            </classpath>
+		</java>
+    </target>
+
+</project>

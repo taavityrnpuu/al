@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project basedir="." default="help" name="Alkor build">
+
+	<property file="build.properties" />
+
+	<target name="help" description="Kuvab abiinfot kasutamise kohta.">
+		<echo level="info">
+			${xtee.serviceEndpointURL.1}
+			${db.url}
+			Paar vihjet hilisematele arendajatele:
+			LIVE versiooni tuleb build.properties asendada build.live.properties failiga!
+			Properties faile vahetades/lisades/muutes tuleb kindlasti teha CLEAN, sest Ant jälgib lähtekoodi muutuseid, kuid mitte konfiguratioonifailide omi!
+		    
+			Käskude selgitused:
+			help - kuvab abiinfo (see sama)
+		    install_service - kompileerib ja teeb paki alkor-service.jar
+		    install_webservice - kompileerib ja paki teeb alkor-xtee.jar
+		    install_impl - kompileerib ja teeb paki alkor-impl.jar
+		    install_web-dev - kompileerib ja teeb WAR faili gwt arendusteks (hosted modes kasutamiseks, javascripti ei tehta valmis)
+		    install_web-production - kompileerib ja teeb WAR faili deploymiseks välisserverisse (kogu rakendus koos javascriptiga)
+		    install-dev - teeb kõik vajalikud JAR-id ja paneb nad WAR-i ning veel omakorda EAR-i GWT arendustöödeks kokku
+		    install-production - teeb kõik vajalikud jar-id ja paneb nad war-i ning veel omakorda ear-i välisserverisse deploymiseks kokku
+		    deploy-dev - teeb kõik vajaliku, et ear kohaliku jbossi deploy folderisse jõuaks (oma masinas jooksutamiseks)
+		    clean - kustutab projekti build kausta (${basedir}/build), kui see eksisteerib (teha kindlasti enne live/test lülitust)
+			clean_install-dev - puhastab ja teeb arenduspaki puhtalt lehelt valmis
+			clean_install-production - puhastab ja teeb produktsioonipaki puhtalt lehelt valmis (SOOVITATAV)
+			schemaexport - ei proovinud, ei tea
+			create_db - ei proovinud, ei tea
+		</echo>
+	</target>
+
+	<target name="install_service" depends="">
+		<ant dir="${basedir}/modules/service" target="jar"/>
+	</target>
+
+	<target name="install_impl" depends="install_service">
+		<ant dir="${basedir}/modules/impl" target="jar"/>
+	</target>
+
+	<target name="install_webservice" depends="install_service">
+		<ant dir="${basedir}/modules/webservice" target="jar"/>
+	</target>
+
+	<target name="install_web-dev" depends="install_impl, install_webservice">
+	</target>
+
+	<target name="install_web-production" depends="install_impl, install_webservice">
+		<ant dir="${basedir}/modules/web" target="jar_production"/>
+	</target>
+
+	<target name="gwtshell" depends="">
+		<ant dir="${basedir}/modules/web" target="gwtshell"/>
+	</target>
+
+	<target name="install-dev" depends="install_webservice, install_web-dev">
+		<ant dir="${basedir}/modules/app" target="jar"/>
+	</target>
+
+	<target name="install-production" depends="install_webservice, install_web-production">
+		<ant dir="${basedir}/modules/app" target="jar"/>
+	</target>
+
+	<target name="deploy-dev" depends="install-dev">
+		<ant dir="${basedir}/modules/app" target="deploy"/>
+	</target>
+
+	<target name="schemaexport" depends="install_service">
+		<ant dir="${basedir}/modules/impl" target="schemaexport"/>
+	</target>
+
+	<target name="create_db" depends="install_impl">
+		<ant dir="${basedir}/modules/impl" target="create_db"/>
+	</target>
+
+	<target name="clean" depends="">
+		<delete dir="${basedir}/build" />
+	</target>
+
+	<target name="clean_install-dev" depends="clean, install-dev" />
+
+	<target name="clean_install-production" depends="clean, install-production" />
+
+</project>

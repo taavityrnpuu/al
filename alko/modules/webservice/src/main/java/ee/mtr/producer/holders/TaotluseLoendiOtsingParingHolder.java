@@ -1,0 +1,20 @@
+/**
+ * TaotluseLoendiOtsingParingHolder.java
+ *
+ * This file was auto-generated from WSDL
+ * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
+ */
+
+package ee.x_road.mtr.producer.holders;
+
+public final class TaotluseLoendiOtsingParingHolder implements javax.xml.rpc.holders.Holder {
+    public ee.x_road.mtr.producer.TaotluseLoendiOtsingParing value;
+
+    public TaotluseLoendiOtsingParingHolder() {
+    }
+
+    public TaotluseLoendiOtsingParingHolder(ee.x_road.mtr.producer.TaotluseLoendiOtsingParing value) {
+        this.value = value;
+    }
+
+}

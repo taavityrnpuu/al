@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<definitions
+	xmlns:xtee="http://x-tee.riik.ee/xsd/xtee.xsd"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+	xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:tns="http://alkoreg.algri.ee/alkor/xsd/alkor2complex.wsdl"
+	xmlns:xlink="http://www.w3.org/1999/xlink"
+	name="mycomplex"
+	targetNamespace="http://alkoreg.algri.ee/alkor/xsd/alkor2complex.wsdl">
+  <types>
+    <schema xmlns="http://www.w3.org/2001/XMLSchema"
+    targetNamespace="https://alkoreg.algri.ee/alkor/xsd/alkor2complex.wsdl">
+
+      </schema>
+    </types>
+
+  <service name="defaultService">
+    <port name="defaultPort" binding="tns:defaultBinding">
+      <xtee:title xml:lang="et">Alkoholiregister
+        </xtee:title>
+      	<xtee:address producer="alkor"/>
+      </port>
+    </service>
+  <binding name="defaultBinding" type="tns:defaultPortType">
+     <operation name="newApplication">
+        <xtee:version>v2</xtee:version>
+        <xtee:complex>
+               <xtee:suboperation label="this" title="Algus" type="resource"/>
+               <xtee:suboperation label="addApplication" title="" type="locator" href="alkor2.addApplication.v2" actuate="onRequest"/>
+                <xtee:suboperation label="applicationDetails" title="" type="locator" href="alkor2.getApplication.v2" actuate="onLoad"/>
+                <xtee:suboperation label="updateApplication" title="" type="locator" href="alkor2.updateApplication.v2" actuate="onRequest"/>
+                <xtee:suboperation label="getApplDocs" title="" type="locator" href="alkor2.getApplicationDocuments.v2" actuate="onLoad"/>
+                <xtee:suboperation label="updateApplDocs" title="" type="locator" href="alkor2.updateApplicationDocuments.v2" actuate="onRequest"/>
+                <xtee:arc xlink:type="arc" from="this" to="addApplication" title="" show="replace" actuate="onLoad"/>
+                <xtee:arc xlink:type="arc" from="addApplication" to="applicationDetails" title="" show="replace" actuate="onLoad"  />
+               <xtee:arc xlink:type="arc" from="applicationDetails" to="updateApplication" title="Muuda taotlus" show="replace" actuate="onRequest"  />
+                <xtee:arc xlink:type="arc" from="applicationDetails" to="getApplDocs" title="Taotluse dokumendid" show="replace" actuate="onRequest" arcrole="applicationDetails#xpointer(/keha/appl/application)"/>
+                <xtee:arc xlink:type="arc" from="getApplDocs" to="updateApplDocs" title="Muuda/Lisa" show="replace" actuate="onRequest"  />
+                <xtee:arc xlink:type="arc" from="getApplDocs" to="applicationDetails" title="Taotlus" show="replace" actuate="onRequest"  />
+                <xtee:arc xlink:type="arc" from="updateApplDocs" to="getApplDocs" title="" show="replace" actuate="onLoad"  />
+               <xtee:substitution from="addApplication#xpointer(/keha)" to="applicationDetails#xpointer(/keha)"/>
+                <xtee:substitution from="applicationDetails#xpointer(/keha/appl)" to="updateApplication#xpointer(/keha/appl)"/>
+                <xtee:substitution from="applicationDetails#xpointer(/keha/appl/application/id)" to="getApplDocs#xpointer(/keha/id)"/>
+                <xtee:substitution from="getApplDocs#xpointer(/keha)" to="updateApplDocs#xpointer(/keha)"/>
+               <xtee:substitution from="getApplDocs#xpointer(/keha/applicationId)" to="applicationDetails#xpointer(/keha/id)"/>
+               <xtee:substitution from="updateApplDocs#xpointer(/keha/id)" to="getApplDocs#xpointer(/keha/id)"/>
+         </xtee:complex>
+     </operation>
+     <operation name="myApplications">
+        <xtee:version>v2</xtee:version>
+        <xtee:complex>
+                <xtee:suboperation label="this" title="Algus" type="resource"/>
+                <xtee:suboperation label="applyedApplications" title="Esitatud taotlused" type="locator" href="alkor2.applyedApplications.v2" actuate="onLoad"/>
+                <xtee:suboperation label="applicationDetails" title="" type="locator" href="alkor2.getApplication.v2" actuate="onLoad"/>
+                <xtee:suboperation label="updateApplication" title="Muuda taotlus" type="locator" href="alkor2.checkApplication.v1" actuate="onRequest"/>
+                <xtee:suboperation label="getApplDocs" title="" type="locator" href="alkor2.getApplicationDocuments.v2" actuate="onLoad"/>
+                <xtee:suboperation label="updateApplDocs" title="" type="locator" href="alkor2.updateApplicationDocuments.v2" actuate="onRequest"/>
+                <xtee:arc xlink:type="arc" from="this" to="applyedApplications" title="" show="replace" actuate="onLoad"/>
+                <xtee:arc xlink:type="arc" from="applyedApplications" to="applicationDetails" title="Taotlus" show="replace" actuate="onRequest" arcrole="applyedApplications#xpointer(/keha/apps/*)"/>
+                <xtee:arc xlink:type="arc" from="applicationDetails" to="updateApplication" title="NB! Muuta saab ainult staatuses 'Vajab täpsustamist.'" show="replace" actuate="onRequest" />
+                <xtee:arc xlink:type="arc" from="applicationDetails" to="getApplDocs" title="Taotluse dokumendid" show="replace" actuate="onRequest" arcrole="applicationDetails#xpointer(/keha/appl/application)"/>
+                <xtee:arc xlink:type="arc" from="getApplDocs" to="updateApplDocs" title="Muuda/Lisa" show="replace" actuate="onRequest"  />
+                <xtee:arc xlink:type="arc" from="getApplDocs" to="applicationDetails" title="Taotlus" show="replace" actuate="onRequest"  />
+                <xtee:arc xlink:type="arc" from="updateApplDocs" to="getApplDocs" title="" show="replace" actuate="onLoad"  />
+                <xtee:substitution from="applyedApplications#xpointer(id)" to="applicationDetails#xpointer(/keha/id)" />
+                <xtee:substitution from="applicationDetails#xpointer(/keha/appl)" to="updateApplication#xpointer(/keha/appl)"/>
+                <xtee:substitution from="applicationDetails#xpointer(/keha/appl/application/id)" to="getApplDocs#xpointer(/keha/id)"/>
+                <xtee:substitution from="getApplDocs#xpointer(/keha)" to="updateApplDocs#xpointer(/keha)"/>
+               <xtee:substitution from="getApplDocs#xpointer(/keha/applicationId)" to="applicationDetails#xpointer(/keha/id)"/>
+               <xtee:substitution from="updateApplDocs#xpointer(/keha/id)" to="getApplDocs#xpointer(/keha/id)"/>
+         </xtee:complex>
+     </operation>
+     <operation name="newApplication2">
+        <xtee:version>v1</xtee:version>
+        <xtee:complex>
+            <xtee:suboperation label="this" title="Algus" type="resource"/>
+            <xtee:suboperation label="getEnterprise" title="" type="locator" href="alkor2.getEnterprise.v1" actuate="onRequest"/>
+            <xtee:suboperation label="addApplication" title="" type="locator" href="alkor2.addApplication.v2" actuate="onRequest"/>
+            <xtee:suboperation label="addEnterprise" title="" type="locator" href="alkor2.addEnterprise.v1" actuate="onRequest"/>
+            <!--uued-->
+            <xtee:suboperation label="applicationDetails" title="" type="locator" href="alkor2.getApplication.v2" actuate="onLoad"/>
+            <xtee:suboperation label="updateApplication" title="" type="locator" href="alkor2.updateApplication.v2" actuate="onRequest"/>
+            <xtee:suboperation label="getApplDocs" title="" type="locator" href="alkor2.getApplicationDocuments.v2" actuate="onLoad"/>
+            <xtee:suboperation label="updateApplDocs" title="" type="locator" href="alkor2.updateApplicationDocuments.v2" actuate="onRequest"/>
+
+            <xtee:arc xlink:type="arc" from="this" to="getEnterprise" title="" show="replace" actuate="onLoad"/>
+            <xtee:arc xlink:type="arc" from="getEnterprise" to="addApplication" title="Vali ettevõte" show="replace" actuate="onRequest" arcrole="getEnterprise#xpointer(/keha/ettevotted/*)"/>
+            <xtee:arc xlink:type="arc" from="getEnterprise" to="addEnterprise" title="Lisa ettevõte" show="replace" actuate="onRequest"/>
+            <!--uued-->
+            <xtee:arc xlink:type="arc" from="addApplication" to="applicationDetails" title="" show="replace" actuate="onRequest"  />
+            <xtee:arc xlink:type="arc" from="applicationDetails" to="updateApplication" title="Muuda taotlus" show="replace" actuate="onRequest"  />
+            <xtee:arc xlink:type="arc" from="applicationDetails" to="addApplication" title="Lisa uuesti taotlus" show="replace" actuate="onRequest"/>
+            <xtee:arc xlink:type="arc" from="applicationDetails" to="getApplDocs" title="Taotluse dokumendid" show="replace" actuate="onRequest" arcrole="applicationDetails#xpointer(/keha/appl/application)"/>
+            <xtee:arc xlink:type="arc" from="getApplDocs" to="updateApplDocs" title="Muuda/Lisa" show="replace" actuate="onRequest"  />
+            <xtee:arc xlink:type="arc" from="getApplDocs" to="applicationDetails" title="Taotlus" show="replace" actuate="onRequest"  />
+            <xtee:arc xlink:type="arc" from="updateApplDocs" to="getApplDocs" title="" show="replace" actuate="onLoad"  />
+
+            <xtee:substitution from="getEnterprise#xpointer(reg_nr)" to="addApplication#xpointer(/keha/application/ProductInfo/ProducerInfoId)"/>
+            <xtee:substitution from="getEnterprise#xpointer(name)"   to="addApplication#xpointer(/keha/application/ProductInfo/ProducerInfo)"/>
+            <xtee:substitution from="getEnterprise#xpointer(id)"   to="addApplication#xpointer(/keha/application/ProductInfo/ProducerId)"/>
+            <!--uued-->
+            <xtee:substitution from="addApplication#xpointer(/keha)" to="applicationDetails#xpointer(/keha)"/>
+            <xtee:substitution from="applicationDetails#xpointer(/keha/appl)" to="updateApplication#xpointer(/keha/appl)"/>
+            <!--xtee:substitution from="applicationDetails#xpointer(/paring/application)" to="addApplication#xpointer(/keha/application)"/-->
+            <xtee:substitution from="applicationDetails#xpointer(/keha/appl/application/id)" to="getApplDocs#xpointer(/keha/id)"/>
+            <xtee:substitution from="getApplDocs#xpointer(/keha)" to="updateApplDocs#xpointer(/keha)"/>
+            <xtee:substitution from="getApplDocs#xpointer(/keha/applicationId)" to="applicationDetails#xpointer(/keha/id)"/>
+            <xtee:substitution from="updateApplDocs#xpointer(/keha/id)" to="getApplDocs#xpointer(/keha/id)"/>
+
+
+         </xtee:complex>
+      </operation>
+     <operation name="prolongRegentry">
+        <xtee:version>v2</xtee:version>
+        <xtee:complex>
+        	<xtee:suboperation label="this" title="Algus" type="resource"/>
+        	<xtee:suboperation label="acceptedApplications" title="Ei esita pikendamise taotlust" type="locator" href="alkor2.acceptedApplications.v2" actuate="onLoad"/>
+         <xtee:suboperation label="prolongedApplication" title="Esitan pikendamise taotluse" type="locator" href="alkor2.prolongApplication.v2" actuate="onLoad"/>
+        	<xtee:suboperation label="prolongApplication" title="" type="locator" href="alkor2.getApplication.v2" actuate="onLoad"/>
+         <xtee:arc xlink:type="arc" from="this" to="acceptedApplications" title="" show="replace" actuate="onLoad"/>
+        	<xtee:arc xlink:type="arc" from="acceptedApplications" to="prolongApplication" title="Tee pikendamise taotlus" show="replace" actuate="onRequest" arcrole="acceptedApplications#xpointer(/keha/apps/*)"/>
+         <xtee:arc xlink:type="arc" from="prolongApplication" to="prolongedApplication" title="" show="replace" actuate="onRequest" />
+         <xtee:arc xlink:type="arc" from="prolongApplication" to="acceptedApplications" title="" show="replace" actuate="onRequest"/>
+         <xtee:arc xlink:type="arc" from="this" to="acceptedApplications" title="" show="replace" actuate="onLoad"/>
+         <xtee:substitution from="acceptedApplications#xpointer(id)" to="prolongApplication#xpointer(/keha/id)"/>
+         <xtee:substitution from="prolongApplication#xpointer(/keha/appl/application/id)" to="prolongedApplication#xpointer(/keha/id)"/>
+        </xtee:complex>
+     </operation>
+     
+     <operation name="prolong60DayRegentry">
+        <xtee:version>v1</xtee:version>
+        <xtee:complex>    
+         <xtee:suboperation label="this" title="Algus" type="resource"/>         
+         <xtee:suboperation label="extendApps" title="Taotlused" type="locator" href="alkor2.extendApps.v1" actuate="onLoad"/>
+         <xtee:suboperation label="prolongedApplication" title="Esitan pikendamise taotluse" type="locator" href="alkor2.prolongApp60.v1" actuate="onLoad"/>
+         <xtee:suboperation label="prolongApplication" title="" type="locator" href="alkor2.getApplication.v2" actuate="onLoad"/>
+         <xtee:arc xlink:type="arc" from="this" to="extendApps" title="" show="replace" actuate="onLoad"/>
+         <xtee:arc xlink:type="arc" from="extendApps" to="prolongApplication" title="Tee pikendamise taotlus" show="replace" actuate="onRequest" arcrole="extendApps#xpointer(/keha/apps/*)"/>
+         <xtee:arc xlink:type="arc" from="prolongApplication" to="prolongedApplication" title="" show="replace" actuate="onRequest" />
+         <xtee:arc xlink:type="arc" from="prolongApplication" to="extendApps" title="" show="replace" actuate="onRequest" />
+         <xtee:arc xlink:type="arc" from="prolongedApplication" to="extendApps" title="" show="replace" actuate="onRequest"/>
+         <xtee:substitution from="extendApps#xpointer(id)" to="prolongApplication#xpointer(/keha/id)"/>
+         <xtee:substitution from="prolongApplication#xpointer(/keha/appl/application/id)" to="prolongedApplication#xpointer(/keha/id)"/>
+        </xtee:complex>
+     </operation>
+   </binding>
+  <portType name="defaultPortType">
+   <operation name="newApplication">
+      <documentation>
+        <xtee:title xml:lang="et">Registrikande taotluse esitamine</xtee:title>
+        </documentation>
+      <input message=""/>
+      <output message=""/>
+      </operation>
+    <operation name="myApplications">
+      <documentation>
+        <xtee:title xml:lang="et">Registrikande taotluse jälgimine</xtee:title>
+        </documentation>
+      <input message=""/>
+      <output message=""/>
+      </operation>
+    <operation name="prolongRegentry">
+      <documentation>
+        <xtee:title xml:lang="et">Registrikande pikendamise taotlus(vana)</xtee:title>
+        </documentation>
+      <input message=""/>
+      <output message=""/>
+    </operation>
+    <operation name="newApplication2">
+      <documentation>
+        <xtee:title xml:lang="et">Registrikande taotluse esitamine</xtee:title>
+        </documentation>
+      <input message=""/>
+      <output message=""/>
+   </operation>
+   <operation name="prolong60DayRegentry">
+      <documentation>
+        <xtee:title xml:lang="et">Registrikande pikendamise taotlus (uus)</xtee:title>
+        </documentation>
+      <input message=""/>
+      <output message=""/>
+   </operation>
+   </portType>
+  </definitions>

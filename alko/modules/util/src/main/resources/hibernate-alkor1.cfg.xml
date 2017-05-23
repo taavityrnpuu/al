@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">true</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.SQLServerDialect</property>
+        <property name="hibernate.jdbc.batch_size">50</property>
+        <property name="hibernate.cache.use_second_level_cache">false</property>
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArClientLogin" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArMeasure" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArAaRel" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArJournalParams" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArActorAddCont" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArSysSeqcnt" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArProducttype" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArDocAddBlading" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArRoletype" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArWwwDocActperm" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArDocAddEnquiry" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArActor" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArCapacity" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArMaterial" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArJournalSeq" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArReports" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArCountry" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArVer" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArCityLookup" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArItem" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArSessioncfg" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArEkn" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArIbRel" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArDocAddCommiprot" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArCommeeting" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArSession" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArDocAddStat" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArLtype" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArItemMov" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArActpermType" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArDocAddAppl" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArTpr" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArItRel" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArCommiprotVote" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArCommeetingParticip" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArDocAddActperm" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArAbort" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArJournal" />
+        <mapping class="ee.agri.alkor.util.convert.model.alkor1.ArVeDocAddCommiprot" />
+    </session-factory>
+</hibernate-configuration>

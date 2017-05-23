@@ -1,0 +1,227 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+
+	<bean id="mySessionFactory"
+		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+		scope="singleton">
+		<property name="dataSource" ref="myDataSource" />
+		<property name="configLocation"
+			value="classpath:hibernate.cfg.xml" />
+		<property name="entityInterceptor" ref="myAuditInterceptor"/>
+	</bean>
+
+	<bean id="myAuditInterceptor" class="ee.agri.alkor.impl.AuditInterceptor" />
+
+	<bean id="jndiSessionFactory"
+		class="org.springframework.jndi.JndiObjectFactoryBean"
+		depends-on="mySessionFactory">
+		<property name="jndiName" value="java:alkorHS" />
+	</bean>
+
+
+	<bean id="registryServiceDelegate"
+		class="ee.agri.alkor.service.RegistryServiceDelegate">
+		<property name="service" ref="myRegistryServiceDao" />
+	</bean>
+
+	<bean id="myRegistryServiceDao"
+		class="ee.agri.alkor.impl.RegistryServiceImpl">
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="docRoot" value="@docRoot@" />
+		<property name="baseURI" value="@baseURI@" />
+		<property name="applicationNrBase" value="0" />
+		<property name="pdfCreator" ref="pdfCreator" />
+	</bean>
+
+	<bean id="pdfCreator" class="ee.agri.alkor.impl.PDFCreator">
+		<property name="defaultFont" value="Times" />
+		<property name="titleFont" value="Helvatica" />
+		<property name="defaultDateFormat" value="dd.MM.yyyy" />
+		<property name="logoUrl" value="http://localhost:8080/pub/lovid.gif" />
+		<property name="logoUrl2" value="http://localhost:8080/pub/logo3.png" />
+		<!--<property name="logoUrl" value="http://10.2.0.200:8080/pub/lovid.gif" />-->
+		<property name="contactInfo">
+			<props>
+				<prop key="regnr">70000094</prop>
+				<prop key="phone">605 1710</prop>
+				<prop key="fax">621 1441</prop>
+				<prop key="email">vet@vet.agri.ee</prop>
+				<prop key="address">Väike-Paala 3, 11415 Tallinn</prop>
+				<prop key="url">http://www.vet.agri.ee</prop>
+				<prop key="streetAdr">Väike-Paala 3</prop>
+				<prop key="cityAdr">11415 Tallinn</prop>
+			</props>
+		</property>
+	</bean>
+
+
+	<bean id="classServiceDelegate"
+		class="ee.agri.alkor.service.ClassificatorServiceDelegate">
+		<property name="service" ref="myClassificatorServiceDao" />
+	</bean>
+
+	<bean id="myClassificatorServiceDao"
+		class="ee.agri.alkor.impl.ClassificatorServiceImpl">
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+	</bean>
+
+	<bean id="userServiceDelegate"
+		class="ee.agri.alkor.service.UserManagerServiceDelegate">
+		<property name="service" ref="myUserServiceDao" />
+	</bean>
+
+	<bean id="myUserServiceDao"
+		class="ee.agri.alkor.impl.UserManagerServiceImpl">
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+	</bean>
+
+	<bean id="userDetailsServiceDao"
+		class="ee.agri.alkor.impl.AuthenticationServiceImpl">
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+	</bean>
+
+	<bean id="velocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<value>
+				resource.loader=class
+				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+			</value>
+		</property>
+	</bean>
+
+
+	<bean id="mailSender"
+		class="org.springframework.mail.javamail.JavaMailSenderImpl">
+		<property name="host" value="relay.agri.ee" />
+		<property name="port" value="25" />
+		<property name="username" value="alkoholi.register" />
+		<property name="password" value="ai03rr09" />
+	</bean>
+	
+	<bean id="notEnteredApplicationsJobImpl"
+		class="ee.agri.alkor.impl.NotEnteredApplicationJobs">
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+	</bean>
+
+	<bean id="notificationJobs"
+		class="ee.agri.alkor.impl.EmailNotificationJobs">
+		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
+		<property name="mode" value="@mode@" />
+		<property name="daysBeforeRegistryEntryExpiry" value="60" />
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="mailSender" ref="mailSender" />
+		<property name="velocityEngine" ref="velocityEngine" />
+	</bean>
+
+	<bean id="ExpiredRegEntryJobs"
+		class="ee.agri.alkor.impl.ExpiredRegEntryJobs">
+		<property name="changeReason" value="Registrikanne on aegunud" />
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+	</bean>
+	
+	<bean id="ExpiredExendUntilApplicationJobs"
+		class="ee.agri.alkor.impl.ExendUntilApplicationExpiryNotificationJobs">
+		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
+		<property name="mode" value="@mode@" />
+		<property name="daysBeforeNotificationIsSent" value="1" />
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="mailSender" ref="mailSender" />
+		<property name="velocityEngine" ref="velocityEngine" />
+	</bean>
+	
+	<bean id="notEnteredApplicationsJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="notEnteredApplicationsJobImpl" />
+		<property name="targetMethod" value="deleteNotEnteredApplications" />
+	</bean>
+
+	<bean id="regEntryExpireNotificationJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="notificationJobs" />
+		<property name="targetMethod"
+			value="sendRegistryEntryExpireNotifications" />
+	</bean>
+	
+	<bean id="regEntryExpiredProcessJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="ExpiredRegEntryJobs" />
+		<property name="targetMethod"
+			value="processExpiredRegEntries" />
+	</bean>
+	
+	<bean id="extendUntilApplicationExpiredProcessJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="ExpiredExendUntilApplicationJobs" />
+		<property name="targetMethod"
+			value="sendExendUntilApplicationExpiryNotifications" />
+	</bean>
+
+	<bean id="cronTrigger"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="regEntryExpireNotificationJob" />
+		<!-- run every morning at 6 AM -->
+		<property name="cronExpression" value="0 0 6 * * ?" />
+	</bean>
+	
+	<bean id="cronTrigger2"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="regEntryExpiredProcessJob" />
+		<!-- run every morning at 3 AM -->
+		<property name="cronExpression" value="0 0 3 * * ?" />
+	</bean>
+	
+	<bean id="cronTrigger3"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="extendUntilApplicationExpiredProcessJob" />
+		<!-- run every morning at 5 AM -->
+		<property name="cronExpression" value="0 0 5 * * ?" /> 
+	</bean>
+	
+	<bean id="cronTrigger4"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="notEnteredApplicationsJob" />
+		<!-- run every sunday at 4 AM -->
+		<property name="cronExpression" value="0 0 4 * * ?" />
+	</bean>
+
+	<bean
+		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
+		<property name="triggers">
+			<list>
+				<ref bean="cronTrigger" />
+				<ref bean="cronTrigger2" />
+				<ref bean="cronTrigger3" />
+				<ref bean="cronTrigger4" />
+			</list>
+		</property>
+	</bean>
+
+	<bean id="myDataSource"
+		class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:alkorDS" />
+	</bean>
+
+	<bean id="myTxManager"
+		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+	</bean>
+	
+  <bean id="pgDataSource" class="ee.agri.alkor.impl.DbBean" destroy-method="close">
+    <property name="driverClassName" value="@db.driver@"/>
+    <property name="url" value="@db.url@"/>
+    <property name="username" value="@db.user@"/>
+    <property name="password" value="@db.password@"/>
+  </bean>
+
+	<tx:annotation-driven transaction-manager="myTxManager" />
+
+</beans>

@@ -1,0 +1,668 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!-- edited with XMLSpy v2008 sp1 (http://www.altova.com) by Centre of Registers 
+	and Information Systems (Centre of Registers and Information Systems) -->
+<!-- <?xml-stylesheet type="text/xsl" href="http://incx.dustbite.net/ar3/wsdl-viewer.xsl"?> -->
+<!-- WSDL for AR X-road API -->
+<!-- Version: 0.6.68, date 2010-03-26 09:38, by user martin -->
+<definitions xmlns="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:sawsdl="http://www.w3.org/ns/sawsdl"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:soapenc="http://schemas.xmlsoap.org/soap/encoding/"
+	xmlns:typens="http://producers.arireg.xtee.riik.ee/producer/arireg"
+	xmlns:wsdl="http://www.w3.org/ns/wsdl" xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:xtee="http://x-tee.riik.ee/xsd/xtee.xsd" name="AriregAPI"
+	targetNamespace="http://producers.arireg.xtee.riik.ee/producer/arireg">
+	<types>
+		<xsd:schema xmlns="http://www.w3.org/2001/XMLSchema"
+			targetNamespace="http://producers.arireg.xtee.riik.ee/producer/arireg">
+			<import namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+				schemaLocation="http://x-tee.riik.ee/xsd/xtee.xsd" />
+
+			<complexType name="paringliht_v4_vastus">
+				<sequence>
+					<element name="ettevotjad" type="typens:paringliht_v4_ettevotted">
+						<annotation>
+							<appinfo>
+								<xtee:title>Ettevõtjad</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="leitud_ettevotjate_arv" type="integer">
+						<annotation>
+							<appinfo>
+								<xtee:title>Leitud ettevõtjate arv</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="paringliht_v4_ettevotted">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<sequence>
+							<element maxOccurs="unbounded" minOccurs="0" name="item"
+								type="typens:paringliht_v4_ettevote">
+								<annotation>
+									<appinfo>
+										<xtee:title>Ettevõtja</xtee:title>
+									</appinfo>
+								</annotation>
+							</element>
+						</sequence>
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="paringliht_v4_ettevote">
+				<sequence>
+					<element name="evnimi"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Arinimi"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Ettevõtja ärinimi/nimi</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<xsd:element minOccurs="0" name="oiguslik_vorm"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Oiguslik_vorm_tunnus"
+						type="xsd:string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Õiguslik vorm</xtee:title>
+							</appinfo>
+						</annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="oiguslik_vorm_tekstina"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Oiguslik_vorm_eesti_keeles"
+						type="xsd:string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Õiguslik vorm tekstina</xtee:title>
+							</appinfo>
+						</annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0" name="oigusliku_vormi_alaliik"
+						type="xsd:string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Õigusliku vormi alaliik</xtee:title>
+							</appinfo>
+						</annotation>
+					</xsd:element>
+					<xsd:element minOccurs="0"
+						name="oigusliku_vormi_alaliik_tekstina" type="xsd:string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Õigusliku vormi alaliik tekstina</xtee:title>
+							</appinfo>
+						</annotation>
+					</xsd:element>
+					<element minOccurs="0" name="kehtetud_nimed"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Arinimi"
+						type="typens:paringliht_kehtetudnimed">
+						<annotation>
+							<appinfo>
+								<xtee:title>Ettevõtja kehtetud ärinimed</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="ariregistri_kood"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik_ariregistrikood"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Äriregistri kood</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="staatus"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Staatus_staatus"
+						type="xsd:string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Staatus</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<xsd:element name="staatus_tekstina"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Staatus_staatus_tekstina"
+						type="xsd:string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Staatus tekstina</xtee:title>
+							</appinfo>
+						</annotation>
+					</xsd:element>
+					<element minOccurs="0" name="tegutseb"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Fuusilisest_isikust_ettevõtja_tegutsemise_tunnus"
+						type="xsd:string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Kas FIE tegutseb Y/N</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element minOccurs="0" name="tegutseb_tekstina"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Fuusilisest_isikust_ettevõtja_tegutsemise_tunnus_tekstina"
+						type="xsd:string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Kas FIE tegutseb</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="registrist_kustutamise_aeg" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik_kustutamise_kuupaev"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Registrist kustutamise aeg</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="piirkond"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Registripiirkond"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Piirkond</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="evkapitalid" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Kapitali_liik_suurus"
+						type="typens:paringliht_v4_evkapital">
+						<annotation>
+							<appinfo>
+								<xtee:title>Ettevõtja kapital</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="evaadressid" nillable="true"
+						type="typens:paringliht_v4_evaadress">
+						<annotation>
+							<appinfo>
+								<xtee:title>Ettevõtja aadress</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="esmakande_aeg" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik_esmaregistreerimise_kuupaev"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Esmakande aeg</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="paringliht_v4_paring">
+				<sequence>
+					<element minOccurs="0" name="evnimi"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Arinimi"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Ettevõtja kehtiva ärinime/nime osa</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element minOccurs="0" name="ariregistri_kood"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik_ariregistrikood"
+						type="integer">
+						<annotation>
+							<appinfo>
+								<xtee:title>Ettevõtja täpne registrikood</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element minOccurs="0" name="evarv" type="integer">
+						<annotation>
+							<appinfo>
+								<xtee:title>Päringu vastusesse toodavate ettevõtjate arv
+								</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<xsd:element minOccurs="0" name="keel" type="xsd:string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Klassifikaatorite tõlgete keel</xtee:title>
+							</appinfo>
+						</annotation>
+					</xsd:element>
+				</sequence>
+			</complexType>
+			<complexType name="paringliht_v4_evaadress">
+				<sequence>
+					<element name="asukoht_ettevotja_aadressis" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Aadress</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="asukoha_ehak_kood" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>EHAK kood</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="asukoha_ehak_tekstina" nillable="true" type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>EHAK tekstina</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="indeks_ettevotja_aadressis" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Indeks</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="paringliht_v4_evkapital">
+				<sequence>
+					<element name="kapitali_suurus" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Kapitali_liik_suurus"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Kapital</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="kapitali_valuuta" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Kapitali_liik_valuuta"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Valuuta</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="asutatud_sissemakset_tegemata" nillable="true"
+						type="xsd:boolean">
+						<annotation>
+							<appinfo>
+								<xtee:title>Asutatud sissemakset tegemata?</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+				</sequence>
+			</complexType>
+			<!-- /paringliht_v4 -->
+			<complexType name="paringliht_kehtetudnimed">
+				<complexContent>
+					<restriction base="soapenc:Array">
+						<sequence>
+							<element maxOccurs="unbounded" minOccurs="0" name="evnimi"
+								sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Arinimi"
+								type="typens:paringliht_kehtetunimi">
+								<annotation>
+									<appinfo>
+										<xtee:title>Ettevõtja kehtetu ärinimi</xtee:title>
+									</appinfo>
+								</annotation>
+							</element>
+						</sequence>
+					</restriction>
+				</complexContent>
+			</complexType>
+			<complexType name="paringliht_kehtetunimi">
+				<sequence>
+					<element name="evnimi"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Arinimi"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Nimi</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="algus_kpv"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Kehtivus_alguse_kuupaev"
+						type="date">
+						<annotation>
+							<appinfo>
+								<xtee:title>Kehtivuse algus</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="lopp_kpv"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Kehtivuse_loppkuupaev"
+						type="date">
+						<annotation>
+							<appinfo>
+								<xtee:title>Kehtivuse lõpp</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="paringliht_evkapital">
+				<sequence>
+					<element name="kapitali_suurus" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Kapitali_liik_suurus"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Kapital</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="kapitali_valuuta" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Kapitali_liik_valuuta"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Valuuta</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="paringliht_evaadress">
+				<sequence>
+					<element name="asukoht_ettevotja_aadressis" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Aadress</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="asukoha_ehak_kood" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>EHAK kood</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="indeks_ettevotja_aadressis" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Indeks</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="paringliht_ettevote">
+				<sequence
+					sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Arinimi">
+					<element name="evnimi"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Arinimi"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Ettevõtja ärinimi/nimi</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="kehtetud_nimed" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Arinimi"
+						type="typens:paringliht_kehtetudnimed">
+						<annotation>
+							<appinfo>
+								<xtee:title>Ettevõtja kehtetud ärinimed</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="ariregistri_kood"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik_ariregistrikood"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Äriregistri kood</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="staatus"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Staatus"
+						type="typens:x_evstaatus">
+						<annotation>
+							<appinfo>
+								<xtee:title>Staatus</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="registrist_kustutamise_aeg" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik_kustutamise_kuupaev"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Registrist kustutamise aeg</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="piirkond"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Registripiirkond"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Piirkond</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="evkapitalid" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Kapitali_liik_suurus"
+						type="typens:paringliht_evkapital">
+						<annotation>
+							<appinfo>
+								<xtee:title>Ettevõtja kapital</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="evaadressid" nillable="true"
+						type="typens:paringliht_evaadress">
+						<annotation>
+							<appinfo>
+								<xtee:title>Ettevõtja aadress</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+					<element name="esmakande_aeg" nillable="true"
+						sawsdl:modelReference="https://riha.eesti.ee/riha/onto/ettevotlus.ariregister/2010/r2#Maakohtu_poolt_registreeritud_isik_esmaregistreerimise_kuupaev"
+						type="string">
+						<annotation>
+							<appinfo>
+								<xtee:title>Esmakande aeg</xtee:title>
+							</appinfo>
+						</annotation>
+					</element>
+				</sequence>
+			</complexType>
+			<simpleType name="x_evstaatus">
+				<annotation>
+					<appinfo>
+						<xtee:title>Ettevõtja staatus</xtee:title>
+					</appinfo>
+					<documentation>Võib väljundis vaja minna</documentation>
+				</annotation>
+				<restriction base="string">
+					<enumeration value="K">
+						<annotation>
+							<appinfo>
+								<xtee:title>Kustutatud</xtee:title>
+							</appinfo>
+						</annotation>
+					</enumeration>
+					<enumeration value="L">
+						<annotation>
+							<appinfo>
+								<xtee:title>Likvideerimisel</xtee:title>
+							</appinfo>
+						</annotation>
+					</enumeration>
+					<enumeration value="N">
+						<annotation>
+							<appinfo>
+								<xtee:title>Pankrotis</xtee:title>
+							</appinfo>
+						</annotation>
+					</enumeration>
+					<enumeration value="R">
+						<annotation>
+							<appinfo>
+								<xtee:title>Registrisse kantud</xtee:title>
+							</appinfo>
+						</annotation>
+					</enumeration>
+					<enumeration value="Y">
+						<annotation>
+							<appinfo>
+								<xtee:title>Üle viidud teise registripiirkonda</xtee:title>
+							</appinfo>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+			<simpleType name="x_piirkond">
+				<annotation>
+					<appinfo>
+						<xtee:title>Registripiirkond</xtee:title>
+					</appinfo>
+				</annotation>
+				<restriction base="string">
+					<enumeration value="4">
+						<annotation>
+							<appinfo>
+								<xtee:title>Lääne-Viru</xtee:title>
+							</appinfo>
+						</annotation>
+					</enumeration>
+					<enumeration value="3">
+						<annotation>
+							<appinfo>
+								<xtee:title>Pärnu</xtee:title>
+							</appinfo>
+						</annotation>
+					</enumeration>
+					<enumeration value="1">
+						<annotation>
+							<appinfo>
+								<xtee:title>Tallinn</xtee:title>
+							</appinfo>
+						</annotation>
+					</enumeration>
+					<enumeration value="2">
+						<annotation>
+							<appinfo>
+								<xtee:title>Tartu</xtee:title>
+							</appinfo>
+						</annotation>
+					</enumeration>
+				</restriction>
+			</simpleType>
+		</xsd:schema>
+	</types>
+
+	<message name="paringliht_v4_InputMessage">
+		<part name="keha" type="typens:paringliht_v4_paring" />
+		<part name="asutus" element="xtee:asutus" />
+		<part name="andmekogu" element="xtee:andmekogu" />
+		<part name="isikukood" element="xtee:isikukood" />
+		<part name="id" element="xtee:id" />
+		<part name="nimi" element="xtee:nimi" />
+		<part name="toimik" element="xtee:toimik" />
+	</message>
+	<message name="paringliht_v4_OutputMessage">
+		<part name="paring" type="typens:paringliht_v4_paring" />
+		<part name="keha" type="typens:paringliht_v4_vastus" />
+		<part name="asutus" element="xtee:asutus" />
+		<part name="andmekogu" element="xtee:andmekogu" />
+		<part name="isikukood" element="xtee:isikukood" />
+		<part name="id" element="xtee:id" />
+		<part name="nimi" element="xtee:nimi" />
+		<part name="toimik" element="xtee:toimik" />
+	</message>
+	<!-- Port for AR, "Arireg" -->
+	<portType name="AriregPort">
+		<operation name="paringliht_v4">
+			<documentation>
+				<xtee:title>Ettevõtja lihtandmete päring v4</xtee:title>
+			</documentation>
+			<input message="typens:paringliht_v4_InputMessage" />
+			<output message="typens:paringliht_v4_OutputMessage" />
+		</operation>
+	</portType>
+	<!-- Binding for AR APIs - RPC, SOAP over HTTP -->
+	<binding name="AriregBinding" type="typens:AriregPort">
+		<soap:binding style="rpc"
+			transport="http://schemas.xmlsoap.org/soap/http" />
+		<operation name="paringliht_v4">
+			<xtee:version>v1</xtee:version>
+			<soap:operation soapAction="" />
+			<input>
+				<soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://producers.arireg.xtee.riik.ee/producer/arireg"
+					use="encoded" />
+				<soap:header message="typens:paringliht_v4_InputMessage"
+					part="asutus" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+				<soap:header message="typens:paringliht_v4_InputMessage"
+					part="andmekogu" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+				<soap:header message="typens:paringliht_v4_InputMessage"
+					part="isikukood" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+				<soap:header message="typens:paringliht_v4_InputMessage"
+					part="id" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+				<soap:header message="typens:paringliht_v4_InputMessage"
+					part="nimi" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+				<soap:header message="typens:paringliht_v4_InputMessage"
+					part="toimik" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+			</input>
+			<output>
+				<soap:body encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"
+					namespace="http://producers.arireg.xtee.riik.ee/producer/arireg"
+					use="encoded" />
+				<soap:header message="typens:paringliht_v4_OutputMessage"
+					part="asutus" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+				<soap:header message="typens:paringliht_v4_OutputMessage"
+					part="andmekogu" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+				<soap:header message="typens:paringliht_v4_OutputMessage"
+					part="isikukood" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+				<soap:header message="typens:paringliht_v4_OutputMessage"
+					part="id" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+				<soap:header message="typens:paringliht_v4_OutputMessage"
+					part="nimi" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+				<soap:header message="typens:paringliht_v4_OutputMessage"
+					part="toimik" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+					encodingStyle="http://schemas.xmlsoap.org/soap/encoding/" />
+			</output>
+		</operation>
+	</binding>
+	<!-- Endpoint for AR APIs -->
+	<service name="arireg">
+		<port binding="typens:AriregBinding" name="AriregPort">
+			<soap:address location="http://TURVASERVER/cgi-bin/consumer_proxy" />
+			<xtee:title>Äriregister_uus</xtee:title>
+			<xtee:address producer="arireg" />
+		</port>
+	</service>
+</definitions>

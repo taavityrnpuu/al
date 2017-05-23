@@ -1,0 +1,273 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+
+<!--
+  - Application context containing authentication, channel
+  - security and web URI beans.
+  -
+  - Only used by "filter" artifact.
+  -
+  - $Id: applicationContext-acegi-security.xml,v 1.1.10.2 2017/03/28 07:19:28 karl Exp $
+  -->
+
+<beans>
+
+   <!-- ======================== FILTER CHAIN ======================= -->
+
+	<!--  if you wish to use channel security, add "channelProcessingFilter," in front
+	      of "httpSessionContextIntegrationFilter" in the list below -->
+	<bean id="filterChainProxy" class="org.acegisecurity.util.FilterChainProxy">
+      <property name="filterInvocationDefinitionSource">
+         <value>
+		    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+		    PATTERN_TYPE_APACHE_ANT
+            /**=channelProcessingFilter,httpSessionContextIntegrationFilter,logoutFilter,authenticationProcessingFilter,basicProcessingFilter,securityContextHolderAwareRequestFilter,rememberMeProcessingFilter,anonymousProcessingFilter,exceptionTranslationFilter,filterInvocationInterceptor
+         </value>
+      </property>
+    </bean>  
+
+   <!-- ======================== AUTHENTICATION ======================= -->
+
+   <bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
+      <property name="providers">
+         <list>
+            <ref local="daoAuthenticationProvider"/>
+		      <ref local="x509AuthenticationProvider"/>
+            <ref local="anonymousAuthenticationProvider"/>
+            <ref local="rememberMeAuthenticationProvider"/>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="passwordEncoder" class="org.acegisecurity.providers.encoding.Md5PasswordEncoder"/>
+
+   <bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider" >
+      <property name="userDetailsService" ref="authenticationService"/>
+      <property name="userCache"><ref local="userCache"/></property>
+      <!--property name="passwordEncoder"><ref local="passwordEncoder"/></property-->
+   </bean>
+
+   <bean id="authenticationService" class="ee.agri.alkor.service.AuthenticationServiceDelegate"/>
+
+   <bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
+
+   <bean id="userCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+      <property name="cacheManager">
+         <ref local="cacheManager"/>
+      </property>
+      <property name="cacheName">
+         <value>userCache</value>
+      </property>
+   </bean>
+
+   <bean id="userCache" class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
+      <property name="cache"><ref local="userCacheBackend"/></property>
+   </bean>
+	<bean id="x509AuthenticationProvider" class="org.acegisecurity.providers.x509.X509AuthenticationProvider">
+		<property name="x509AuthoritiesPopulator"><ref local="x509AuthoritiesPopulator"/></property>
+        <!-- <property name="x509UserCache"><ref local="x509UserCache"/></property> -->
+	</bean>
+
+    <bean id="x509UserCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+       <property name="cacheManager">
+          <ref local="cacheManager"/>
+       </property>
+       <property name="cacheName">
+          <value>x509Cache</value>
+       </property>
+    </bean>
+
+	<bean id="x509UserCache" class="org.acegisecurity.providers.x509.cache.EhCacheBasedX509UserCache">
+      <property name="cache"><ref local="x509UserCacheBackend"/></property>
+	</bean>
+
+	<bean id="x509AuthoritiesPopulator" class="ee.agri.alkor.web.server.DaoX509AuthoritiesPopulator">
+		<property name="userDetailsService" ref="authenticationService"/>
+      <!--  <property name="subjectDNRegex"><value>emailAddress=(.*?),</value></property> -->
+	</bean>
+
+   <!-- Automatically receives AuthenticationEvent messages -->
+   <bean id="loggerListener" class="ee.agri.alkor.service.AuthenticationServiceDelegate"/>
+
+   <bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">
+      <property name="authenticationManager"><ref local="authenticationManager"/></property>
+      <property name="authenticationEntryPoint"><ref local="basicProcessingFilterEntryPoint"/></property>
+   </bean>
+
+   <bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">
+      <property name="realmName"><value>Contacts Realm</value></property>
+   </bean>
+
+   <bean id="anonymousProcessingFilter" class="org.acegisecurity.providers.anonymous.AnonymousProcessingFilter">
+      <property name="key"><value>foobar</value></property>
+      <property name="userAttribute"><value>anonymousUser,ROLE_ANONYMOUS</value></property>
+   </bean>
+
+   <bean id="anonymousAuthenticationProvider" class="org.acegisecurity.providers.anonymous.AnonymousAuthenticationProvider">
+      <property name="key"><value>foobar</value></property>
+   </bean>
+
+   <bean id="httpSessionContextIntegrationFilter" class="org.acegisecurity.context.HttpSessionContextIntegrationFilter">
+   </bean>
+
+   <bean id="rememberMeProcessingFilter" class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter">
+      <property name="authenticationManager"><ref local="authenticationManager"/></property>
+      <property name="rememberMeServices"><ref local="rememberMeServices"/></property>
+   </bean>
+
+   <bean id="rememberMeServices" class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
+      <property name="userDetailsService" ref="authenticationService"/>
+      <property name="key"><value>springRocks</value></property>
+   </bean>
+
+   <bean id="rememberMeAuthenticationProvider" class="org.acegisecurity.providers.rememberme.RememberMeAuthenticationProvider">
+      <property name="key"><value>springRocks</value></property>
+   </bean>
+
+   <bean id="logoutFilter" class="org.acegisecurity.ui.logout.LogoutFilter">
+      <constructor-arg value="/"/> <!-- URL redirected to after logout -->
+      <constructor-arg>
+         <list>
+              <ref bean="rememberMeServices"/>
+              <bean class="org.acegisecurity.ui.logout.SecurityContextLogoutHandler"/>
+         </list>
+      </constructor-arg>
+   </bean>
+
+   <bean id="securityContextHolderAwareRequestFilter" class="org.acegisecurity.wrapper.SecurityContextHolderAwareRequestFilter"/>
+
+   <!-- ===================== HTTP CHANNEL REQUIREMENTS ==================== -->
+
+   <!-- You will need to uncomment the "Acegi Channel Processing Filter"
+        <filter-mapping> in web.xml for the following beans to be used -->
+
+   <bean id="channelProcessingFilter" class="org.acegisecurity.securechannel.ChannelProcessingFilter">
+      <property name="channelDecisionManager"><ref local="channelDecisionManager"/></property>
+      <property name="filterInvocationDefinitionSource">
+         <value>
+			    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+				\A/j_acegi_security_check.*\Z=REQUIRES_SECURE_CHANNEL
+				\A/history.html#LoginErrorPage.*\Z=REQUIRES_SECURE_CHANNEL
+				\A/history.html#LoginErrorPage3.*\Z=REQUIRES_SECURE_CHANNEL
+				\A/id.*\Z=REQUIRES_IDSECURE_CHANNEL
+			 	\A/services.*\Z=REQUIRES_INSECURE_CHANNEL
+			 	\A/pub.*\Z=REQUIRES_INSECURE_CHANNEL
+			 	\A/soapmonitor.*\Z=REQUIRES_INSECURE_CHANNEL
+			 	\A/xsd.*\Z=REQUIRES_INSECURE_CHANNEL
+				\A.*\Z=REQUIRES_SECURE_CHANNEL
+         </value>
+      </property>
+   </bean>
+
+   <bean id="channelDecisionManager" class="org.acegisecurity.securechannel.ChannelDecisionManagerImpl">
+      <property name="channelProcessors">
+         <list>
+            <ref local="secureChannelProcessor"/>
+            <ref local="idSecureChannelProcessor"/>
+            <ref local="insecureChannelProcessor"/>
+         </list>
+      </property>
+   </bean>
+
+   <bean id="secureChannelProcessor" class="org.acegisecurity.securechannel.SecureChannelProcessor">
+   	<property name="entryPoint" ref="secureEntry" />
+	</bean>
+   <bean id="idSecureChannelProcessor" class="ee.agri.alkor.web.server.IdSecureChannelProcessor">
+   	<property name="secureKeyword" value="REQUIRES_IDSECURE_CHANNEL" />
+   		<property name="entryPoint" ref="idSecureEntry" />
+   </bean>
+   <bean id="insecureChannelProcessor" class="org.acegisecurity.securechannel.InsecureChannelProcessor" />
+
+   <bean id="secureEntry" class="org.acegisecurity.securechannel.RetryWithHttpsEntryPoint">
+   	<property name="portMapper" ref="httpsRequiredPortMapper" />
+   </bean>
+   <bean id="idSecureEntry" class="ee.agri.alkor.web.server.RetryWithIdEntryPoint">
+   	<property name="portMapper" ref="certRequiredPortMapper" />
+   </bean>
+
+   <bean id="httpsRequiredPortMapper" class="org.acegisecurity.util.PortMapperImpl">
+   	<property name="portMappings">
+   		<map>
+   			<entry key="80" value="8443" />
+   			<entry key="8080" value="8443" />
+   			<entry key="8543" value="8443" />
+   			<entry key="18543" value="18443" />
+   		</map>
+   	</property>
+   </bean>
+   <bean id="certRequiredPortMapper" class="org.acegisecurity.util.PortMapperImpl">
+   	<property name="portMappings">
+   		<map>
+   			<entry key="80" value="8543" />
+   			<entry key="8080" value="8543" />
+    		<entry key="8443" value="8543" />
+    		<entry key="8543" value="8543" />
+    		<entry key="18443" value="18543" />
+    		<entry key="443" value="8543" />
+    		<entry key="8543" value="8543" /> <!-- loopback -->
+   		</map>
+   	</property>
+   </bean>
+
+   <!-- ===================== HTTP REQUEST SECURITY ==================== -->
+
+   <bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
+      <property name="authenticationEntryPoint"><ref local="authenticationProcessingFilterEntryPoint"/></property>
+      <property name="accessDeniedHandler">
+      	<bean class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
+      		<property name="errorPage" value="/accessDenied.jsp"/>
+      	</bean>
+      </property>
+   </bean>
+
+   <bean id="authenticationProcessingFilter" class="ee.agri.alkor.web.server.AuthenticationFilter">
+      <property name="authenticationManager"><ref bean="authenticationManager"/></property>
+      <property name="authenticationFailureUrl"><value>/index.html#LoginErrorPage</value></property>
+      <property name="exceptionMappings">
+      	<props>
+      		<prop key="org.acegisecurity.userdetails.UsernameNotFoundException">/index.html#LoginErrorPage3</prop>
+      		<prop key="ee.agri.alkor.web.server.NoCertificateException">/index.html#LoginErrorPage4</prop>
+      		<prop key="org.acegisecurity.InsufficientAuthenticationException">/index.html#LoginErrorPage5</prop>
+      	</props>
+      </property>
+      <property name="defaultTargetUrl"><value>/index.html</value></property>
+      <property name="filterProcessesUrl"><value>/j_acegi_security_check</value></property>
+      <property name="rememberMeServices"><ref local="rememberMeServices"/></property>
+   </bean>
+
+
+   <bean id="authenticationProcessingFilterEntryPoint" class="org.acegisecurity.ui.webapp.AuthenticationProcessingFilterEntryPoint">
+      <property name="loginFormUrl"><value>/index.html#LoginPage</value></property>
+      <property name="forceHttps"><value>true</value></property>
+   </bean>
+
+   <bean id="httpRequestAccessDecisionManager" class="org.acegisecurity.vote.AffirmativeBased">
+      <property name="allowIfAllAbstainDecisions"><value>false</value></property>
+      <property name="decisionVoters">
+         <list>
+            <ref bean="roleVoter"/>
+         </list>
+      </property>
+   </bean>
+   <!-- An access decision voter that reads ROLE_* configuration settings -->
+   <bean id="roleVoter" class="org.acegisecurity.vote.RoleVoter"/>
+
+   <!-- Note the order that entries are placed against the objectDefinitionSource is critical.
+        The FilterSecurityInterceptor will work from the top of the list down to the FIRST pattern that matches the request URL.
+        Accordingly, you should place MOST SPECIFIC (ie a/b/c/d.*) expressions first, with LEAST SPECIFIC (ie a/.*) expressions last -->
+   <bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
+      <property name="authenticationManager"><ref bean="authenticationManager"/></property>
+      <property name="accessDecisionManager"><ref local="httpRequestAccessDecisionManager"/></property>
+      <property name="objectDefinitionSource">
+         <value>
+			    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
+			    PATTERN_TYPE_APACHE_ANT
+			    /index.html=ROLE_ANONYMOUS,ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP
+				/pub/**=ROLE_ANONYMOUS,ROLE_PUB,ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP
+			    /app/**=ROLE_ANONYMOUS,ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP
+				/**=ROLE_ANONYMOUS,ROLE_PUB,ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP
+	         </value>
+      </property>
+   </bean>
+
+</beans>

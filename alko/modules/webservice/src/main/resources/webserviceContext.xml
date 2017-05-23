@@ -1,0 +1,22 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+	 <bean id="xteeService" class="ee.agri.alkor.xtee.XteeQueryService">
+		<property name="serviceEndpointURL1" value="@xtee.serviceEndpointURL.1@"/>
+		<property name="serviceEndpointURL2" value="@xtee.serviceEndpointURL.2@"/>
+		<property name="queryingEnterpriseRegNr" value="@xtee.queryingEnterpriseRegNr@"/>
+		<property name="queringPersonRegNr" value="@xtee.queringPersonRegNr@"/>
+	  </bean>
+	
+	<bean id="velocityEngine"
+		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+		<property name="velocityProperties">
+			<value>
+				resource.loader=class
+				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+			</value>
+		</property>
+	</bean>
+</beans>

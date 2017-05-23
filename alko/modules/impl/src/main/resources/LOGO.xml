@@ -1,0 +1,73 @@
+		<table columns="2" width="100.0%" align="Right" cellpadding="0.2" cellspacing="0.2" widths="50.0;20.0" borderwidth="0.0" left="false" right="false" top="false" bottom="false">
+
+				<row>
+					<cell borderwidth="0.0" left="true" right="true" top="true" bottom="true" horizontalalign="Default" verticalalign="Default" leading="16.0">
+					</cell>
+					<cell borderwidth="0.0" left="false" right="false" top="false" bottom="false" horizontalalign="Right" verticalalign="Center" leading="16.0">
+						<image url="$this.logoUrl" align="Default" plainwidth="100.0" plainheight="62.0" />
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.0" left="true" right="false" top="false" bottom="false" horizontalalign="Default" verticalalign="Default" leading="10.0">
+					</cell>
+					<cell borderwidth="0.0" left="false" right="false" top="false" bottom="false" horizontalalign="Right" verticalalign="Center" leading="10.0">
+						<chunk leading="18.0" font="$font" size="7.0" fontstyle="bold" align="Default">
+							VETERINAAR- JA TOIDUAMET
+						</chunk>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.0" left="true" right="false" top="false" bottom="false" horizontalalign="Default" verticalalign="Default" leading="10.0">
+					</cell>
+					<cell borderwidth="0.0" left="false" right="false" top="false" bottom="false" horizontalalign="Right" verticalalign="Center" leading="10.0">
+						<chunk leading="18.0" font="$font" size="7.0" fontstyle="bold" align="Default">
+							VETERINARY AND FOOD BOARD
+						</chunk>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.0" left="true" right="false" top="false" bottom="false" horizontalalign="Default" verticalalign="Default" leading="10.0">
+					</cell>
+					<cell borderwidth="0.0" left="false" right="false" top="false" bottom="false" horizontalalign="Right" verticalalign="Center" leading="10.0">
+						<chunk leading="18.0" font="$font" size="7.0" align="Default">
+							reg nr: $this.contactInfo.getProperty('regnr')
+						</chunk>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.0" left="true" right="false" top="false" bottom="false" horizontalalign="Default" verticalalign="Default" leading="10.0">
+					</cell>
+					<cell borderwidth="0.0" left="false" right="false" top="false" bottom="false" horizontalalign="Right" verticalalign="Center" leading="10.0">
+						<chunk leading="18.0" font="$font" size="7.0" align="Default">
+							$this.contactInfo.getProperty('address')
+						</chunk>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.0" left="true" right="false" top="false" bottom="false" horizontalalign="Default" verticalalign="Default" leading="10.0">
+					</cell>
+					<cell borderwidth="0.0" left="false" right="false" top="false" bottom="false" horizontalalign="Right" verticalalign="Center" leading="10.0">
+						<chunk leading="18.0" font="$font" size="7.0" align="Default">
+							tel. $this.contactInfo.getProperty('phone'), fax $this.contactInfo.getProperty('fax')
+						</chunk>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.0" left="true" right="false" top="false" bottom="false" horizontalalign="Default" verticalalign="Default" leading="10.0">
+					</cell>
+					<cell borderwidth="0.0" left="false" right="false" top="false" bottom="false" horizontalalign="Right" verticalalign="Center" leading="10.0">
+						<chunk leading="18.0" font="$font" size="7.0" align="Default">
+							e-post: $this.contactInfo.getProperty('email')
+						</chunk>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.0" left="true" right="false" top="false" bottom="false" horizontalalign="Default" verticalalign="Default" leading="10.0">
+					</cell>
+					<cell borderwidth="0.0" left="false" right="false" top="false" bottom="false" horizontalalign="Right" verticalalign="Center" leading="10.0">
+						<chunk leading="18.0" font="$font" size="7.0" align="Default">
+							$this.contactInfo.getProperty('url')
+						</chunk>
+					</cell>
+				</row>
+			</table>

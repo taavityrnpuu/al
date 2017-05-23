@@ -1,0 +1,724 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<definitions name="AlkorDef" 
+	targetNamespace="http://producers.alkor2.xtee.riik.ee/producer/alkor2" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://producers.alkor2.xtee.riik.ee/producer/alkor2"
+	xmlns:xtee="http://x-tee.riik.ee/xsd/xtee.xsd" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" 
+	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+<types>
+        <xs:schema targetNamespace="http://producers.alkor2.xtee.riik.ee/producer/alkor2" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://x-tee.riik.ee/xsd/xtee.xsd" schemaLocation="xtee.xsd"/>
+
+            <!-- listMethods (X-tee spetsiifiline) 
+            <xs:complexType name="listMethods" />
+                <xs:complexContent>
+                    <xs:restriction base="SOAP-ENC:Array">
+                        <xs:sequence>
+                            <xs:element name="item" type="xs:string" minOccurs="0" maxOccurs="unbounded"/>
+                        </xs:sequence>
+                    </xs:restriction>
+                </xs:complexContent>
+            </xs:complexType>
+            
+ <xs:complexType name="eitlaadib_paring">
+   <xs:sequence>
+     <xs:element name="aruandja" type="tns:aruandja">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Aru andva firma andmed</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="period" type="tns:aruandeperiood">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Aruandeperiood</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="aruanne" type="xs:hexBinary">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Alkoholi liikumise aruanne CSV-kujul failina</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+   </xs:sequence> 
+  </xs:complexType>
+  
+  <xs:complexType name="eitlaadib_vastus">
+   <xs:sequence>
+     <xs:element name="teade" type="xs:string"/>
+
+     <xs:element name="vead" minOccurs="0">
+        <xs:complexType>
+          <xs:complexContent>
+            <xs:restriction base="SOAP-ENC:Array">
+               <xs:sequence>
+                 <xs:element name="item" minOccurs="0" maxOccurs="unbounded" type="tns:reaviga"/>
+               </xs:sequence>
+            </xs:restriction>
+         </xs:complexContent>
+       </xs:complexType>
+     </xs:element>
+   </xs:sequence> 
+  </xs:complexType>
+  
+ <xs:complexType name="aretolaadib_paring">
+   <xs:sequence>
+     <xs:element name="aruandja" type="tns:aruandjakoodiga">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Aru andva firma andmed</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="period" type="tns:aruandeperiood" minOccurs="0">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Aruandeperiood</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="aruanne" type="hexBinary" minOccurs="0">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Alkoholi liikumise aruanne CSV-kujul failina</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+   </xs:sequence> 
+  </xs:complexType>
+  
+ <xs:complexType name="aruandja">
+   <xs:sequence>
+     <xs:element name="name" type="xs:string">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Firma nimi</xtee:title>
+	      <xtee:fieldsize>50</xtee:fieldsize> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="tel" type="xs:string">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Telefon</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="fax" type="xs:string">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Faks</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="email" type="xs:string">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>E-posti aadress</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="address" type="xs:string">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Aadress</xtee:title> 
+	      <xtee:fieldsize>50</xtee:fieldsize>
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+   </xs:sequence> 
+ </xs:complexType>
+ 
+  <xs:complexType name="aruandjakoodiga">
+   <xs:sequence>
+     <xs:element name="reg_nr" type="xs:string">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Äriregistri kood</xtee:title>
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="name" type="xs:string" minOccurs="0">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Firma nimi</xtee:title>
+	      <xtee:fieldsize>50</xtee:fieldsize> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="tel" type="xs:string" minOccurs="0">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Telefon</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="fax" type="xs:string" minOccurs="0">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Faks</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="email" type="xs:string" minOccurs="0">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>E-posti aadress</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="address" type="xs:string" minOccurs="0">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Aadress</xtee:title> 
+	      <xtee:fieldsize>50</xtee:fieldsize>
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+   </xs:sequence> 
+ </xs:complexType>
+ 
+ <xs:complexType name="aruandeperiood">
+     <xs:annotation><xs:appinfo>
+         <xtee:title>Aruandeperiood</xtee:title>
+     </xs:appinfo></xs:annotation>
+     <xs:sequence>
+              <xs:element name="rep_year" type="tns:kalendriaasta">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <xtee:title>Aasta</xtee:title> 
+                  </xs:appinfo>
+                </xs:annotation>
+              </xs:element>
+              <xs:element name="rep_month" type="tns:kalendrikuu">
+                <xs:annotation>
+                  <xs:appinfo>
+                    <xtee:title>Kuu</xtee:title> 
+                  </xs:appinfo>
+                </xs:annotation>
+              </xs:element>
+     </xs:sequence>
+ </xs:complexType>
+
+ 
+ <xs:complexType name="reaviga">
+   <xs:sequence>
+     <xs:element name="rida" type="xs:string">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Rea nr</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+
+     <xs:element name="mure" type="xs:string">
+        <xs:annotation>
+           <xs:appinfo>
+              <xtee:title>Viga</xtee:title> 
+           </xs:appinfo>
+        </xs:annotation>
+     </xs:element>
+   </xs:sequence> 
+  </xs:complexType>
+  
+ <xs:simpleType name="kalendriaasta">
+     <xs:annotation><xs:appinfo>
+         <xtee:title>Aasta</xtee:title>
+     </xs:appinfo></xs:annotation>
+     <xs:restriction base="xs:string">
+         <pattern value="\d{4}"/>
+     </xs:restriction>
+ </xs:simpleType>
+
+ <xs:simpleType name="kalendrikuu">
+     <xs:annotation><xs:appinfo>
+         <xtee:title>Kuu</xtee:title>
+     </xs:appinfo></xs:annotation>
+     <xs:restriction base="xs:string">
+         <xs:enumeration value="1">
+            <xs:annotation><xs:appinfo>
+               <xtee:title>Jaanuar</xtee:title>
+            </xs:appinfo></xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="2">
+            <xs:annotation><xs:appinfo>
+               <xtee:title>Veebruar</xtee:title>
+            </xs:appinfo></xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="3">
+            <xs:annotation><xs:appinfo>
+               <xtee:title>Märts</xtee:title>
+            </xs:appinfo></xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="4">
+            <xs:annotation><xs:appinfo>
+               <xtee:title>Aprill</xtee:title>
+            </xs:appinfo></xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="5">
+            <xs:annotation><xs:appinfo>
+               <xtee:title>Mai</xtee:title>
+            </xs:appinfo></xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="6">
+            <xs:annotation><xs:appinfo>
+               <xtee:title>Juuni</xtee:title>
+            </xs:appinfo></xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="7">
+            <xs:annotation><xs:appinfo>
+               <xtee:title>Juuli</xtee:title>
+            </xs:appinfo></xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="8">
+            <xs:annotation><xs:appinfo>
+               <xtee:title>August</xtee:title>
+            </xs:appinfo></xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="9">
+            <xs:annotation><xs:appinfo>
+               <xtee:title>September</xtee:title>
+            </xs:appinfo></xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="10">
+            <xs:annotation><xs:appinfo>
+               <xtee:title>Oktoober</xtee:title>
+            </xs:appinfo></xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="11">
+            <xs:annotation><xs:appinfo>
+               <xtee:title>November</xtee:title>
+            </xs:appinfo></xs:annotation>
+         </xs:enumeration>
+         <xs:enumeration value="12">
+            <xs:annotation><xs:appinfo>
+               <xtee:title>Detsember</xtee:title>
+            </xs:appinfo></xs:annotation>
+         </xs:enumeration>
+
+     </xs:restriction>
+ </xs:simpleType>
+ 
+            <!-- Moka päring -->
+            <xs:complexType name="MokaQuery">
+                <xs:sequence>
+                    <xs:element name="Moka" type="tns:MokaType"/>
+                </xs:sequence>
+            </xs:complexType>
+
+            <!-- Moka päringu vastus -->
+            <xs:complexType name="MokaResponse">
+                <xs:all>
+                    <xs:element name="teade" type="xs:string" nillable="true">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <xtee:title>Teade</xtee:title>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="kood" type="xs:int">
+                        <xs:annotation>
+                            <xs:appinfo>
+                                <xtee:title>kood</xtee:title>
+                            </xs:appinfo>
+                        </xs:annotation>
+                    </xs:element>
+                </xs:all>
+            </xs:complexType>
+
+            <xs:complexType name="MokaType">
+                <xs:annotation>
+                    <xs:documentation>Asutustele kontoliikumistest teavitamise formaat</xs:documentation>
+                </xs:annotation>
+
+                <xs:all>
+                    <xs:element name="Treasury" type="tns:Treasury"/>
+                    <xs:element name="Payer" type="tns:Payer">
+                        <xs:annotation>
+                            <xs:documentation>Maksja info</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Receiver" type="tns:Receiver">
+                        <xs:annotation>
+                            <xs:documentation>Saaja info</xs:documentation>
+                        </xs:annotation>
+                    </xs:element>
+                    <xs:element name="Payment" type="tns:Payment"/>
+                    <xs:element name="TreasuryClassif" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Eelarveklassifikaator, mis näitab, millise eelarvereaga on tehing
+                                seotud</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="0"/>
+                                <xs:maxLength value="100"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="PaymentDesc" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Tehinguinfo / maksjapoolne selgitus.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="0"/>
+                                <xs:maxLength value="255"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:all>
+            </xs:complexType>
+
+            <xs:complexType name="Treasury">
+                <xs:all>
+                    <xs:element name="DocumentNum">
+                        <xs:annotation>
+                            <xs:documentation>Dokumendi number.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="0"/>
+                                <xs:maxLength value="50"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="OrderNum">
+                        <xs:annotation>
+                            <xs:documentation>Tehingu Riigikassapoolne unikaalne töökood
+                                (arhiveerimistunnus).</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="1"/>
+                                <xs:maxLength value="20"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="BankRef">
+                        <xs:annotation>
+                            <xs:documentation>Tehingu pangapoolne arhiveerimistunnus juhul, kui on sooritatud panga
+                                vahendusel.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="0"/>
+                                <xs:maxLength value="20"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:all>
+            </xs:complexType>
+            <xs:complexType name="Payer">
+                <xs:all>
+                    <xs:element name="Name">
+                        <xs:annotation>
+                            <xs:documentation>Maksja nimi.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="0"/>
+                                <xs:maxLength value="80"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="RegNum">
+                        <xs:annotation>
+                            <xs:documentation>Maksja id.-kood (isikukood, asutuse/ettevõtte reg.
+                                nr.).</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="0"/>
+                                <xs:maxLength value="15"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="AccountNum" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Maksja arvelduskonto number.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="0"/>
+                                <xs:maxLength value="35"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="RefNum" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Maksja viitenumber, mille alusel saab tehingu siduda teise
+                                infosüsteemiga.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="0"/>
+                                <xs:maxLength value="20"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="TransmissionDate" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Tehingu Maksjapoolne väärtuspäev.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:length value="10"/>
+                                <xs:pattern value="\d{2}/\d{2}/\d{4}"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:all>
+            </xs:complexType>
+            <xs:complexType name="Receiver">
+                <xs:all>
+                    <xs:element name="Name"  minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Saaja nimi.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="0"/>
+                                <xs:maxLength value="80"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="RegNum"  minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Saaja id.-kood (isikukood, asutuse/ettevõtte reg. nr.).</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="0"/>
+                                <xs:maxLength value="15"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="AccountNum" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Saaja arvelduskonto number.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="0"/>
+                                <xs:maxLength value="35"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="RefNum" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Saaja viitenumber.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:minLength value="0"/>
+                                <xs:maxLength value="20"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="ReceptionDate" minOccurs="0">
+                        <xs:annotation>
+                            <xs:documentation>Tehingu teostamise kuupäev.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:length value="10"/>
+                                <xs:pattern value="\d{2}/\d{2}/\d{4}"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:all>
+            </xs:complexType>
+            <xs:complexType name="Payment">
+                <xs:all>
+                    <xs:element name="Type">
+                        <xs:annotation>
+                            <xs:documentation>Tehingu tüüp C või D näitab, kas tegemist on kreedit- või deebetkandega konto omaniku (asutuse) poolt vaadatuna.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:length value="1"/>
+                                <xs:enumeration value="C"/>
+                                <xs:enumeration value="D"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="BaseCurrencyAmount">
+                        <xs:annotation>
+                            <xs:documentation>Summa baasvaluutas.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:decimal">
+                                <xs:totalDigits value="15"/>
+                                <xs:fractionDigits value="2"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="Amount">
+                        <xs:annotation>
+                            <xs:documentation>Summa valuutas.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:decimal">
+                                <xs:totalDigits value="15"/>
+                                <xs:fractionDigits value="2"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                    <xs:element name="currency">
+                        <xs:annotation>
+                            <xs:documentation>Valuuta kood ISO 4217 formaadis.</xs:documentation>
+                        </xs:annotation>
+                        <xs:simpleType>
+                            <xs:restriction base="xs:string">
+                                <xs:pattern value="[a-zA-Z]{3}"/>
+                            </xs:restriction>
+                        </xs:simpleType>
+                    </xs:element>
+                </xs:all>
+            </xs:complexType>
+
+        </xs:schema>
+    </types>
+    <portType name="aretoPortType">
+        <!-- X-tee teenuse meetodite paringu teenus -->
+        <operation name="listMethods">
+            <documentation>
+                <xtee:title>Meetodite nimekiri</xtee:title>
+            </documentation>
+            <input message="tns:listMethods"/>
+            <output message="tns:listMethodsResponse"/>
+        </operation>
+        
+         <operation name="eitlaadib">
+    <documentation>
+       <xtee:title xml:lang="et">Alkoholi liikumise aruande esitamine hulgifirmast</xtee:title> 
+       <xtee:actiontitle>Laadi andmed</xtee:actiontitle>
+    </documentation>
+    <input message="tns:eitlaadib" /> 
+    <output message="tns:eitlaadibResponse" /> 
+ </operation>
+        
+        <!-- Riigikassa kiirteavituse(Moka) "push" teenus -->
+        <operation name="transactionStatement">
+            <documentation>
+                <xtee:title>Riigikassa poolt edastatava kiirteavituse teenus</xtee:title>
+            </documentation>
+            <input message="tns:transactionStatement"/>
+            <output message="tns:transactionStatementResponse"/>
+        </operation>
+    </portType>
+
+    <binding name="aretoBinding" type="tns:aretoPortType">
+        <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http"/>
+
+        <!--operation name="listMethods">
+            <xtee:version>v1</xtee:version>
+            <input>
+                <soap:body use="encoded" namespace="http://producers.test.xtee.riik.ee/producer/treasury" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body use="encoded" namespace="http://producers.test.xtee.riik.ee/producer/treasury" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation-->
+        <operation name="transactionStatement">
+            <xtee:version>v1</xtee:version>
+            <input>
+                <soap:body parts="keha" use="encoded" namespace="http://producers.test.xtee.riik.ee/producer/treasury" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:transactionStatement" part="asutus" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:transactionStatement" part="andmekogu" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:transactionStatement" part="isikukood" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:transactionStatement" part="id" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:transactionStatement" part="nimi" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:transactionStatement" part="toimik" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </input>
+            <output>
+                <soap:body parts="paring keha" use="encoded" namespace="http://producers.test.xtee.riik.ee/producer/treasury" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:transactionStatementResponse" part="asutus" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:transactionStatementResponse" part="andmekogu" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:transactionStatementResponse" part="isikukood" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:transactionStatementResponse" part="id" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:transactionStatementResponse" part="nimi" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:transactionStatementResponse" part="toimik" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+            </output>
+        </operation>
+    </binding>
+
+    <!-- X-tee listMethods sõnum -->
+    <message name="listMethods"/>
+
+    <!--X-tee listMethods sõnumi vastus -->
+    <message name="listMethodsResponse">
+        <part name="keha" type="tns:listMethods"/>
+    </message>
+    
+ <message name="eitlaadib">
+   <part name="keha" type="tns:eitlaadib_paring" /> 
+        <part name="asutus" element="xtee:asutus"/>
+        <part name="andmekogu" element="xtee:andmekogu"/>
+        <part name="isikukood" element="xtee:isikukood"/>
+        <part name="id" element="xtee:id"/>
+        <part name="nimi" element="xtee:nimi"/>
+        <part name="toimik" element="xtee:toimik"/>
+ </message>
+ 
+ <message name="eitlaadibResponse">
+   <part name="paring" type="tns:eitlaadib_paring" /> 
+   <part name="keha" type="tns:eitlaadib_vastus" /> 
+        <part name="asutus" element="xtee:asutus"/>
+        <part name="andmekogu" element="xtee:andmekogu"/>
+        <part name="isikukood" element="xtee:isikukood"/>
+        <part name="id" element="xtee:id"/>
+        <part name="nimi" element="xtee:nimi"/>
+        <part name="toimik" element="xtee:toimik"/>
+ </message>
+
+    <message name="transactionStatement">
+        <part name="keha" type="tns:MokaQuery"/>
+        <part name="asutus" element="xtee:asutus"/>
+        <part name="andmekogu" element="xtee:andmekogu"/>
+        <part name="isikukood" element="xtee:isikukood"/>
+        <part name="id" element="xtee:id"/>
+        <part name="nimi" element="xtee:nimi"/>
+        <part name="toimik" element="xtee:toimik"/>
+    </message>
+    <message name="transactionStatementResponse">
+        <part name="paring" type="tns:MokaQuery"/>
+        <part name="keha" type="tns:MokaResponse"/>
+        <part name="asutus" element="xtee:asutus"/>
+        <part name="andmekogu" element="xtee:andmekogu"/>
+        <part name="isikukood" element="xtee:isikukood"/>
+        <part name="id" element="xtee:id"/>
+        <part name="nimi" element="xtee:nimi"/>
+        <part name="toimik" element="xtee:toimik"/>
+    </message>
+
+    <service name="aretoService">
+        <port name="aretoPort" binding="tns:aretoBinding">
+            <soap:address location="http://213.184.49.195/cgi-bin/consumer_proxy"/>
+            <xtee:title>Riigikassa kiirteavitusteenus</xtee:title>
+            <xtee:title xml:lang="en">Areto service</xtee:title>
+            <xtee:address producer="alkor2"/>
+        </port>
+    </service> 
+</definitions>

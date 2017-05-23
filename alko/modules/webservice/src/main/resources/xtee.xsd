@@ -1,0 +1,428 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!-- 
+ 
+X-tee nimeruumi http://x-tee.riik.ee/xsd/xtee.xsd kirjeldav skeem
+
+2006-09-28
+
+--> 
+<schema xmlns="http://www.w3.org/2001/XMLSchema"
+        xmlns:xlink="http://www.w3.org/1999/xlink"
+        targetNamespace="http://x-tee.riik.ee/xsd/xtee.xsd"
+        xmlns:xtee="http://x-tee.riik.ee/xsd/xtee.xsd"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/">
+
+<!-- prefiks xml -->
+<import namespace="http://www.w3.org/XML/1998/namespace"
+	schemaLocation="http://www.w3.org/2001/xml.xsd"/>
+<!-- prefiks xlink -->
+<import namespace="http://www.w3.org/1999/xlink"
+        schemaLocation="http://x-tee.riik.ee/xsd/xlink.xsd"/>
+<!-- SOAP-ENC -->
+<import namespace="http://schemas.xmlsoap.org/soap/encoding/"
+	schemaLocation="http://schemas.xmlsoap.org/soap/encoding/"/>
+
+<!-- Päise elemendid ja tyybid -->
+
+  <complexType name="hdrstd">
+    <sequence>
+
+        <element name="asutus" type="string">
+           <annotation>
+              <documentation>Asutuse lühinimi</documentation>
+           </annotation>
+        </element>
+
+        <element name="andmekogu" type="string">
+           <annotation>
+              <documentation>Andmekogu lühinimi</documentation>
+           </annotation>
+        </element>
+
+        <element name="isikukood" type="string">
+           <annotation>
+              <documentation>Riigi kahetäheline kood ja päringu sooritaja isikukood</documentation>
+           </annotation>
+        </element>
+
+        <element name="id" type="string">
+           <annotation>
+              <documentation>Päringu nonss</documentation>
+           </annotation>
+        </element>
+
+        <element name="nimi" type="string">
+           <annotation>
+              <documentation>Päringu nimi</documentation>
+           </annotation>
+        </element>
+
+        <element name="toimik" type="string" minOccurs="0">
+           <annotation>
+              <documentation>Toimik</documentation>
+           </annotation>
+        </element>
+
+     </sequence>
+ </complexType>
+
+
+        <element name="asutus" type="string">
+           <annotation>
+              <documentation>Asutuse lühinimi</documentation>
+           </annotation>
+        </element>
+
+        <element name="andmekogu" type="string">
+           <annotation>
+              <documentation>Andmekogu lühinimi</documentation>
+           </annotation>
+        </element>
+
+        <element name="isikukood" type="string">
+           <annotation>
+              <documentation>Päringu sooritaja isikukood ja selle ees isikukoodi väljastanud riigi kahekohaline kood</documentation>
+           </annotation>
+        </element>
+
+        <element name="ametnik" type="string">
+           <annotation>
+              <documentation>Päringu sooritaja isikukood</documentation>
+           </annotation>
+        </element>
+
+        <element name="id" type="string">
+           <annotation>
+              <documentation>Päringu nonss</documentation>
+           </annotation>
+        </element>
+
+        <element name="nimi" type="string">
+           <annotation>
+              <documentation>Päringu nimi</documentation>
+           </annotation>
+        </element>
+
+        <element name="toimik" type="string">
+           <annotation>
+              <documentation>Päringuga seotud toimiku number</documentation>
+           </annotation>
+        </element>
+
+        <element name="allasutus" type="string">
+           <annotation>
+              <documentation>Esindatava juriidilise isiku registrikood</documentation>
+           </annotation>
+        </element>
+
+        <element name="amet" type="string">
+           <annotation>
+              <documentation>Päringu sooritaja amet</documentation>
+           </annotation>
+        </element>
+
+        <element name="autentija" type="string">
+           <annotation>
+              <documentation>Autentimisviis</documentation>
+           </annotation>
+        </element>
+
+        <element name="ametniknimi" type="string">
+           <annotation>
+              <documentation>Päringu sooritaja nimi</documentation>
+           </annotation>
+        </element>
+
+        <element name="asynkroonne" type="boolean">
+           <annotation>
+              <documentation>Asynkroonsus</documentation>
+           </annotation>
+        </element>
+
+
+
+<!-- Elemente ja operatsioone kirjeldavad elemendid -->
+
+        <element name="title">
+           <annotation>
+              <documentation>Pealkiri</documentation>
+           </annotation>
+           <complexType>
+              <simpleContent>
+                 <extension base="string">
+                    <attribute ref="xml:lang" default="et"/>              
+                 </extension>
+               </simpleContent>
+           </complexType>
+        </element>
+
+        <element name="notes">
+           <annotation>
+              <documentation>Märkused kasutajale</documentation>
+           </annotation>
+           <complexType>
+              <simpleContent>
+                 <extension base="string">
+                    <attribute ref="xml:lang" default="et"/>              
+                 </extension>
+               </simpleContent>
+           </complexType>
+        </element>
+
+        <element name="technotes">
+           <annotation>
+              <documentation>Märkused arendajale</documentation>
+           </annotation>
+           <complexType>
+              <simpleContent>
+                 <extension base="string">
+                    <attribute ref="xml:lang" default="et"/>              
+                 </extension>
+               </simpleContent>
+           </complexType>
+        </element>
+
+        <element name="ref" type="string">
+           <annotation>
+              <documentation>Elemendi nimi, millega antud element on seotud</documentation>
+           </annotation>
+        </element>
+
+        <element name="wildcard">
+           <annotation>
+              <documentation>Lubatud metasümbolite tähised</documentation>
+           </annotation>
+           <simpleType>
+              <restriction base="string">
+                 <pattern value="[*?-PS]+"/>
+              </restriction>
+           </simpleType>
+        </element>
+
+        <element name="version">
+           <annotation>
+              <documentation>Versioon</documentation>
+           </annotation>
+           <simpleType>
+              <restriction base="string">
+                 <pattern value="v\d+"/>
+              </restriction>
+           </simpleType>
+        </element>
+
+        <element name="nocontent" type="string">
+           <annotation>
+              <documentation>Tühjade väljade tähendus</documentation>
+           </annotation>
+        </element>
+
+        <element name="requirecontent" type="string">
+           <annotation>
+              <documentation>Tühjade väljade tähendus</documentation>
+           </annotation>
+        </element>
+
+        <element name="address">
+           <annotation>
+              <documentation>Pordi aadress</documentation>
+           </annotation>
+           <complexType>
+               <attribute name="producer" type="string"/>              
+           </complexType>
+        </element>
+
+          <complexType name="legacy_response">
+            <sequence>
+              <element name="url" type="xtee:url">
+                 <annotation><appinfo>
+                    <xtee:title>Infosüsteemi sissepääsu URL</xtee:title>
+                 </appinfo></annotation>
+              </element>
+            </sequence>
+          </complexType>
+
+<!-- Mittetehniline veateade -->
+  
+      <complexType name="invalidInput">
+        <sequence>
+          <element name="faultCode" type="string">
+            <annotation>
+              <appinfo>
+                <xtee:title>Kood</xtee:title>
+              </appinfo>
+            </annotation>
+          </element>
+          <element name="faultString" type="string">
+            <annotation>
+              <appinfo>
+                <xtee:title>Teade</xtee:title>
+              </appinfo>
+            </annotation>
+          </element>
+        </sequence>
+      </complexType>
+
+<!-- Komplekspäringu kirjelduse elemendid -->
+
+        <element name="complex">
+           <annotation>
+              <documentation>Komplekspäringu osapäringute kasutamise kirjeldus</documentation>
+           </annotation>
+           <complexType>
+              <sequence>
+                 <element name="suboperation" maxOccurs="unbounded">
+                    <annotation>
+                       <documentation>Viide osapäringule</documentation>
+                    </annotation>
+                    <complexType>
+                       <attribute ref="xlink:type"/>
+                       <attribute ref="xlink:title"/>
+                       <attribute ref="xlink:href"/>
+                       <attribute ref="xlink:label"/>
+                       <attribute name="actuate" type="string"/>
+                    </complexType>
+                 </element>
+
+                 <element name="arc" maxOccurs="unbounded">
+                    <annotation>
+                        <documentation>Kahe osapäringu järgnevus</documentation>
+                    </annotation>
+                    <complexType> 
+                       <attribute ref="xlink:type" fixed="arc"/>
+                       <attribute ref="xlink:title"/>
+                       <attribute ref="xlink:from"/>
+                       <attribute ref="xlink:to"/>
+                       <attribute ref="xlink:show"/>
+                       <attribute ref="xlink:actuate"/>
+                    </complexType>
+                 </element>
+
+                 <element name="substitution" minOccurs="0" maxOccurs="unbounded">
+                    <annotation>
+                        <documentation>Parameetri väärtustamine</documentation>
+                    </annotation>
+                    <complexType>
+                        <attribute name="from" type="string"/>
+                        <attribute name="to" type="string"/>
+                        <attribute name="when" type="string"/>
+                    </complexType>
+                 </element>
+  
+              </sequence> 
+              <attribute ref="xlink:type" fixed="extended"/>
+
+           </complexType>
+        </element>
+
+
+<!-- Tüübid -->
+   
+        <simpleType name = "jpg">
+           <annotation><appinfo>
+             <xtee:title>JPEG formaadis pilt</xtee:title>
+           </appinfo></annotation>
+           <restriction base="base64Binary"/>
+        </simpleType>
+
+        <simpleType name = "gif">
+           <annotation><appinfo>
+             <xtee:title>GIF formaadis pilt</xtee:title>
+           </appinfo></annotation>
+           <restriction base="base64Binary"/>
+        </simpleType>
+
+        <simpleType name = "xml">
+           <annotation><appinfo>
+             <xtee:title>XMLina kasutatav tekst</xtee:title>
+           </appinfo></annotation>
+           <restriction base="string"/>
+        </simpleType>
+
+        <simpleType name = "txt">
+           <annotation><appinfo>
+             <xtee:title>Tekstifail</xtee:title>
+           </appinfo></annotation>
+           <restriction base="string"/>
+        </simpleType>
+
+        <simpleType name = "csv">
+           <annotation><appinfo>
+             <xtee:title>CSV-vormingus fail</xtee:title>
+           </appinfo></annotation>
+           <restriction base="string"/>
+        </simpleType>
+
+        <simpleType name = "maakond">
+           <annotation><appinfo>
+             <xtee:title>Maakond</xtee:title>
+             <xtee:technotes>Maakonna kood EHAKis</xtee:technotes>
+           </appinfo></annotation>
+           <restriction base="string">
+              <pattern value="\d{4}"/>
+           </restriction>
+        </simpleType>
+
+        <simpleType name = "vald">
+           <annotation><appinfo>
+             <xtee:title>Vald</xtee:title>
+             <xtee:technotes>Valla kood EHAKis</xtee:technotes>
+           </appinfo></annotation>
+           <restriction base="string">
+              <pattern value="\d{4}"/>
+           </restriction>
+        </simpleType>
+
+        <simpleType name = "asula">
+           <annotation><appinfo>
+             <xtee:title>Asula</xtee:title>
+             <xtee:technotes>Asula kood EHAKis</xtee:technotes>
+           </appinfo></annotation>
+           <restriction base="string">
+              <pattern value="\d{4}"/>
+           </restriction>
+        </simpleType>
+
+        <simpleType name = "ehak">
+           <annotation><appinfo>
+             <xtee:title>Haldusüksus</xtee:title>
+             <xtee:technotes>Haldusüksuse kood EHAKis (võib olla nii maakond, vald kui ka asula)</xtee:technotes>
+           </appinfo></annotation>
+           <restriction base="string">
+              <pattern value="\d{4}"/>
+           </restriction>
+        </simpleType>
+
+        <simpleType name = "tanav">
+           <annotation><appinfo>
+             <xtee:title>Tänav</xtee:title>
+           </appinfo></annotation>
+           <restriction base="string"/>
+        </simpleType>
+
+        <simpleType name = "postiindeks">
+           <annotation><appinfo>
+             <xtee:title>Postiindeks</xtee:title>
+           </appinfo></annotation>
+           <restriction base="string">
+              <pattern value="\d{5}"/>
+           </restriction>
+        </simpleType>
+
+        <simpleType name = "url">
+           <annotation><appinfo>
+             <xtee:title>Link</xtee:title>
+             <xtee:technotes>WWW URL</xtee:technotes>
+           </appinfo></annotation>
+           <restriction base="anyURI"/>
+        </simpleType>
+
+        <complexType name="ArrayOfString">
+            <complexContent>
+                <restriction base="SOAP-ENC:Array">
+                   <attribute ref="SOAP-ENC:arrayType" wsdl:arrayType="string[]"/>
+                </restriction>
+            </complexContent>
+        </complexType>
+
+</schema>

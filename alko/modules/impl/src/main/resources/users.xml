@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE beans PUBLIC "-//SPRING//DTD BEAN//EN" "http://www.springframework.org/dtd/spring-beans.dtd">
+<beans>
+  	<import resource="classes.xml"/>
+
+  	<bean id="mySubject" class="ee.agri.alkor.model.Person">
+		<property name="firstName" value="Admin" />
+		<property name="lastName" value="Admin" />
+		<property name="registrationId" value="12345678" />
+	</bean>
+	<bean id="rootUser" class="ee.agri.alkor.model.SystemUser">
+		<property name="name" value="admin" />
+		<property name="password" value="mko0nji9" />
+		<property name="person" ref="mySubject" />
+		<property name="active">
+		<value type="java.lang.Boolean">true</value>
+		</property>
+		<property name="groups">
+			<set>
+				<bean class="ee.agri.alkor.model.UserGroup">
+					<property name="groupClass" ref="group.regWorker" />
+				</bean>
+				<bean class="ee.agri.alkor.model.UserGroup">
+					<property name="groupClass" ref="group.classAdm" />
+				</bean>
+				<bean class="ee.agri.alkor.model.UserGroup">
+					<property name="groupClass" ref="group.usrAdm" />
+				</bean>
+			</set>
+		</property>
+		
+	</bean>
+
+	<!-- Ettevotte portaalist taotluse esitamisel kasutatav kasutaja -->
+	
+	<bean id="eitUser" class="ee.agri.alkor.model.SystemUser">
+		<property name="name" value="EIT" />
+		<property name="password" value="zaq1xsw2" />
+		<property name="active">
+        <value type="java.lang.Boolean">true</value>
+        </property>
+		<property name="groups">
+			<set>
+				<bean class="ee.agri.alkor.model.UserGroup">
+					<property name="groupClass" ref="group.regWorker" />
+				</bean>
+			</set>
+		</property>
+	</bean>
+
+  	<bean id="sig1Subject" class="ee.agri.alkor.model.Person">
+		<property name="firstName" value="Ago" />
+		<property name="lastName" value="Pärtel" />
+		<property name="occupation" value="Peadirektor" />
+	</bean>
+	<bean id="sig1User" class="ee.agri.alkor.model.SystemUser">
+		<property name="name" value="agop" />
+		<property name="password" value="zaq1xsw2" />
+		<property name="person" ref="sig1Subject" />
+		<property name="active">
+        <value type="java.lang.Boolean">true</value>
+        </property>
+		<property name="groups">
+			<set>
+				<bean class="ee.agri.alkor.model.UserGroup">
+					<property name="groupClass" ref="group.docSigner" />
+				</bean>
+			</set>
+		</property>
+	</bean>
+  	<bean id="sig2Subject" class="ee.agri.alkor.model.Person">
+		<property name="firstName" value="Katrin" />
+		<property name="lastName" value="Reili" />
+		<property name="occupation" value="Peadirektori asetäitja" />
+	</bean>
+	<bean id="sig2User" class="ee.agri.alkor.model.SystemUser">
+		<property name="name" value="katrinr" />
+		<property name="password" value="zaq1xsw2" />
+		<property name="person" ref="sig2Subject" />
+		<property name="active">
+        <value type="java.lang.Boolean">true</value>
+        </property>
+		<property name="groups">
+			<set>
+				<bean class="ee.agri.alkor.model.UserGroup">
+					<property name="groupClass" ref="group.docSigner" />
+				</bean>
+			</set>
+		</property>
+	</bean>
+  	<bean id="sig3Subject" class="ee.agri.alkor.model.Person">
+		<property name="firstName" value="Raimond" />
+		<property name="lastName" value="Strastin" />
+		<property name="occupation" value="Peadirektori asetäitja" />
+	</bean>
+	<bean id="sig3User" class="ee.agri.alkor.model.SystemUser">
+		<property name="name" value="raimonds" />
+		<property name="password" value="zaq1xsw2" />
+		<property name="person" ref="sig3Subject" />
+		<property name="active">
+        <value type="java.lang.Boolean">true</value>
+        </property>
+		<property name="groups">
+			<set>
+				<bean class="ee.agri.alkor.model.UserGroup">
+					<property name="groupClass" ref="group.docSigner" />
+				</bean>
+			</set>
+		</property>
+	</bean>
+
+	<bean id="users" class="ee.agri.alkor.model.ListHolder">
+		<property name="list">
+			<list>
+				<ref bean="rootUser" />
+				<ref bean="sig1User" />
+				<ref bean="sig2User" />
+				<ref bean="sig3User" />
+			</list>
+		</property>
+	</bean>
+</beans>

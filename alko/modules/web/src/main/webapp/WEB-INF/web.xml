@@ -1,0 +1,318 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE web-app PUBLIC "-//Sun Microsystems, Inc.//DTD Web Application 2.3//EN" "http://java.sun.com/dtd/web-app_2_3.dtd">
+
+<web-app>
+
+
+	<display-name>Riiklik Alkoholiregister</display-name>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/applicationContext-acegi-security.xml
+			classpath:applicationContext.xml
+		</param-value>
+	</context-param>
+	<!-- <filter> <filter-name>RequestDumpFilter</filter-name> <filter-class>ee.agri.alkor.web.server.RequestDumpFilter</filter-class> 
+		</filter> -->
+
+	<filter>
+		<filter-name>Acegi Filter Chain Proxy</filter-name>
+		<filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
+		<init-param>
+			<param-name>targetClass</param-name>
+			<param-value>org.acegisecurity.util.FilterChainProxy</param-value>
+		</init-param>
+	</filter>
+
+	<!-- <filter-mapping> <filter-name>RequestDumpFilter</filter-name> <url-pattern>/*</url-pattern> 
+		</filter-mapping> -->
+
+
+	<filter-mapping>
+		<filter-name>Acegi Filter Chain Proxy</filter-name>
+		<url-pattern>/*</url-pattern>
+	</filter-mapping>
+
+	<filter>
+		<filter-name>CAS Validation Filter</filter-name>
+		<filter-class>org.jasig.cas.client.validation.Cas20ProxyReceivingTicketValidationFilter</filter-class>
+		<init-param>
+			<param-name>casServerUrlPrefix</param-name>
+			<param-value>https://cas.agri.ee/epm-cas/</param-value>
+		</init-param>
+		<init-param>
+			<param-name>serverName</param-name>
+			<param-value>https://192.168.0.37:8443/</param-value>
+		</init-param>
+		<init-param>
+			<param-name>redirectAfterValidation</param-name>
+			<param-value>false</param-value>
+		</init-param>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>CAS Validation Filter</filter-name>
+		<url-pattern>/caslogin</url-pattern>
+	</filter-mapping>
+
+
+	<filter>
+		<filter-name>CAS Authentication Filter</filter-name>
+		<filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>
+		<init-param>
+			<param-name>casServerLoginUrl</param-name>
+			<param-value>https://cas.agri.ee/epm-cas/login</param-value>
+		</init-param>
+		<init-param>
+			<param-name>serverName</param-name>
+			<param-value>https://192.168.0.37:8443/</param-value>
+		</init-param>
+	</filter>
+	<filter-mapping>
+		<filter-name>CAS Authentication Filter</filter-name>
+		<url-pattern>/caslogin</url-pattern>
+	</filter-mapping>
+
+
+	<filter>
+		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+		<filter-class>org.jasig.cas.client.util.HttpServletRequestWrapperFilter</filter-class>
+	</filter>
+
+	<filter-mapping>
+		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
+		<url-pattern>/caslogin</url-pattern>
+	</filter-mapping>
+
+
+
+
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<listener>
+		<listener-class>org.apache.axis.transport.http.AxisHTTPSessionListener</listener-class>
+	</listener>
+
+	<servlet>
+		<servlet-name>GWTSpring</servlet-name>
+		<servlet-class>
+			org.springframework.web.servlet.DispatcherServlet
+		</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>DocumentServiceServlet</servlet-name>
+		<display-name>DocumentServiceServlet</display-name>
+		<servlet-class>ee.agri.alkor.web.server.DocumentServiceServlet</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>DocumentServiceServlet2</servlet-name>
+		<display-name>DocumentServiceServlet2</display-name>
+		<servlet-class>ee.agri.alkor.web.server.DocumentServiceServlet2</servlet-class>
+		<load-on-startup>2</load-on-startup>
+	</servlet>
+	<servlet>
+		<servlet-name>AxisServlet</servlet-name>
+		<display-name>Apache-Axis Servlet</display-name>
+		<servlet-class>
+			org.apache.axis.transport.http.AxisServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>AdminServlet</servlet-name>
+		<display-name>Axis Admin Servlet</display-name>
+		<servlet-class>
+			org.apache.axis.transport.http.AdminServlet
+		</servlet-class>
+		<load-on-startup>10</load-on-startup>
+	</servlet>
+
+	<servlet>
+		<servlet-name>Avaandmed</servlet-name>
+		<display-name>Alkoholiregistri avaandmed</display-name>
+		<servlet-class>
+			ee.agri.alkor.web.server.AvaandmedServiceServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>Paroolivahetus</servlet-name>
+		<display-name>Alkoholiregistri paroolivahetus</display-name>
+		<jsp-file>/modules/web/src/main/webapp/WEB-INF/pwd.jsp</jsp-file>
+		<servlet-class>
+			ee.agri.alkor.web.server.ChangePasswordServiceServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>Showproduct</servlet-name>
+		<display-name>Toote failid</display-name>
+		<servlet-class>
+			ee.agri.alkor.web.server.ShowPublicDocServiceServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>Signing</servlet-name>
+		<display-name>Allkirjastamine</display-name>
+		<servlet-class>
+			ee.agri.alkor.web.server.SigningServiceServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>CasLogin</servlet-name>
+		<display-name>CasLogin</display-name>
+		<servlet-class>
+			ee.agri.alkor.web.server.CasLoginServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>LoginService</servlet-name>
+		<display-name>LoginService</display-name>
+		<servlet-class>
+			ee.agri.alkor.web.server.LoginServiceServlet
+		</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>Down</servlet-name>
+		<servlet-class>
+			ee.agri.alkor.web.server.DownloadServiceServlet
+		</servlet-class>
+	</servlet>
+	<!-- <servlet> <servlet-name>SOAPMonitorService</servlet-name> <display-name>SOAPMonitorService</display-name> 
+		<servlet-class> org.apache.axis.monitor.SOAPMonitorService </servlet-class> 
+		<init-param> <param-name>SOAPMonitorPort</param-name> <param-value>8787</param-value> 
+		</init-param> <load-on-startup>12</load-on-startup> </servlet> -->
+	<servlet-mapping>
+		<servlet-name>GWTSpring</servlet-name>
+		<url-pattern>*.rpc</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>DocumentServiceServlet</servlet-name>
+		<url-pattern>/app/doc</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>DocumentServiceServlet2</servlet-name>
+		<url-pattern>/app/docc</url-pattern>
+	</servlet-mapping>
+
+
+	<servlet-mapping>
+		<servlet-name>AxisServlet</servlet-name>
+		<url-pattern>/servlet/AxisServlet</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>AxisServlet</servlet-name>
+		<url-pattern>*.jws</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>AxisServlet</servlet-name>
+		<url-pattern>/services/*</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Avaandmed</servlet-name>
+		<url-pattern>/avaandmed</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+
+	<servlet-name>Paroolivahetus</servlet-name>
+	<url-pattern>/changepass</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+
+		<servlet-name>Showproduct</servlet-name>
+		<url-pattern>/showproduct</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Signing</servlet-name>
+		<url-pattern>/signing</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>CasLogin</servlet-name>
+		<url-pattern>/caslogin</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>LoginService</servlet-name>
+		<url-pattern>/loginservice</url-pattern>
+	</servlet-mapping>
+
+
+
+	<servlet-mapping>
+		<servlet-name>Signing</servlet-name>
+		<url-pattern>/generateHash</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Signing</servlet-name>
+		<url-pattern>/createContainer</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>Down</servlet-name>
+		<url-pattern>/down</url-pattern>
+	</servlet-mapping>
+	<!-- <servlet-mapping> <servlet-name>SOAPMonitorService</servlet-name> <url-pattern>/SOAPMonitor</url-pattern> 
+		</servlet-mapping> -->
+	<!-- uncomment this if you want the admin servlet -->
+	<!-- <servlet-mapping> <servlet-name>AdminServlet</servlet-name> <url-pattern>/servlet/AdminServlet</url-pattern> 
+		</servlet-mapping> -->
+
+	<session-config>
+		<session-timeout>120</session-timeout>
+	</session-config>
+
+	<!-- currently the W3C havent settled on a media type for WSDL; http://www.w3.org/TR/2003/WD-wsdl12-20030303/#ietf-draft 
+		for now we go with the basic 'it's XML' response -->
+	<mime-mapping>
+		<extension>wsdl</extension>
+		<mime-type>text/xml</mime-type>
+	</mime-mapping>
+
+
+	<mime-mapping>
+		<extension>xsd</extension>
+		<mime-type>text/xml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>wsdl</extension>
+		<mime-type>text/xml</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>gif</extension>
+		<mime-type>image/gif</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>png</extension>
+		<mime-type>image/png</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>pdf</extension>
+		<mime-type>application/pdf</mime-type>
+	</mime-mapping>
+	<mime-mapping>
+		<extension>xls</extension>
+		<mime-type>application/vnd.ms-excel</mime-type>
+	</mime-mapping>
+
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+	</welcome-file-list>
+
+</web-app>

@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?xml-stylesheet type="text/xsl" href="generation_template.xsl"?>
+<service>
+	<name>alkor2</name>	<!-- see on andmekogu nimi -->
+	<targetnamespace>http://alkor2.x-road.eu</targetnamespace>
+	<location>http://TURVASERVER/cgi-bin/xroad_proxy</location>
+	<xtee>1</xtee><!-- kui on xtee jaoks, siis 1 -->
+	<schemanamespace>http://alkor2.x-road.eu/</schemanamespace>
+	
+	<operations>
+		<operation>
+			<name>transactionStatement</name>
+			<xteever>v1</xteever>
+			<xteetitle>Riigikassa poolt edastatava kiirteavituse teenus</xteetitle>
+			<xteenotes>laekumiste info vastuvõtt</xteenotes>
+			<secdatalevel>3</secdatalevel>
+			<secdeclaration>Finantskorrektsus ja usaldusväärne allikas nõutud. Lubatud ainult Riigikassale.</secdeclaration>
+		</operation>
+		<operation>
+			<name>aruandeparing</name>
+			<xteever>v2</xteever>
+			<xteetitle>Esitatud aruanded</xteetitle>
+			<xteenotes></xteenotes>
+			<secdatalevel>1</secdatalevel>
+			<secdeclaration></secdeclaration>
+		</operation>
+		<operation>
+			<name>eitlaadib</name>
+			<xteever>v2</xteever>
+			<xteetitle>Alkoholi liikumise aruande esitamine firmast</xteetitle>
+			<xteenotes></xteenotes>
+			<secdatalevel>1</secdatalevel>
+			<secdeclaration>Aruande esitaja tagab õiged andmed. Vahendaja tagab esitaja autoriseerimise</secdeclaration>
+		</operation>
+		<operation>
+			<name>aretolaadib</name>
+			<xteever>v2</xteever>
+			<xteetitle>Alkoholi liikumise aruande esitamine VTA-st</xteetitle>
+			<xteenotes></xteenotes>
+			<secdatalevel>1</secdatalevel>
+			<secdeclaration>Aruande esitaja tagab õiged andmed. Vahendaja tagab esitaja autoriseerimise</secdeclaration>
+		</operation>
+		<operation>
+			<name>kammparing</name>
+			<xteever>v2</xteever>
+			<xteetitle>Toote registreeringu päring</xteetitle>
+			<xteenotes></xteenotes>
+			<secdatalevel>1</secdatalevel>
+			<secdeclaration></secdeclaration>
+		</operation>
+		<operation>
+			<name>tooteparing</name>
+			<xteever>v2</xteever>
+			<xteetitle>Toodete otsing</xteetitle>
+			<xteenotes></xteenotes>
+			<secdatalevel>1</secdatalevel>
+			<secdeclaration></secdeclaration>
+		</operation>
+		<operation>
+			<name>liikumineParing</name>
+			<xteever>v2</xteever>
+			<xteetitle>Alkoholi liikumise andmete vastuvõtt</xteetitle>
+			<xteenotes></xteenotes>
+			<secdatalevel>1</secdatalevel>
+			<secdeclaration>Aruande esitaja tagab õiged andmed. Vahendaja tagab esitaja autoriseerimise</secdeclaration>
+		</operation>
+		<operation>
+			<name>legacy1</name>
+			<xteever>v1</xteever>
+			<xteetitle>Registrikande taotluse esitamine läbi alkoholiregistri rakenduse</xteetitle>
+			<xteenotes></xteenotes>
+			<secdatalevel>3</secdatalevel>
+			<secdeclaration>Lubatakse ainult Riigiportaalile (RIA-le)</secdeclaration>
+		</operation>		
+	</operations>
+	
+</service>

@@ -1,0 +1,1025 @@
+<?xml version="1.0"  encoding="UTF-8"?>
+<definitions name="ariregDefinition" 
+	targetNamespace="http://producers.arireg.xtee.riik.ee/producer/arireg" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema" 
+	xmlns:tns="http://producers.arireg.xtee.riik.ee/producer/arireg" 
+	xmlns:xtee="http://x-tee.riik.ee/xsd/xtee.xsd" 
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/" 
+	xmlns="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/" 
+	xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+	xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/" 
+	xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/">
+<types>
+        <xs:schema targetNamespace="http://producers.arireg.xtee.riik.ee/producer/arireg" xmlns:xs="http://www.w3.org/2001/XMLSchema">
+            <xs:import namespace="http://x-tee.riik.ee/xsd/xtee.xsd" schemaLocation="xtee.xsd"/>
+ 
+
+         <xs:complexType name="paringliht_paring">
+            <xs:all>
+               <xs:element name="evnimi" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Ettevotja kehtiva arinime/nime osa</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="ariregistri_kood" minOccurs="0" type="xs:integer">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Ettevotja tapne registrikood</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="evarv" type="xs:integer">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Paringu vastusesse toodavate ettevotjate arv</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:all>
+         </xs:complexType>
+
+         <xs:complexType name="paringliht_vastus">
+            <xs:all>
+               <xs:element name="ettevotjad">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Ettevotjad</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+
+                  <xs:complexType>
+                     <xs:complexContent>
+                        <xs:restriction base="SOAP-ENC:Array">
+                           <xs:sequence>
+                              <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                 <xs:annotation>
+                                    <xs:appinfo>
+                                       <xtee:title>Ettevotja</xtee:title>
+                                    </xs:appinfo>
+                                 </xs:annotation>
+
+                                 <xs:complexType>
+                                    <xs:all>
+                                       <xs:element name="evnimi" type="xs:string">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Ettevotja arinimi/nimi</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="ariregistri_kood" type="xs:string">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Ariregistri kood</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="staatus" type="tns:x_evstaatus">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Staatus</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="registrist_kustutamise_aeg" type="xs:string">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Registrist kustutamise aeg</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="piirkond" type="tns:x_piirkond">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Piirkond</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="evkapitalid">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Ettevotja kapitalid</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+
+                                          <xs:complexType>
+                                             <xs:complexContent>
+                                                <xs:restriction base="SOAP-ENC:Array">
+                                                   <xs:sequence>
+                                                      <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                                         <xs:annotation>
+                                                            <xs:appinfo>
+                                                               <xtee:title>Ettevotja kapital</xtee:title>
+                                                            </xs:appinfo>
+                                                         </xs:annotation>
+
+                                                         <xs:complexType>
+                                                            <xs:all>
+                                                               <xs:element name="kapitali_suurus" type="xs:string">
+                                                                  <xs:annotation>
+                                                                     <xs:appinfo>
+                                                                        <xtee:title>Kapital</xtee:title>
+                                                                     </xs:appinfo>
+                                                                  </xs:annotation>
+                                                               </xs:element>
+
+                                                               <xs:element name="kapitali_valuuta" type="xs:string">
+                                                                  <xs:annotation>
+                                                                     <xs:appinfo>
+                                                                        <xtee:title>Valuuta</xtee:title>
+                                                                     </xs:appinfo>
+                                                                  </xs:annotation>
+                                                               </xs:element>
+                                                            </xs:all>
+                                                         </xs:complexType>
+                                                      </xs:element>
+                                                   </xs:sequence>
+                                                </xs:restriction>
+                                             </xs:complexContent>
+                                          </xs:complexType>
+                                       </xs:element>
+
+                                       <xs:element name="evaadressid">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Ettevotja aadressid</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+
+                                          <xs:complexType>
+                                             <xs:complexContent>
+                                                <xs:restriction base="SOAP-ENC:Array">
+                                                   <xs:sequence>
+                                                      <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                                         <xs:annotation>
+                                                            <xs:appinfo>
+                                                               <xtee:title>Ettevotja aadress</xtee:title>
+                                                            </xs:appinfo>
+                                                         </xs:annotation>
+
+                                                         <xs:complexType>
+                                                            <xs:all>
+                                                               <xs:element name="asukoht_ettevotja_aadressis" type="xs:string">
+                                                                  <xs:annotation>
+                                                                     <xs:appinfo>
+                                                                        <xtee:title>Aadress</xtee:title>
+                                                                     </xs:appinfo>
+                                                                  </xs:annotation>
+                                                               </xs:element>
+
+                                                               <xs:element name="asukoha_ehak_kood" type="xs:string">
+                                                                  <xs:annotation>
+                                                                     <xs:appinfo>
+                                                                        <xtee:title>EHAK kood</xtee:title>
+                                                                     </xs:appinfo>
+                                                                  </xs:annotation>
+                                                               </xs:element>
+
+                                                               <xs:element name="evhaldustasemed">
+                                                                  <xs:annotation>
+                                                                     <xs:appinfo>
+                                                                        <xtee:title>Haldusyksuse tasemed ettevotja aadressis</xtee:title>
+                                                                     </xs:appinfo>
+                                                                  </xs:annotation>
+
+                                                                  <xs:complexType>
+                                                                     <xs:complexContent>
+                                                                        <xs:restriction base="SOAP-ENC:Array">
+                                                                           <xs:sequence>
+                                                                              <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                                                                 <xs:annotation>
+                                                                                    <xs:appinfo>
+                                                                                       <xtee:title>Haldusyksuse tase ettevotja aadressis</xtee:title>
+                                                                                    </xs:appinfo>
+                                                                                 </xs:annotation>
+
+                                                                                 <xs:complexType>
+                                                                                    <xs:all>
+                                                                                       <xs:element name="haldyksus_ettevotja_aadressis" type="xs:string">
+                                                                                          <xs:annotation>
+                                                                                             <xs:appinfo>
+                                                                                                <xtee:title>Haldusyksus</xtee:title>
+                                                                                             </xs:appinfo>
+                                                                                          </xs:annotation>
+                                                                                       </xs:element>
+
+                                                                                       <xs:element name="haldyksuse_tase_ev_aadressis" type="tns:x_haldtase">
+                                                                                          <xs:annotation>
+                                                                                             <xs:appinfo>
+                                                                                                <xtee:title>Tase</xtee:title>
+                                                                                             </xs:appinfo>
+                                                                                          </xs:annotation>
+                                                                                       </xs:element>
+                                                                                    </xs:all>
+                                                                                 </xs:complexType>
+                                                                              </xs:element>
+                                                                           </xs:sequence>
+                                                                        </xs:restriction>
+                                                                     </xs:complexContent>
+                                                                  </xs:complexType>
+                                                               </xs:element>
+
+                                                               <xs:element name="indeks_ettevotja_aadressis" type="xs:string">
+                                                                  <xs:annotation>
+                                                                     <xs:appinfo>
+                                                                        <xtee:title>Indeks</xtee:title>
+                                                                     </xs:appinfo>
+                                                                  </xs:annotation>
+                                                               </xs:element>
+                                                            </xs:all>
+                                                         </xs:complexType>
+                                                      </xs:element>
+                                                   </xs:sequence>
+                                                </xs:restriction>
+                                             </xs:complexContent>
+                                          </xs:complexType>
+                                       </xs:element>
+
+                                       <xs:element name="esmakande_aeg" type="xs:string">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Esmakande aeg</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+                                    </xs:all>
+                                 </xs:complexType>
+                              </xs:element>
+                           </xs:sequence>
+                        </xs:restriction>
+                     </xs:complexContent>
+                  </xs:complexType>
+               </xs:element>
+
+               <xs:element name="leitud_ettevotjate_arv" type="xs:integer">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Leitud ettevotjate arv</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:all>
+         </xs:complexType>
+			
+         <xs:complexType name="paringkr_paring">
+            <xs:sequence>
+               <xs:element name="arinimi" minOccurs="0" type="xs:string">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Ettevõtja kehtiva või kehtetu ärinime osa</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+
+               <xs:element name="ariregistri_kood" minOccurs="0" type="xs:integer">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Ettevõtja täpne registrikood</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+
+         <xs:complexType name="paringkr_vastus">
+            <xs:sequence>
+               <xs:element name="ettevotjad">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Ettevõtjad</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+
+                  <xs:complexType>
+                     <xs:complexContent>
+                        <xs:restriction base="SOAP-ENC:Array">
+                           <xs:sequence>
+                              <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                 <xs:annotation>
+                                    <xs:appinfo>
+                                       <xtee:title>Ettevõtja</xtee:title>
+                                    </xs:appinfo>
+                                 </xs:annotation>
+
+                                 <xs:complexType>
+                                    <xs:sequence>
+                                       <xs:element name="jrk_nr" type="xs:integer">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Järjekorra number tulemuses</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="oiguslik_vorm" type="tns:x_oigvorm">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Ettevõtte liik</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="arinimi" type="xs:string">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Ettevõtte kehtiv ärinimi</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="registrikood" type="xs:integer">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Äriregistri kood</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="staatus" type="tns:x_evstaatus">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Staatus</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="esmakande_aeg" type="xs:date">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Esmakande kuupäev</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="registrist_kustutamise_aeg" type="xs:date" nillable="true">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Registrist kustutamise kuupäev</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="aadress" type="xs:string">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Ettevõtte juriidiline aadress</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="ehak" type="xs:string">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Ettevõtte aadressi ehak</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="indeks" type="xs:string">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Ettevõtte aadressi indeks</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+                                       </xs:element>
+
+                                       <xs:element name="evsidevahendid">
+                                          <xs:annotation>
+                                             <xs:appinfo>
+                                                <xtee:title>Ettevõtja sidevahendid</xtee:title>
+                                             </xs:appinfo>
+                                          </xs:annotation>
+
+                                          <xs:complexType>
+                                             <xs:complexContent>
+                                                <xs:restriction base="SOAP-ENC:Array">
+                                                   <xs:sequence>
+                                                      <xs:element name="item" minOccurs="0" maxOccurs="unbounded">
+                                                         <xs:annotation>
+                                                            <xs:appinfo>
+                                                               <xtee:title>Ettevõtja sidevahend</xtee:title>
+                                                            </xs:appinfo>
+                                                         </xs:annotation>
+
+                                                         <xs:complexType>
+                                                            <xs:sequence>
+                                                               <xs:element name="sidevahendi_liik" type="tns:x_sideliik">
+                                                                  <xs:annotation>
+                                                                     <xs:appinfo>
+                                                                        <xtee:title>Liik</xtee:title>
+                                                                     </xs:appinfo>
+                                                                  </xs:annotation>
+                                                               </xs:element>
+
+                                                               <xs:element name="sidevahendi_number" type="xs:string">
+                                                                  <xs:annotation>
+                                                                     <xs:appinfo>
+                                                                        <xtee:title>Number</xtee:title>
+                                                                     </xs:appinfo>
+                                                                  </xs:annotation>
+                                                               </xs:element>
+                                                            </xs:sequence>
+														</xs:complexType>
+                                                      </xs:element>
+                                                   </xs:sequence>
+                                                </xs:restriction>
+                                             </xs:complexContent>
+                                          </xs:complexType>
+                                       </xs:element>
+                                    </xs:sequence>
+                                 </xs:complexType>
+                              </xs:element>
+                           </xs:sequence>
+                        </xs:restriction>
+                     </xs:complexContent>
+                  </xs:complexType>
+               </xs:element>
+            </xs:sequence>
+         </xs:complexType>
+
+         <xs:simpleType name="x_oigvorm">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xtee:title>Oiguslik vorm</xtee:title>
+               </xs:appinfo>
+            </xs:annotation>
+
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="AS">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Aktsiaselts</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="FIE">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Fyysilisest isikust ettevotja</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="MTY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Mittetulundusyhing</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="OY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Osayhing</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="SA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Sihtasutus</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="TYH">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Tulundusyhistu</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="TY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Taisyhing</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="UY">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Usaldusyhing</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="FA">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Valismaa ariyhingu filiaal</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="FB">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Valismaa ariyhingu filiaal</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+            </xs:restriction>
+         </xs:simpleType>
+
+         <xs:simpleType name="x_kehtivus">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xtee:title>Kehtivus</xtee:title>
+               </xs:appinfo>
+            </xs:annotation>
+
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="K">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Kehtiv</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="T">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Kehtetu</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+            </xs:restriction>
+         </xs:simpleType>
+
+         <xs:simpleType name="x_evstaatus">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xtee:title>Ettevotja staatus</xtee:title>
+               </xs:appinfo>
+            </xs:annotation>
+
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="K">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Kustutatud</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="L">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Likvideerimisel</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="N">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Pankrotis</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="R">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Registrisse kantud</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="Y">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Yle viidud teise registripiirkonda</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+            </xs:restriction>
+         </xs:simpleType>
+
+         <xs:simpleType name="x_piirkond">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xtee:title>Registripiirkond</xtee:title>
+               </xs:appinfo>
+            </xs:annotation>
+
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="4">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Laane-Viru</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="3">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Parnu</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="1">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Tallinn</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="2">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Tartu</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+            </xs:restriction>
+         </xs:simpleType>
+
+         <xs:simpleType name="x_regpiirkond">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xtee:title>Registripiirkond</xtee:title>
+               </xs:appinfo>
+            </xs:annotation>
+
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="4">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Laane-Viru Maakohtu registriosakond</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="3">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Parnu Maakohtu registriosakond</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="1">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Tallinna Linnakohtu registriosakond</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="2">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Tartu Maakohtu registriosakond</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+            </xs:restriction>
+         </xs:simpleType>
+
+         <xs:simpleType name="x_haldtase">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xtee:title>Haldusyksuse tase</xtee:title>
+               </xs:appinfo>
+            </xs:annotation>
+
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="0">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Maakond</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="1">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Vald</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="3">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Alev</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="4">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Linn</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="5">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Vallasisene linn</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="6">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Linnaosa</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="7">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Alevik</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="8">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Kyla</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+            </xs:restriction>
+         </xs:simpleType>
+
+         <xs:simpleType name="x_sideliik">
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="EMAIL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Elektronposti aadress</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="FAX">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Faks</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="WWW">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Interneti WWW aadress</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="MOB">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Mobiiltelefon</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="MOD">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Modem</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="MUU">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Muu sidevahend</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="TEL">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Telefon</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="TELEX">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Teleks</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+            </xs:restriction>
+         </xs:simpleType>
+
+         <xs:simpleType name="x_isikuroll_paringus">
+            <xs:annotation>
+               <xs:appinfo>
+                  <xtee:title>Isiku roll</xtee:title>
+               </xs:appinfo>
+            </xs:annotation>
+
+            <xs:restriction base="xs:string">
+               <xs:enumeration value="S">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Aktsionar</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="O">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Osanik</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="TOSAN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Taisosanik</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+
+               <xs:enumeration value="UOSAN">
+                  <xs:annotation>
+                     <xs:appinfo>
+                        <xtee:title>Usaldusosanik</xtee:title>
+                     </xs:appinfo>
+                  </xs:annotation>
+               </xs:enumeration>
+            </xs:restriction>
+         </xs:simpleType>
+
+       </xs:schema>
+   </types>
+
+   <message name="paringliht">
+      <part name="keha" type="tns:paringliht_paring" />
+    <part name="asutus" element="xtee:asutus"/>
+    <part name="andmekogu" element="xtee:andmekogu"/>
+    <part name="isikukood" element="xtee:isikukood"/>
+    <part name="id" element="xtee:id"/>
+    <part name="nimi" element="xtee:nimi"/>
+    <part name="toimik" element="xtee:toimik"/>
+   </message>
+
+   <message name="paringlihtResponse">
+      <part name="paring" type="tns:paringliht_paring" />
+      <part name="keha" type="tns:paringliht_vastus" />
+        <part name="asutus" element="xtee:asutus"/>
+        <part name="andmekogu" element="xtee:andmekogu"/>
+        <part name="isikukood" element="xtee:isikukood"/>
+        <part name="id" element="xtee:id"/>
+        <part name="nimi" element="xtee:nimi"/>
+        <part name="toimik" element="xtee:toimik"/>
+   </message>
+ 
+   <message name="paringkr">
+      <part name="keha" type="tns:paringkr_paring" />
+        <part name="asutus" element="xtee:asutus"/>
+        <part name="andmekogu" element="xtee:andmekogu"/>
+        <part name="isikukood" element="xtee:isikukood"/>
+        <part name="id" element="xtee:id"/>
+        <part name="nimi" element="xtee:nimi"/>
+        <part name="toimik" element="xtee:toimik"/>
+   </message>
+
+   <message name="paringkrResponse">
+      <part name="paring" type="tns:paringkr_paring" />
+      <part name="keha" type="tns:paringkr_vastus" />
+        <part name="asutus" element="xtee:asutus"/>
+        <part name="andmekogu" element="xtee:andmekogu"/>
+        <part name="isikukood" element="xtee:isikukood"/>
+        <part name="id" element="xtee:id"/>
+        <part name="nimi" element="xtee:nimi"/>
+        <part name="toimik" element="xtee:toimik"/>
+   </message>
+  
+    <message name="xteeHeader">
+    </message>
+
+   <portType name="BRporttype">
+
+      <operation name="paringliht_v4">
+         <documentation>
+            <xtee:title>Lihtparing</xtee:title>
+         </documentation>
+
+         <input message="tns:paringliht" />
+
+         <output message="tns:paringlihtResponse" />
+      </operation>
+	   
+      <operation name="paringkr">
+         <documentation>
+            <xtee:title></xtee:title>
+         </documentation>
+
+         <input message="tns:paringkr" />
+
+         <output message="tns:paringkrResponse" />
+      </operation>
+ 
+   </portType>
+
+   <binding name="BRbinding" type="tns:BRporttype">
+      <soap:binding style="rpc" transport="http://schemas.xmlsoap.org/soap/http" />
+
+
+      <operation name="paringliht_v4">
+         <xtee:version>v1</xtee:version>
+
+         <xtee:nocontent>null</xtee:nocontent>
+
+         <soap:operation soapAction="" />
+	      <input>
+             <soap:body parts="keha" use="encoded" namespace="http://producers.arireg.xtee.riik.ee/producer/arireg" />
+                <soap:header message="tns:paringliht" part="asutus" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringliht" part="andmekogu" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringliht" part="isikukood" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringliht" part="id" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringliht" part="nimi" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringliht" part="toimik" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+	      </input>
+	      <output>
+              <soap:body parts="paring keha" use="encoded" namespace="http://producers.arireg.xtee.riik.ee/producer/arireg" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringlihtResponse" part="asutus" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringlihtResponse" part="andmekogu" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringlihtResponse" part="isikukood" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringlihtResponse" part="id" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringlihtResponse" part="nimi" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringlihtResponse" part="toimik" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+	      </output>
+      </operation>
+
+      <operation name="paringkr">
+         <xtee:version>v1</xtee:version>
+
+         <xtee:nocontent>null</xtee:nocontent>
+
+         <soap:operation soapAction="" />
+	      <input>
+             <soap:body parts="keha" use="encoded" namespace="http://producers.arireg.xtee.riik.ee/producer/arireg" />
+                <soap:header message="tns:paringkr" part="asutus" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringkr" part="andmekogu" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringkr" part="isikukood" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringkr" part="id" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringkr" part="nimi" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringkr" part="toimik" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+	      </input>
+	      <output>
+              <soap:body parts="paring keha" use="encoded" namespace="http://producers.arireg.xtee.riik.ee/producer/arireg" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringkrResponse" part="asutus" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringkrResponse" part="andmekogu" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringkrResponse" part="isikukood" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringkrResponse" part="id" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringkrResponse" part="nimi" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+                <soap:header message="tns:paringkrResponse" part="toimik" use="encoded" namespace="http://x-tee.riik.ee/xsd/xtee.xsd" encodingStyle="http://schemas.xmlsoap.org/soap/encoding/"/>
+	      </output>
+      </operation>
+
+   </binding>
+
+
+   <service name="arireg">
+      <port name="ariport" binding="tns:BRbinding">
+         <soap:address location="http://TURVASERVER/cgi-bin/consumer_proxy" />
+
+         <xtee:title>arireg</xtee:title>
+
+         <xtee:address producer="arireg" />
+      </port>
+   </service>
+</definitions>
+

@@ -1,0 +1,305 @@
+<pseudoroot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
+
+	<!-- ARUANDEPARING -->
+	<xsd:element name="aruandeparing">
+		<xsd:complexType>
+            <xsd:sequence>
+               <xsd:element name="l_date_from" type="xsd:date"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Sisestatud alates</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="l_date_to" type="xsd:date"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Sisestatud kuni</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="periodStart" type="tns:aruandeperiood">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aruandeperiood alates</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               
+               <xsd:element name="periodEnd" type="tns:aruandeperiood">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aruandeperiood kuni</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="resp_attach" type="xsd:boolean">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Vastus failina</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+        </xsd:complexType>
+	</xsd:element>
+
+	<xsd:complexType name="aruandeperiood">
+            <xsd:annotation>
+               <xsd:appinfo>
+                  <xrd:title>Aruandeperiood</xrd:title>
+               </xsd:appinfo>
+            </xsd:annotation>
+            <xsd:sequence>
+               <xsd:element name="rep_year" minOccurs="0"
+                  type="tns:kalendriaasta">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aasta</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="rep_month" minOccurs="0"
+                  type="tns:kalendrikuu">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Kuu</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+		</xsd:complexType>
+   
+
+		<xsd:simpleType name="kalendriaasta">
+            <xsd:annotation>
+               <xsd:appinfo>
+                  <xrd:title>Aasta</xrd:title>
+               </xsd:appinfo>
+            </xsd:annotation>
+            <xsd:restriction base="xsd:string">
+               <xsd:pattern value="\d{4}" />
+            </xsd:restriction>
+         </xsd:simpleType>
+	
+	
+         <xsd:simpleType name="kalendrikuu">
+            <xsd:annotation>
+               <xsd:appinfo>
+                  <xrd:title>Kuu</xrd:title>
+               </xsd:appinfo>
+            </xsd:annotation>
+            <xsd:restriction base="xsd:string">
+               <xsd:enumeration value="1">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Jaanuar</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="2">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Veebruar</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="3">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Märts</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="4">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aprill</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="5">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Mai</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="6">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Juuni</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="7">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Juuli</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="8">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>August</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="9">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>September</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="10">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Oktoober</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="11">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>November</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+               <xsd:enumeration value="12">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Detsember</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:enumeration>
+            </xsd:restriction>
+         </xsd:simpleType>
+	        
+	<!-- ARUANDEPARING LOPP -->
+	
+	<!-- ARUANDEPARING VASTUS ALGUS -->
+	<xsd:element name="aruandeparingResponse">
+		<xsd:complexType>
+            <xsd:sequence>
+               <xsd:element name="teade" type="xsd:string" />
+
+               <xsd:element name="aruanded" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:complexContent>
+                        <xsd:restriction base="SOAP-ENC:Array">
+                           <xsd:sequence>
+                              <xsd:element name="vastuserida"
+                                 minOccurs="0" maxOccurs="unbounded"
+                                 type="tns:aruandeparing_vastuserida" />
+                           </xsd:sequence>
+                        </xsd:restriction>
+                     </xsd:complexContent>
+                  </xsd:complexType>
+               </xsd:element>
+
+               <xsd:element name="aruanded_csv" type="tns:csv">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aruanded</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+            </xsd:sequence>
+         </xsd:complexType>
+	</xsd:element>
+   
+   <xsd:simpleType name="csv">
+      <xsd:annotation>
+         <xsd:appinfo>
+            <xrd:title>CSV-vormingus fail</xrd:title>
+         </xsd:appinfo>
+      </xsd:annotation>
+      <xsd:restriction base="xsd:string"/>
+   </xsd:simpleType>
+	
+
+	    <xsd:complexType name="aruandeparing_vastuserida">
+            <xsd:sequence>
+               <xsd:element name="ent_name" type="xsd:string"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Esitaja nimi</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="ent_reg_nr" type="xsd:string"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Esitaja registrikood</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="ent_contact" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Kontaktandmed</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="load_date" type="xsd:date"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title xml:lang="et">
+                           Sisestamise kuupäev
+                        </xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+			   <!-- Defineeritud aruandeparingu juures -->			   
+               <xsd:element name="period" type="tns:aruandeperiood" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aruandeperiood</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="load_user" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Sisestaja isikukood</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="rcd_count" type="xsd:string" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aruande ridade arv</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="report_id" type="xsd:int" >
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:visibility>0</xrd:visibility>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+            </xsd:sequence>
+         </xsd:complexType>
+	
+	<!-- ARUANDEPARING VASTUS LOPP -->
+	
+</pseudoroot>

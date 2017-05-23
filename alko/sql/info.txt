@@ -1,0 +1,10 @@
+Live-i vaja tõsta:
+
+
+product_move_report ja PRODUCT_MOVE_REPORT_HISTORY tuleb backup teha!
+
+2010_11_08_alter_application.sql
+eit.sql
+mimetype.sql
+product_move.sql
+2011_11_28_paymentdesc.sql

@@ -1,0 +1,569 @@
+package ee.agri.alkor.web.server;
+
+import static org.apache.commons.lang.StringEscapeUtils.escapeXml;
+
+import java.io.BufferedReader;
+import java.io.ByteArrayInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
+import java.io.StringWriter;
+import java.io.UnsupportedEncodingException;
+import java.io.Writer;
+import java.net.SocketException;
+import java.net.URL;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
+import java.security.Principal;
+import java.security.cert.CertificateFactory;
+import java.security.cert.X509Certificate;
+import java.util.Date;
+import java.util.Enumeration;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.Random;
+import java.io.PrintWriter;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.concurrent.ExecutionException;
+import java.sql.Connection;
+import java.sql.DriverManager;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+import java.util.UUID;
+
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import javax.xml.bind.DatatypeConverter;
+import javax.xml.rpc.Stub;
+
+import org.apache.commons.lang.StringEscapeUtils;
+import org.apache.xml.security.utils.Base64;
+import org.jasig.cas.client.authentication.AttributePrincipal;
+import org.jasig.cas.client.validation.Assertion;
+
+import com.google.gwt.core.client.GWT;
+
+import ee.agri.alkor.impl.PostgreUtils;
+
+import sun.security.provider.X509Factory;
+
+import eu.x_road.arireg.producer.AriregLocator;
+import eu.x_road.arireg.producer.AriregXteeStub;
+import ee.agri.alkor.service.SystemException;
+import eu.x_road.arireg.producer.*;
+import eu.x_road.arireg.producer.holders.*;
+import eu.x_road.xsd.identifiers.*;
+import org.apache.axis.message.*;
+import javax.xml.soap.SOAPElement;
+
+public class LoginServiceServlet extends HttpServlet {
+
+	private static final long serialVersionUID = 1L;
+
+	private String serviceEndpointURL;
+
+	public void init() throws ServletException {
+
+	}
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+
+		PrintWriter out = response.getWriter();
+
+		Assertion a = (Assertion) request.getSession().getAttribute("_const_cas_assertion_");
+
+		String tableBody = "";
+
+		String ik = null;
+
+		if(a != null && a.getPrincipal() != null && a.getPrincipal().getName() != null){
+			ik = a.getPrincipal().getName().replace("EE", "");
+			request.getSession().setAttribute("user_ik", ik);
+		}
+		else{
+			ik = (String) request.getSession().getAttribute("user_ik");
+		}
+
+		boolean isVta = false;
+		boolean hasRoles = false;
+
+		checkAndCreateUserArireg(ik);
+
+		try {
+
+			String sql = "select 1 from sys_user as sys join person as p on p.id = sys.person_id and p.reg_id = '" + ik
+					+ "' or p.reg_id = 'EE" + ik + "' where sys.active = true";
+			ResultSet rs = PostgreUtils.query(sql);
+
+			while (rs.next()) {
+				isVta = true;
+				hasRoles = true;
+			}
+
+			if (isVta) {
+				tableBody += getTableRow("Riik (VTA, EMTA jt)", "", null, null);
+			}
+
+			PostgreUtils.update("UPDATE enterprise_person_ref SET valid = false where valid = true and id_code = '" + ik
+					+ "' and valid_until < now() and valid_until is not null");
+
+			sql = "select ent_name, reg_nr, null as valid_until from user_arireg where id_code = '" + ik + "' UNION "
+					+ "select e.name, e.reg_id, (SELECT valid_until FROM enterprise_person_ref WHERE valid = true and id_code = '"
+					+ ik + "' and enterprise_id = e.id) "
+					+ "from enterprise e where id in (SELECT enterprise_id FROM enterprise_person_ref WHERE valid = true and id_code = '"
+					+ ik + "')";
+
+			rs = PostgreUtils.query(sql);
+
+			if (rs != null && !rs.wasNull()) {
+
+				while (rs.next()) {
+					tableBody += getTableRow(StringEscapeUtils.escapeHtml(rs.getString("ent_name")),
+							rs.getString("reg_nr"), rs.getString("reg_nr"), rs.getDate("valid_until"));
+					hasRoles = true;
+				}
+
+			}
+
+			String script = "showDiv(" + hasRoles + ")";
+			String templ = getTemplate(request);
+			templ = templ.replace("{{SCRIPT}}", script);
+			templ = templ.replace("{{TABLE_BODY}}", tableBody);
+
+			out.write(templ);
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
+		String fromCasLogin = request.getParameter("fromcaslogin");
+
+
+		if (fromCasLogin != null && fromCasLogin.equals("1")) {
+			try {
+				byte[] decoded = Base64.decode(request.getParameter("input_cert").replaceAll(X509Factory.BEGIN_CERT, "")
+						.replaceAll(X509Factory.END_CERT, ""));
+				X509Certificate sert = (X509Certificate) CertificateFactory.getInstance("X.509")
+						.generateCertificate(new ByteArrayInputStream(decoded));
+				request.getSession().setAttribute("user_login_cert", sert);
+
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+			response.sendRedirect("/loginservice");
+		} else {
+			String ik = (String) request.getSession().getAttribute("user_ik");
+			boolean saadaEdasi = false;
+
+			if (request.getParameter("reg_code") != null && !request.getParameter("reg_code").equals("null")) { // kui
+																												// valis
+																												// reg_nr'i
+																												// mitte
+																												// VTA
+
+				String regNr = request.getParameter("reg_code").replaceAll("'", "\"");
+
+				try {
+					ResultSet rs = PostgreUtils.query("select 1 from user_arireg where id_code = '" + ik
+							+ "' and reg_nr = '" + regNr + "'" + "UNION "
+							+ "SELECT 1 FROM enterprise_person_ref WHERE valid = true and id_code = '" + ik
+							+ "' and enterprise_id = (SELECT id FROM enterprise WHERE reg_id = '" + regNr
+							+ "' ORDER BY created DESC LIMIT 1)");
+					if (rs.next()) {
+						saadaEdasi = true;
+					}
+				} catch (Exception ex) {
+					ex.printStackTrace();
+				}
+
+				if (saadaEdasi) {
+					String sql = "SELECT ent_name FROM user_arireg WHERE reg_nr = '" + regNr
+							+ "' ORDER BY created DESC LIMIT 1";
+					String entName = null;
+					boolean enterpriseExists = false;
+
+					try {
+						ResultSet rs = PostgreUtils.query(sql);
+						while (rs.next()) {
+							entName = rs.getString("ent_name");
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+
+					sql = "SELECT 1 FROM enterprise WHERE reg_id = '" + regNr + "'";
+
+					try {
+						ResultSet rs2 = PostgreUtils.query(sql);
+						while (rs2.next()) {
+							enterpriseExists = true;
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+
+					if (enterpriseExists) {
+						sql = "UPDATE enterprise SET name = '" + entName + "' WHERE reg_id = '" + regNr
+								+ "' and name != '" + entName + "'";
+						PostgreUtils.update(sql);
+					} else {
+						sql = "INSERT INTO enterprise (id, reg_id, name, version) VALUES (nextval('ENTERPRISE_SEQ'), '"
+								+ regNr + "','" + entName + "', 1)";
+						PostgreUtils.insert(sql);
+						
+						sql = "INSERT INTO enterprise_role (id, version, ent_role_id, enterprise_id) VALUES (nextval('enterprise_role_seq'), 0, "
+								+ "(SELECT id FROM classificator WHERE category = 'EnterpriseRole' AND code = 'APL'),"
+								+ "(SELECT id FROM enterprise WHERE reg_id = '" + regNr + "' ORDER BY created DESC LIMIT 1))";
+						PostgreUtils.insert(sql);
+					}
+				}
+			} else {
+				saadaEdasi = true;
+			}
+
+			if (saadaEdasi) {
+				PostgreUtils.insert("INSERT INTO user_session (id_code, reg_nr) VALUES ('" + ik + "','"
+						+ request.getParameter("reg_code").replaceAll("'", "\"") + "')");
+				request.getSession().setAttribute("login_reg_code", (String) request.getParameter("reg_code"));
+				response.sendRedirect("/j_acegi_security_check");
+			} else { // kasutaja viibimisel loginlehel oli õiguste olukord
+						// muutunud
+				response.sendRedirect("/loginservice");
+			}
+		}
+	}
+
+	public String getTemplate(HttpServletRequest request) throws Exception {
+
+		URL url = this.getClass().getClassLoader().getResource("login_template.html");
+		File file = new File(url.getPath());
+		FileInputStream fis = new FileInputStream(file);
+
+		BufferedReader in = new BufferedReader(new InputStreamReader(fis));
+		String inputLine;
+		StringBuffer response = new StringBuffer();
+
+		while ((inputLine = in.readLine()) != null) {
+			response.append(inputLine + "\n");
+		}
+
+		in.close();
+		return response.toString();
+	}
+
+	public static String getBaseUrl(HttpServletRequest request) {
+		String scheme = request.getScheme() + "://";
+		String serverName = request.getServerName();
+		String serverPort = (request.getServerPort() == 80) ? "" : ":" + request.getServerPort();
+		String contextPath = request.getContextPath();
+		return scheme + serverName + serverPort + contextPath + "/";
+	}
+
+	private String getTableRow(String name, String info, String regCode, Date validUntil) {
+
+		SimpleDateFormat format = new SimpleDateFormat("dd.MM.yyyy");
+		String row = "<tr><td>" + name + "</td><td>" + info + "</td><td>"
+				+ (validUntil != null ? format.format(validUntil) : "") + "</td><td>";
+
+		row += "<form method=\"post\" action=\"/loginservice\"><input type=\"hidden\" name=\"reg_code\" value=\""
+				+ regCode + "\"><input type=\"submit\" value=\"Sisene\" class=\"btn btn-success\"></form>";
+
+		row += "</td></tr>";
+
+		return row;
+	}
+
+	public void checkAndCreateUserArireg(String ik) {
+		// vaatame tabelisse, not exists küsime
+		// vaatame tabelisse exist aegunud, küsime (ajaaken last_checked + 6h <
+		// now()), siis küsime (Kõik)
+		// kui pole aegunud ja on tulemusi, siis edasi
+		boolean exists = false;
+
+		String sql = "SELECT 1 FROM user_arireg WHERE id_code = '" + ik + "'";
+
+		try {
+			ResultSet rs = PostgreUtils.query(sql);
+			while (rs.next()) {
+				exists = true;
+			}
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+
+		if (!exists) {
+			HashMap<String, String> map = getAriregData(ik);
+
+			String regNrs = "";
+
+
+			for (Map.Entry<String, String> entry : map.entrySet()) {
+				String regNr = entry.getKey();
+				String entName = entry.getValue();
+				regNrs += "'" + regNr + "',";
+				sql = "INSERT INTO user_arireg (id_code, reg_nr, ent_name) VALUES ('" + ik + "', '" + regNr + "', '"
+						+ entName + "')";
+				PostgreUtils.insert(sql);
+			}
+
+			// Kustutame ära kõik asutused mis pole sellel kasutajal küljes
+			if(map.size() > 0){
+				regNrs = regNrs.substring(0, regNrs.length() - 1);
+				sql = "DELETE FROM user_arireg where id_code = '" + ik + "' and reg_nr not in (" + regNrs + ")";
+			}
+			else{
+				sql = "DELETE FROM user_arireg where id_code = '" + ik + "'";
+			}
+
+			PostgreUtils.delete(sql);
+		} else {
+			exists = false;
+			sql = "SELECT 1 FROM user_arireg WHERE id_code = '" + ik
+					+ "' and last_checked + '06:00:00'::interval  < now()";
+
+			try {
+				ResultSet rs2 = PostgreUtils.query(sql);
+				while (rs2.next()) {
+					exists = true;
+				}
+			} catch (Exception ex) {
+				ex.printStackTrace();
+			}
+
+			if (exists) {
+				HashMap<String, String> map = getAriregData(ik);
+
+				String regNrs = "";
+
+				for (Map.Entry<String, String> entry : map.entrySet()) {
+					String regNr = entry.getKey();
+					String entName = entry.getValue();
+					regNrs += "'" + regNr + "',";
+					PostgreUtils.update("UPDATE user_arireg SET ent_name = '" + entName
+							+ "', last_checked = now() WHERE reg_nr = '" + regNr + "' and id_code = '" + ik + "'");
+				}
+
+				if (map.size() > 0) {
+					regNrs = regNrs.substring(0, regNrs.length() - 1);
+					PostgreUtils.delete(
+							"DELETE FROM user_arireg where id_code = '" + ik + "' and reg_nr not in (" + regNrs + ")");
+				}
+			}
+		}
+
+	}
+
+	public HashMap<String, String> getAriregData(String ik) {
+		/*
+		 * HashMap<String, String> fromArireg = new HashMap<String, String>();
+		 * fromArireg.put("12345678", "Uus asutus"); fromArireg.put("987654321",
+		 * "Uus asutus 2"); fromArireg.put("10225510", "Budampex AS");
+		 * fromArireg.put("12864846", "Juhus OÜ"); fromArireg.put("10308992",
+		 * "Mediato AS");
+		 * 
+		 * return new HashMap<String, String>();
+		 */
+		
+		HashMap<String, String> map = new HashMap<String, String>();
+
+		String url = "";
+		try {
+			ResultSet rs = PostgreUtils.query("SELECT value FROM config WHERE key = 'XTEESERVICE_URL'");
+			if (rs.next()) {
+				url = rs.getString("value");
+			}
+		} catch (Exception x) {
+			x.printStackTrace();
+		}
+
+		
+		try {
+			
+			AriregLocator service = new AriregLocator();
+			AriregXteeStub port = null;
+		
+			port = (AriregXteeStub) service.getAriregXtee(new URL(url));
+			
+			List<SOAPHeaderElement> elems = makeEsindusHeaders(ik);
+			for(SOAPHeaderElement elem : elems){
+				port.setHeader(elem);
+			}
+	
+			Paringesindus_v4_paring paring = new Paringesindus_v4_paring();
+			paring.setFyysilise_isiku_koodi_riik("EST");
+			paring.setFyysilise_isiku_kood(ik);
+	
+			Paringesindus_v4_paringHolder paringHolder = new Paringesindus_v4_paringHolder();
+			Paringesindus_v4_vastusHolder vastusHolder = new Paringesindus_v4_vastusHolder();
+	
+			try {
+				port.esindus_v1(paring, paringHolder, vastusHolder);
+			} catch (Exception x) {
+				x.printStackTrace();
+			}
+			
+			if(vastusHolder.value != null && vastusHolder.value.getEttevotjad() != null){
+				
+				Paringesindus_v4_ettevote[] ettevotjad = vastusHolder.value.getEttevotjad();
+					
+				for (Paringesindus_v4_ettevote ettevotja : ettevotjad) {
+					map.put(String.valueOf(ettevotja.getAriregistri_kood()), ettevotja.getArinimi());
+				}
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return map;
+	}
+	
+	private List<SOAPHeaderElement> makeEsindusHeaders(String ik){
+		List<SOAPHeaderElement> elems = new ArrayList<SOAPHeaderElement>();
+		
+		String XROAD_NS = "http://x-road.eu/xsd/xroad.xsd";
+		String IDENT_NS = "http://x-road.eu/xsd/identifiers";
+		
+		
+		String protocolVersion = "";
+		String userId = ik;
+		String id = UUID.randomUUID().toString();
+		String issue = "";
+		
+		String xRoadInstance = "";
+		String memberClass = "";
+		String memberCode = "";
+		String subsystemCode = "";
+		String serviceCode = "";
+		String serviceVersion = "";
+		
+		String sender_xRoadInstance = "";
+		String sender_memberClass = "";
+		String sender_memberCode = "";
+		String sender_subsystemCode = "";
+	
+		ResultSet rs = PostgreUtils.query("SELECT * FROM config WHERE type = 'XTEE_PARAMS'");
+		try{
+			while(rs.next()){
+				String key = rs.getString("key");
+				String value = rs.getString("value");
+				switch(key){
+					case "XTEE_PROTOCOL_VERSION":
+						protocolVersion = value;
+						break;
+					case "XTEE_ISSUE":
+						issue = value;
+						break;
+					case "XTEE_XROADINSTANCE":
+						xRoadInstance = value;
+						break;
+					case "XTEE_MEMBERCLASS":
+						memberClass = value;
+						break;
+					case "XTEE_MEMBERCODE":
+						memberCode = value;
+						break;
+					case "XTEE_SUBSYSTEMCODE":
+						subsystemCode = value;
+						break;
+					case "XTEE_SERVICECODE":
+						serviceCode = value;
+						break;
+					case "XTEE_SERVICEVERSION":
+						serviceVersion = value;
+						break;
+					case "XTEE_SENDER_XROADINSTANCE":
+						sender_xRoadInstance = value;
+						break;
+					case "XTEE_SENDER_MEMBERCLASS":
+						sender_memberClass = value;
+						break;
+					case "XTEE_SENDER_MEMBERCODE":
+						sender_memberCode = value;
+						break;
+					case "XTEE_SENDER_SUBSYSTEMCODE":
+						sender_subsystemCode = value;
+						break;
+					default:
+						break;
+				}
+			}
+		}catch(Exception x){
+			x.printStackTrace();
+		}
+		
+		try {
+			elems.add(new SOAPHeaderElement(XROAD_NS, "protocolVersion", protocolVersion));
+			elems.add(new SOAPHeaderElement(XROAD_NS, "userId", userId));
+			elems.add(new SOAPHeaderElement(XROAD_NS, "id", id));
+			elems.add(new SOAPHeaderElement(XROAD_NS,"issue", issue));
+			
+
+			SOAPHeaderElement header1 = new SOAPHeaderElement(XROAD_NS, "service");
+			header1.setAttribute(IDENT_NS, "objectType", "SERVICE");
+			header1.addNamespaceDeclaration("iden", IDENT_NS);
+			
+			SOAPElement node = header1.addChildElement("xRoadInstance", "iden");
+			node.addTextNode(xRoadInstance);
+			node.setPrefix("iden");
+			
+			SOAPElement node2 = header1.addChildElement("memberClass", "iden");
+			node2.addTextNode(memberClass);
+			
+			SOAPElement node3 = header1.addChildElement("memberCode", "iden");
+			node3.addTextNode(memberCode);
+			
+			SOAPElement node4 = header1.addChildElement("subsystemCode", "iden");
+			node4.addTextNode(subsystemCode);
+			
+			SOAPElement node5 = header1.addChildElement("serviceCode", "iden");
+			node5.addTextNode(serviceCode);
+			
+			SOAPElement node6 = header1.addChildElement("serviceVersion", "iden");
+			node6.addTextNode(serviceVersion);
+			
+			elems.add(header1);
+
+			SOAPHeaderElement header2 = new SOAPHeaderElement(XROAD_NS, "client");
+			header2.setAttribute(IDENT_NS, "objectType", "SUBSYSTEM");
+			header2.addNamespaceDeclaration("iden", IDENT_NS);
+			
+			SOAPElement node7 = header2.addChildElement("xRoadInstance", "iden");
+			node7.addTextNode(sender_xRoadInstance);
+			
+			SOAPElement node8 = header2.addChildElement("memberClass", "iden");
+			node8.addTextNode(sender_memberClass);
+			
+			SOAPElement node9 = header2.addChildElement("memberCode", "iden");
+			node9.addTextNode(sender_memberCode);
+			
+			SOAPElement node10 = header2.addChildElement("subsystemCode", "iden");
+			node10.addTextNode(sender_subsystemCode);
+
+			elems.add(header2);
+			
+		} catch (Exception x) {
+			x.printStackTrace();
+		}
+		
+		return elems;
+	}
+
+}

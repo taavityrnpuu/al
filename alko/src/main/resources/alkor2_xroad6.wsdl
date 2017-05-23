@@ -1,0 +1,419 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions xmlns:tns="http://alkor2.x-road.eu/"
+        xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+        xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
+        xmlns:id="http://x-road.eu/xsd/identifiers"
+        xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+        xmlns:tns2="http://alkor2.x-road.eu/types" name="alkor2" targetNamespace="http://alkor2.x-road.eu/"
+        xmlns:SOAP-ENC="http://schemas.xmlsoap.org/soap/encoding/"
+        xmlns:SOAP-ENV="http://schemas.xmlsoap.org/soap/envelope/"
+  >
+  <wsdl:types>
+    <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" targetNamespace="http://alkor2.x-road.eu/">
+
+      <!--oma teenuse tüübid tuleb samuti väljaspool defineerida-->
+      <xs:import namespace="http://alkor2.x-road.eu/types" schemaLocation="http://piksel.loc.piksel.ee/alkor2.xsd"/>
+
+
+      <xs:import namespace="http://x-road.eu/xsd/xroad.xsd" schemaLocation="http://x-road.eu/xsd/xroad.xsd"/>
+      <xs:import namespace="http://x-road.eu/xsd/identifiers" schemaLocation="http://x-road.eu/xsd/identifiers.xsd"/>
+      <xs:import namespace="http://schemas.xmlsoap.org/soap/encoding/" schemaLocation="http://schemas.xmlsoap.org/soap/encoding/"/>
+
+
+
+    </xs:schema>
+  </wsdl:types>
+  <!--Message osa. Iga operatsiooni kohta 2 (sisend ja väljund), mille nimed on standardsed (sisendi nimeks on op nimi ja tüübiks samuti)-->
+  <wsdl:message name="listMethods">
+    <wsdl:part name="body" element="tns2:listMethods"/>
+  </wsdl:message>
+  <wsdl:message name="listMethodsResponse">
+    <wsdl:part name="body" element="tns2:listMethodsResponse"/>
+  </wsdl:message>
+  <wsdl:message name="testSystem">
+    <wsdl:part name="body" element="tns2:testSystem"/>
+  </wsdl:message>
+  <wsdl:message name="testSystemResponse">
+    <wsdl:part name="body" element="tns2:testSystemResponse"/>
+  </wsdl:message>
+  <wsdl:message name="transactionStatement">
+    <wsdl:part name="body" element="tns2:transactionStatement"/>
+  </wsdl:message>
+  <wsdl:message name="transactionStatementResponse">
+    <wsdl:part name="body" element="tns2:transactionStatementResponse"/>
+  </wsdl:message>
+  <wsdl:message name="aruandeparing">
+    <wsdl:part name="body" element="tns2:aruandeparing"/>
+  </wsdl:message>
+  <wsdl:message name="aruandeparingResponse">
+    <wsdl:part name="body" element="tns2:aruandeparingResponse"/>
+  </wsdl:message>
+  <wsdl:message name="eitlaadib">
+    <wsdl:part name="body" element="tns2:eitlaadib"/>
+  </wsdl:message>
+  <wsdl:message name="eitlaadibResponse">
+    <wsdl:part name="body" element="tns2:eitlaadibResponse"/>
+  </wsdl:message>
+  <wsdl:message name="aretolaadib">
+    <wsdl:part name="body" element="tns2:aretolaadib"/>
+  </wsdl:message>
+  <wsdl:message name="aretolaadibResponse">
+    <wsdl:part name="body" element="tns2:aretolaadibResponse"/>
+  </wsdl:message>
+  <wsdl:message name="kammparing">
+    <wsdl:part name="body" element="tns2:kammparing"/>
+  </wsdl:message>
+  <wsdl:message name="kammparingResponse">
+    <wsdl:part name="body" element="tns2:kammparingResponse"/>
+  </wsdl:message>
+  <wsdl:message name="tooteparing">
+    <wsdl:part name="body" element="tns2:tooteparing"/>
+  </wsdl:message>
+  <wsdl:message name="tooteparingResponse">
+    <wsdl:part name="body" element="tns2:tooteparingResponse"/>
+  </wsdl:message>
+  <wsdl:message name="liikumineParing">
+    <wsdl:part name="body" element="tns2:liikumineParing"/>
+  </wsdl:message>
+  <wsdl:message name="liikumineParingResponse">
+    <wsdl:part name="body" element="tns2:liikumineParingResponse"/>
+  </wsdl:message>
+  <wsdl:message name="legacy1">
+    <wsdl:part name="body" element="tns2:legacy1"/>
+  </wsdl:message>
+  <wsdl:message name="legacy1Response">
+    <wsdl:part name="body" element="tns2:legacy1Response"/>
+  </wsdl:message>
+  <!--lisaks x-tee v6 päiseosa jaoks message, mida kasutatakse iga operatiooni juures, ja mis omakorda pöördub alustüüpide poole-->
+  <wsdl:message name="requestHeader">
+    <wsdl:part name="client" element="xrd:client"/>
+    <wsdl:part name="service" element="xrd:service"/>
+    <wsdl:part name="userId" element="xrd:userId"/>
+    <wsdl:part name="id" element="xrd:id"/>
+    <wsdl:part name="issue" element="xrd:issue"/>
+    <wsdl:part name="protocolVersion" element="xrd:protocolVersion"/>
+    <wsdl:part name="requestHash" element="xrd:requestHash"/>
+  </wsdl:message>
+  <!--PortType osa (operatsioonid sisutehniliselt)-->
+  <wsdl:portType name="alkor2port">
+    <wsdl:operation name="listMethods">
+      <wsdl:documentation>
+        <xrd:title/>
+        <xrd:notes/>
+      </wsdl:documentation>
+      <wsdl:input message="tns:listMethods"/>
+      <wsdl:output message="tns:listMethodsResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="testSystem">
+      <wsdl:documentation>
+        <xrd:title/>
+        <xrd:notes/>
+      </wsdl:documentation>
+      <wsdl:input message="tns:testSystem"/>
+      <wsdl:output message="tns:testSystemResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="transactionStatement">
+      <wsdl:documentation>
+        <xrd:title/>
+        <xrd:notes/>
+      </wsdl:documentation>
+      <wsdl:input message="tns:transactionStatement"/>
+      <wsdl:output message="tns:transactionStatementResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="aruandeparing">
+      <wsdl:documentation>
+        <xrd:title/>
+        <xrd:notes/>
+      </wsdl:documentation>
+      <wsdl:input message="tns:aruandeparing"/>
+      <wsdl:output message="tns:aruandeparingResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="eitlaadib">
+      <wsdl:documentation>
+        <xrd:title/>
+        <xrd:notes/>
+      </wsdl:documentation>
+      <wsdl:input message="tns:eitlaadib"/>
+      <wsdl:output message="tns:eitlaadibResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="aretolaadib">
+      <wsdl:documentation>
+        <xrd:title/>
+        <xrd:notes/>
+      </wsdl:documentation>
+      <wsdl:input message="tns:aretolaadib"/>
+      <wsdl:output message="tns:aretolaadibResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="kammparing">
+      <wsdl:documentation>
+        <xrd:title/>
+        <xrd:notes/>
+      </wsdl:documentation>
+      <wsdl:input message="tns:kammparing"/>
+      <wsdl:output message="tns:kammparingResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="tooteparing">
+      <wsdl:documentation>
+        <xrd:title/>
+        <xrd:notes/>
+      </wsdl:documentation>
+      <wsdl:input message="tns:tooteparing"/>
+      <wsdl:output message="tns:tooteparingResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="liikumineParing">
+      <wsdl:documentation>
+        <xrd:title/>
+        <xrd:notes/>
+      </wsdl:documentation>
+      <wsdl:input message="tns:liikumineParing"/>
+      <wsdl:output message="tns:liikumineParingResponse"/>
+    </wsdl:operation>
+    <wsdl:operation name="legacy1">
+      <wsdl:documentation>
+        <xrd:title/>
+        <xrd:notes/>
+      </wsdl:documentation>
+      <wsdl:input message="tns:legacy1"/>
+      <wsdl:output message="tns:legacy1Response"/>
+    </wsdl:operation>
+  </wsdl:portType>
+  <!--Bindingud osa (operatsioonid teostustehniliselt)-->
+  <wsdl:binding name="alkor2binding" type="tns:alkor2port">
+    <soap:binding transport="http://schemas.xmlsoap.org/soap/http"/>
+    <wsdl:operation name="listMethods">
+      <soap:operation soapAction="" style="document"/>
+      <xrd:version>v1</xrd:version>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+        <soap:header message="tns:requestHeader" part="requestHash" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="testSystem">
+      <soap:operation soapAction="" style="document"/>
+      <xrd:version>v1</xrd:version>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+        <soap:header message="tns:requestHeader" part="requestHash" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="transactionStatement">
+      <soap:operation soapAction="" style="document"/>
+      <xrd:version>v1</xrd:version>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+        <soap:header message="tns:requestHeader" part="requestHash" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="aruandeparing">
+      <soap:operation soapAction="" style="document"/>
+      <xrd:version>v2</xrd:version>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+        <soap:header message="tns:requestHeader" part="requestHash" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="eitlaadib">
+      <soap:operation soapAction="" style="document"/>
+      <xrd:version>v2</xrd:version>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+        <soap:header message="tns:requestHeader" part="requestHash" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="aretolaadib">
+      <soap:operation soapAction="" style="document"/>
+      <xrd:version>v2</xrd:version>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+        <soap:header message="tns:requestHeader" part="requestHash" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="kammparing">
+      <soap:operation soapAction="" style="document"/>
+      <xrd:version>v2</xrd:version>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+        <soap:header message="tns:requestHeader" part="requestHash" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="tooteparing">
+      <soap:operation soapAction="" style="document"/>
+      <xrd:version>v2</xrd:version>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+        <soap:header message="tns:requestHeader" part="requestHash" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="liikumineParing">
+      <soap:operation soapAction="" style="document"/>
+      <xrd:version>v2</xrd:version>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+        <soap:header message="tns:requestHeader" part="requestHash" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+    <wsdl:operation name="legacy1">
+      <soap:operation soapAction="" style="document"/>
+      <xrd:version>v1</xrd:version>
+      <wsdl:input>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+      </wsdl:input>
+      <wsdl:output>
+        <soap:body use="literal"/>
+        <soap:header message="tns:requestHeader" part="client" use="literal"/>
+        <soap:header message="tns:requestHeader" part="service" use="literal"/>
+        <soap:header message="tns:requestHeader" part="userId" use="literal"/>
+        <soap:header message="tns:requestHeader" part="id" use="literal"/>
+        <soap:header message="tns:requestHeader" part="issue" use="literal"/>
+        <soap:header message="tns:requestHeader" part="protocolVersion" use="literal"/>
+        <soap:header message="tns:requestHeader" part="requestHash" use="literal"/>
+      </wsdl:output>
+    </wsdl:operation>
+  </wsdl:binding>
+  <wsdl:service name="alkor2">
+    <wsdl:port name="alkor2port" binding="tns:alkor2binding">
+      <soap:address location="https://192.168.0.6/cgi-bin/consumer_proxy/"/>
+    </wsdl:port>
+  </wsdl:service>
+</wsdl:definitions>

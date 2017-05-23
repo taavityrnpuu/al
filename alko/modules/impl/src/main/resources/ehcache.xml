@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ehcache>
+     <diskStore path="java.io.tmpdir"/>
+     <defaultCache
+        maxElementsInMemory="1000"
+        eternal="false"
+        timeToIdleSeconds="120"
+        timeToLiveSeconds="120"
+        overflowToDisk="false"/>
+
+	<cache name="ee.agri.alkor.model.classes.Classificator"
+        maxElementsInMemory="550"
+        eternal="true"
+        overflowToDisk="false"
+    />
+
+	<cache name="ee.agri.alkor.model.Product"
+        maxElementsInMemory="250"
+        eternal="false"
+        overflowToDisk="false"
+    />
+
+	<cache name="ee.agri.alkor.model.Enterprise"
+        maxElementsInMemory="250"
+        eternal="false"
+        overflowToDisk="false"
+    />
+
+	<cache name="ee.agri.alkor.model.RegistryApplication"
+        maxElementsInMemory="250"
+        eternal="false"
+        overflowToDisk="false"
+    />
+
+	<cache name="ee.agri.alkor.model.RegistryEntry"
+        maxElementsInMemory="250"
+        eternal="false"
+        overflowToDisk="false"
+    />
+
+	<cache name="ee.agri.alkor.model.Person"
+        maxElementsInMemory="250"
+        eternal="false"
+        overflowToDisk="false"
+    />
+
+	<cache name="ee.agri.alkor.model.ProductEnterpriseRole"
+        maxElementsInMemory="250"
+        eternal="false"
+        overflowToDisk="false"
+    />
+
+	<cache name="ee.agri.alkor.model.RegistryPayment"
+        maxElementsInMemory="250"
+        eternal="false"
+        overflowToDisk="false"
+    />
+
+	<cache name="ee.agri.alkor.model.RegistryDocument"
+        maxElementsInMemory="250"
+        eternal="false"
+        overflowToDisk="false"
+    />
+
+	<cache name="ee.agri.alkor.model.Enterprise.payments"
+        maxElementsInMemory="250"
+        eternal="false"
+        overflowToDisk="false"
+    />
+
+	<cache name="ee.agri.alkor.model.Enterprise.enterpriseRoles"
+        maxElementsInMemory="250"
+        eternal="false"
+        overflowToDisk="false"
+    />
+    
+    <cache name="ee.agri.alkor.model.Product.paymentLogs"
+        maxElementsInMemory="250"
+        eternal="false"
+        overflowToDisk="false"
+    />
+
+
+
+</ehcache>

@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<itext creationdate="Thu Feb 08 15:53:16 EET 2007" producer="iTextXML by lowagie.com">
+
+	<chapter numberdepth="0" depth="1" indent="0.0">
+
+		<section numberdepth="0" depth="1" indent="-10.0" >
+
+			#parse("logo3.xml")
+				</section>
+			<section numberdepth="0" depth="1" indent="50.0" indent-right="50.0" >
+			<newline/>
+			<table columns="2" width="100.0%" widths="50.0;50.0" align="Center" cellpadding="0" cellspacing="0" borderwidth="0" bottom="false" left="false" right="false" top="false">
+				<row>
+					<cell horizontalalign="left">
+						<phrase font="$font" size="12.0">&#213;IEND</phrase>
+					</cell>
+					<cell horizontalalign="right">
+						<phrase font="$font" size="12.0" fontstyle="normal">
+						#if($application.decision.nr)
+							#if($application.decision.nr.indexOf('/') != -1)
+								$dateFormat.format($application.decision.date) nr $yearFormat.format($application.product.registryEntryApplication.decision.date)$application.decision.nr.substring($application.decision.nr.indexOf('/'),$application.decision.nr.length()).replaceAll("&","&#38;")/$yearShortFormat.format($application.decision.date)
+							#else
+								$dateFormat.format($application.decision.date) nr $yearFormat.format($application.product.registryEntryApplication.decision.date)/$application.decision.nr.replaceAll("&","&#38;")/$yearShortFormat.format($application.decision.date)
+							#end
+						#else
+							$dateFormat.format($application.decision.date) nr $yearFormat.format($application.product.registryEntryApplication.decision.date)/                  /$yearShortFormat.format($application.decision.date)
+						#end
+						</phrase>
+					</cell>
+				</row>
+			</table>
+			<table columns="1" width="100.0%" align="Center"   cellpadding="2.0" cellspacing="0"  borderwidth="0.5" left="false" right="false" top="false" bottom="false">
+				<row>
+					<cell borderwidth="0" horizontalalign="Left" verticalalign="top" left="false" right="false" top="false" bottom="false">
+						<phrase font="$font" size="12" align="Default">
+							K&#228;esolevaga t&#245;endame, et
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="top" leading="12.0" left="true" right="true" top="true" bottom="false">
+						<phrase leading="12.0" font="$font"  size="12">
+						<chunk fontstyle="bold">$application.product.type.name.replaceAll("&","&#38;")</chunk>
+						<newline/>
+						<chunk size="8">(toote liik)</chunk>
+						</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="top" leading="12.0" left="true" right="true" top="false" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12">
+						<chunk fontstyle="bold">$application.product.name.replaceAll("&","&#38;")</chunk>
+						<newline/>
+						<chunk size="8">(toote nimi)</chunk>
+						</phrase>
+					</cell>
+				</row>
+			</table>
+			<table columns="2" width="100.0%"  widths="35.0;65.0" align="Center"  cellpadding="2.0" cellspacing="0"  borderwidth="0.5" left="false" right="false" top="false" bottom="false">
+				#if($application.product.producer.name)
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">Tootja</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">$!application.product.producer.name.replaceAll("&","&#38;")</phrase>
+					</cell>
+				</row>
+				#end
+				#if($application.product.producer.address.country.name)
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">Tootjamaa</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">$!application.product.producer.address.country.name.replaceAll("&","&#38;")</phrase>
+					</cell>
+				</row>
+				#end
+				#if($application.product.originCountry)
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">P&#228;ritoluriik / l&#228;htekoht</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">$!application.product.originCountry.name.replaceAll("&","&#38;")</phrase>
+					</cell>
+				</row>
+				#end
+				#if($application.product.packager)
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="false" right="true" top="false" bottom="true">
+						<phrase leading="12.0" font="$font"  fontstyle="normal" size="12">Pakendaja</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="false" top="false" bottom="true">
+						<phrase leading="12.0" font="$font"  fontstyle="normal" size="12">$!application.product.packager.name.replaceAll("&","&#38;"), $!application.product.packager.address.country.name.replaceAll("&","&#38;")</phrase>
+					</cell>
+				</row>
+				#end
+				#if($application.product.importer)
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">Importija</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">$!application.product.importer.name.replaceAll("&","&#38;") , $!application.product.importer.address.country.name</phrase>
+					</cell>
+				</row>
+				#end
+				#if($application.product.marketer)
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">Euroopa Liidus asutatud müüja</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">$!application.product.marketer.name.replaceAll("&","&#38;"), $!application.product.marketer.address.country.name</phrase>
+					</cell>
+				</row>
+				#end				
+				#if($application.product.ethanolRate)
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">Etanoolisisaldus</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">
+							$application.product.ethanolRate.stripTrailingZeros().toPlainString().replace('.', ',') %vol
+						</phrase>
+					</cell>
+				</row>
+				#end
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">Maht</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">$!application.product.packingVolume.name.replaceAll("&","&#38;")</phrase>
+					</cell>
+				</row>
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">Pakend</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">$!application.product.packingMaterial.name.replaceAll("&","&#38;")</phrase>
+					</cell>
+				</row>
+				#if($application.product.notes)
+				<row>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">M&#228;rkus</phrase>
+					</cell>
+					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="normal">$!application.product.notes.replaceAll("&","&#38;")</phrase>
+					</cell>
+				</row>
+				#end
+			</table>
+			<paragraph leading="12.0" font="$font" size="12" align="Default">
+			<newline />
+			<chunk font="$font" fontstyle="bold">registrikanne $dateFormat.format($application.product.registryEntryApplication.decision.date) nr $application.registryEntry.nr on </chunk>
+			</paragraph>
+			<table columns="2" width="100.0%" align="Left" widths="75.0;25.0" cellpadding="1.0" cellspacing="0"  borderwidth="0.5" left="false" right="false" top="false" bottom="false">
+				<row>
+					<cell  horizontalalign="Left" verticalalign="Default" leading="12.0" borderwidth="0.5" left="true" right="true" top="true" bottom="true">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="bold"> $application.applicant.name.replaceAll("&","&#38;")</phrase>
+						#if($application.applicant.registrationId)<phrase leading="12.0" font="$font"  size="8" fontstyle="normal"><newline /> &#196;riregistri kood:$application.applicant.registrationId.replaceAll("&","&#38;")</phrase>#end
+					</cell>
+					<cell borderwidth="0" horizontalalign="Left" verticalalign="Default" leading="18.0" left="false" right="false" top="false" bottom="false">
+						<phrase leading="12.0" font="$font"  size="12" fontstyle="bold"> taotlusel</phrase>
+					</cell>
+				</row>
+			</table>
+			<paragraph leading="12.0" font="$font" size="12" align="Default">
+			<newline />
+			<chunk font="$font" fontstyle="bold">pikendatud kuni  $dateFormat.format($application.registryEntry.validUntil)</chunk>
+			</paragraph>
+			<paragraph leading="12.0" font="$font" size="12" align="Default">
+				<newline />
+				<newline />
+				<newline />
+				<newline />
+				<newline />
+				<newline />
+			
+				$!application.processor.firstName.replaceAll("&","&#38;") $!application.processor.lastName.replaceAll("&","&#38;")<newline />
+				Peaspetsialist<newline />
+			</paragraph>
+			
+		</section>
+	</chapter>
+</itext>

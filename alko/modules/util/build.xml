@@ -1,0 +1,142 @@
+<project basedir="." default="" name="Alkor service implementation build" xmlns:artifact="antlib:org.apache.maven.artifact.ant">
+
+    <property file="../../build.properties" />
+
+    <property name="src.dir" location="${basedir}/src/main/java" />
+    <property name="res.dir" location="${basedir}/src/main/resources" />
+    <property name="sql.dir" location="${basedir}/src/main/sql" />
+    <property name="test.src.dir" location="${basedir}/src/test" />
+    <property name="test.res.dir" location="${basedir}/src/test/resources" />
+    <property name="test.dir" location="${basedir}/test" />
+
+    <target name="init">
+
+		<artifact:localRepository id="local.repository" path="${maven.repo.local}" />
+	    <artifact:remoteRepository id="remote.repository" url="${maven.repo.remote}" />
+		<artifact:pom id="project" file="${basedir}/pom.xml" />
+
+		 <artifact:dependencies pathId="compile.dependency.path" useScope="compile">
+			  <pom refid="project"/>
+			<artifact:localRepository refid="local.repository" />
+		    <artifact:remoteRepository refid="remote.repository" />
+		</artifact:dependencies>
+
+		<artifact:dependencies pathId="runtime.dependency.path" filesetId="runtime.dependency.fileset" useScope="runtime">
+			<pom refid="project" />
+			<artifact:localRepository refid="local.repository" />
+			<artifact:remoteRepository refid="remote.repository" />
+		</artifact:dependencies>
+
+		 <artifact:dependencies pathId="test.dependency.path" filesetId="test.dependency.fileset" useScope="test">
+			<pom refid="project"/>
+			<artifact:localRepository refid="local.repository"  />
+		    <artifact:remoteRepository refid="remote.repository" />
+		</artifact:dependencies>
+
+        <property name="build.dir" location="${project.build.directory}" />
+        <property name="classes.dir" location="${project.build.directory}/classes" />
+   </target>
+
+    <target name="compile" depends="init">
+    	<mkdir dir="${build.dir}" />
+    	<mkdir dir="${classes.dir}/" />
+        <javac classpathref="compile.dependency.path" debug="on"
+        	deprecation="on" destdir="${classes.dir}"
+        	includes="ee/**/*.java" optimize="off"
+        	srcdir="${src.dir}" />
+    </target>
+
+    <target name="jar"  depends="compile">
+        <filter filtersfile="${res.dir}/convert.properties" />
+    	<mkdir dir="${classes.dir}/sql" />
+        <copy todir="${classes.dir}/sql" filtering="true">
+            <fileset dir="${sql.dir}">
+                <include name="schema-postgres.sql" />
+                <include name="decision_seq.sql" />
+            </fileset>
+        </copy>
+        <copy todir="${classes.dir}" filtering="true">
+            <fileset dir="${res.dir}">
+                <include name="*.xml" />
+                <include name="convert.properties" />
+            </fileset>
+        </copy>
+    	<mkdir dir="${classes.dir}/lib" />
+		<copy todir="${classes.dir}/lib">
+			<fileset refid="runtime.dependency.fileset" />
+			<mapper type="flatten" />
+		</copy>
+
+    	<jar basedir="${classes.dir}" destfile="${build.dir}/${project.artifactId}-${project.version}.jar" />
+    </target>
+
+    <target name="install" depends="jar">
+    	<artifact:install file="${build.dir}/${project.artifactId}-${project.version}.jar">
+    	    <pom refid="project"/>
+    	 </artifact:install>
+    </target>
+
+
+	<target name="create_db" depends="jar">
+		<sql driver="${db.driver}" onerror="continue" password="${db.password}" url="${db.url}" userid="${db.user}"  classpathref="runtime.dependency.path" encoding="utf8">
+			<transaction src="${sql.dir}/schema-${db.vendor}.sql"/>
+		</sql>
+		<sql driver="${db.driver}" onerror="continue" password="${db.password}" url="${db.url}" userid="${db.user}"  classpathref="runtime.dependency.path" encoding="utf8">
+			<transaction src="${sql.dir}/decision_seq.sql"/>
+		</sql>
+   	<mkdir dir="${test.dir}/target" />
+	   	<filter filtersfile="../../build.properties"/>
+		<copy todir="${test.dir}/target"  filtering="true">
+			<fileset dir="${res.dir}">
+				<include name="*.xml" />
+			</fileset>
+		</copy>
+		<java classname="ee.agri.alkor.impl.AppSetup" fork="yes" dir="${test.dir}/target">
+            <classpath>
+                <pathelement location="${build.dir}/${project.artifactId}-${project.version}.jar" />
+                <path refid="test.dependency.path" />
+                <path location="${classes.dir}" />
+            </classpath>
+		</java>
+    </target>
+
+    <target name="test" depends="jar" description="Run the local test suite">
+    	<mkdir dir="${test.dir}/target" />
+        <javac debug="on"
+        	deprecation="on" destdir="${test.dir}/target"
+        	includes="test/*Test.java" optimize="off"
+        	srcdir="${test.src.dir}/java" >
+        	<classpath>
+        		<path refid="compile.dependency.path" />
+                <path location="${classes.dir}" />
+        	</classpath>
+        </javac>
+    	<filter filtersfile="${res.dir}/convert.properties"/>
+		<copy todir="${test.dir}/target"  filtering="true">
+			<fileset dir="${test.res.dir}">
+				<include name="*.xml" />
+			</fileset>
+		</copy>
+
+         <junit printsummary="withOutAndErr" showoutput="no" fork="yes" maxmemory="1200m" haltonfailure="yes" dir="${test.dir}/target">
+            <classpath>
+                <pathelement path="${test.dir}/target" />
+                <pathelement location="${build.dir}/${project.artifactId}-${project.version}.jar" />
+                <path refid="runtime.dependency.path" />
+            </classpath>
+            <formatter type="plain" />
+            <!--formatter type="xml"/-->
+            <batchtest fork="yes" todir="${test.dir}/target" haltonfailure="no" >
+                <fileset dir="${test.dir}/target">
+                  <include name="test/RegistryImportTest.class" />
+               </fileset>
+            </batchtest>
+        </junit>
+    </target>
+
+    <target name="clean"  depends="init">
+    	<delete dir="${build.dir}" />
+    	<delete dir="${test.dir}" />
+    </target>
+
+</project>

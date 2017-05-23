@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:aop="http://www.springframework.org/schema/aop"
+       xmlns:tx="http://www.springframework.org/schema/tx"
+       xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+
+
+
+	<bean id="classServiceDelegate" class="ee.agri.alkor.service.ClassificatorServiceDelegate">
+	  <property name="service" ref="classificatorServiceDao"/>
+	</bean>
+	
+	 <bean id="classificatorServiceDao" class="ee.agri.alkor.impl.ClassificatorServiceImpl">
+		<property name="sessionFactory" ref="alkor2SessionFactory"/>
+	  </bean>
+	  
+	<bean id="userServiceDelegate" class="ee.agri.alkor.service.UserManagerServiceDelegate">
+	  <property name="service" ref="userServiceDao"/>
+	</bean>
+	
+	 <bean id="userServiceDao" class="ee.agri.alkor.impl.UserManagerServiceImpl">
+		<property name="sessionFactory" ref="alkor2SessionFactory"/>
+	  </bean>
+	  
+	
+	 <bean id="alkor1Converter" class="ee.agri.alkor.util.convert.Alkor1Converter">
+		<property name="alkor1Export" ref="alkor1Export"/>
+		<property name="classService" ref="classificatorServiceDao"/>
+		<property name="registryService" ref="alkor2ServiceDao"/>
+	  </bean>
+	
+	 <bean id="pmrConverter" class="ee.agri.alkor.util.convert.PmrConverter">
+		<property name="alkor1Export" ref="pmrExport"/>
+		<property name="classService" ref="classificatorServiceDao"/>
+		<property name="registryService" ref="alkor2ServiceDao"/>
+	  </bean>
+	
+	 <bean id="alkor1Export" class="ee.agri.alkor.util.convert.Alkor1Export">
+		<property name="sessionFactory" ref="alkor1SessionFactory"/>
+	  </bean>
+	  
+	 <bean id="pmrExport" class="ee.agri.alkor.util.convert.Alkor1Export">
+		<property name="sessionFactory" ref="pmrSessionFactory"/>
+	  </bean>
+	
+	 <bean id="alkor2ServiceDao" class="ee.agri.alkor.util.convert.Alkor2Dao">
+		<property name="sessionFactory" ref="alkor2SessionFactory"/>
+	  </bean>
+	  
+   <bean id="alkor1DataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="@alkor1.db.driver@"/>
+    <property name="url" value="@alkor1.db.url@"/>
+    <property name="username" value="@alkor1.db.user@"/>
+    <property name="password" value="@alkor1.db.password@"/>
+  </bean>
+	
+   <bean id="pmrDataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="@pmr.db.driver@"/>
+    <property name="url" value="@pmr.db.url@"/>
+    <property name="username" value="@pmr.db.user@"/>
+    <property name="password" value="@pmr.db.password@"/>
+  </bean>
+
+ <bean id="alkor1SessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+    <property name="dataSource" ref="alkor1DataSource"/>
+	<property name="configLocation" value="classpath:hibernate-alkor1.cfg.xml"/>
+	 
+  </bean>
+	
+  <bean id="pmrSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+    <property name="dataSource" ref="pmrDataSource"/>
+	<property name="configLocation" value="classpath:hibernate-pmr.cfg.xml"/>
+	 
+  </bean>
+ 
+   <bean id="alkor2DataSource" class="org.apache.commons.dbcp.BasicDataSource" destroy-method="close">
+    <property name="driverClassName" value="@alkor2.db.driver@"/>
+    <property name="url" value="@alkor2.db.url@"/>
+    <property name="username" value="@alkor2.db.user@"/>
+    <property name="password" value="@alkor2.db.password@"/>
+  </bean>
+
+ <bean id="alkor2SessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
+    <property name="dataSource" ref="alkor2DataSource"/>
+	<property name="configLocation" value="classpath:hibernate.cfg.xml"/>
+	 
+  </bean>
+	
+   <bean id="myTxManager" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+    <property name="sessionFactory" ref="alkor2SessionFactory"/>
+  </bean>
+ 
+	<tx:annotation-driven transaction-manager="myTxManager"/>
+   
+</beans>

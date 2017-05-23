@@ -1,0 +1,268 @@
+<pseudoroot xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:xrd="http://x-road.eu/xsd/xroad.xsd">
+	<!-- liikumine PARING -->
+	<xsd:element name="liikumineParing">
+		<xsd:complexType>
+            <xsd:sequence>
+               <xsd:element name="reg_book_nr" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Alkoholi registrikande nr
+                        </xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="ent_reg_nr" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Saatja registrikood</xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="ent_name" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Saatja firma nimi</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="receiver" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title xml:lang="et">
+                           Saaja ettevõtte nimi / Eestist
+                           väljatoimetamisel sihtriik
+                        </xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="market" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Tegevuskoha nimetus</xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="addr_county" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Tegevuskoha aadress: maakond
+                        </xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="addr_town" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title xml:lang="et">
+                           Tegevuskoha aadress: vald, linn, küla
+                        </xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="addr_str" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Tegevuskoha aadress: tänav, nr
+                        </xrd:title>
+                        <xrd:wildcard>*?</xrd:wildcard>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="p_nr" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Partii nr</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="p_cnt" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Tarbijapakendite kogus (kuu koondarv)
+                        </xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="l_date_from" type="xsd:date"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Sisestatud alates</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="l_date_to" type="xsd:date"
+                  minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Sisestatud kuni</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+			   <!-- Defineeritud ülal -->
+               <xsd:element name="period" type="tns:aruandeperiood">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aruandeperiood</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="report_id" type="xsd:int" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aruande id</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="resp_attach" type="xsd:boolean" minOccurs="0">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Vastus failina</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+            </xsd:sequence>
+         </xsd:complexType>
+	</xsd:element>
+	<!-- liikumine PARING LOPP -->	
+	
+	<!-- liikumine PARINGU VASTUS -->
+	<xsd:element name="liikumineParingResponse">
+	    <xsd:complexType>
+            <xsd:sequence>
+               <xsd:element name="teade" type="xsd:string" />
+
+               <xsd:element name="liikumised" minOccurs="0">
+                  <xsd:complexType>
+                     <xsd:complexContent>
+                        <xsd:restriction base="SOAP-ENC:Array">
+                           <xsd:sequence>
+                              <xsd:element name="liikumine"
+                                 minOccurs="0" maxOccurs="unbounded"
+                                 type="tns:liikumine" />
+                           </xsd:sequence>
+                        </xsd:restriction>
+                     </xsd:complexContent>
+                  </xsd:complexType>
+               </xsd:element>
+
+               <xsd:element name="liikumised_csv" type="tns:csv">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Liikumised</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+            </xsd:sequence>
+         </xsd:complexType>
+	</xsd:element>
+
+
+	        <xsd:complexType name="liikumine">
+            <xsd:sequence>
+               <xsd:element name="reg_book_nr" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Alkoholi registrikande nr
+                        </xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="receiver" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Saaja ettevõtte nimi / Eestist
+                           väljatoimetamisel sihtriik
+                        </xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="market" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Tegevuskoha nimetus</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="addr_county" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Tegevuskoha aadress: maakond
+                        </xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="addr_town" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Tegevuskoha aadress: vald, linn, küla
+                        </xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="addr_str" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Tegevuskoha aadress: tänav, nr
+                        </xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="p_nr" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Partii nr</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="p_cnt" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>
+                           Tarbijapakendite kogus (kuu koondarv)
+                        </xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+               <xsd:element name="ent_name" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Saatja</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+               <xsd:element name="report_id" type="xsd:string">
+                  <xsd:annotation>
+                     <xsd:appinfo>
+                        <xrd:title>Aruande id</xrd:title>
+                     </xsd:appinfo>
+                  </xsd:annotation>
+               </xsd:element>
+
+            </xsd:sequence>
+         </xsd:complexType>
+
+	<!-- liikumine PARINGU VASUTS LOPP -->
+		
+</pseudoroot>
