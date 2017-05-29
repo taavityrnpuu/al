@@ -218,7 +218,7 @@ UPDATE classificator SET order_nr_vta = 90 WHERE code = 'VOID' and category = 'A
 UPDATE classificator SET order_nr_vta = 100 WHERE code = 'ENT' and category = 'ApplicationState';
 
 insert into config(key, value, type, note) VALUES ('CAS_LOGIN_URL','https://cas.agri.ee/epm-cas/login?iframeLogin=1', 'cas_urls', 'TEKST. CAS i-frame sisse logimise URL');
-insert into config(key, value, type, note) VALUES ('CAS_BACK_URL','https://10.2.0.194:8443/', 'cas_urls', 'TEKST. Alkori keskkonna URL, vajalik CAS sisse logimisel');
+insert into config(key, value, type, note) VALUES ('CAS_BACK_URL','https://10.2.0.194:8443/caslogin', 'cas_urls', 'TEKST. Alkori keskkonna URL, vajalik CAS sisse logimisel');
 insert into config(key, value, type, note) VALUES ('CAS_LOGOUT_URL','https://cas.agri.ee/epm-cas/logout', 'cas_urls', 'TEKST. CAS välja logimise URL');
 
 

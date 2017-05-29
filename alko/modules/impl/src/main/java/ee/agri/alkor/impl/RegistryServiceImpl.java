@@ -190,7 +190,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					type.setCode(IClassificatorService.APPL_TYPE_ARP);
 					registryApplication.setType(type);
 					session.saveOrUpdate(registryApplication);
-					session.saveOrUpdate(registryApplication.getProduct());
+					//session.saveOrUpdate(registryApplication.getProduct());
 					session.flush();
 					try {
 						if (!IClassificatorService.EXTENDED_UNTIL.equals(decision.getExtendRegEntryDecision())) {
@@ -600,7 +600,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						appl.setRegistryEntry(newEntry);
 					}
 					session.saveOrUpdate(appl);
-					session.saveOrUpdate(appl.getProduct());
+					//session.saveOrUpdate(appl.getProduct());
 					session.flush();
 					try {
 
