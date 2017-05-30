@@ -82,6 +82,7 @@
                 <include name="hibernate.cfg.xml" />
                 <include name="applicationContext.xml" />
                 <include name="ARE.xml" />
+                <include name="ARP.xml" />
                 <include name="DEC.xml" />
                 <include name="COR.xml" />
                 <include name="LOGO.xml" />

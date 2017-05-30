@@ -368,22 +368,32 @@ public class DocumentServiceServlet extends HttpServlet {
 				contentType = doc.getContentType();
 
 			} else if (ServiceConstants.DOC_ACTION_GENERATE.equals(action) && (appNr != null || appId != null)) {
+				String type = ServiceConstants.DOC_TYPE_APP;
 				if (appNr == null) {
+					ResultSet rs = PostgreUtils.query("SELECT 1 FROM reg_application WHERE nr like '%P%' AND id = "+appId);
+					while(rs.next()){
+						type = ServiceConstants.DOC_TYPE_APP_EXTEND;
+					}
+					
 					try {
 						if (user == null) {
 							throw new RuntimeException("User has no permission to generate this file!");
 						}
 						AlkoUserDetails det = geUserDetails(user);
 						if (ServiceConstants.EIT_USERNAME.equals(det.getUsername())) {
-							content = service.createApplicationDocumentByIdAndRegCode(ServiceConstants.DOC_TYPE_APP, new Long(appId), det.getRegCode());
+							content = service.createApplicationDocumentByIdAndRegCode(type, new Long(appId), det.getRegCode());
 						} else {
-							content = service.createApplicationDocumentById(ServiceConstants.DOC_TYPE_APP, new Long(appId));
+							content = service.createApplicationDocumentById(type, new Long(appId));
 						}
 					} catch (ClassCastException e) {
 						LOGGER.error(e.getMessage(), e);
 					}
 				} else {
-					content = service.createApplicationDocument(ServiceConstants.DOC_TYPE_APP, appNr, null);
+					if(appNr.contains("P")){
+						type = ServiceConstants.DOC_TYPE_APP_EXTEND;
+					}
+					
+					content = service.createApplicationDocument(type, appNr, null);
 				}
 				contentType = "application/pdf";
 			} else {

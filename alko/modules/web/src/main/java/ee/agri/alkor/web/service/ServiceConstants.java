@@ -218,6 +218,11 @@ public interface ServiceConstants {
 	 */
 	String DOC_TYPE_APP = "ARE";
 	/**
+	 * Value of application document type
+	 * classificator code.
+	 */
+	String DOC_TYPE_APP_EXTEND = "ARP";
+	/**
 	 * Value of product document type
 	 * classificator code.
 	 */
