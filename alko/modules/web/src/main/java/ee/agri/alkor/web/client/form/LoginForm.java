@@ -249,7 +249,7 @@ public class LoginForm extends Form {
 							+ "<iframe "
 								+ "ng-src='"+urls[0]+"&amp;service="+urls[1]+"' "
 								+ "frameborder='0' width='100%' height='180' title='Sisselogimise vorm' scrolling='no' "
-								+ "src='https://cas.agri.ee/epm-cas/login?iframeLogin=1&amp;service="+urls[1]+"' "
+								+ "src='"+urls[0]+"&amp;service="+urls[1]+"' "
 								+ "id='iFrameResizer0' style='overflow: hidden; height: 180px;'>"
 							+ "</iframe>"
 						+ "</div>";
