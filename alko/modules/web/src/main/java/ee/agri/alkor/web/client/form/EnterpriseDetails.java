@@ -515,7 +515,8 @@ public class EnterpriseDetails extends Form implements CacheListener{
 
 		public void onClick(Widget sender) {			
 			EnterpriseDetails.this.clearErrors();
-			EnterpriseDetails.this.setEnterpriseDataFromFormFields();			
+			EnterpriseDetails.this.setEnterpriseDataFromFormFields();		
+			EnterpriseDetails.this.clearErrors();		
 			
 			final String entRegNr = (String)EnterpriseDetails.this.getData().getProperty(EnterpriseMap.REG_ID);
 			if(entRegNr == null)return;

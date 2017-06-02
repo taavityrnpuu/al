@@ -464,13 +464,14 @@ public abstract class DocumentsForm extends Form {
 		}
 		initWidget(main);
 
+		/*
 		docsTablePublic.show();
 		if (!this.showOnlyPublic) {
 			docsTable.show();
 			if (hasPrivsArchive) {
 				docsTableArchive.show();
 			}
-		}
+		}*/
 	}
 
 	private String[] parseResponse(String response) {
@@ -551,7 +552,46 @@ public abstract class DocumentsForm extends Form {
 					String arc = rm.getText(RegistryDocumentMap.ARCHIVED);
 					// if (pub != "1" && arc != "1") {
 
-					renderRow(i++, (RegistryDocumentMap) row);
+					RegistryDocumentMap data = (RegistryDocumentMap) row;
+					
+					String docName = data.getText(RegistryDocumentMap.NAME);
+					try {
+
+						if (docName.startsWith("Ärakiri nr.") || docName.startsWith("Pikendamise ärakiri nr.")) {
+							continue;
+						}
+						
+						/**
+						 * See IF rakendub ainult ettevõtjale.
+						 */
+						if (UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_EIT_GRP })) {
+							if(parent != null  && parent.getClass() == XTeeForm.class){
+								String state = parent.getData().getProperty(ApplicationMap.STATE_CODE).toString();
+
+								if(state.equals(ApplicationMap.STATE_CODE_EXTENDED) || state.equals(ApplicationMap.STATE_CODE_ENTERED_TO_REGISTRY)){
+									if(docName.startsWith("Pikendamise otsus nr.") || docName.startsWith("Otsus nr.")){
+										continue;
+									} 
+									else if((docName.startsWith("Õiend nr.") || docName.startsWith("Pikendamise õiend nr.")) && !docName.substring(docName.length() - 7).equals("(asice)")){
+										continue;
+									} 
+								}
+								else if(state.equals(ApplicationMap.STATE_CODE_NOT_EXTENDED) || state.equals(ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY)){
+									if(docName.startsWith("Pikendamise õiend nr.") || docName.startsWith("Õiend nr.")){
+										continue;
+									} 
+									else if((docName.startsWith("Otsus nr.") || docName.startsWith("Pikendamise otsus nr.")) && !docName.substring(docName.length() - 7).equals("(asice)")){
+										continue;
+									} 
+								}
+							}		
+							
+						}
+					} catch (Exception ex) {
+
+					}
+					
+					renderRow(i++, data);
 					// }
 
 				}
@@ -565,41 +605,6 @@ public abstract class DocumentsForm extends Form {
 			 */
 			String docName = data.getText(RegistryDocumentMap.NAME);
 			
-			try {
-
-				if (docName.startsWith("Ärakiri nr.") || docName.startsWith("Pikendamise ärakiri nr.")) {
-					return;
-				}
-				
-				/**
-				 * See IF rakendub ainult ettevõtjale.
-				 */
-				if (UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_EIT_GRP })) {
-					if(parent != null  && parent.getClass() == XTeeForm.class){
-						String state = parent.getData().getProperty(ApplicationMap.STATE_CODE).toString();
-
-						if(state.equals(ApplicationMap.STATE_CODE_EXTENDED) || state.equals(ApplicationMap.STATE_CODE_ENTERED_TO_REGISTRY)){
-							if(docName.startsWith("Pikendamise otsus nr.") || docName.startsWith("Otsus nr.")){
-								return;
-							} 
-							else if((docName.startsWith("Õiend nr.") || docName.startsWith("Pikendamise õiend nr.")) && !docName.substring(docName.length() - 7).equals("(asice)")){
-								return;
-							} 
-						}
-						else if(state.equals(ApplicationMap.STATE_CODE_NOT_EXTENDED) || state.equals(ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY)){
-							if(docName.startsWith("Pikendamise õiend nr.") || docName.startsWith("Õiend nr.")){
-								return;
-							} 
-							else if((docName.startsWith("Otsus nr.") || docName.startsWith("Pikendamise otsus nr.")) && !docName.substring(docName.length() - 7).equals("(asice)")){
-								return;
-							} 
-						}
-					}		
-					
-				}
-			} catch (Exception ex) {
-
-			}
 			EscapeUtils escapeUtils = new EscapeUtils();
 			if ((row % 2) == 1)
 				this.getRowFormatter().setStyleName(row, "Odd");

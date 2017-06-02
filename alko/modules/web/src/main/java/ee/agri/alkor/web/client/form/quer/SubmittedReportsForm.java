@@ -460,7 +460,9 @@ public class SubmittedReportsForm extends Form implements ClickListener, CacheLi
 		}
 
 		protected void getData(SearchFilter filter) {
-			filter.addSortItem("created", SearchFilter.DESCENDING);
+			if(filter.getSortMap().size() == 0){
+				filter.addSortItem("created", SearchFilter.DESCENDING);
+			}
 			ServiceContext.getInstance().getRegistryService().search(filter, this);
 		}
 

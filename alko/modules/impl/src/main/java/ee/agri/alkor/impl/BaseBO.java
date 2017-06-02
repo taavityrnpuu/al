@@ -564,6 +564,8 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		// LOGGER.info("TIMER countquery [" + timerSessionId + "]: " +
 		// countQuery);
 
+
+
 		// create query
 
 		Query q = createQuery(session, queryParams, filter, countQuery);

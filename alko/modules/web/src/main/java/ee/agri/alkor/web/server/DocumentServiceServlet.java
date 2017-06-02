@@ -654,7 +654,7 @@ public class DocumentServiceServlet extends HttpServlet {
 				if(!vigane){
 					try{
 						sql = "INSERT INTO product_move_report_record (id, amount, created, receiver, party_nr, market_place, market_addr, market_distr, market_orgunit, regentry_id, report_id) VALUES ((select max(id) + 1 from product_move_report_record)," +
-								"'"+amount+"','"+created+"','"+cols[1]+"','"+cols[6]+"','"+cols[2]+"','"+cols[5]+"','"+cols[3]+"','"+cols[4]+"','"+entryID+"','"+reportId+"')";		
+								"'"+amount+"',NOW(),'"+cols[1]+"','"+cols[6]+"','"+cols[2]+"','"+cols[5]+"','"+cols[3]+"','"+cols[4]+"','"+entryID+"','"+reportId+"')";		
 	
 						added.add(PostgreUtils.insert(sql, "id"));
 						//report.addRecord(record);	
