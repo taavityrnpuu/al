@@ -729,8 +729,7 @@ public abstract class DocumentsForm extends Form {
 								DocumentsTable.this.show();
 								docsTable.resetRows();
 								docsTable.show();
-								docsTablePublic.resetRows();
-								docsTablePublic.show();
+								
 								boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK });
 								if (hasPrivsArchive) {
 									docsTableArchive.resetRows();
@@ -848,15 +847,32 @@ public abstract class DocumentsForm extends Form {
 				Button yes = new Button("Jah", this);
 				yes.addClickListener(new ClickListener() {
 					public void onClick(Widget sender) {
-						ServiceContext.getInstance().getRegistryService().deleteDocument(id, DocumentsTable.this);
+						
+						getRows().remove(row - 1);
+						DocumentsTable.this.show();
+						
+						ServiceContext.getInstance().getRegistryService().deleteDocument(id, new AsyncCallback(){
+							
+							public void onFailure(Throwable caught) {
+								caught.printStackTrace();
+								setError("DocumentsTable. Failure: " + caught);
+							}
+
+							public void onSuccess(Object result) {
+								boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK });
+								if (hasPrivsArchive) {
+									docsTableArchive.resetRows();
+									docsTableArchive.show();
+								}
+							}
+							
+						});
 
 						/*
 						docsTablePublic.show();
 						if (!showOnlyPublic) {
 							docsTable.show();
 						}*/
-						getRows().remove(row - 1);
-						DocumentsTable.this.show();
 						
 						/* see ei aita kuidagi kaasa, andmed on samad
 						docsTable.show();
@@ -1011,6 +1027,7 @@ public abstract class DocumentsForm extends Form {
 		}
 
 		public void onSuccess(Object result) {
+
 			if (result == null) {
 				return;
 			}
@@ -1042,11 +1059,30 @@ public abstract class DocumentsForm extends Form {
 				Button yes = new Button("Jah", this);
 				yes.addClickListener(new ClickListener() {
 					public void onClick(Widget sender) {
-						ServiceContext.getInstance().getRegistryService().deleteDocument(id, DocumentsTablePublic.this);
 						
+
 						getRows().remove(row - 1);
 						DocumentsTablePublic.this.show();
 						
+						ServiceContext.getInstance().getRegistryService().deleteDocument(id, new AsyncCallback(){
+							
+							public void onFailure(Throwable caught) {
+								caught.printStackTrace();
+								setError("DocumentsTable. Failure: " + caught);
+							}
+
+							public void onSuccess(Object result) {
+								boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK });
+								if (hasPrivsArchive) {
+									docsTableArchive.resetRows();
+									docsTableArchive.show();
+								}
+							}
+							
+						});
+						
+						getRows().remove(row - 1);
+					
 						/*
 						docsTable.show();
 						docsTablePublic.show();
@@ -1222,7 +1258,12 @@ public abstract class DocumentsForm extends Form {
 					public void onClick(Widget sender) {
 						ServiceContext.getInstance().getRegistryService().deleteDocument(id, DocumentsTableArchive.this);
 						getRows().remove(row - 1);
-						docsTableArchive.show();
+						
+						boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK });
+						if (hasPrivsArchive) {
+							docsTableArchive.resetRows();
+							docsTableArchive.show();
+						}
 					}
 				});
 

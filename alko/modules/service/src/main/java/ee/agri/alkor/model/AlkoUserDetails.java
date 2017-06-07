@@ -21,6 +21,16 @@ public class AlkoUserDetails extends org.acegisecurity.userdetails.User {
 	
 	private String occupation;
 	
+	private boolean fromCas;
+	
+	public boolean isFromCas() {
+		return fromCas;
+	}
+
+	public void setFromCas(boolean fromCas) {
+		this.fromCas = fromCas;
+	}
+
 	public String getRegCode() {
       return regCode;
    }
@@ -37,6 +47,7 @@ public class AlkoUserDetails extends org.acegisecurity.userdetails.User {
 		this.firstName = firstName;
 		this.lastName = lastName;
 		this.systemUser = systemUser;
+	      this.fromCas = false;
 
 	}
    
@@ -49,6 +60,7 @@ public class AlkoUserDetails extends org.acegisecurity.userdetails.User {
 		this.lastName = lastName;
 		this.systemUser = systemUser;
 	      this.idCode = idCode;
+	      this.fromCas = false;
 
 	}
    
@@ -64,6 +76,7 @@ public class AlkoUserDetails extends org.acegisecurity.userdetails.User {
 	      this.regCode = regCode;
 	      this.idCode = idCode;
 	      this.occupation = occupation;
+	      this.fromCas = false;
 	   }
 
 	  public AlkoUserDetails(String username, String password, String firstName,
@@ -75,6 +88,7 @@ public class AlkoUserDetails extends org.acegisecurity.userdetails.User {
 	      this.lastName = lastName;
 	      this.systemUser = systemUser;
 	      this.regCode = regCode;
+	      this.fromCas = false;
 
 	   }
 
@@ -121,7 +135,7 @@ public class AlkoUserDetails extends org.acegisecurity.userdetails.User {
 	public String toString() {
 		return "AlkoUserDetails [firstName=" + firstName + ", lastName="
 				+ lastName + ", regCode=" + regCode + ", idCode=" + idCode
-				+ ", occupation=" + occupation + "]";
+				+ ", occupation=" + occupation + ", fromCas="+fromCas+"]";
 	}
 
 }

@@ -152,7 +152,7 @@ public class ApplicationForm extends Form implements CacheListener {
 		ServiceContext.getInstance().addCacheListener(ServiceContext.APPLICATION_STATE, this);
 
 		searchResultsTable = new ApplicationsTable();
-		// searchResultsTable.getData();
+		searchResultsTable.getData(); // automaatne otsing
 
 		Label searchTitle = new Label(getLabel("searchTableTitle"));// "Taotluse
 		// otsing");
@@ -340,10 +340,10 @@ public class ApplicationForm extends Form implements CacheListener {
 		// nr:");
 		searchForm.setText(1, 0, getLabel(ApplicationSearchFilter.PRODUCER_NAME) + ":");// /"Tootja:");
 		searchForm.setText(2, 0, getLabel(ApplicationSearchFilter.PRODUCT_NAME) + ":");// "Toode:");
-		Label onXTeeLabel = new Label(getLabel(ApplicationSearchFilter.IS_XTEE_FORM) + ":");
-		onXTeeLabel.setVisible(false);
-		searchForm.setWidget(3, 0, onXTeeLabel);// "Eesti.ee
-												// kaudu:");
+		Label onXTeeLabel = new Label("Sisestatud iseteeninduses" + ":");
+		//onXTeeLabel.setVisible(false);
+		searchForm.setWidget(3, 0, onXTeeLabel);// "Eesti.ee kaudu:");
+		
 		searchForm.setText(0, 3, getLabel(ApplicationSearchFilter.APPLICANT_NAME) + ":");// "Taotleja:");
 		searchForm.setText(1, 3, getLabel(ApplicationSearchFilter.STATE_CODE) + ":");// "Staatus:");
 		searchForm.setText(2, 3, getLabel(ApplicationSearchFilter.ARRIVED) + ":");// "Esitamise
@@ -361,7 +361,7 @@ public class ApplicationForm extends Form implements CacheListener {
 		searchForm.setWidget(1, 1, addFormField(SEARCH_FORM, ApplicationSearchFilter.PRODUCER_NAME, new TextBox()));
 		searchForm.setWidget(2, 1, addFormField(SEARCH_FORM, ApplicationSearchFilter.PRODUCT_NAME, new TextBox()));
 		CheckBox cbxtee = new CheckBox();
-		cbxtee.setVisible(false);
+		//cbxtee.setVisible(false);
 		searchForm.setWidget(3, 1, addFormField(SEARCH_FORM, ApplicationSearchFilter.IS_XTEE_FORM, cbxtee));
 		searchForm.setWidget(0, 4,
 				addFormField(SEARCH_FORM, ApplicationSearchFilter.APPLICANT_NAME, new TextBox(), "100%"));

@@ -297,9 +297,16 @@ public class SigningServiceServlet extends HttpServlet {
 				int  n = rand.nextInt(2500000) + 1;
 				
 				try {
-					
-					PostgreUtils.insert("insert into reg_doc (id, version, modified, created, created_by, modified_by, deleted, deleted_by, name, path, mime, doc_appl_id, doc_class_id)" +
-							"\nselect id+250000000+"+n+" as id,version, NOW(), NOW(), created_by, modified_by, deleted, deleted_by, '"+docName+" (asice)' as name, '"+docPath+"' as path, 'application/vnd.etsi.asic-e+zip' as mime, doc_appl_id, doc_class_id from reg_doc where id = "+docId+";");
+					/*
+					PostgreUtils.insert(
+							"insert into reg_doc (id, version, modified, created, created_by, modified_by, deleted, deleted_by, name, path, mime, doc_appl_id, doc_class_id) " +
+							"select id+250000000+"+n+" as id, version, NOW(), NOW(), created_by, modified_by, deleted, deleted_by, '"+docName+" (asice)' as name, '"+docPath+"' as path, 'application/vnd.etsi.asic-e+zip' as mime, doc_appl_id, doc_class_id "
+							+ "from reg_doc where id = "+docId+";");
+					*/
+					PostgreUtils.insert(
+							"insert into reg_doc (id, version, modified, created, created_by, modified_by, deleted, deleted_by, name, path, mime, doc_appl_id, doc_class_id) " +
+							"select nextval('reg_doc_seq') as id, version, NOW(), NOW(), created_by, modified_by, deleted, deleted_by, '"+docName+" (asice)' as name, '"+docPath+"' as path, 'application/vnd.etsi.asic-e+zip' as mime, doc_appl_id, doc_class_id "
+							+ "from reg_doc where id = "+docId+";");
 				} catch (Exception e) {
 					out.write(e.toString());
 

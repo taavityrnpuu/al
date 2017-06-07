@@ -73,8 +73,13 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 	}
 
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, InsufficientAuthenticationException {
-		
 		boolean onIsikukood = false;
+		boolean fromCas = false;
+		
+		if(userName.startsWith("{CAS}")){
+			fromCas = true;
+			userName = userName.replace("{CAS}", "");
+		}
 
 		ResultSet rs = PostgreUtils.query("SELECT 1 FROM person WHERE reg_id = '"+userName.replaceAll("'", "")+"'");
 		try{
@@ -87,6 +92,9 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		}
 
 		if(onIsikukood){
+			if(fromCas){
+				userName = "{CAS}"+userName;
+			}
 			return loadUserByRegistrationId(userName);
 		}
 		
@@ -133,6 +141,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 				user = findUser(userName);
 				details = new AlkoUserDetails(userName, user.getPassword(), user.getPerson().getFirstName(), user.getPerson().getLastName(),
 						idCode, makeAuthorities(user), user);
+				((AlkoUserDetails)details).setFromCas(fromCas);
 				return details;
 			//}
 		} catch (Exception e) {
@@ -155,6 +164,12 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 	public UserDetails loadUserByRegistrationId(String idCode) throws UsernameNotFoundException {
 		SystemUser user = null;
 		User details = null;
+		boolean fromCas = false;
+		
+		if(idCode.startsWith("{CAS}")){
+			fromCas = true;
+			idCode = idCode.replace("{CAS}", "");
+		}
 
 		// AlkoUserDetails ad = new AlkoUserDetails("aaa", "bbb",
 		// "CCC", "ddd", makeAuthorities(new SystemUser()), new SystemUser());
@@ -189,7 +204,8 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 				user = (SystemUser) getHibernateTemplate().find("from SystemUser u where u.person.registrationId = ? and u.active = true", idCode).get(0);
 
 				details = new AlkoUserDetails(user.getName(), user.getPassword(), user.getPerson().getFirstName(), user.getPerson().getLastName(),
-						idCode, makeAuthorities(user), user);				
+						idCode, makeAuthorities(user), user);			
+				((AlkoUserDetails)details).setFromCas(fromCas);	
 			} catch (Exception exeption) {
 				String sql = "select * from user_session where valid_until > now() order by id desc limit 1";
 				String regNr = null;
@@ -209,12 +225,14 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 
 				user = findUser(IClassificatorService.EIT_USERNAME);
 				//user = (SystemUser) getHibernateTemplate().find("from SystemUser u where u.person.registrationId = ? and u.active = true", idCode).get(0);
-				sql = "select 1 from user_arireg where id_code = '" + idCode + "' and reg_nr = '" + regNr + "'";
+				sql = "select person_role from user_arireg where id_code = '" + idCode + "' and reg_nr = '" + regNr + "'";
 
 				try {
 					ResultSet rs = PostgreUtils.query(sql);
 					while (rs.next()) {
-						occupation = "JUHATAJA";
+						occupation = rs.getString("person_role");
+						
+						occupation = (occupation != null && !occupation.equals("") ? occupation: "JUHATAJA");
 					}
 				} catch (Exception ex) {
 					ex.printStackTrace();
@@ -234,6 +252,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 						user,
 						regNr, 
 						occupation);
+				((AlkoUserDetails)details).setFromCas(fromCas);
 			}
 			// details = new User(user.getName(), user.getPassword(), true,
 			// true,
@@ -242,7 +261,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 			ioe.printStackTrace();
 			throw new UsernameNotFoundException(idCode);
 		}
-
+		
 		return details;
 	}
 
@@ -279,11 +298,23 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 //		if ("EIT".equals(userName)) { // EIT-kasutaja
 //			auhtType.setCode(IClassificatorService.AUTH_TYPE_EIT);
 //		} else 
+		
+		//System.out.println("Authentication event:[" + ClassUtils.getShortName(authEvent.getClass()) + "] " + userName + " details:[" + details + "] principal: ["+ principal + "]");
+		
+		/*
 		if (authenticationSrc.getClass().getName().indexOf("Username") >= 0) { // vormi kaudu sisenemine
 			auhtType.setCode(IClassificatorService.AUTH_TYPE_FORM);
 		} else { // id-kaardiga
 			auhtType.setCode(IClassificatorService.AUTH_TYPE_CERT);
 		}
+		*/
+		
+		if (principal instanceof AlkoUserDetails && !((AlkoUserDetails)principal).isFromCas()) { // vormi kaudu sisenemine
+			auhtType.setCode(IClassificatorService.AUTH_TYPE_FORM);
+		} else { // id-kaardiga
+			auhtType.setCode(IClassificatorService.AUTH_TYPE_CERT);
+		}
+		
 		LOGGER.debug("authType: " + auhtType.getCode());
 
 		// IP-aadress

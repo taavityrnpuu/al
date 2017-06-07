@@ -90,15 +90,17 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 	}
 
 	public UserInfo invalidateSession(boolean keepUser) {
-		String ik = "";
+		String ik = "";String fromCas = null;
 		if (keepUser) {
 			ik = (String) GWTSpringController.getRequest().getSession().getAttribute("user_ik");
+			fromCas = (String) GWTSpringController.getRequest().getSession().getAttribute("fromCas");
 		}
 		GWTSpringController.getRequest().getSession().invalidate();
 		SecurityContextHolder.clearContext();
 
 		if (keepUser) {
 			GWTSpringController.getRequest().getSession().setAttribute("user_ik", ik);
+			GWTSpringController.getRequest().getSession().setAttribute("fromCas", fromCas);
 		}
 		
 

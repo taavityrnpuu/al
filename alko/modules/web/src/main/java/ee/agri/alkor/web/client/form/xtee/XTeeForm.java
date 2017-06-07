@@ -225,8 +225,6 @@ public class XTeeForm extends Form implements CacheListener {
 		searchResultsTable.getFilter().addSortItem("nr", SearchFilter.DESCENDING, 2);
 		searchResultsTable.getFilter().addSortItem("state.orderNr", SearchFilter.ASCENDING, 1);
 		
-		
-		
 		//searchResultsTable.getFilter().addSortItem("registryEntry.nr", SearchFilter.DESCENDING);
 		//searchResultsTable.getFilter().addSortItem("registryEntry.validFrom", SearchFilter.DESCENDING);
 		
@@ -268,6 +266,9 @@ public class XTeeForm extends Form implements CacheListener {
 				((Button) getEnableDisableButtons().get(i)).setEnabled(true);
 			}
 		}
+		
+
+		searchForm.search();
 	}
 
 	/**
@@ -1200,6 +1201,8 @@ public class XTeeForm extends Form implements CacheListener {
 									updateButtonStates();
 
 									// updateStates(true);
+									
+									searchForm.search();
 								}
 							});
 				}
@@ -1257,6 +1260,7 @@ public class XTeeForm extends Form implements CacheListener {
 
 		private Label title;
 		private HorizontalPanel buttons;
+		private final Button searchBtn;
 
 		private SearchForm() {
 			title = new Label(getLabel("searchTableTitle")); // "Taotluse otsing";
@@ -1264,14 +1268,14 @@ public class XTeeForm extends Form implements CacheListener {
 
 			Button clear = new Button(getLabel("buttonEmptyFilter"), new ClearButtonHandler());
 			clear.setWidth("9em");
-			Button search = new Button(getLabel("buttonSearch"), new SearchButtonHandler());
-			search.setWidth("9em");
+			searchBtn = new Button(getLabel("buttonSearch"), new SearchButtonHandler());
+			searchBtn.setWidth("9em");
 
 			buttons = new HorizontalPanel();
 			buttons.add(UIutils.createSpacer(UIutils.SPACER_BEFORE_BUTTON_PANEL_WIDTH, UIutils.SPACER_BEFORE_BUTTON_PANEL_HEIGHT));
 			buttons.add(clear);
 			buttons.add(UIutils.createSpacer(6, 1));
-			buttons.add(search);
+			buttons.add(searchBtn);
 		}
 
 		private FlexTable createForm() {

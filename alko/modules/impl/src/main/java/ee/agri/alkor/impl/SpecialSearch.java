@@ -38,7 +38,7 @@ public class SpecialSearch {
 	protected Map<String, String> sortMap;
 	protected Map<String, Integer> sortMapOrder;
 	protected HashSet<String> aliasSet;
-	private int total;
+	private int total = 0;
 	private int timerSessionId;
 	private long startTime;
 
@@ -281,13 +281,16 @@ public class SpecialSearch {
 		for (Entry<String, Object> e : queryMap.entrySet()) {
 			i = setParam(q, i, e.getKey(), makeSpecialValue(e.getKey(), e.getValue()));
 		}
-		q.setFirstResult(startIndex);
-		if (pageSize > 0) {
-			q.setMaxResults(pageSize);
-			q.setFetchSize(pageSize);
+		
+		if(!"true".equals(queryMap.get("registryEntryApplication.needsRenewening"))){ // linnukese puhul teeme ise mapingu
+			q.setFirstResult(startIndex);
+			if (pageSize > 0) {
+				q.setMaxResults(pageSize);
+				q.setFetchSize(pageSize);
+			}
 		}
-
-		return filter(q.list());
+			
+		return filter(q.list(), startIndex, pageSize);
 	}
 
 	/**
@@ -298,7 +301,7 @@ public class SpecialSearch {
 	 *            tulemuste list
 	 * @return kärbitud list(kui oli põhjust seda teha)
 	 */
-	private List filter(List queryList) {
+	private List filter(List queryList, int startIndex, int pageSize) {
 		LOGGER.debug("E_TIMER resul [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms");
 		List resultList = new ArrayList();
 		if (!"true".equals(queryMap.get("registryEntryApplication.needsRenewening"))) {
@@ -306,13 +309,13 @@ public class SpecialSearch {
 					+ " ms (results:" + queryList.size() + ")");
 			return queryList; // lahkutakse kui pole vaja filtreerida
 		}
-		int duplicates = 0;
+		int duplicates = 0; int index = 0;
+
 		HashSet<Long> entryIdList = new HashSet<Long>();
 		// HashMap<Long, Long> tempMap = new HashMap<Long, Long>();
 		for (Iterator it = queryList.iterator(); it.hasNext();) {
 			Object row = it.next();
-			if (row != null && row instanceof RegistryApplication
-					&& ((RegistryApplication) row).getRegistryEntry() != null) {
+			if (row != null && row instanceof RegistryApplication && ((RegistryApplication) row).getRegistryEntry() != null) {
 
 				Long id = ((RegistryApplication) row).getRegistryEntry().getId();
 				String code = ((RegistryApplication) row).getState().getCode();
@@ -337,9 +340,16 @@ public class SpecialSearch {
 				}
 
 			}
-			resultList.add(row);
+
+			if(index >= startIndex && (pageSize == 0 || (pageSize > 0 && index < startIndex+pageSize))){
+				resultList.add(row);
+			}
+			index++;
 		}
-		total -= duplicates;
+		//total = total - duplicates; // kahel tasemel filtreerimine ei tööta koos pagineerimisega kuna see eemaldab ainult antud lahelt kirjed, numbrid tulevad valed
+		//total = resultList.size();
+		total = index;
+
 		LOGGER.debug("E_TIMER stop2 [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime)
 				+ " ms (results:" + resultList.size() + ")");
 		return resultList;
@@ -357,6 +367,7 @@ public class SpecialSearch {
 			i = setParam(q, i, e.getKey(), makeSpecialValue(e.getKey(), e.getValue()));
 		}
 		total = ((Long) q.list().get(0)).intValue();
+		
 		LOGGER.debug("E_TIMER count [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime)
 				+ " ms TOTAL:" + total);
 	}

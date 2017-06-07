@@ -59,6 +59,10 @@ public class AuthenticationFilter extends AuthenticationProcessingFilter {
 			
 			request.getSession().setAttribute("user_ik", idCode);
 			
+			if(request.getSession().getAttribute("fromCas") != null && request.getSession().getAttribute("fromCas").equals("1")){
+				username = "{CAS}"+username;
+			}
+			
 			authRequest = new UsernamePasswordAuthenticationToken(username, password);
 			request.getSession().setAttribute(ACEGI_SECURITY_LAST_USERNAME_KEY, username);
 		}/* else if (id != null && id.length() != 0) {// XTee login
@@ -91,9 +95,15 @@ public class AuthenticationFilter extends AuthenticationProcessingFilter {
 				UserAuthlog ua = new UserAuthlog(idCode, name);
 
 				if(!isVTA){
+					if(request.getSession().getAttribute("fromCas") != null && request.getSession().getAttribute("fromCas").equals("1")){
+						idCode = "{CAS}"+idCode;
+					}
 					authRequest = new UsernamePasswordAuthenticationToken(idCode, password);
 				}
 				else{
+					if(request.getSession().getAttribute("fromCas") != null && request.getSession().getAttribute("fromCas").equals("1")){
+						name = "{CAS}"+name;
+					}
 					authRequest = new UsernamePasswordAuthenticationToken(name, password);
 				}
 

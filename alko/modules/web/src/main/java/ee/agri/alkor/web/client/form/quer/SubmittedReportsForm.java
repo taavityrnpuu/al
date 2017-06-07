@@ -379,7 +379,7 @@ public class SubmittedReportsForm extends Form implements ClickListener, CacheLi
 		
 		fillListBoxes();
 		initWidget(main);
-		searchResultsTable.getData(getFormFieldValues(SEARCH_FORM));
+		//searchResultsTable.getData(getFormFieldValues(SEARCH_FORM)); // automaatne otsing
 	}
 
 	public void avail(String key, Object value) {
@@ -453,9 +453,11 @@ public class SubmittedReportsForm extends Form implements ClickListener, CacheLi
 			addColumn(new Column(getLabel("entererPerCode"), ReportViewMap.LOADING_PERSON_ID, Column.styleNormal));
 			addColumn(new Column(getLabel("rowsNum"), ReportViewMap.TOTAL, Column.styleNormal));
 			if (isEIT()) {
-				addColumn(Column.getViewEITInstance());
+				addColumn(Column.getViewEITInstance()); // EIT ei saagi vaadata
 			}
-			addColumn(Column.getViewInstance());
+			else{
+				addColumn(Column.getViewInstance());
+			}
 
 		}
 

@@ -609,7 +609,9 @@ JOIN enterprise e ON e.id = s.payer_enterprise_id
 JOIN enterprise e2 ON e2.reg_id || '_x' = e.reg_id
 WHERE e.reg_id like '%x' AND o.id = s.id;
 
-
+update reg_doc set id = nextval('reg_doc_seq') where id > 250000000;
+alter table user_arireg add person_name varchar(500);
+alter table user_arireg add person_role varchar(1000);
 
 -- TESTIS baasi taastamisel
 -- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO alkor;

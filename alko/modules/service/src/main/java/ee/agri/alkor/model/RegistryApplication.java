@@ -128,6 +128,8 @@ public class RegistryApplication extends ABaseBean
 
 	private String latestPayment;
 
+	private String createdBy;
+	
 	/**
 	 * Taotluse esitaja 
 	 */
@@ -381,7 +383,6 @@ public class RegistryApplication extends ABaseBean
    public void setFromXTee(Boolean fromXTee) {
       this.fromXTee = fromXTee;
    }
-
 
    @Column(name="RECIEVED_BY")
 	public String getRecievedBy() {

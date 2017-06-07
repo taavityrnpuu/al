@@ -457,7 +457,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 					where.append("s.registryEntry.validUntil BETWEEN ? AND ?");
 					continue;
 				} else if (paramName.equals("IsXTeeForm")) { // RK lisatud
-					where.append("s.fromXTee is not null");
+					where.append("( s.fromXTee is not null OR (s.fromXTee is null AND s.createdBy = 'EIT') )");
 					continue;
 				}
 

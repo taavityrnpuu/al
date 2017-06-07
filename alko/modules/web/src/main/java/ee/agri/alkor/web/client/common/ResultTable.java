@@ -212,7 +212,7 @@ public abstract class ResultTable extends Composite implements AsyncCallback {
       countPanel.add(UIutils.createSpacer(5, 1));
       createRowCount(rowCount);
       countPanel.add(rowCount);
-      countPanel.setWidth("100%");
+      //countPanel.setWidth("100%");
       countPanel.setHeight("10");
       countPanel.setVisible(true);
 

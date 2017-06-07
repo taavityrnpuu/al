@@ -234,7 +234,7 @@
 			<paragraph leading="12.0">
 			<newline />
 			<newline />
-            <newline />
+            <newline /><phrase leading="12.0" font="$font" fontstyle="normal">(allkirjastatud digitaalselt)</phrase>
 			<table columns="1" width="50.0%" align="Left"  cellpadding="0.0" cellspacing="0"  borderwidth="0" left="false" right="false" top="false" bottom="false">
 			
 				<row>

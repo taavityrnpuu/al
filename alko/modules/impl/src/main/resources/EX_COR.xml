@@ -182,9 +182,10 @@
 				<newline />
 				<newline />
 				<newline />
+				(allkirjastatud digitaalselt)<newline />
 			
 				$!application.processor.firstName.replaceAll("&","&#38;") $!application.processor.lastName.replaceAll("&","&#38;")<newline />
-				Peaspetsialist<newline />
+				Peaspetsialist<newline /> 
 			</paragraph>
 			
 		</section>

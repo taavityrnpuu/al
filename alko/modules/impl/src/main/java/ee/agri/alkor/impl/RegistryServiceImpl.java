@@ -2053,6 +2053,11 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				throw new SystemException("Enam ei saa pikendada: registrikande otsuse lõppkuupäev pole vajalikus vahemikus ("+ daysFrom +"-"+ daysTo +" päeva) ");
 			}
 			
+			
+			if(number.contains("/")){ // kui on pikendamise taotlus, siis võtame tal "/P" tagant ära
+				number = number.substring(0, number.indexOf("/"));
+			}
+			
 			String sql2 = "select 1 from reg_application where nr like '" + number + "/%' and decision_date is null";
 			ResultSet rl2 = PostgreUtils.query(sql2);
 			if(rl2.next()){

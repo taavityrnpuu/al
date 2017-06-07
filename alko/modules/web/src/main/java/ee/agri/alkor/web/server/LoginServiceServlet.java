@@ -61,9 +61,6 @@ import com.google.gwt.core.client.GWT;
 import ee.agri.alkor.impl.PostgreUtils;
 
 import sun.security.provider.X509Factory;
-
-import eu.x_road.arireg.producer.AriregLocator;
-import eu.x_road.arireg.producer.AriregXteeStub;
 import ee.agri.alkor.service.SystemException;
 import eu.x_road.arireg.producer.*;
 import eu.x_road.arireg.producer.holders.*;
@@ -94,11 +91,12 @@ public class LoginServiceServlet extends HttpServlet {
 		if(a != null && a.getPrincipal() != null && a.getPrincipal().getName() != null){
 			ik = a.getPrincipal().getName().replace("EE", "");
 			request.getSession().setAttribute("user_ik", ik);
+			request.getSession().setAttribute("fromCas", "1");
 		}
 		else{
 			ik = (String) request.getSession().getAttribute("user_ik");
 		}
-
+		
 		boolean isVta = false;
 		boolean hasRoles = false;
 
@@ -310,17 +308,22 @@ public class LoginServiceServlet extends HttpServlet {
 
 
 		if (!exists) {
-			HashMap<String, String> map = getAriregData(ik);
+			HashMap<String, String[]> map = getAriregData(ik);
 
 			String regNrs = "";
 
 
-			for (Map.Entry<String, String> entry : map.entrySet()) {
+			for (Map.Entry<String, String[]> entry : map.entrySet()) {
 				String regNr = entry.getKey();
-				String entName = entry.getValue();
+				String[] split = entry.getValue();
+				
+				String entName = split[0];
+				String isikName = split[1].replaceAll("'", "\'");
+				String isikRoll = split[2].replaceAll("'", "\'");
+				
 				regNrs += "'" + regNr + "',";
-				sql = "INSERT INTO user_arireg (id_code, reg_nr, ent_name) VALUES ('" + ik + "', '" + regNr + "', '"
-						+ entName + "')";
+				sql = "INSERT INTO user_arireg (id_code, reg_nr, ent_name, person_name, person_role) VALUES ('" + ik + "', '" + regNr + "', '"
+						+ entName + "', '"+ isikName + "', '"+isikRoll+"')";
 				PostgreUtils.insert(sql);
 			}
 
@@ -349,16 +352,21 @@ public class LoginServiceServlet extends HttpServlet {
 			}
 
 			if (exists) {
-				HashMap<String, String> map = getAriregData(ik);
+				HashMap<String, String[]> map = getAriregData(ik);
 
 				String regNrs = "";
 
-				for (Map.Entry<String, String> entry : map.entrySet()) {
+				for (Map.Entry<String, String[]> entry : map.entrySet()) {
 					String regNr = entry.getKey();
-					String entName = entry.getValue();
+					String[] split = entry.getValue();
+					
+					String entName = split[0];
+					String isikName = split[1].replaceAll("'", "\'");
+					String isikRoll = split[2].replaceAll("'", "\'");
+					
 					regNrs += "'" + regNr + "',";
-					PostgreUtils.update("UPDATE user_arireg SET ent_name = '" + entName
-							+ "', last_checked = now() WHERE reg_nr = '" + regNr + "' and id_code = '" + ik + "'");
+					PostgreUtils.update("UPDATE user_arireg SET ent_name = '" + entName+ "', person_name = '"+isikName+"', person_role = '"+isikRoll+"', "
+							+ "last_checked = now() WHERE reg_nr = '" + regNr + "' and id_code = '" + ik + "'");
 				}
 
 				if (map.size() > 0) {
@@ -371,7 +379,7 @@ public class LoginServiceServlet extends HttpServlet {
 
 	}
 
-	public HashMap<String, String> getAriregData(String ik) {
+	public HashMap<String, String[]> getAriregData(String ik) {
 		/*
 		 * HashMap<String, String> fromArireg = new HashMap<String, String>();
 		 * fromArireg.put("12345678", "Uus asutus"); fromArireg.put("987654321",
@@ -382,7 +390,7 @@ public class LoginServiceServlet extends HttpServlet {
 		 * return new HashMap<String, String>();
 		 */
 		
-		HashMap<String, String> map = new HashMap<String, String>();
+		HashMap<String, String[]> map = new HashMap<String, String[]>();
 
 		String url = "";
 		try {
@@ -420,14 +428,33 @@ public class LoginServiceServlet extends HttpServlet {
 				x.printStackTrace();
 			}
 			
+					
 			if(vastusHolder.value != null && vastusHolder.value.getEttevotjad() != null){
 				
 				Paringesindus_v4_ettevote[] ettevotjad = vastusHolder.value.getEttevotjad();
-					
+				
 				for (Paringesindus_v4_ettevote ettevotja : ettevotjad) {
-					map.put(String.valueOf(ettevotja.getAriregistri_kood()), ettevotja.getArinimi());
+					String isiku_roll = "";
+					String isiku_nimi = "";
+					
+					if(ettevotja.getIsikud() != null && ettevotja.getIsikud().length > 0){ // otsime ka esindaja kaudu loginud kasutaja nime ja rollid
+						for(Paringesindus_v4_isik isik : ettevotja.getIsikud()){
+							if(ik.equals(isik.getFyysilise_isiku_kood())){
+								isiku_nimi = isik.getFyysilise_isiku_eesnimi()+" "+isik.getFyysilise_isiku_perenimi();
+								
+								if(isiku_roll.length() != 0){ // juba oli, paneme koma ette
+									isiku_roll += ", ";
+								}
+								isiku_roll += isik.getFyysilise_isiku_roll_tekstina();
+							}
+						}
+					}
+
+					map.put(String.valueOf(ettevotja.getAriregistri_kood()), new String[]{ettevotja.getArinimi(), isiku_nimi, isiku_roll});
 				}
 			}
+			
+
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
