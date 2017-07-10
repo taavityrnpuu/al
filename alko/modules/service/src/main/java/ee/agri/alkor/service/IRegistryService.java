@@ -59,7 +59,7 @@ public interface IRegistryService extends IBaseService {
    
    long deleteEnterpriseReference(String id);   
    
-   long saveEnterpriseReference(String name, String idCode, String toDate, String regCode);
+   long saveEnterpriseReference(String firstname, String lastName, String idCode, String occupation, String toDate, String regCode);
    
    RegistryApplication redoDocument(RegistryApplication appl) ;
 

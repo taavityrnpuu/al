@@ -63,7 +63,9 @@ public class EnterpriseReferenceFrom extends Form {
 
 	public ReferenceTable referenceTable = null;
 
-	final TextBox tbNimi = new TextBox();
+	final TextBox tbEesNimi = new TextBox();
+	final TextBox tbPereNimi = new TextBox();
+	final TextBox tbAmetikoht = new TextBox();
 	final Hidden tbId = new Hidden();
 	final TextBox tbIsikukood = new TextBox();
 	final CalendarBox tbKehtibkuni = new CalendarBox();
@@ -93,72 +95,108 @@ public class EnterpriseReferenceFrom extends Form {
 		formPanelDelete.setCellSpacing(1);
 		formPanelDelete.setCellPadding(5);
 
-		formPanelDelete.setText(1, 0, "Isiku nimi:");
-		formPanelDelete.setText(2, 0, "Isikukood:");
-		formPanelDelete.setText(3, 0, "Kehtib kuni:");
+		formPanelDelete.setText(1, 0, "Isiku eesnimi:");
+		formPanelDelete.setText(2, 0, "Isiku perenimi:");
+		formPanelDelete.setText(3, 0, "Isikukood:");
+		formPanelDelete.setText(4, 0, "Isiku ametikoht:");
+		formPanelDelete.setText(5, 0, "Kehtib kuni:");
 		formPanelDelete.setWidget(1, 1, new Image("images/t2rn.gif"));
 		formPanelDelete.setWidget(2, 1, new Image("images/t2rn.gif"));
+		formPanelDelete.setWidget(3, 1, new Image("images/t2rn.gif"));
+		formPanelDelete.setWidget(4, 1, new Image("images/t2rn.gif"));
+
 		formPanelDelete.getFlexCellFormatter().setStyleName(1, 0, "Label");
 		formPanelDelete.getFlexCellFormatter().setStyleName(2, 0, "Label");
 		formPanelDelete.getFlexCellFormatter().setStyleName(3, 0, "Label");
+		formPanelDelete.getFlexCellFormatter().setStyleName(4, 0, "Label");
+		formPanelDelete.getFlexCellFormatter().setStyleName(5, 0, "Label");
 
-		formPanelDelete.setWidget(1, 2, tbNimi);
-		formPanelDelete.setWidget(2, 2, tbIsikukood);
-		formPanelDelete.setWidget(3, 2, tbKehtibkuni);
+		formPanelDelete.setWidget(1, 2, tbEesNimi);
+		formPanelDelete.setWidget(2, 2, tbPereNimi);
+		formPanelDelete.setWidget(3, 2, tbIsikukood);
+		formPanelDelete.setWidget(4, 2, tbAmetikoht);
+		formPanelDelete.setWidget(5, 2, tbKehtibkuni);
 
 		formPanelDelete.getFlexCellFormatter().setColSpan(1, 2, 2);
 		formPanelDelete.getFlexCellFormatter().setHorizontalAlignment(0, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		formPanelDelete.getFlexCellFormatter().setHorizontalAlignment(1, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		formPanelDelete.getFlexCellFormatter().setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 		formPanelDelete.getFlexCellFormatter().setHorizontalAlignment(3, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+		formPanelDelete.getFlexCellFormatter().setHorizontalAlignment(4, 0, HasHorizontalAlignment.ALIGN_RIGHT);
+		formPanelDelete.getFlexCellFormatter().setHorizontalAlignment(5, 0, HasHorizontalAlignment.ALIGN_RIGHT);
 
-		formPanelDelete.setWidget(4, 2, new Button("Salvesta", new ClickListener() {
+		formPanelDelete.setWidget(6, 2, new Button("Salvesta", new ClickListener() {
 			public void onClick(Widget sender) {
-				if (checkIdCode(tbIsikukood.getValue())) {
-					if (tbIsikukood.getValue().replaceAll(" ", "").length() > 1 && tbNimi.getValue().replaceAll(" ", "").length() > 1) {
-						final EnterpriseReferenceMap rm = new EnterpriseReferenceMap();
-						rm.put(EnterpriseReferenceMap.NAME, tbNimi.getValue());
-						rm.put(EnterpriseReferenceMap.IDCODE, tbIsikukood.getValue());
-						rm.put(EnterpriseReferenceMap.TODATE, tbKehtibkuni.getText());
-						// insert
-						ServiceContext
-								.getInstance()
-								.getRegistryService()
-								.saveEnterpriseReference(tbNimi.getValue(), tbIsikukood.getValue(), tbKehtibkuni.getText(), Form.getUserInfo().getRegCode(),
-										new AsyncCallback() {
-
-											public void onFailure(Throwable caught) {
-												Window.alert(String.valueOf(caught.getMessage()));
-											}
-
-											public void onSuccess(Object result) {
-												try {
-													if (String.valueOf(result).equals("0")) {
-														setError("Vigane kuupäev");
-													} else if(String.valueOf(result).equals("-1")){
-														setError("Kehtib kuni ei tohi olla minevikus");
-													} else if(String.valueOf(result).equals("-2")){
-														setError("Iseennast ei saa volitada");
-													} else {
-														tbNimi.setValue("");
-														tbIsikukood.setValue("");
-														tbKehtibkuni.clear();
-														rm.put(EnterpriseReferenceMap.ID, String.valueOf(result));
-														referenceTable = new ReferenceTable();
-														main.setWidget(3, 0, referenceTable);
-														setInfo("Andmed salvestatud!");
-													}
-												} catch (Exception ex) {
-													Window.alert(ex.getMessage());
-												}
-
-											}
-										});
-					} else {
-						setError("Nimi ja isikukood on kohustuslikud!");
-					}
-				} else {
+				if(tbEesNimi.getValue().replaceAll(" ", "").length() == 0){
+					setError("Eesnimi on kohustuslik!");
+				}
+				else if(tbEesNimi.getValue().replaceAll(" ", "").length() > 300){
+					setError("Eesnimi on pikem kui 300 sümbolit!");
+				}
+				else if(tbPereNimi.getValue().replaceAll(" ", "").length() == 0){
+					setError("Perenimi on kohustuslik!");
+				}
+				else if(tbPereNimi.getValue().replaceAll(" ", "").length() > 300){
+					setError("Perenimi on pikem kui 300 sümbolit!");
+				}
+				else if(tbIsikukood.getValue().replaceAll(" ", "").length() == 0){
+					setError("Isikukood on kohustuslik!");
+				}
+				else if (!checkIdCode(tbIsikukood.getValue())) {
 					setError("Vigane isikukood!");
+				}
+				else if(tbAmetikoht.getValue().replaceAll(" ", "").length() == 0){
+					setError("Isiku ametikoht on kohustuslik!");
+				}
+				else if(tbAmetikoht.getValue().replaceAll(" ", "").length() < 4){
+					setError("Isiku ametikoht on lühem kui 4 sümbolit!");
+				}
+				else if(tbAmetikoht.getValue().replaceAll(" ", "").length() > 300){
+					setError("Isiku ametikoht on pikem kui 300 sümbolit!");
+				}
+				else{
+					final EnterpriseReferenceMap rm = new EnterpriseReferenceMap();
+					rm.put(EnterpriseReferenceMap.FIRSTNAME, tbEesNimi.getValue());
+					rm.put(EnterpriseReferenceMap.LASTNAME, tbPereNimi.getValue());
+					rm.put(EnterpriseReferenceMap.OCCUPATION, tbAmetikoht.getValue());
+					rm.put(EnterpriseReferenceMap.IDCODE, tbIsikukood.getValue());
+					rm.put(EnterpriseReferenceMap.TODATE, tbKehtibkuni.getText());
+					// insert
+					ServiceContext
+							.getInstance()
+							.getRegistryService()
+							.saveEnterpriseReference(tbEesNimi.getValue(), tbPereNimi.getValue(), tbIsikukood.getValue(), tbAmetikoht.getValue().replaceAll("\n", "").replaceAll("\r", ""), tbKehtibkuni.getText(), Form.getUserInfo().getRegCode(),
+									new AsyncCallback() {
+
+										public void onFailure(Throwable caught) {
+											Window.alert(String.valueOf(caught.getMessage()));
+										}
+
+										public void onSuccess(Object result) {
+											try {
+												if (String.valueOf(result).equals("0")) {
+													setError("Vigane kuupäev");
+												} else if(String.valueOf(result).equals("-1")){
+													setError("Kehtib kuni ei tohi olla minevikus");
+												} else if(String.valueOf(result).equals("-2")){
+													setError("Iseennast ei saa volitada");
+												} else {
+													tbEesNimi.setValue("");
+													tbPereNimi.setValue("");
+													tbIsikukood.setValue("");
+													tbAmetikoht.setValue("");
+													tbKehtibkuni.clear();
+													rm.put(EnterpriseReferenceMap.ID, String.valueOf(result));
+													referenceTable = new ReferenceTable();
+													main.setWidget(3, 0, referenceTable);
+													setInfo("Andmed salvestatud!");
+												}
+											} catch (Exception ex) {
+												Window.alert(ex.getMessage());
+											}
+
+										}
+									});
 				}
 			}
 		}));
@@ -204,10 +242,11 @@ public class EnterpriseReferenceFrom extends Form {
 			this.setText(0, 0, "");
 			this.setText(0, 1, "Nimi");
 			this.setText(0, 2, "Isikukood");
-			this.setText(0, 3, "Kehtib alates");
-			this.setText(0, 4, "Kehtib kuni");
-			this.setText(0, 5, "Kehtib praegu");
-			this.setText(0, 6, "");
+			this.setText(0, 3, "Ametikoht");
+			this.setText(0, 4, "Kehtib alates");
+			this.setText(0, 5, "Kehtib kuni");
+			this.setText(0, 6, "Kehtib praegu");
+			this.setText(0, 7, "");
 
 			ServiceContext.getInstance().getRegistryService().getAllEnterpriseReferences(Form.getUserInfo().getRegCode(), new AsyncCallback() {
 
@@ -222,12 +261,14 @@ public class EnterpriseReferenceFrom extends Form {
 						EnterpriseReferenceMap rm = new EnterpriseReferenceMap();
 
 						rm.put(EnterpriseReferenceMap.ID, data.get(i)[0]);
-						rm.put(EnterpriseReferenceMap.NAME, data.get(i)[1]);
-						rm.put(EnterpriseReferenceMap.IDCODE, data.get(i)[2]);
-						rm.put(EnterpriseReferenceMap.FROMDATE, data.get(i)[3]);
-						rm.put(EnterpriseReferenceMap.TODATE, data.get(i)[4]);
-						rm.put(EnterpriseReferenceMap.IS_VALID, data.get(i)[5]);
-						rm.put(EnterpriseReferenceMap.REVOKED_TIME, data.get(i)[6]);
+						rm.put(EnterpriseReferenceMap.FIRSTNAME, data.get(i)[1]);
+						rm.put(EnterpriseReferenceMap.LASTNAME, data.get(i)[2]);
+						rm.put(EnterpriseReferenceMap.IDCODE, data.get(i)[3]);
+						rm.put(EnterpriseReferenceMap.OCCUPATION, data.get(i)[4]);
+						rm.put(EnterpriseReferenceMap.FROMDATE, data.get(i)[5]);
+						rm.put(EnterpriseReferenceMap.TODATE, data.get(i)[6]);
+						rm.put(EnterpriseReferenceMap.IS_VALID, data.get(i)[7]);
+						rm.put(EnterpriseReferenceMap.REVOKED_TIME, data.get(i)[8]);
 
 						addRow(rm);
 					}
@@ -276,8 +317,9 @@ public class EnterpriseReferenceFrom extends Form {
 		}
 
 		private void renderRow(int row, final EnterpriseReferenceMap data) {
-			final String name = data.getText(EnterpriseReferenceMap.NAME);
+			final String name = data.getText(EnterpriseReferenceMap.FIRSTNAME) + " " + data.getText(EnterpriseReferenceMap.LASTNAME);
 			final String idCode = data.getText(EnterpriseReferenceMap.IDCODE);
+			final String occupation = data.getText(EnterpriseReferenceMap.OCCUPATION);
 			final String toDate = data.getText(EnterpriseReferenceMap.TODATE);
 			final String fromDate = data.getText(EnterpriseReferenceMap.FROMDATE);
 			final String isValid = data.getText(EnterpriseReferenceMap.IS_VALID);
@@ -294,16 +336,17 @@ public class EnterpriseReferenceFrom extends Form {
 
 			this.setText(row, 1, name);
 			this.setText(row, 2, idCode);
-			this.setText(row, 3, fromDate);
-			this.setText(row, 4, toDate);
-			this.setText(row, 5, "Ei (Tühistatud "+revokedTime+")");
+			this.setText(row, 3, occupation);
+			this.setText(row, 4, fromDate);
+			this.setText(row, 5, toDate);
+			this.setText(row, 6, "Ei (Tühistatud "+revokedTime+")");
 
 			if (isValid.equals("1")) {
-				this.setText(row, 5, "Jah");
+				this.setText(row, 6, "Jah");
 				
 				Label delete = new Label("Tühista");
 				delete.setStyleName("Link");
-				this.setWidget(row, 6, delete);
+				this.setWidget(row, 7, delete);
 				delete.addClickListener(new PopupListener(id, row));
 			}
 		}

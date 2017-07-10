@@ -107,8 +107,8 @@ public class RegistryServiceImpl implements RegistryService {
 		return ServiceFactory.getRegistryService().getConfigFromDatabase();
 	}
 
-	public long saveEnterpriseReference(String name, String idCode, String toDate, String regCode) {
-		return ClientDataFactory.create(ServiceFactory.getRegistryService().saveEnterpriseReference(name, idCode, toDate, regCode));
+	public long saveEnterpriseReference(String firstname, String lastName, String idCode, String occupation, String toDate, String regCode) {
+		return ClientDataFactory.create(ServiceFactory.getRegistryService().saveEnterpriseReference(firstname, lastName, idCode, occupation, toDate, regCode));
 	}
 
 	public long saveDeleteConfirmation(String title, String note, String id, int mode) {

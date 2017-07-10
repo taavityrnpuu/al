@@ -33,7 +33,17 @@ public class NotEnteredApplicationJobs extends HibernateDaoSupport {
 		now_m7days.setTime(now_m7days.getTime() - (long) 7 * 1000 * 60 * 60 * 24);
 		int apps = 0;
 		
-		String sql = "SELECT id, nr, product_id FROM reg_application WHERE created <= '" + sdf.format(now_m7days) + "' "
+		Long id_pik = 0l;
+		try{
+			ResultSet rs2 = PostgreUtils.query("SELECT id FROM classificator WHERE category = 'ApplicationType' AND code = 'ARE'");
+			while(rs2.next()){
+				id_pik = rs2.getLong("id");
+			}
+		}catch(Exception x){
+			x.printStackTrace();
+		}
+		
+		String sql = "SELECT id, nr, product_id, appl_type_class_id FROM reg_application WHERE created <= '" + sdf.format(now_m7days) + "' "
 				+ "AND appl_state_class_id = (SELECT id FROM classificator WHERE code = '"+ IClassificatorService.APPL_STATE_ENT +"' "
 					+ "AND category = 'ApplicationState')";
 	
@@ -44,24 +54,12 @@ public class NotEnteredApplicationJobs extends HibernateDaoSupport {
 				
 				Long product_id = rs.getLong("product_id");
 				Long appl_id = rs.getLong("id");
+				Long appl_type = rs.getLong("appl_type_class_id");
 				String app_nr = rs.getString("nr");
 				
 				LOGGER.info("found reg_application "+appl_id+" (nr: "+app_nr+")");
 				
-				if(app_nr.contains("/P")){ // pikendamise taotlus
-					String baseNr = app_nr.substring(0, app_nr.indexOf("/P"));
-					
-					// pikendamise toode läheb baastaotluse külge
-					try{
-						PostgreUtils.update("UPDATE product SET "
-								+ "appl_id = (SELECT id FROM reg_application WHERE nr = '"+baseNr+"' LIMIT 1) "
-								+ "WHERE appl_id = "+appl_id+(
-										(product_id != null) ? " OR id = "+product_id : ""
-										));
-					}catch(Exception x){
-						x.printStackTrace();
-					}
-					
+				if(appl_type == id_pik){ // pikendamise taotlus
 					try{ // eemaldame seose
 						PostgreUtils.update("UPDATE reg_application SET product_id = null WHERE id = "+appl_id);
 						LOGGER.info("updated reg_application "+appl_id+" set product_id = null");
@@ -110,7 +108,12 @@ public class NotEnteredApplicationJobs extends HibernateDaoSupport {
 					}
 				}
 				
-				try{ // kustutame taotluse
+				try{
+					 // kustutame taotluse failid
+					PostgreUtils.delete("DELETE FROM reg_doc WHERE doc_appl_id = "+appl_id);
+					LOGGER.info("deleted reg_doc where doc_appl_id = "+appl_id);
+					
+					 // kustutame taotluse
 					PostgreUtils.delete("DELETE FROM reg_application WHERE id = "+appl_id);
 					LOGGER.info("deleted reg_application "+appl_id);
 				}catch(Exception x){

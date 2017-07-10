@@ -140,6 +140,22 @@ public class PDFCreator implements InitializingBean {
 			args.put("returner", returner);
 			args.put("documents", documents != null ? documents : new ArrayList());
 
+			String submtrName = "";
+			if(application != null && (
+					(application.getFromXTee() != null && application.getFromXTee() == true) || 
+					(application.getCreatedBy() != null && application.getCreatedBy().equals("EIT"))
+					)){
+				
+				submtrName = (application.getSubmitterName() != null ? application.getSubmitterName() : "").trim();
+				if(application.getSubmitterOccupation() != null && !application.getSubmitterOccupation().equals("")){
+					submtrName = submtrName + "; " + application.getSubmitterOccupation().trim(); 
+				}
+				
+				submtrName.replaceAll("  ", " "); // topelt tühikud eemaldame ära, vanadest vigastest andmetest
+			}
+			
+			args.put("submitterName", submtrName);
+
 			String docString = VelocityTemplateProcessor.getInstance()
 						.evaluate(new InputStreamReader(is), args);
 

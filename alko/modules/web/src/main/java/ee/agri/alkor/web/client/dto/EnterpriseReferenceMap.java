@@ -7,6 +7,12 @@ public class EnterpriseReferenceMap
 
 	public static final String NAME = "name";
 	
+	public static final String FIRSTNAME = "firstname";
+	
+	public static final String LASTNAME = "lastname";
+
+	public static final String OCCUPATION = "occupation";
+	
 	public static final String IDCODE = "idcode";
 
 	public static final String TODATE = "todate";

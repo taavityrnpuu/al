@@ -511,6 +511,13 @@ update reg_doc set id = nextval('reg_doc_seq') where id > 250000000;
 alter table user_arireg add person_name varchar(500);
 alter table user_arireg add person_role varchar(1000);
 
+alter table enterprise_person_ref add lastname varchar(1000);
+alter table enterprise_person_ref add occupation varchar(1000);
+
+alter table reg_application add submitter_name varchar(1000); 
+alter table reg_application add submitter_reg_id varchar(1000); 
+alter table reg_application add submitter_occupation varchar(1000); 
+
 --ALTER TABLE reg_application ALTER COLUMN decision_explanation TYPE character varying(100000);
 --ALTER TABLE reg_application ALTER COLUMN extend_until_decision_explanation TYPE character varying(100000);
 
@@ -520,5 +527,6 @@ alter table user_arireg add person_role varchar(1000);
 -- MEIE TESTIS baasi taastamisel
 -- update person set reg_id = '48707262221' where id = 5152;
 -- update person set reg_id = '48012300041' where id = 5153;
+
 
 

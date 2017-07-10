@@ -221,7 +221,7 @@ public class XTeeForm extends Form implements CacheListener {
 		// tulemuste järjestamise reeglid
 		
 		// sort kasutuste järjekord on vastupidine mapi lisamisega võrreldes
-		searchResultsTable.getFilter().addSortItem("arrived", SearchFilter.DESCENDING);
+		searchResultsTable.getFilter().addSortItem("arrived", SearchFilter.DESCENDING, 3);
 		searchResultsTable.getFilter().addSortItem("nr", SearchFilter.DESCENDING, 2);
 		searchResultsTable.getFilter().addSortItem("state.orderNr", SearchFilter.ASCENDING, 1);
 		

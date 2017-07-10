@@ -21,8 +21,6 @@ import java.util.UUID;
 import eu.x_road.arireg.producer.AriregLocator;
 import eu.x_road.arireg.producer.AriregXteeStub;
 import ee.agri.alkor.service.SystemException;
-import eu.x_road.arireg.producer.*;
-import eu.x_road.arireg.producer.holders.*;
 import eu.x_road.xsd.identifiers.*;
 import ee.agri.alkor.xtee.MTRLicense;
 import ee.agri.alkor.service.ServiceFactory;
@@ -87,7 +85,7 @@ public class XteeQueryService implements IXteeServices, InitializingBean {
 			Mtr_bindingStub port = null;
 		
 			port = (Mtr_bindingStub) service.getmtr_porttype(new URL(url));
-			
+
 			List<SOAPHeaderElement> elems = makeParingHeaders(getQueringPersonRegNr());
 			for(SOAPHeaderElement elem : elems){
 				port.setHeader(elem);
@@ -95,13 +93,13 @@ public class XteeQueryService implements IXteeServices, InitializingBean {
 
 			System.out.println("RegistreeringParing - regNumber:" + regNr);
 			RegistreeringParing keha = new RegistreeringParing();
-			
+
             keha.setKood(regNr);
             keha.setKirjetearv(SoovitudKirjeteArv.fromValue(new BigInteger("10")));
          
             RegistreeringParingHolder paringHolder = new RegistreeringParingHolder(keha);
-	
-            RegistriKanneVastus vastus = null;
+
+            RegistriKanneVastus vastus = null; TegevuslubaVastusV2 vastus2 = null;
 			try {
 				vastus = port.registreering(paringHolder);
 			} catch (Exception e) {
@@ -121,10 +119,12 @@ public class XteeQueryService implements IXteeServices, InitializingBean {
 					license.setBusinessName(kanne.getTegevusala());
 					license.setNr(kanne.getRegnr());
 					license.setDate(kanne.getRegistreerimisekp());
-					
+
 					result.addLicense(license);
 				}
+				
 			}
+			
 		} catch (Exception x) {
 			x.printStackTrace();
 		}
@@ -226,7 +226,7 @@ public class XteeQueryService implements IXteeServices, InitializingBean {
 		
 		return elems;
 	}
-
+	
 	public String getQueringPersonRegNr() {
 		Object curUser = AuthenticationServiceDelegate.getCurrentUser();
 		AlkoUserDetails userDetails = (AlkoUserDetails)curUser;       

@@ -613,6 +613,13 @@ update reg_doc set id = nextval('reg_doc_seq') where id > 250000000;
 alter table user_arireg add person_name varchar(500);
 alter table user_arireg add person_role varchar(1000);
 
+alter table enterprise_person_ref add lastname varchar(1000);
+alter table enterprise_person_ref add occupation varchar(1000);
+
+alter table reg_application add submitter_name varchar(1000); 
+alter table reg_application add submitter_reg_id varchar(1000); 
+alter table reg_application add submitter_occupation varchar(1000); 
+
 -- TESTIS baasi taastamisel
 -- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO alkor;
 

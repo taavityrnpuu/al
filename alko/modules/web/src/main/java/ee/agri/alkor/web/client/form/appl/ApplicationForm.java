@@ -745,11 +745,23 @@ public class ApplicationForm extends Form implements CacheListener {
 	private String makeMtrHTML(ApplicationMap map, MtrAndCustomsQueryResultMap mtrMap) {
 		List list = (List) mtrMap.getProperty(MtrAndCustomsQueryResultMap.MTR_LICENSES);
 		StringBuffer listBuffer = new StringBuffer();
+		String onLubasid = "Ei";
+		String onAktsiis = "Ei";
 		for (int i = 0; i < list.size(); i++) {
 			MtrLicenseMap mtrLicMap = (MtrLicenseMap) list.get(i);
 			listBuffer.append("<p><b>Reg nr: " + mtrLicMap.getProperty(MtrLicenseMap.NR) + "<b/><br/>\n"
 					+ "Reg kpv: <br/>\n" + "Tegevusloa andmise kpv: " + mtrLicMap.getProperty(MtrLicenseMap.DATE)
 					+ "<br/>\n" + "Tegevusala: " + mtrLicMap.getProperty(MtrLicenseMap.BUSINESS_NAME) + "</p>\n");
+			onLubasid = "Jah";
+			if(mtrLicMap.getProperty(MtrLicenseMap.BUSINESS_NAME) != null 
+					&& (mtrLicMap.getProperty(MtrLicenseMap.BUSINESS_NAME).equals("Hulgikaubandus")
+					|| mtrLicMap.getProperty(MtrLicenseMap.BUSINESS_NAME).equals("Jaekaubandus")
+					|| mtrLicMap.getProperty(MtrLicenseMap.BUSINESS_NAME).equals("Toitlustamine")
+					|| mtrLicMap.getProperty(MtrLicenseMap.BUSINESS_NAME).equals("Hulgimüük")
+					|| mtrLicMap.getProperty(MtrLicenseMap.BUSINESS_NAME).equals("Jaemüük")
+							)){
+				onAktsiis = "Jah";
+			}
 		}
 		StringBuffer sb = new StringBuffer();
 		sb.append("<?xml version=\"1.0\" encoding=\"UTF-8\" ?>\n"
@@ -762,9 +774,11 @@ public class ApplicationForm extends Form implements CacheListener {
 				+ "<p><b>Taotleja äriregistrikood: </b>"
 				+ ((EnterpriseMap) map.getProperty(ApplicationMap.APPLICANT)).getProperty(EnterpriseMap.REG_ID)
 				+ "</p>\n" + "<p><b>Ettevõtte registreeringu kehtivus MTR-is: "
-				+ mtrMap.getProperty(MtrAndCustomsQueryResultMap.MTR_REGISTRATION_DATE) + "</p>\n"
+				//+ mtrMap.getProperty(MtrAndCustomsQueryResultMap.MTR_REGISTRATION_DATE) + "</p>\n"
+				+ onLubasid + "</p>\n"
 				+ "<p><b>Aktsiisiloa kehtivus: "
-				+ mtrMap.getProperty(MtrAndCustomsQueryResultMap.EXCISE_LICENSE_VALID_DATE) + "</p>\n"
+				//+ mtrMap.getProperty(MtrAndCustomsQueryResultMap.EXCISE_LICENSE_VALID_DATE) + "</p>\n"
+				+ onAktsiis + "</p>\n"
 				+ "<p><b>Tegevusload MTR-is:</b><br/>\n" + listBuffer.toString() + "</p>\n" + "</body>\n"
 				+ "</html>\n");
 		return sb.toString();

@@ -962,7 +962,12 @@
 		</section>
 		<section numberdepth="0" depth="1" indent="0.0">
 			<paragraph leading="12.0" font="$font" align="Default">
-				Taotluse esitaja nimi ja ametikoht: $!application.enterpriseRepresentative.firstName.replaceAll("&","&#38;") $!application.enterpriseRepresentative.lastName.replaceAll("&","&#38;") $!application.enterpriseRepresentative.occupation.replaceAll("&","&#38;")
+				Taotluse esitaja nimi ja ametikoht: 
+							#if($submitterName != "")
+								$submitterName
+							#else
+								$!application.enterpriseRepresentative.firstName.replaceAll("&","&#38;") $!application.enterpriseRepresentative.lastName.replaceAll("&","&#38;") $!application.enterpriseRepresentative.occupation.replaceAll("&","&#38;")
+							#end
 			</paragraph>
 			<paragraph />
 

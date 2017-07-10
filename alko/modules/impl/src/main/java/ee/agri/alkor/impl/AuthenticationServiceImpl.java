@@ -177,7 +177,6 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		LOGGER.debug("loadUserByRegistrationId");
 
 		try {
-			String occupation = "";
 
 			try {
 				String sql = "select * from user_session where valid_until > now() order by id desc limit 1";
@@ -207,10 +206,13 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 						idCode, makeAuthorities(user), user);			
 				((AlkoUserDetails)details).setFromCas(fromCas);	
 			} catch (Exception exeption) {
-				String sql = "select * from user_session where valid_until > now() order by id desc limit 1";
+				String occupation = "";
+				String firstname = "";
+				String lastname = "";
 				String regNr = null;
 				String id = null;
 
+				String sql = "select * from user_session where valid_until > now() order by id desc limit 1";
 				try {
 					ResultSet rs = PostgreUtils.query(sql);
 					while (rs.next()) {
@@ -225,12 +227,21 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 
 				user = findUser(IClassificatorService.EIT_USERNAME);
 				//user = (SystemUser) getHibernateTemplate().find("from SystemUser u where u.person.registrationId = ? and u.active = true", idCode).get(0);
-				sql = "select person_role from user_arireg where id_code = '" + idCode + "' and reg_nr = '" + regNr + "'";
+				sql = "select person_role, person_name from user_arireg where id_code = '" + idCode + "' and reg_nr = '" + regNr + "'";
 
 				try {
 					ResultSet rs = PostgreUtils.query(sql);
 					while (rs.next()) {
 						occupation = rs.getString("person_role");
+						if(rs.getString("person_name") != null && rs.getString("person_name") .length() > 0){
+							try{
+								String[] splt = rs.getString("person_name").split(" ");
+								lastname = splt[splt.length-1];
+								firstname = rs.getString("person_name").substring(0, rs.getString("person_name").indexOf(lastname));
+							} catch (Exception ex) {
+								ex.printStackTrace();
+							}
+						}
 						
 						occupation = (occupation != null && !occupation.equals("") ? occupation: "JUHATAJA");
 					}
@@ -239,14 +250,28 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 				}
 
 				if (occupation.equals("")) {
-					occupation = "VOLITATU";
-					// küsime volitust. kui on volitus, siis on volitatu
+					try {
+						ResultSet rs = PostgreUtils.query("SELECT COALESCE(occupation, '') AS occupation, COALESCE(name, '') AS name, "
+									+ "COALESCE(lastname, '') AS lastname "
+								+ "FROM enterprise_person_ref "
+								+ "WHERE id_code = '"+idCode+"' "
+									+ "AND enterprise_id = (SELECT id FROM enterprise WHERE reg_id = '"+regNr+"' AND active = true) AND valid = true");
+						
+						while (rs.next()) {
+							occupation = rs.getString("occupation");
+							firstname = rs.getString("name");
+							lastname = rs.getString("lastname");
+						}
+					} catch (Exception ex) {
+						ex.printStackTrace();
+					}
+					occupation = (occupation != null && !occupation.equals("") ? occupation: "VOLITATU");
 				}
-
+				
 				details = new AlkoUserDetails(IClassificatorService.EIT_USERNAME, 
 						user.getPassword(), 
-						user.getPerson().getFirstName(), 
-						user.getPerson().getLastName(), 
+						(firstname != "" ? firstname : user.getPerson().getFirstName()), 
+						(lastname != "" ? lastname : user.getPerson().getLastName()), 
 						idCode, 
 						makeAuthorities(user), 
 						user,
@@ -274,11 +299,19 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		Object details = authEvent.getAuthentication().getDetails();
 		Object principal = authEvent.getAuthentication().getPrincipal();
 
+		if(!(principal instanceof AlkoUserDetails) || userName == null || userName.replaceAll(" ", "").length() == 0){
+			return;
+		}
+		
+		
 		String message = null;
 		if (LOGGER.isDebugEnabled()) {
 			message = "Authentication event:[" + ClassUtils.getShortName(authEvent.getClass()) + "] " + userName + " details:[" + details + "] principal: ["
 					+ principal + "]";
 		}
+		
+		//System.out.println(message);
+		
 //		if (event instanceof AbstractAuthenticationFailureEvent) {
 //			message = message + " exception:[" + ((AbstractAuthenticationFailureEvent) event).getException().getMessage() + "]";
 //			LOGGER.info(message);
@@ -308,8 +341,8 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 			auhtType.setCode(IClassificatorService.AUTH_TYPE_CERT);
 		}
 		*/
-		
-		if (principal instanceof AlkoUserDetails && !((AlkoUserDetails)principal).isFromCas()) { // vormi kaudu sisenemine
+
+		if (!((AlkoUserDetails)principal).isFromCas()) { // vormi kaudu sisenemine
 			auhtType.setCode(IClassificatorService.AUTH_TYPE_FORM);
 		} else { // id-kaardiga
 			auhtType.setCode(IClassificatorService.AUTH_TYPE_CERT);
@@ -411,6 +444,10 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 					// authLogPre2.setUserFullName("PSEUDO LOGIMINE tyhi");
 					// session.save(authLogPre2);
 
+					if(authLogEntry.getUserFullName() == null || authLogEntry.getUserFullName().replaceAll(" ", "").length() == 0){
+						return null;
+					}
+					
 					authLogEntry.setClientIP(clientAddress);
 					authLogEntry.setTime(new Date());
 					if (auhtType.getCode() != null)

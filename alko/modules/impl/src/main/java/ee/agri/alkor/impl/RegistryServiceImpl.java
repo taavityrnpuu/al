@@ -347,7 +347,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		
 		return urls;
 		
-		//return new String[]{"https://cas.agri.ee/epm-cas/login?iframeLogin=1","https%3A%2F%2F192.168.0.37%3A8443%2Fcaslogin", "https://cas.agri.ee/epm-cas/logout"};
 	}
 	
 
@@ -406,7 +405,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		return 0;
 	}
 
-	public long saveEnterpriseReference(String name, String idCode, String toDate, String regCode) {
+	public long saveEnterpriseReference(String firstname, String lastName, String idCode, String occupation, String toDate, String regCode) {
 		String sql = "";
 		String loggedUser = "";
 
@@ -443,10 +442,10 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 				}
 
-				sql = "INSERT INTO enterprise_person_ref(id_code, enterprise_id, valid, created_by, valid_until, name) VALUES ('"
+				sql = "INSERT INTO enterprise_person_ref(id_code, enterprise_id, valid, created_by, valid_until, name, lastname, occupation) VALUES ('"
 						+ idCode.replaceAll("'", "\"") + "', (SELECT id FROM enterprise where reg_id = '"
 						+ regCode.replaceAll("'", "\"") + "' LIMIT 1), true,'" + loggedUser + "', " + sqlDate + ", '"
-						+ name.replaceAll("'", "\"") + "' )";
+						+ firstname.replaceAll("'", "\"") + "', '"+lastName.replaceAll("'", "\"") + "', '"+occupation.replaceAll("'", "\"") + "' )";
 
 				return PostgreUtils.insert(sql, "id");
 			} catch (Exception ex) {
@@ -551,14 +550,16 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					rt = sdf.format(revokedTime.getTime());
 				}
 
-				String[] map = new String[7];
+				String[] map = new String[9];
 				map[0] = String.valueOf(rs.getLong("id"));
-				map[1] = rs.getString("name");
-				map[2] = rs.getString("id_code");
-				map[3] = c;
-				map[4] = vu;
-				map[5] = (rs.getBoolean("valid") ? "1" : "0");
-				map[6] = rt;
+				map[1] = rs.getString("name") != null ? rs.getString("name") : "";
+				map[2] = rs.getString("lastname") != null ? rs.getString("lastname") : "";
+				map[3] = rs.getString("id_code");
+				map[4] = rs.getString("occupation");
+				map[5] = c;
+				map[6] = vu;
+				map[7] = (rs.getBoolean("valid") ? "1" : "0");
+				map[8] = rt;
 				list.add(map);
 			}
 		} catch (Exception ex) {
@@ -1284,6 +1285,20 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					// System.out.println("applicant name " +
 					// applicant.getName());
 					application.setApplicant(applicant);
+
+					Object currentUser = AuthenticationServiceDelegate.getCurrentUser();
+					if (currentUser instanceof AlkoUserDetails) {
+						AlkoUserDetails userDetails = (AlkoUserDetails) currentUser;
+						
+						String fName = (userDetails.getFirstName() != null ? userDetails.getFirstName() : "").trim();
+						String lName = (userDetails.getLastName() != null ? userDetails.getLastName() : "").trim();
+						String occp = (userDetails.getOccupation() != null ? userDetails.getOccupation() : "").trim();
+						
+						application.setSubmitterName(fName+" "+lName);
+						application.setSubmitterRegId(userDetails.getIdCode());
+						application.setSubmitterOccupation(occp);
+					}
+					
 					session.saveOrUpdate(application);
 					if ((application.getNr() == null) && (application.getState() != null)
 							&& (IClassificatorService.APPL_STATE_PRO.equals(application.getState().getCode())))
