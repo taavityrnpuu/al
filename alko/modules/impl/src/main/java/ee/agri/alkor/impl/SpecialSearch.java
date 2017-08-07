@@ -190,6 +190,8 @@ public class SpecialSearch {
 			}
 			
 			for (int y = 0; y < orders.size(); y++) {
+				boolean addArrow = true;
+				
 				String k = orders.get(y);
 
 				if (i > 0) {
@@ -216,15 +218,31 @@ public class SpecialSearch {
 					}
 				} else if (k.startsWith("product.originCountry.name") && aliasSet.contains("origin")) {
 					order.append(k.replace("product.originCountry", "origin")); // asendab
+				} else if (k.equals("registryEntry.nr")) { // string-numbri järgi sort on workaround, kuna string ei sordi nagu number
+					String arrow = "";
+					
+					if (SearchFilter.ASCENDING.equals(sortMap.get(k))) {
+						arrow = " ASC";
+					} else if (SearchFilter.DESCENDING.equals(sortMap.get(k))) {
+						arrow = " DESC";
+					}
+					
+					
+					order.append("registryEntry.validFrom"+arrow+", registryEntry.nr"+arrow);
+
+					addArrow = false; // selle customiga ei lisa pärast sordi poolt
 				} else {
 					order.append(k);
 				}
 
-				if (SearchFilter.ASCENDING.equals(sortMap.get(k))) {
-					order.append(" ASC");
-				} else if (SearchFilter.DESCENDING.equals(sortMap.get(k))) {
-					order.append(" DESC");
+				if(addArrow){
+					if (SearchFilter.ASCENDING.equals(sortMap.get(k))) {
+						order.append(" ASC");
+					} else if (SearchFilter.DESCENDING.equals(sortMap.get(k))) {
+						order.append(" DESC");
+					}
 				}
+				
 				i++;
 			}
 

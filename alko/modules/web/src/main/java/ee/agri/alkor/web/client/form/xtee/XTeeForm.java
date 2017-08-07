@@ -1194,7 +1194,7 @@ public class XTeeForm extends Form implements CacheListener {
 																	// listboxide
 																	// sisu
 									updateApplication((ApplicationMap) result);
-									setInfo("Taotlus on salvestatud!");
+									//setInfo("Taotlus on salvestatud!");
 
 									setButtonState(FormButtonState.ESITAMATA);
 									setIsPikTaotlus(true);
@@ -1203,6 +1203,7 @@ public class XTeeForm extends Form implements CacheListener {
 									// updateStates(true);
 									
 									searchForm.search();
+									setInfo("Taotlus on salvestatud!");
 								}
 							});
 				}
