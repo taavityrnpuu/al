@@ -228,7 +228,7 @@ public class SpecialSearch {
 					}
 					
 					
-					order.append("registryEntry.validFrom"+arrow+", registryEntry.nr"+arrow);
+					order.append("created"+arrow+", registryEntry.nr"+arrow);
 
 					addArrow = false; // selle customiga ei lisa pärast sordi poolt
 				} else {
