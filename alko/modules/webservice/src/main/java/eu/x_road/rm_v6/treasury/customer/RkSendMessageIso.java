@@ -1,51 +1,58 @@
 /**
- * Title.java
+ * RkSendMessageIso.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package eu.x_road.xsd.xroad_xsd;
+package eu.x_road.rm_v6.treasury.customer;
 
-public class Title  implements java.io.Serializable, org.apache.axis.encoding.SimpleType {
-    private java.lang.String _value;
 
-    public Title() {
+/**
+ * ISO dokumendi vastuvõtmise formaat.
+ */
+public class RkSendMessageIso  implements java.io.Serializable {
+    /* Dokumendi unikaalne ID, tehniline viide. Peab
+     * 									asutuse kehtiva lepingu
+     * 									piires olema unikaalne. */
+    private java.lang.String uniqueId;
+
+    public RkSendMessageIso() {
     }
 
-    // Simple Types must have a String constructor
-    public Title(java.lang.String _value) {
-        this._value = _value;
-    }
-    // Simple Types must have a toString for serializing the value
-    public java.lang.String toString() {
-        return _value;
-    }
-
-
-    /**
-     * Gets the _value value for this Title.
-     * 
-     * @return _value
-     */
-    public java.lang.String get_value() {
-        return _value;
+    public RkSendMessageIso(
+           java.lang.String uniqueId) {
+           this.uniqueId = uniqueId;
     }
 
 
     /**
-     * Sets the _value value for this Title.
+     * Gets the uniqueId value for this RkSendMessageIso.
      * 
-     * @param _value
+     * @return uniqueId   * Dokumendi unikaalne ID, tehniline viide. Peab
+     * 									asutuse kehtiva lepingu
+     * 									piires olema unikaalne.
      */
-    public void set_value(java.lang.String _value) {
-        this._value = _value;
+    public java.lang.String getUniqueId() {
+        return uniqueId;
+    }
+
+
+    /**
+     * Sets the uniqueId value for this RkSendMessageIso.
+     * 
+     * @param uniqueId   * Dokumendi unikaalne ID, tehniline viide. Peab
+     * 									asutuse kehtiva lepingu
+     * 									piires olema unikaalne.
+     */
+    public void setUniqueId(java.lang.String uniqueId) {
+        this.uniqueId = uniqueId;
     }
 
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof Title)) return false;
-        Title other = (Title) obj;
+        if (!(obj instanceof RkSendMessageIso)) return false;
+        RkSendMessageIso other = (RkSendMessageIso) obj;
         if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
@@ -54,9 +61,9 @@ public class Title  implements java.io.Serializable, org.apache.axis.encoding.Si
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
-            ((this._value==null && other.get_value()==null) || 
-             (this._value!=null &&
-              this._value.equals(other.get_value())));
+            ((this.uniqueId==null && other.getUniqueId()==null) || 
+             (this.uniqueId!=null &&
+              this.uniqueId.equals(other.getUniqueId())));
         __equalsCalc = null;
         return _equals;
     }
@@ -68,8 +75,8 @@ public class Title  implements java.io.Serializable, org.apache.axis.encoding.Si
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
-        if (get_value() != null) {
-            _hashCode += get_value().hashCode();
+        if (getUniqueId() != null) {
+            _hashCode += getUniqueId().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -77,13 +84,13 @@ public class Title  implements java.io.Serializable, org.apache.axis.encoding.Si
 
     // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(Title.class, true);
+        new org.apache.axis.description.TypeDesc(RkSendMessageIso.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://x-road.eu/xsd/xroad.xsd", ">title"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://rm-v6.x-road.eu/treasury/customer", ">rkSendMessageIso"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("_value");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "_value"));
+        elemField.setFieldName("uniqueId");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "UniqueId"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
@@ -104,7 +111,7 @@ public class Title  implements java.io.Serializable, org.apache.axis.encoding.Si
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
         return 
-          new  org.apache.axis.encoding.ser.SimpleSerializer(
+          new  org.apache.axis.encoding.ser.BeanSerializer(
             _javaType, _xmlType, typeDesc);
     }
 
@@ -116,7 +123,7 @@ public class Title  implements java.io.Serializable, org.apache.axis.encoding.Si
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
         return 
-          new  org.apache.axis.encoding.ser.SimpleDeserializer(
+          new  org.apache.axis.encoding.ser.BeanDeserializer(
             _javaType, _xmlType, typeDesc);
     }
 

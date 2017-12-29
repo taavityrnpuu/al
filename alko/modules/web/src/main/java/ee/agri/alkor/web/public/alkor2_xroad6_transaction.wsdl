@@ -1,0 +1,516 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<wsdl:definitions
+		xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
+		xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+		xmlns:tns="http://rm-v6.x-road.eu/treasury/customer"
+		xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+		xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/"
+		targetNamespace="http://rm-v6.x-road.eu/treasury/customer"
+		xmlns="http://www.w3.org/2001/XMLSchema"
+>
+	<wsdl:types>
+		<schema
+				xmlns:xrd="http://x-road.eu/xsd/xroad.xsd"
+				xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+				xmlns:tns="http://rm-v6.x-road.eu/treasury/customer"
+				xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap/"
+				xmlns="http://www.w3.org/2001/XMLSchema"
+				elementFormDefault="unqualified"
+				targetNamespace="http://rm-v6.x-road.eu/treasury/customer"
+		>
+
+			<import namespace="http://x-road.eu/xsd/xroad.xsd" schemaLocation="http://x-road.eu/xsd/xroad.xsd"/>
+			<annotation>
+				<documentation>Riigikassa poolt edastatava tehinguteavituse XML-faili skeem</documentation>
+			</annotation>
+			<!-- Moka päring -->
+			<element name="rkSendTransactionStatement">
+				<complexType>
+					<sequence>
+						<element name="MokaQuery" type="tns:MokaQueryType"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="MokaQueryType">
+				<sequence>
+					<element name="Moka" type="tns:MokaType"/>
+				</sequence>
+			</complexType>
+			<complexType name="MokaType">
+				<annotation>
+					<documentation>Asutustele kontoliikumistest teavitamise formaat</documentation>
+				</annotation>
+				<all>
+					<element name="Treasury" type="tns:Treasury"/>
+					<element name="Payer" type="tns:Payer">
+						<annotation>
+							<documentation>Maksja info</documentation>
+						</annotation>
+					</element>
+					<element name="Receiver" type="tns:Receiver">
+						<annotation>
+							<documentation>Saaja info</documentation>
+						</annotation>
+					</element>
+					<element name="Payment" type="tns:Payment"/>
+					<element name="TreasuryClassif" minOccurs="0">
+						<annotation>
+							<documentation>Eelarveklassifikaator, mis näitab, millise eelarvereaga on tehing
+								seotud</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="0"/>
+								<maxLength value="100"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="PaymentDesc" minOccurs="0">
+						<annotation>
+							<documentation>Tehinguinfo / maksjapoolne selgitus.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="0"/>
+								<maxLength value="500"/>
+							</restriction>
+						</simpleType>
+					</element>
+				</all>
+			</complexType>
+
+			<element name="Message" type="string" nillable="true">
+				<annotation>
+					<appinfo>
+						<xrd:title>Teade</xrd:title>
+					</appinfo>
+				</annotation>
+			</element>
+			<element name="Code" type="int">
+				<annotation>
+					<appinfo>
+						<xrd:title>kood</xrd:title>
+					</appinfo>
+				</annotation>
+			</element>
+			<!-- Moka päringu vastus -->
+			<element name="rkSendTransactionStatementResponse">
+				<complexType>
+					<all>
+						<element ref="tns:Message"/>
+						<element ref="tns:Code"/>
+					</all>
+				</complexType>
+			</element>
+
+			<complexType name="Treasury">
+				<all>
+					<element name="DocumentNum">
+						<annotation>
+							<documentation>Dokumendi number.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="0"/>
+								<maxLength value="50"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="OrderNum">
+						<annotation>
+							<documentation>Tehingu Riigikassapoolne unikaalne töökood
+								(arhiveerimistunnus).</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="1"/>
+								<maxLength value="40"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="BankRef">
+						<annotation>
+							<documentation>Tehingu pangapoolne arhiveerimistunnus juhul, kui on sooritatud panga
+								vahendusel.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="0"/>
+								<maxLength value="40"/>
+							</restriction>
+						</simpleType>
+					</element>
+				</all>
+			</complexType>
+			<complexType name="Payer">
+				<all>
+					<element name="Name">
+						<annotation>
+							<documentation>Maksja nimi.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="0"/>
+								<maxLength value="200"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="RegNum">
+						<annotation>
+							<documentation>Maksja id.-kood (isikukood, asutuse/ettevõtte reg.
+								nr.).</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="0"/>
+								<maxLength value="40"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="AccountNum" minOccurs="0">
+						<annotation>
+							<documentation>Maksja arvelduskonto number.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="0"/>
+								<maxLength value="35"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="RefNum" minOccurs="0">
+						<annotation>
+							<documentation>Maksja viitenumber, mille alusel saab tehingu siduda teise
+								infosüsteemiga.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="0"/>
+								<maxLength value="40"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="TransmissionDate" minOccurs="0">
+						<annotation>
+							<documentation>Tehingu Maksjapoolne väärtuspäev.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<length value="10"/>
+								<pattern value="\d{2}.\d{2}.\d{4}"/>
+							</restriction>
+						</simpleType>
+					</element>
+				</all>
+			</complexType>
+			<complexType name="Receiver">
+				<all>
+					<element name="Name">
+						<annotation>
+							<documentation>Saaja nimi.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="0"/>
+								<maxLength value="200"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="RegNum">
+						<annotation>
+							<documentation>Saaja id.-kood (isikukood, asutuse/ettevõtte reg. nr.).</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="0"/>
+								<maxLength value="40"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="AccountNum" minOccurs="0">
+						<annotation>
+							<documentation>Saaja arvelduskonto number.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="0"/>
+								<maxLength value="35"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="RefNum" minOccurs="0">
+						<annotation>
+							<documentation>Saaja viitenumber.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<minLength value="0"/>
+								<maxLength value="40"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="ReceptionDate" minOccurs="0">
+						<annotation>
+							<documentation>Tehingu teostamise kuupäev.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<length value="10"/>
+								<pattern value="\d{2}.\d{2}.\d{4}"/>
+							</restriction>
+						</simpleType>
+					</element>
+				</all>
+			</complexType>
+			<complexType name="Payment">
+				<all>
+					<element name="Type">
+						<annotation>
+							<documentation>Tehingu tüüp C või D näitab, kas tegemist on kreedit- või
+								deebetkandega.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<length value="1"/>
+								<pattern value="[C,D]"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="BaseCurrencyAmount">
+						<annotation>
+							<documentation>Summa baasvaluutas.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="decimal">
+								<totalDigits value="15"/>
+								<fractionDigits value="2"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="Amount">
+						<annotation>
+							<documentation>Summa valuutas.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="decimal">
+								<totalDigits value="15"/>
+								<fractionDigits value="2"/>
+							</restriction>
+						</simpleType>
+					</element>
+					<element name="Currency">
+						<annotation>
+							<documentation>Valuuta kood ISO 4217 formaadis.</documentation>
+						</annotation>
+						<simpleType>
+							<restriction base="string">
+								<length value="3"/>
+								<pattern value="[A-Z]{3}"/>
+								<pattern value="[a-z]{3}"/>
+							</restriction>
+						</simpleType>
+					</element>
+				</all>
+			</complexType>
+			<element name="Filename">
+				<annotation>
+					<documentation>Faili nimetus.</documentation>
+				</annotation>
+				<simpleType>
+					<restriction base="string">
+						<minLength value="0"/>
+						<maxLength value="40"/>
+					</restriction>
+				</simpleType>
+			</element>
+			<complexType name="FileType">
+				<sequence>
+					<element ref="tns:Filename">
+						<annotation>
+							<documentation>Faili nimetus.</documentation>
+						</annotation>
+					</element>
+					<element ref="tns:Code">
+						<annotation>
+							<documentation>Vastuskood faili töötlusele tervikuna positiivse täisarvu näol. 0 - ok, muudel juhtudel viga.</documentation>
+						</annotation>
+					</element>
+					<element ref="tns:Message">
+						<annotation><documentation>Veatekst, kui vastuskood on suurem nullist.</documentation></annotation>
+					</element>
+				</sequence>
+			</complexType>
+			<complexType name="FilesType">
+				<sequence>
+					<element name="File" type="tns:FileType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</complexType>
+			<complexType name="ItemType">
+				<sequence>
+					<element ref="tns:Filename">
+						<annotation>
+							<documentation>Faili nimetus.</documentation>
+						</annotation>
+					</element>
+					<element name="RefNum" type="string">
+						<annotation>
+							<documentation>Dokumendi viitenumber. Maksekorralduste puhul maksja
+								viitenumber.</documentation>
+						</annotation>
+					</element>
+					<element ref="tns:Code"/>
+					<element ref="tns:Message"/>
+				</sequence>
+			</complexType>
+			<complexType name="ItemsType">
+				<sequence>
+					<element name="Item" type="tns:ItemType" minOccurs="0" maxOccurs="unbounded"/>
+				</sequence>
+			</complexType>
+			<!-- Send Document Status päring -->
+
+			<element name="rkSendDocumentStatus">
+				<complexType>
+					<sequence>
+						<element name="DocumentStatus" type="tns:DocumentStatusType"/>
+					</sequence>
+				</complexType>
+			</element>
+			<complexType name="DocumentStatusType">
+				<annotation>
+					<documentation>Signeeritud dokumendi vastuvõtmise formaat.</documentation>
+				</annotation>
+				<all>
+					<element name="UniqueId" type="string">
+						<annotation>
+							<documentation>Dokumendi unikaalne ID.</documentation>
+						</annotation>
+					</element>
+					<element name="Type" type="string">
+						<annotation>
+							<documentation>Dokumendi tüüp.</documentation>
+						</annotation>
+					</element>
+					<element name="Files" type="tns:FilesType" minOccurs="0">
+						<annotation>
+							<documentation>Dokumendi tüüp.</documentation>
+						</annotation>
+					</element>
+					<element name="Items" type="tns:ItemsType" minOccurs="0">
+						<annotation><documentation>Failis olnud alamdokumentide massiiv.</documentation></annotation>
+					</element>
+				</all>
+			</complexType>
+			<element name="rkSendDocumentStatusResponse">
+				<complexType>
+					<all>
+						<element ref="tns:Message"/>
+						<element ref="tns:Code"/>
+					</all>
+				</complexType>
+			</element>
+
+			<!-- Send Message ISO päring -->
+			<element name="rkSendMessageIso">
+				<complexType>
+					<annotation>
+						<documentation>ISO dokumendi vastuvõtmise formaat.
+						</documentation>
+					</annotation>
+					<sequence>
+						<element name="UniqueId" type="string">
+							<annotation>
+								<documentation>Dokumendi unikaalne ID, tehniline viide. Peab
+									asutuse kehtiva lepingu
+									piires olema unikaalne.
+								</documentation>
+							</annotation>
+						</element>
+					</sequence>
+				</complexType>
+			</element>
+			<element name="rkSendMessageIsoResponse">
+				<complexType>
+					<all>
+						<element ref="tns:Message"/>
+						<element ref="tns:Code"/>
+					</all>
+				</complexType>
+			</element>
+			<element name="attach" type="base64Binary">
+			</element>
+		</schema>
+	</wsdl:types>
+	<wsdl:message name="requestHeader">
+		<wsdl:part name="client" element="xrd:client"/>
+		<wsdl:part name="service" element="xrd:service" />
+		<wsdl:part name="id" element="xrd:id" />
+		<wsdl:part name="userId" element="xrd:userId" />
+		<wsdl:part name="requestHash" element="xrd:requestHash" />
+		<wsdl:part name="issue" element="xrd:issue" />
+		<wsdl:part name="protocolVersion" element="xrd:protocolVersion" />
+	</wsdl:message>
+	<wsdl:message name="rkSendTransactionStatement">
+		<wsdl:part element="tns:rkSendTransactionStatement" name="keha" />
+	</wsdl:message>
+	<wsdl:message name="rkSendTransactionStatementResponse">
+		<wsdl:part element="tns:rkSendTransactionStatementResponse" name="keha" />
+	</wsdl:message>
+
+
+	<wsdl:portType name="TreasuryClientPortType">
+		<!-- Riigikassa kiirteavituse(Moka) "push" teenus -->
+		<wsdl:operation name="rkSendTransactionStatement">
+			<wsdl:documentation><xrd:title xml:lang="et">Riigikassa poolt edastatava kiirteavituse teenus</xrd:title></wsdl:documentation>
+			<wsdl:input message="tns:rkSendTransactionStatement"/>
+			<wsdl:output message="tns:rkSendTransactionStatementResponse"/>
+		</wsdl:operation>
+
+	</wsdl:portType>
+	<wsdl:binding name="TreasuryCustomerBinding" type="tns:TreasuryClientPortType">
+		<soap:binding style="document" transport="http://schemas.xmlsoap.org/soap/http"/>
+		<wsdl:operation name="rkSendTransactionStatement">
+			<xrd:version>v1</xrd:version>
+			<wsdl:input>
+				<soap:body use="literal" parts="keha"/>
+				<soap:header message="tns:requestHeader" part="client"
+							 use="literal" />
+				<soap:header message="tns:requestHeader" part="service"
+							 use="literal" />
+				<soap:header message="tns:requestHeader" part="id" use="literal" />
+				<soap:header message="tns:requestHeader" part="userId"
+							 use="literal" />
+				<soap:header message="tns:requestHeader" part="issue"
+							 use="literal" />
+				<soap:header message="tns:requestHeader" part="protocolVersion"
+							 use="literal" />
+			</wsdl:input>
+			<wsdl:output>
+				<soap:body use="literal" parts="keha"/>
+				<soap:header message="tns:requestHeader" part="client"
+							 use="literal" />
+				<soap:header message="tns:requestHeader" part="service"
+							 use="literal" />
+				<soap:header message="tns:requestHeader" part="id" use="literal" />
+				<soap:header message="tns:requestHeader" part="userId"
+							 use="literal" />
+				<soap:header message="tns:requestHeader" part="issue"
+							 use="literal" />
+				<soap:header message="tns:requestHeader" part="protocolVersion"
+							 use="literal" />
+			</wsdl:output>
+		</wsdl:operation>
+
+
+	</wsdl:binding>
+	<wsdl:service name="TreasuryMessagingServiceCustomer">
+		<wsdl:port name="TreasuryXrdCustomerWS" binding="tns:TreasuryCustomerBinding">
+			<soap:address location="http://TURVASERVER/cgi-bin/consumer_proxy"/>
+			<xrd:title xml:lang="et">Riigikassa kiirteavitusteenus</xrd:title>
+		</wsdl:port>
+	</wsdl:service>
+	<!-- MOKA kiirteavitus -->
+	<!-- MOKA kiirteavituse vastus -->
+	<!-- dokumendi staatus -->
+	<!-- dokumendi staatuse vastus -->
+</wsdl:definitions>

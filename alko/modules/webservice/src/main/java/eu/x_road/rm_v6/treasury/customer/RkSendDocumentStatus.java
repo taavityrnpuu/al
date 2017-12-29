@@ -1,51 +1,47 @@
 /**
- * Title.java
+ * RkSendDocumentStatus.java
  *
  * This file was auto-generated from WSDL
  * by the Apache Axis 1.4 Apr 22, 2006 (06:55:48 PDT) WSDL2Java emitter.
  */
 
-package eu.x_road.xsd.xroad_xsd;
+package eu.x_road.rm_v6.treasury.customer;
 
-public class Title  implements java.io.Serializable, org.apache.axis.encoding.SimpleType {
-    private java.lang.String _value;
+public class RkSendDocumentStatus  implements java.io.Serializable {
+    private eu.x_road.rm_v6.treasury.customer.DocumentStatusType documentStatus;
 
-    public Title() {
+    public RkSendDocumentStatus() {
     }
 
-    // Simple Types must have a String constructor
-    public Title(java.lang.String _value) {
-        this._value = _value;
-    }
-    // Simple Types must have a toString for serializing the value
-    public java.lang.String toString() {
-        return _value;
+    public RkSendDocumentStatus(
+           eu.x_road.rm_v6.treasury.customer.DocumentStatusType documentStatus) {
+           this.documentStatus = documentStatus;
     }
 
 
     /**
-     * Gets the _value value for this Title.
+     * Gets the documentStatus value for this RkSendDocumentStatus.
      * 
-     * @return _value
+     * @return documentStatus
      */
-    public java.lang.String get_value() {
-        return _value;
+    public eu.x_road.rm_v6.treasury.customer.DocumentStatusType getDocumentStatus() {
+        return documentStatus;
     }
 
 
     /**
-     * Sets the _value value for this Title.
+     * Sets the documentStatus value for this RkSendDocumentStatus.
      * 
-     * @param _value
+     * @param documentStatus
      */
-    public void set_value(java.lang.String _value) {
-        this._value = _value;
+    public void setDocumentStatus(eu.x_road.rm_v6.treasury.customer.DocumentStatusType documentStatus) {
+        this.documentStatus = documentStatus;
     }
 
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
-        if (!(obj instanceof Title)) return false;
-        Title other = (Title) obj;
+        if (!(obj instanceof RkSendDocumentStatus)) return false;
+        RkSendDocumentStatus other = (RkSendDocumentStatus) obj;
         if (obj == null) return false;
         if (this == obj) return true;
         if (__equalsCalc != null) {
@@ -54,9 +50,9 @@ public class Title  implements java.io.Serializable, org.apache.axis.encoding.Si
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
-            ((this._value==null && other.get_value()==null) || 
-             (this._value!=null &&
-              this._value.equals(other.get_value())));
+            ((this.documentStatus==null && other.getDocumentStatus()==null) || 
+             (this.documentStatus!=null &&
+              this.documentStatus.equals(other.getDocumentStatus())));
         __equalsCalc = null;
         return _equals;
     }
@@ -68,8 +64,8 @@ public class Title  implements java.io.Serializable, org.apache.axis.encoding.Si
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
-        if (get_value() != null) {
-            _hashCode += get_value().hashCode();
+        if (getDocumentStatus() != null) {
+            _hashCode += getDocumentStatus().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;
@@ -77,14 +73,14 @@ public class Title  implements java.io.Serializable, org.apache.axis.encoding.Si
 
     // Type metadata
     private static org.apache.axis.description.TypeDesc typeDesc =
-        new org.apache.axis.description.TypeDesc(Title.class, true);
+        new org.apache.axis.description.TypeDesc(RkSendDocumentStatus.class, true);
 
     static {
-        typeDesc.setXmlType(new javax.xml.namespace.QName("http://x-road.eu/xsd/xroad.xsd", ">title"));
+        typeDesc.setXmlType(new javax.xml.namespace.QName("http://rm-v6.x-road.eu/treasury/customer", ">rkSendDocumentStatus"));
         org.apache.axis.description.ElementDesc elemField = new org.apache.axis.description.ElementDesc();
-        elemField.setFieldName("_value");
-        elemField.setXmlName(new javax.xml.namespace.QName("", "_value"));
-        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setFieldName("documentStatus");
+        elemField.setXmlName(new javax.xml.namespace.QName("", "DocumentStatus"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://rm-v6.x-road.eu/treasury/customer", "DocumentStatusType"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
     }
@@ -104,7 +100,7 @@ public class Title  implements java.io.Serializable, org.apache.axis.encoding.Si
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
         return 
-          new  org.apache.axis.encoding.ser.SimpleSerializer(
+          new  org.apache.axis.encoding.ser.BeanSerializer(
             _javaType, _xmlType, typeDesc);
     }
 
@@ -116,7 +112,7 @@ public class Title  implements java.io.Serializable, org.apache.axis.encoding.Si
            java.lang.Class _javaType,  
            javax.xml.namespace.QName _xmlType) {
         return 
-          new  org.apache.axis.encoding.ser.SimpleDeserializer(
+          new  org.apache.axis.encoding.ser.BeanDeserializer(
             _javaType, _xmlType, typeDesc);
     }
 
