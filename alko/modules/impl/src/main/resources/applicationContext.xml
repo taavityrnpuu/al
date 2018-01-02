@@ -35,8 +35,8 @@
 	<bean id="myRegistryServiceDao"
 		class="ee.agri.alkor.impl.RegistryServiceImpl">
 		<property name="sessionFactory" ref="jndiSessionFactory" />
-		<property name="docRoot" value="@docRoot@" />
-		<property name="baseURI" value="@baseURI@" />
+		<property name="docRoot" value="/data" />
+		<property name="baseURI" value="https://alkoreg.agri.ee" />
 		<property name="applicationNrBase" value="0" />
 		<property name="pdfCreator" ref="pdfCreator" />
 	</bean>
@@ -111,11 +111,16 @@
 		class="ee.agri.alkor.impl.NotEnteredApplicationJobs">
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 	</bean>
+	
+	<bean id="decisionSequenceResetJobImpl"
+		class="ee.agri.alkor.impl.DecisionSequenceResetJobImpl">
+		<property name="sessionFactory" ref="jndiSessionFactory" />
+	</bean>
 
 	<bean id="notificationJobs"
 		class="ee.agri.alkor.impl.EmailNotificationJobs">
 		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
-		<property name="mode" value="@mode@" />
+		<property name="mode" value="LIVE" />
 		<property name="daysBeforeRegistryEntryExpiry" value="60" />
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 		<property name="mailSender" ref="mailSender" />
@@ -131,7 +136,7 @@
 	<bean id="ExpiredExendUntilApplicationJobs"
 		class="ee.agri.alkor.impl.ExendUntilApplicationExpiryNotificationJobs">
 		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
-		<property name="mode" value="@mode@" />
+		<property name="mode" value="LIVE" />
 		<property name="daysBeforeNotificationIsSent" value="1" />
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 		<property name="mailSender" ref="mailSender" />
@@ -142,6 +147,12 @@
 		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
 		<property name="targetObject" ref="notEnteredApplicationsJobImpl" />
 		<property name="targetMethod" value="deleteNotEnteredApplications" />
+	</bean>
+	
+	<bean id="decisionSequenceResetJob"
+		class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">
+		<property name="targetObject" ref="decisionSequenceResetJobImpl" />
+		<property name="targetMethod" value="resetSequence" />
 	</bean>
 
 	<bean id="regEntryExpireNotificationJob"
@@ -192,6 +203,13 @@
 		<!-- run every sunday at 4 AM -->
 		<property name="cronExpression" value="0 0 4 * * ?" />
 	</bean>
+	
+	<bean id="cronTrigger5"
+		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		<property name="jobDetail" ref="decisionSequenceResetJob" />
+		<!-- run every january 1st 00:01 AM -->
+		<property name="cronExpression" value="0 1 0 1 1 ?" />
+	</bean>
 
 	<bean
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
@@ -201,6 +219,7 @@
 				<ref bean="cronTrigger2" />
 				<ref bean="cronTrigger3" />
 				<ref bean="cronTrigger4" />
+				<ref bean="cronTrigger5" />
 			</list>
 		</property>
 	</bean>
@@ -216,10 +235,10 @@
 	</bean>
 	
   <bean id="pgDataSource" class="ee.agri.alkor.impl.DbBean" destroy-method="close">
-    <property name="driverClassName" value="@db.driver@"/>
-    <property name="url" value="@db.url@"/>
-    <property name="username" value="@db.user@"/>
-    <property name="password" value="@db.password@"/>
+    <property name="driverClassName" value="org.postgresql.Driver"/>
+    <property name="url" value="jdbc:postgresql://localhost:5432/test"/>
+    <property name="username" value="alkor"/>
+    <property name="password" value="TE100pcm"/>
   </bean>
 
 	<tx:annotation-driven transaction-manager="myTxManager" />
