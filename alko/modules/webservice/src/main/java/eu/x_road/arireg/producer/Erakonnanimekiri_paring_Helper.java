@@ -21,6 +21,13 @@ public class Erakonnanimekiri_paring_Helper {
         elemField.setMinOccurs(0);
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("lehekylg");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "lehekylg"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "integer"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
     }
 
     /**

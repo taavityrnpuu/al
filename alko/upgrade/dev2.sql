@@ -32,27 +32,27 @@ UPDATE enterprise SET active = false, reg_id = reg_id || '_x', balance = 0, chan
 UPDATE enterprise SET balance = balance + (SELECT balance FROM enterprise WHERE id = 13003), change_reason = 'Balanss lisatud juurde (' || (SELECT balance FROM enterprise WHERE id = 13003) || '), kantud üle vana kirje küljest (id 13003)' where id = 25352;
 UPDATE enterprise SET active = false, reg_id = reg_id || '_x', balance = 0, change_reason = 'Balanss viidud 0 peale ja raha (' || balance || ') kantud üle uue kirje külge (id 25352)' where id = 13003;
 
-/*
+
 -- "VP Market OÜ" (4862) -> "Maxima Eesti OÜ" (20037) : 10765896
-INSERT INTO payment_matching_log (id, created_by, 
+INSERT INTO reg_payment (id, created_by, 
 		amount, 
 		payer_name, 
 		reg_nr, 
 		payer_enterprise_id, 
 		description) 
-	VALUES (nextval("payment_matching_log_seq"), 'sys', 
+	VALUES (nextval('reg_payment_seq'), 'sys', 
 		(SELECT balance FROM enterprise WHERE reg_id = '10765896' AND name = 'VP Market OÜ'), 
 		'VP Market OÜ', 
 		'10765896', 
 		(SELECT id FROM enterprise WHERE reg_id = '10765896' AND name = 'VP Market OÜ'), 
 		'Mahakanne aegunud dupliakaat asutuselt, balanss liikus õige nimega asutuse alla: Maxima Eesti OÜ');
-INSERT INTO payment_matching_log (id, created_by, 
+INSERT INTO reg_payment (id, created_by, 
 		amount, 
 		payer_name, 
 		reg_nr, 
 		payer_enterprise_id, 
 		description) 
-	VALUES (nextval("payment_matching_log_seq"), 'sys', 
+	VALUES (nextval('reg_payment_seq'), 'sys', 
 		-1*(SELECT balance FROM enterprise WHERE reg_id = '10765896' AND name = 'VP Market OÜ'), 
 		'Maxima Eesti OÜ', 
 		'10765896', 
@@ -63,25 +63,25 @@ UPDATE enterprise SET balance = balance + (SELECT balance FROM enterprise WHERE 
 UPDATE enterprise SET reg_id = reg_id || '_x', balance = 0 WHERE reg_id = '10765896' AND name = 'VP Market OÜ';
 
 -- "Ecotrade AT OÜ" (13003) -> "Austan Loodust Grupp OÜ" (25352) : 11360931
-INSERT INTO payment_matching_log (id, created_by, 
+INSERT INTO reg_payment (id, created_by, 
 		amount, 
 		payer_name, 
 		reg_nr, 
 		payer_enterprise_id, 
 		description) 
-	VALUES (nextval("payment_matching_log_seq"), 'sys', 
+	VALUES (nextval('reg_payment_seq'), 'sys', 
 		(SELECT balance FROM enterprise WHERE reg_id = '11360931' AND name = 'Ecotrade AT OÜ'), 
 		'Ecotrade AT OÜ', 
 		'11360931', 
 		(SELECT id FROM enterprise WHERE reg_id = '11360931' AND name = 'Ecotrade AT OÜ'), 
 		'Mahakanne aegunud dupliakaat asutuselt, balanss liikus õige nimega asutuse alla: Austan Loodust Grupp OÜ');
-INSERT INTO payment_matching_log (id, created_by, 
+INSERT INTO reg_payment (id, created_by, 
 		amount, 
 		payer_name, 
 		reg_nr, 
 		payer_enterprise_id, 
 		description) 
-	VALUES (nextval("payment_matching_log_seq"), 'sys', 
+	VALUES (nextval('reg_payment_seq'), 'sys', 
 		-1*(SELECT balance FROM enterprise WHERE reg_id = '11360931' AND name = 'Ecotrade AT OÜ'), 
 		'Austan Loodust Grupp OÜ', 
 		'11360931', 
@@ -90,7 +90,7 @@ INSERT INTO payment_matching_log (id, created_by,
 		
 UPDATE enterprise SET balance = balance + (SELECT balance FROM enterprise WHERE reg_id = '11360931' AND name = 'Ecotrade AT OÜ') WHERE reg_id = '11360931' AND name = 'Austan Loodust Grupp OÜ';
 UPDATE enterprise SET reg_id = reg_id || '_x', balance = 0 WHERE reg_id = '11360931' AND name = 'Ecotrade AT OÜ';
-*/
+
 
 -- uue logimise loogika
 CREATE TABLE user_authlog (
@@ -166,34 +166,34 @@ CREATE TABLE config (
 );
 ALTER TABLE config ADD type VARCHAR(200);
 
-insert into config(key, value, type, note) VALUES ('DIGIDOCSERVICE_URL','https://tsp.demo.sk.ee', 'DIGIDOC', 'TEKST. Digidoc teenuse url, mille peal toimub allkirjastamine.');
-insert into config(key, value, type, note) VALUES ('XTEESERVICE_URL','http://192.168.0.6/cgi-bin/xroad_proxy', 'XTEE_URL', 'TEKST. Turvaserveri url, mille peal toimuvad xtee äriregistri päringud.'); -- 10.2.0.245
+insert into config(key, value, type, note) VALUES ('DIGIDOCSERVICE_URL','https://digidocservice.sk.ee', 'DIGIDOC', 'TEKST. Digidoc teenuse url, mille peal toimub allkirjastamine.');
+insert into config(key, value, type, note) VALUES ('XTEESERVICE_URL','http://10.2.0.242/cgi-bin/xroad_proxy', 'XTEE_URL', 'TEKST. Turvaserveri url, mille peal toimuvad xtee äriregistri päringud.'); -- 10.2.0.245
 
 insert into config(key, value, type, note) VALUES ('XTEE_PROTOCOL_VERSION','4.0', 'XTEE_PARAMS', 'TEKST. xtee äriregistri päringus väli "protocolVersion"');
 insert into config(key, value, type, note) VALUES ('XTEE_ISSUE','Isiku esindatavad asutused alkoholiregistrisse sisse logimiseks', 'XTEE_PARAMS', 'TEKST. xtee äriregistri esinduse päringus väli "issue". Kirjeldab päringu tegemise põhjust.');
-insert into config(key, value, type, note) VALUES ('XTEE_XROADINSTANCE','ee-dev', 'XTEE_PARAMS', 'TEKST. xtee äriregistri päringus väli "xRoadInstance"');
+insert into config(key, value, type, note) VALUES ('XTEE_XROADINSTANCE','EE', 'XTEE_PARAMS', 'TEKST. xtee äriregistri päringus väli "xRoadInstance"');
 insert into config(key, value, type, note) VALUES ('XTEE_MEMBERCLASS','GOV', 'XTEE_PARAMS', 'TEKST. xtee äriregistri päringus väli "memberClass"');
 insert into config(key, value, type, note) VALUES ('XTEE_MEMBERCODE','70000310', 'XTEE_PARAMS', 'TEKST. xtee äriregistri päringus väli "memberCode"');
 insert into config(key, value, type, note) VALUES ('XTEE_SUBSYSTEMCODE','arireg', 'XTEE_PARAMS', 'TEKST. xtee äriregistri päringus väli "subsystemCode"');
 insert into config(key, value, type, note) VALUES ('XTEE_SERVICECODE','esindus_v1', 'XTEE_PARAMS', 'TEKST. xtee äriregistri esinduse päringus väli "serviceCode"');
 insert into config(key, value, type, note) VALUES ('XTEE_SERVICEVERSION','v1', 'XTEE_PARAMS', 'TEKST. xtee äriregistri esinduse päringus väli "serviceVersion"');
-insert into config(key, value, type, note) VALUES ('XTEE_SENDER_XROADINSTANCE','ee-dev', 'XTEE_PARAMS', 'TEKST. xtee päringus väli "xRoadInstance"');
-insert into config(key, value, type, note) VALUES ('XTEE_SENDER_MEMBERCLASS','COM', 'XTEE_PARAMS', 'TEKST. xtee päringus väli "memberClass" ');
-insert into config(key, value, type, note) VALUES ('XTEE_SENDER_MEMBERCODE','10126529', 'XTEE_PARAMS', 'TEKST. xtee päringus väli "memberCode"');
+insert into config(key, value, type, note) VALUES ('XTEE_SENDER_XROADINSTANCE','EE', 'XTEE_PARAMS', 'TEKST. xtee päringus väli "xRoadInstance"');
+insert into config(key, value, type, note) VALUES ('XTEE_SENDER_MEMBERCLASS','GOV', 'XTEE_PARAMS', 'TEKST. xtee päringus väli "memberClass" ');
+insert into config(key, value, type, note) VALUES ('XTEE_SENDER_MEMBERCODE','70000734', 'XTEE_PARAMS', 'TEKST. xtee päringus väli "memberCode"');
 insert into config(key, value, type, note) VALUES ('XTEE_SENDER_SUBSYSTEMCODE','alkor2', 'XTEE_PARAMS', 'TEKST. xtee päringus väli "subsystemCode"');
 
 insert into config(key, value, type, note) VALUES ('XTEE_ISSUE_DETAIL','Asutuse detailandmete uuendamiseks nende pärimine alkoholiregistris', 'XTEE_PARAMS', 'TEKST. xtee äriregistri detailandmete päringus väli "issue". Kirjeldab päringu tegemise põhjust.');
 insert into config(key, value, type, note) VALUES ('XTEE_SERVICECODE_DETAIL','detailandmed_v1', 'XTEE_PARAMS', 'TEKST. xtee äriregistri detailandmete päringus väli "serviceCode"');
 insert into config(key, value, type, note) VALUES ('XTEE_SERVICEVERSION_DETAIL','v1', 'XTEE_PARAMS', 'TEKST. xtee äriregistri detailandmete päringus väli "serviceVersion"');
 
-insert into config(key, value, type, note) VALUES ('XTEESERVICE_URL_MTR','http://192.168.0.6/cgi-bin/xroad_proxy', 'XTEE_URL', 'TEKST. Turvaserveri url, mille peal toimuvad xtee mtr päringud.'); -- 10.2.0.245
+insert into config(key, value, type, note) VALUES ('XTEESERVICE_URL_MTR','http://10.2.0.242/cgi-bin/xroad_proxy', 'XTEE_URL', 'TEKST. Turvaserveri url, mille peal toimuvad xtee mtr päringud.'); -- 10.2.0.245
 insert into config(key, value, type, note) VALUES ('XTEE_ISSUE_MTR','Asutuse tegevuslubade uuendamiseks nende pärimine alkoholiregistris', 'XTEE_PARAMS', 'TEKST. xtee mtr registreeringu päringus väli "issue". Kirjeldab päringu tegemise põhjust.');
 insert into config(key, value, type, note) VALUES ('XTEE_SERVICECODE_MTR','registreering', 'XTEE_PARAMS', 'TEKST. xtee mtr registreeringu päringus väli "serviceCode"');
 insert into config(key, value, type, note) VALUES ('XTEE_SERVICEVERSION_MTR','v1', 'XTEE_PARAMS', 'TEKST. xtee mtr registreeringu päringus väli "serviceVersion"');
 insert into config(key, value, type, note) VALUES ('XTEE_SUBSYSTEMCODE_MTR','mtr', 'XTEE_PARAMS', 'TEKST. xtee mtr registreeringu päringus väli "subsystemCode"');
 insert into config(key, value, type, note) VALUES ('XTEE_MEMBERCODE_MTR','70003158', 'XTEE_PARAMS', 'TEKST. xtee mtr registreeringu päringus väli "memberCode"');
-insert into config(key, value, type, note) VALUES ('XTEE_XROADINSTANCE_MTR','ee-test', 'XTEE_PARAMS', 'TEKST. xtee mtr registreeringu päringus väli "xRoadInstance"');
-insert into config(key, value, type, note) VALUES ('XTEE_MEMBERCLASS_MTR','COM', 'XTEE_PARAMS', 'TEKST. xtee mtr registreeringu päringus väli "memberClass"');
+insert into config(key, value, type, note) VALUES ('XTEE_XROADINSTANCE_MTR','ee', 'XTEE_PARAMS', 'TEKST. xtee mtr registreeringu päringus väli "xRoadInstance"');
+insert into config(key, value, type, note) VALUES ('XTEE_MEMBERCLASS_MTR','GOV', 'XTEE_PARAMS', 'TEKST. xtee mtr registreeringu päringus väli "memberClass"');
 
 insert into config(key, value, type, note) VALUES ('APPL_SAVE_EXTEND_DAYS','1', 'APPLICATION', 'NUMBER (võib olla ka negatiivne). Päevade arv. VTA saab salvestada pikendamise taotlust enne aegumist.');
 
@@ -281,12 +281,12 @@ UPDATE classificator SET order_nr_vta = 100 WHERE code = 'ENT' and category = 'A
 
 
 insert into config(key, value, type, note) VALUES ('CAS_LOGIN_URL','https://cas.agri.ee/epm-cas/login?iframeLogin=1', 'cas_urls', 'TEKST. CAS i-frame sisse logimise URL');
-insert into config(key, value, type, note) VALUES ('CAS_BACK_URL','https://192.168.0.37:8443/caslogin', 'cas_urls', 'TEKST. Alkori keskkonna URL, vajalik CAS sisse logimisel');
+insert into config(key, value, type, note) VALUES ('CAS_BACK_URL','https://alkoreg.agri.ee/caslogin', 'cas_urls', 'TEKST. Alkori keskkonna URL, vajalik CAS sisse logimisel');
 insert into config(key, value, type, note) VALUES ('CAS_LOGOUT_URL','https://cas.agri.ee/epm-cas/logout', 'cas_urls', 'TEKST. CAS välja logimise URL');
 
 insert into config(key, value, type, note) VALUES ('EMAIL_FROM_MAIL','noreply@alkoreg.agri.ee', 'email', 'TEKST. Kasutaja registreerimine, kellelt saadetakse e-mail');
 insert into config(key, value, type, note) VALUES ('EMAIL_SMTP_HOST','mail.neti.ee', 'email', 'TEKST. Kasutaja registreerimine, SMTP host');
-insert into config(key, value, type, note) VALUES ('EMAIL_BASE_URL','https://192.168.0.37:8443/', 'email', 'TEKST. Kasutaja registreerimine, baas link kuhu kasutaja suunatakse enda kinnitamiseks');
+insert into config(key, value, type, note) VALUES ('EMAIL_BASE_URL','https://alkoreg.agri.ee/', 'email', 'TEKST. Kasutaja registreerimine, baas link kuhu kasutaja suunatakse enda kinnitamiseks');
 
 
 DROP VIEW public.searchview;
@@ -518,8 +518,8 @@ alter table reg_application add submitter_name varchar(1000);
 alter table reg_application add submitter_reg_id varchar(1000); 
 alter table reg_application add submitter_occupation varchar(1000); 
 
---ALTER TABLE reg_application ALTER COLUMN decision_explanation TYPE character varying(100000);
---ALTER TABLE reg_application ALTER COLUMN extend_until_decision_explanation TYPE character varying(100000);
+ALTER TABLE reg_application ALTER COLUMN decision_explanation TYPE character varying(100000);
+ALTER TABLE reg_application ALTER COLUMN extend_until_decision_explanation TYPE character varying(100000);
 
 -- TESTIS baasi taastamisel
 -- GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO alkor;

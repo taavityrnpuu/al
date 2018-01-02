@@ -33,6 +33,12 @@ public class Erakonnanimekiri_vastus_Helper {
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("lehekylgede_arv");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "lehekylgede_arv"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "integer"));
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("liikmed");
         elemField.setXmlName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "liikmed"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "erakonnanimekiri_liige"));

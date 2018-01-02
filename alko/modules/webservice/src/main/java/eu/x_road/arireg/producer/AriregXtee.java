@@ -57,6 +57,11 @@ public interface AriregXtee extends java.rmi.Remote {
     /**
 
      */
+    public void esindus_v2(eu.x_road.arireg.producer.Paringesindus_v6_paring keha, eu.x_road.arireg.producer.holders.Paringesindus_v6_paringHolder paring, eu.x_road.arireg.producer.holders.Paringesindus_v6_vastusHolder keha2) throws java.rmi.RemoteException;
+
+    /**
+
+     */
     public void klassifikaatorid_v1(eu.x_road.arireg.producer.Klassifikaatorid_paring keha, eu.x_road.arireg.producer.holders.Klassifikaatorid_paringHolder paring, eu.x_road.arireg.producer.holders.Klassifikaatorid_vastusHolder keha2) throws java.rmi.RemoteException;
 
     /**
@@ -93,6 +98,11 @@ public interface AriregXtee extends java.rmi.Remote {
 
      */
     public void aruandeMyygituluEMTAKjargi_v1(eu.x_road.arireg.producer.Aruande_myygitulu_paring keha, eu.x_road.arireg.producer.holders.Aruande_myygitulu_paringHolder paring, eu.x_road.arireg.producer.holders.Aruande_myygitulu_vastusHolder keha2) throws java.rmi.RemoteException;
+
+    /**
+
+     */
+    public void toimikuDokument_v1(eu.x_road.arireg.producer.Toimiku_dokument_v1_Request keha, eu.x_road.arireg.producer.holders.Toimiku_dokument_v1_RequestHolder paring, eu.x_road.arireg.producer.holders.Toimiku_dokument_v1_VastusHolder keha2) throws java.rmi.RemoteException;
 
     /**
 
@@ -263,11 +273,6 @@ public interface AriregXtee extends java.rmi.Remote {
 
      */
     public void toimikuDokumendid_v1(eu.x_road.arireg.producer.Toimiku_dokumendidRequest keha, eu.x_road.arireg.producer.holders.Toimiku_dokumendidRequestHolder paring, eu.x_road.arireg.producer.holders.Toimiku_dokumendidVastusHolder keha2) throws java.rmi.RemoteException;
-
-    /**
-
-     */
-    public void toimikuDokument_v1(eu.x_road.arireg.producer.Toimiku_dokument_v2_Request keha, eu.x_road.arireg.producer.holders.Toimiku_dokument_v2_RequestHolder paring, eu.x_road.arireg.producer.holders.Toimiku_dokument_v2_VastusHolder keha2) throws java.rmi.RemoteException;
 
     /**
 

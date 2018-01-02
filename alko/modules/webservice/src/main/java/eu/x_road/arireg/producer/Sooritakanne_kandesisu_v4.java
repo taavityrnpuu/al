@@ -11,6 +11,9 @@ public class Sooritakanne_kandesisu_v4  implements java.io.Serializable {
     /* Uus ärinimi nii muutmiskande kui esmakande korral. */
     private java.lang.String uus_arinimi;
 
+    /* Korteriühistu täiendav nimi. */
+    private java.lang.String taiendav_nimi;
+
     private java.lang.String oiguslik_vorm;
 
     private java.lang.String oigusliku_vormi_alaliik;
@@ -92,11 +95,20 @@ public class Sooritakanne_kandesisu_v4  implements java.io.Serializable {
     /* Korteriomandi kinnistu registriosa numbrid */
     private java.lang.String[] korteriomandi_kinnistud;
 
+    /* Märkused korteriühistu eelmise majandusaasta majandamiskulude
+     * summat ületava laenu kohta */
+    private eu.x_road.arireg.producer.MarkusLiigigaTegevusega[] markused_mlaen;
+
+    private java.lang.String asutalus_tekstina;
+
+    private java.lang.String kustalus_tekstina;
+
     public Sooritakanne_kandesisu_v4() {
     }
 
     public Sooritakanne_kandesisu_v4(
            java.lang.String uus_arinimi,
+           java.lang.String taiendav_nimi,
            java.lang.String oiguslik_vorm,
            java.lang.String oigusliku_vormi_alaliik,
            eu.x_road.arireg.producer.AadressType_v4 asukoht,
@@ -126,8 +138,12 @@ public class Sooritakanne_kandesisu_v4  implements java.io.Serializable {
            eu.x_road.arireg.producer.Fie_seisundType_v4[] fie_seisundid,
            java.util.Date maks_reg_kpv,
            eu.x_road.arireg.producer.AadresskatastrigaType_v4[] elamu_aadressid,
-           java.lang.String[] korteriomandi_kinnistud) {
+           java.lang.String[] korteriomandi_kinnistud,
+           eu.x_road.arireg.producer.MarkusLiigigaTegevusega[] markused_mlaen,
+           java.lang.String asutalus_tekstina,
+           java.lang.String kustalus_tekstina) {
            this.uus_arinimi = uus_arinimi;
+           this.taiendav_nimi = taiendav_nimi;
            this.oiguslik_vorm = oiguslik_vorm;
            this.oigusliku_vormi_alaliik = oigusliku_vormi_alaliik;
            this.asukoht = asukoht;
@@ -158,6 +174,9 @@ public class Sooritakanne_kandesisu_v4  implements java.io.Serializable {
            this.maks_reg_kpv = maks_reg_kpv;
            this.elamu_aadressid = elamu_aadressid;
            this.korteriomandi_kinnistud = korteriomandi_kinnistud;
+           this.markused_mlaen = markused_mlaen;
+           this.asutalus_tekstina = asutalus_tekstina;
+           this.kustalus_tekstina = kustalus_tekstina;
     }
 
 
@@ -178,6 +197,26 @@ public class Sooritakanne_kandesisu_v4  implements java.io.Serializable {
      */
     public void setUus_arinimi(java.lang.String uus_arinimi) {
         this.uus_arinimi = uus_arinimi;
+    }
+
+
+    /**
+     * Gets the taiendav_nimi value for this Sooritakanne_kandesisu_v4.
+     * 
+     * @return taiendav_nimi   * Korteriühistu täiendav nimi.
+     */
+    public java.lang.String getTaiendav_nimi() {
+        return taiendav_nimi;
+    }
+
+
+    /**
+     * Sets the taiendav_nimi value for this Sooritakanne_kandesisu_v4.
+     * 
+     * @param taiendav_nimi   * Korteriühistu täiendav nimi.
+     */
+    public void setTaiendav_nimi(java.lang.String taiendav_nimi) {
+        this.taiendav_nimi = taiendav_nimi;
     }
 
 
@@ -874,6 +913,76 @@ public class Sooritakanne_kandesisu_v4  implements java.io.Serializable {
         this.korteriomandi_kinnistud[i] = _value;
     }
 
+
+    /**
+     * Gets the markused_mlaen value for this Sooritakanne_kandesisu_v4.
+     * 
+     * @return markused_mlaen   * Märkused korteriühistu eelmise majandusaasta majandamiskulude
+     * summat ületava laenu kohta
+     */
+    public eu.x_road.arireg.producer.MarkusLiigigaTegevusega[] getMarkused_mlaen() {
+        return markused_mlaen;
+    }
+
+
+    /**
+     * Sets the markused_mlaen value for this Sooritakanne_kandesisu_v4.
+     * 
+     * @param markused_mlaen   * Märkused korteriühistu eelmise majandusaasta majandamiskulude
+     * summat ületava laenu kohta
+     */
+    public void setMarkused_mlaen(eu.x_road.arireg.producer.MarkusLiigigaTegevusega[] markused_mlaen) {
+        this.markused_mlaen = markused_mlaen;
+    }
+
+    public eu.x_road.arireg.producer.MarkusLiigigaTegevusega getMarkused_mlaen(int i) {
+        return this.markused_mlaen[i];
+    }
+
+    public void setMarkused_mlaen(int i, eu.x_road.arireg.producer.MarkusLiigigaTegevusega _value) {
+        this.markused_mlaen[i] = _value;
+    }
+
+
+    /**
+     * Gets the asutalus_tekstina value for this Sooritakanne_kandesisu_v4.
+     * 
+     * @return asutalus_tekstina
+     */
+    public java.lang.String getAsutalus_tekstina() {
+        return asutalus_tekstina;
+    }
+
+
+    /**
+     * Sets the asutalus_tekstina value for this Sooritakanne_kandesisu_v4.
+     * 
+     * @param asutalus_tekstina
+     */
+    public void setAsutalus_tekstina(java.lang.String asutalus_tekstina) {
+        this.asutalus_tekstina = asutalus_tekstina;
+    }
+
+
+    /**
+     * Gets the kustalus_tekstina value for this Sooritakanne_kandesisu_v4.
+     * 
+     * @return kustalus_tekstina
+     */
+    public java.lang.String getKustalus_tekstina() {
+        return kustalus_tekstina;
+    }
+
+
+    /**
+     * Sets the kustalus_tekstina value for this Sooritakanne_kandesisu_v4.
+     * 
+     * @param kustalus_tekstina
+     */
+    public void setKustalus_tekstina(java.lang.String kustalus_tekstina) {
+        this.kustalus_tekstina = kustalus_tekstina;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof Sooritakanne_kandesisu_v4)) return false;
@@ -889,6 +998,9 @@ public class Sooritakanne_kandesisu_v4  implements java.io.Serializable {
             ((this.uus_arinimi==null && other.getUus_arinimi()==null) || 
              (this.uus_arinimi!=null &&
               this.uus_arinimi.equals(other.getUus_arinimi()))) &&
+            ((this.taiendav_nimi==null && other.getTaiendav_nimi()==null) || 
+             (this.taiendav_nimi!=null &&
+              this.taiendav_nimi.equals(other.getTaiendav_nimi()))) &&
             ((this.oiguslik_vorm==null && other.getOiguslik_vorm()==null) || 
              (this.oiguslik_vorm!=null &&
               this.oiguslik_vorm.equals(other.getOiguslik_vorm()))) &&
@@ -978,7 +1090,16 @@ public class Sooritakanne_kandesisu_v4  implements java.io.Serializable {
               java.util.Arrays.equals(this.elamu_aadressid, other.getElamu_aadressid()))) &&
             ((this.korteriomandi_kinnistud==null && other.getKorteriomandi_kinnistud()==null) || 
              (this.korteriomandi_kinnistud!=null &&
-              java.util.Arrays.equals(this.korteriomandi_kinnistud, other.getKorteriomandi_kinnistud())));
+              java.util.Arrays.equals(this.korteriomandi_kinnistud, other.getKorteriomandi_kinnistud()))) &&
+            ((this.markused_mlaen==null && other.getMarkused_mlaen()==null) || 
+             (this.markused_mlaen!=null &&
+              java.util.Arrays.equals(this.markused_mlaen, other.getMarkused_mlaen()))) &&
+            ((this.asutalus_tekstina==null && other.getAsutalus_tekstina()==null) || 
+             (this.asutalus_tekstina!=null &&
+              this.asutalus_tekstina.equals(other.getAsutalus_tekstina()))) &&
+            ((this.kustalus_tekstina==null && other.getKustalus_tekstina()==null) || 
+             (this.kustalus_tekstina!=null &&
+              this.kustalus_tekstina.equals(other.getKustalus_tekstina())));
         __equalsCalc = null;
         return _equals;
     }
@@ -992,6 +1113,9 @@ public class Sooritakanne_kandesisu_v4  implements java.io.Serializable {
         int _hashCode = 1;
         if (getUus_arinimi() != null) {
             _hashCode += getUus_arinimi().hashCode();
+        }
+        if (getTaiendav_nimi() != null) {
+            _hashCode += getTaiendav_nimi().hashCode();
         }
         if (getOiguslik_vorm() != null) {
             _hashCode += getOiguslik_vorm().hashCode();
@@ -1170,6 +1294,23 @@ public class Sooritakanne_kandesisu_v4  implements java.io.Serializable {
                     _hashCode += obj.hashCode();
                 }
             }
+        }
+        if (getMarkused_mlaen() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getMarkused_mlaen());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getMarkused_mlaen(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
+        }
+        if (getAsutalus_tekstina() != null) {
+            _hashCode += getAsutalus_tekstina().hashCode();
+        }
+        if (getKustalus_tekstina() != null) {
+            _hashCode += getKustalus_tekstina().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;

@@ -18,9 +18,17 @@ public class Rekvisiidid_evaadress  implements java.io.Serializable {
 
     private java.lang.String ads_adr_id;
 
-    private java.lang.String ads_sds_oid;
+    private java.lang.String ads_oid;
 
     private java.lang.String ads_normaliseeritud_taisaadress;
+
+    private java.lang.String ads_adob_id;
+
+    private java.lang.String ads_koodaadress;
+
+    private java.lang.String ads_normaliseeritud_taisaadress_tapsustus;
+
+    private java.lang.String ads_tyyp;
 
     public Rekvisiidid_evaadress() {
     }
@@ -31,15 +39,23 @@ public class Rekvisiidid_evaadress  implements java.io.Serializable {
            java.lang.String asukoha_ehak_tekstina,
            java.lang.String indeks_ettevotja_aadressis,
            java.lang.String ads_adr_id,
-           java.lang.String ads_sds_oid,
-           java.lang.String ads_normaliseeritud_taisaadress) {
+           java.lang.String ads_oid,
+           java.lang.String ads_normaliseeritud_taisaadress,
+           java.lang.String ads_adob_id,
+           java.lang.String ads_koodaadress,
+           java.lang.String ads_normaliseeritud_taisaadress_tapsustus,
+           java.lang.String ads_tyyp) {
            this.asukoht_ettevotja_aadressis = asukoht_ettevotja_aadressis;
            this.asukoha_ehak_kood = asukoha_ehak_kood;
            this.asukoha_ehak_tekstina = asukoha_ehak_tekstina;
            this.indeks_ettevotja_aadressis = indeks_ettevotja_aadressis;
            this.ads_adr_id = ads_adr_id;
-           this.ads_sds_oid = ads_sds_oid;
+           this.ads_oid = ads_oid;
            this.ads_normaliseeritud_taisaadress = ads_normaliseeritud_taisaadress;
+           this.ads_adob_id = ads_adob_id;
+           this.ads_koodaadress = ads_koodaadress;
+           this.ads_normaliseeritud_taisaadress_tapsustus = ads_normaliseeritud_taisaadress_tapsustus;
+           this.ads_tyyp = ads_tyyp;
     }
 
 
@@ -144,22 +160,22 @@ public class Rekvisiidid_evaadress  implements java.io.Serializable {
 
 
     /**
-     * Gets the ads_sds_oid value for this Rekvisiidid_evaadress.
+     * Gets the ads_oid value for this Rekvisiidid_evaadress.
      * 
-     * @return ads_sds_oid
+     * @return ads_oid
      */
-    public java.lang.String getAds_sds_oid() {
-        return ads_sds_oid;
+    public java.lang.String getAds_oid() {
+        return ads_oid;
     }
 
 
     /**
-     * Sets the ads_sds_oid value for this Rekvisiidid_evaadress.
+     * Sets the ads_oid value for this Rekvisiidid_evaadress.
      * 
-     * @param ads_sds_oid
+     * @param ads_oid
      */
-    public void setAds_sds_oid(java.lang.String ads_sds_oid) {
-        this.ads_sds_oid = ads_sds_oid;
+    public void setAds_oid(java.lang.String ads_oid) {
+        this.ads_oid = ads_oid;
     }
 
 
@@ -180,6 +196,86 @@ public class Rekvisiidid_evaadress  implements java.io.Serializable {
      */
     public void setAds_normaliseeritud_taisaadress(java.lang.String ads_normaliseeritud_taisaadress) {
         this.ads_normaliseeritud_taisaadress = ads_normaliseeritud_taisaadress;
+    }
+
+
+    /**
+     * Gets the ads_adob_id value for this Rekvisiidid_evaadress.
+     * 
+     * @return ads_adob_id
+     */
+    public java.lang.String getAds_adob_id() {
+        return ads_adob_id;
+    }
+
+
+    /**
+     * Sets the ads_adob_id value for this Rekvisiidid_evaadress.
+     * 
+     * @param ads_adob_id
+     */
+    public void setAds_adob_id(java.lang.String ads_adob_id) {
+        this.ads_adob_id = ads_adob_id;
+    }
+
+
+    /**
+     * Gets the ads_koodaadress value for this Rekvisiidid_evaadress.
+     * 
+     * @return ads_koodaadress
+     */
+    public java.lang.String getAds_koodaadress() {
+        return ads_koodaadress;
+    }
+
+
+    /**
+     * Sets the ads_koodaadress value for this Rekvisiidid_evaadress.
+     * 
+     * @param ads_koodaadress
+     */
+    public void setAds_koodaadress(java.lang.String ads_koodaadress) {
+        this.ads_koodaadress = ads_koodaadress;
+    }
+
+
+    /**
+     * Gets the ads_normaliseeritud_taisaadress_tapsustus value for this Rekvisiidid_evaadress.
+     * 
+     * @return ads_normaliseeritud_taisaadress_tapsustus
+     */
+    public java.lang.String getAds_normaliseeritud_taisaadress_tapsustus() {
+        return ads_normaliseeritud_taisaadress_tapsustus;
+    }
+
+
+    /**
+     * Sets the ads_normaliseeritud_taisaadress_tapsustus value for this Rekvisiidid_evaadress.
+     * 
+     * @param ads_normaliseeritud_taisaadress_tapsustus
+     */
+    public void setAds_normaliseeritud_taisaadress_tapsustus(java.lang.String ads_normaliseeritud_taisaadress_tapsustus) {
+        this.ads_normaliseeritud_taisaadress_tapsustus = ads_normaliseeritud_taisaadress_tapsustus;
+    }
+
+
+    /**
+     * Gets the ads_tyyp value for this Rekvisiidid_evaadress.
+     * 
+     * @return ads_tyyp
+     */
+    public java.lang.String getAds_tyyp() {
+        return ads_tyyp;
+    }
+
+
+    /**
+     * Sets the ads_tyyp value for this Rekvisiidid_evaadress.
+     * 
+     * @param ads_tyyp
+     */
+    public void setAds_tyyp(java.lang.String ads_tyyp) {
+        this.ads_tyyp = ads_tyyp;
     }
 
     private java.lang.Object __equalsCalc = null;
@@ -209,12 +305,24 @@ public class Rekvisiidid_evaadress  implements java.io.Serializable {
             ((this.ads_adr_id==null && other.getAds_adr_id()==null) || 
              (this.ads_adr_id!=null &&
               this.ads_adr_id.equals(other.getAds_adr_id()))) &&
-            ((this.ads_sds_oid==null && other.getAds_sds_oid()==null) || 
-             (this.ads_sds_oid!=null &&
-              this.ads_sds_oid.equals(other.getAds_sds_oid()))) &&
+            ((this.ads_oid==null && other.getAds_oid()==null) || 
+             (this.ads_oid!=null &&
+              this.ads_oid.equals(other.getAds_oid()))) &&
             ((this.ads_normaliseeritud_taisaadress==null && other.getAds_normaliseeritud_taisaadress()==null) || 
              (this.ads_normaliseeritud_taisaadress!=null &&
-              this.ads_normaliseeritud_taisaadress.equals(other.getAds_normaliseeritud_taisaadress())));
+              this.ads_normaliseeritud_taisaadress.equals(other.getAds_normaliseeritud_taisaadress()))) &&
+            ((this.ads_adob_id==null && other.getAds_adob_id()==null) || 
+             (this.ads_adob_id!=null &&
+              this.ads_adob_id.equals(other.getAds_adob_id()))) &&
+            ((this.ads_koodaadress==null && other.getAds_koodaadress()==null) || 
+             (this.ads_koodaadress!=null &&
+              this.ads_koodaadress.equals(other.getAds_koodaadress()))) &&
+            ((this.ads_normaliseeritud_taisaadress_tapsustus==null && other.getAds_normaliseeritud_taisaadress_tapsustus()==null) || 
+             (this.ads_normaliseeritud_taisaadress_tapsustus!=null &&
+              this.ads_normaliseeritud_taisaadress_tapsustus.equals(other.getAds_normaliseeritud_taisaadress_tapsustus()))) &&
+            ((this.ads_tyyp==null && other.getAds_tyyp()==null) || 
+             (this.ads_tyyp!=null &&
+              this.ads_tyyp.equals(other.getAds_tyyp())));
         __equalsCalc = null;
         return _equals;
     }
@@ -241,11 +349,23 @@ public class Rekvisiidid_evaadress  implements java.io.Serializable {
         if (getAds_adr_id() != null) {
             _hashCode += getAds_adr_id().hashCode();
         }
-        if (getAds_sds_oid() != null) {
-            _hashCode += getAds_sds_oid().hashCode();
+        if (getAds_oid() != null) {
+            _hashCode += getAds_oid().hashCode();
         }
         if (getAds_normaliseeritud_taisaadress() != null) {
             _hashCode += getAds_normaliseeritud_taisaadress().hashCode();
+        }
+        if (getAds_adob_id() != null) {
+            _hashCode += getAds_adob_id().hashCode();
+        }
+        if (getAds_koodaadress() != null) {
+            _hashCode += getAds_koodaadress().hashCode();
+        }
+        if (getAds_normaliseeritud_taisaadress_tapsustus() != null) {
+            _hashCode += getAds_normaliseeritud_taisaadress_tapsustus().hashCode();
+        }
+        if (getAds_tyyp() != null) {
+            _hashCode += getAds_tyyp().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;

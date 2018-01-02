@@ -13,6 +13,8 @@ public class EVapiLooKanneKandeSisu_v1  implements java.io.Serializable {
 
     private eu.x_road.arireg.producer.EVapiLooKanneAadress_v1 asukoht;
 
+    private eu.x_road.arireg.producer.EVapiLooKanneAadress_v1 asukoht_pohikirjas;
+
     private eu.x_road.arireg.producer.EVapiLooKanneTegevusala_v1 pohitegevusala;
 
     /* Äriühingu kogukapitali suurus */
@@ -32,12 +34,14 @@ public class EVapiLooKanneKandeSisu_v1  implements java.io.Serializable {
     public EVapiLooKanneKandeSisu_v1(
            java.lang.String uus_arinimi,
            eu.x_road.arireg.producer.EVapiLooKanneAadress_v1 asukoht,
+           eu.x_road.arireg.producer.EVapiLooKanneAadress_v1 asukoht_pohikirjas,
            eu.x_road.arireg.producer.EVapiLooKanneTegevusala_v1 pohitegevusala,
            eu.x_road.arireg.producer.EVapiLooKanneKapital_v1 kapital,
            eu.x_road.arireg.producer.EVapiLooKanneIsik_v1[] isikud,
            eu.x_road.arireg.producer.EVapiLooKanneSidevahend_v1[] sidevahendid) {
            this.uus_arinimi = uus_arinimi;
            this.asukoht = asukoht;
+           this.asukoht_pohikirjas = asukoht_pohikirjas;
            this.pohitegevusala = pohitegevusala;
            this.kapital = kapital;
            this.isikud = isikud;
@@ -82,6 +86,26 @@ public class EVapiLooKanneKandeSisu_v1  implements java.io.Serializable {
      */
     public void setAsukoht(eu.x_road.arireg.producer.EVapiLooKanneAadress_v1 asukoht) {
         this.asukoht = asukoht;
+    }
+
+
+    /**
+     * Gets the asukoht_pohikirjas value for this EVapiLooKanneKandeSisu_v1.
+     * 
+     * @return asukoht_pohikirjas
+     */
+    public eu.x_road.arireg.producer.EVapiLooKanneAadress_v1 getAsukoht_pohikirjas() {
+        return asukoht_pohikirjas;
+    }
+
+
+    /**
+     * Sets the asukoht_pohikirjas value for this EVapiLooKanneKandeSisu_v1.
+     * 
+     * @param asukoht_pohikirjas
+     */
+    public void setAsukoht_pohikirjas(eu.x_road.arireg.producer.EVapiLooKanneAadress_v1 asukoht_pohikirjas) {
+        this.asukoht_pohikirjas = asukoht_pohikirjas;
     }
 
 
@@ -202,6 +226,9 @@ public class EVapiLooKanneKandeSisu_v1  implements java.io.Serializable {
             ((this.asukoht==null && other.getAsukoht()==null) || 
              (this.asukoht!=null &&
               this.asukoht.equals(other.getAsukoht()))) &&
+            ((this.asukoht_pohikirjas==null && other.getAsukoht_pohikirjas()==null) || 
+             (this.asukoht_pohikirjas!=null &&
+              this.asukoht_pohikirjas.equals(other.getAsukoht_pohikirjas()))) &&
             ((this.pohitegevusala==null && other.getPohitegevusala()==null) || 
              (this.pohitegevusala!=null &&
               this.pohitegevusala.equals(other.getPohitegevusala()))) &&
@@ -230,6 +257,9 @@ public class EVapiLooKanneKandeSisu_v1  implements java.io.Serializable {
         }
         if (getAsukoht() != null) {
             _hashCode += getAsukoht().hashCode();
+        }
+        if (getAsukoht_pohikirjas() != null) {
+            _hashCode += getAsukoht_pohikirjas().hashCode();
         }
         if (getPohitegevusala() != null) {
             _hashCode += getPohitegevusala().hashCode();

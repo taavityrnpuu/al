@@ -14,6 +14,8 @@ public class Detailandmed_v5_ettevotja  implements java.io.Serializable {
 
     private java.lang.String nimi;
 
+    private java.lang.String kmkr_number;
+
     private eu.x_road.arireg.producer.Detailandmed_v5_yldandmed yldandmed;
 
     private eu.x_road.arireg.producer.Detailandmed_v5_isikuandmed isikuandmed;
@@ -33,6 +35,7 @@ public class Detailandmed_v5_ettevotja  implements java.io.Serializable {
            java.math.BigInteger ariregistri_kood,
            java.math.BigInteger ettevotja_id,
            java.lang.String nimi,
+           java.lang.String kmkr_number,
            eu.x_road.arireg.producer.Detailandmed_v5_yldandmed yldandmed,
            eu.x_road.arireg.producer.Detailandmed_v5_isikuandmed isikuandmed,
            eu.x_road.arireg.producer.Detailandmed_v5_kommertspant[] kommertspandiandmed,
@@ -42,6 +45,7 @@ public class Detailandmed_v5_ettevotja  implements java.io.Serializable {
            this.ariregistri_kood = ariregistri_kood;
            this.ettevotja_id = ettevotja_id;
            this.nimi = nimi;
+           this.kmkr_number = kmkr_number;
            this.yldandmed = yldandmed;
            this.isikuandmed = isikuandmed;
            this.kommertspandiandmed = kommertspandiandmed;
@@ -108,6 +112,26 @@ public class Detailandmed_v5_ettevotja  implements java.io.Serializable {
      */
     public void setNimi(java.lang.String nimi) {
         this.nimi = nimi;
+    }
+
+
+    /**
+     * Gets the kmkr_number value for this Detailandmed_v5_ettevotja.
+     * 
+     * @return kmkr_number
+     */
+    public java.lang.String getKmkr_number() {
+        return kmkr_number;
+    }
+
+
+    /**
+     * Sets the kmkr_number value for this Detailandmed_v5_ettevotja.
+     * 
+     * @param kmkr_number
+     */
+    public void setKmkr_number(java.lang.String kmkr_number) {
+        this.kmkr_number = kmkr_number;
     }
 
 
@@ -251,6 +275,9 @@ public class Detailandmed_v5_ettevotja  implements java.io.Serializable {
             ((this.nimi==null && other.getNimi()==null) || 
              (this.nimi!=null &&
               this.nimi.equals(other.getNimi()))) &&
+            ((this.kmkr_number==null && other.getKmkr_number()==null) || 
+             (this.kmkr_number!=null &&
+              this.kmkr_number.equals(other.getKmkr_number()))) &&
             ((this.yldandmed==null && other.getYldandmed()==null) || 
              (this.yldandmed!=null &&
               this.yldandmed.equals(other.getYldandmed()))) &&
@@ -288,6 +315,9 @@ public class Detailandmed_v5_ettevotja  implements java.io.Serializable {
         }
         if (getNimi() != null) {
             _hashCode += getNimi().hashCode();
+        }
+        if (getKmkr_number() != null) {
+            _hashCode += getKmkr_number().hashCode();
         }
         if (getYldandmed() != null) {
             _hashCode += getYldandmed().hashCode();

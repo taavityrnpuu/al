@@ -71,6 +71,14 @@ public class EVapiLooKanneParing_v1_Helper {
         elemField.setXmlType(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "EVapiLooKanneKandeSisu_v1"));
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("dokumendid");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "dokumendid"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "EVapiLooKannedokumentType_v1"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(true);
+        elemField.setMaxOccursUnbounded(true);
+        typeDesc.addFieldDesc(elemField);
     }
 
     /**

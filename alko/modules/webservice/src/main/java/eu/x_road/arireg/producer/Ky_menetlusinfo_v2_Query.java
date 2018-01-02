@@ -12,6 +12,8 @@ public class Ky_menetlusinfo_v2_Query  implements java.io.Serializable {
 
     private java.lang.String kr_menetluse_nr;
 
+    private java.lang.String menetleja_info;
+
     private eu.x_road.arireg.producer.Ky_menetlusinfo_v2_Maarus maaruse_andmed;
 
     public Ky_menetlusinfo_v2_Query() {
@@ -20,9 +22,11 @@ public class Ky_menetlusinfo_v2_Query  implements java.io.Serializable {
     public Ky_menetlusinfo_v2_Query(
            java.math.BigInteger sonumi_id,
            java.lang.String kr_menetluse_nr,
+           java.lang.String menetleja_info,
            eu.x_road.arireg.producer.Ky_menetlusinfo_v2_Maarus maaruse_andmed) {
            this.sonumi_id = sonumi_id;
            this.kr_menetluse_nr = kr_menetluse_nr;
+           this.menetleja_info = menetleja_info;
            this.maaruse_andmed = maaruse_andmed;
     }
 
@@ -68,6 +72,26 @@ public class Ky_menetlusinfo_v2_Query  implements java.io.Serializable {
 
 
     /**
+     * Gets the menetleja_info value for this Ky_menetlusinfo_v2_Query.
+     * 
+     * @return menetleja_info
+     */
+    public java.lang.String getMenetleja_info() {
+        return menetleja_info;
+    }
+
+
+    /**
+     * Sets the menetleja_info value for this Ky_menetlusinfo_v2_Query.
+     * 
+     * @param menetleja_info
+     */
+    public void setMenetleja_info(java.lang.String menetleja_info) {
+        this.menetleja_info = menetleja_info;
+    }
+
+
+    /**
      * Gets the maaruse_andmed value for this Ky_menetlusinfo_v2_Query.
      * 
      * @return maaruse_andmed
@@ -104,6 +128,9 @@ public class Ky_menetlusinfo_v2_Query  implements java.io.Serializable {
             ((this.kr_menetluse_nr==null && other.getKr_menetluse_nr()==null) || 
              (this.kr_menetluse_nr!=null &&
               this.kr_menetluse_nr.equals(other.getKr_menetluse_nr()))) &&
+            ((this.menetleja_info==null && other.getMenetleja_info()==null) || 
+             (this.menetleja_info!=null &&
+              this.menetleja_info.equals(other.getMenetleja_info()))) &&
             ((this.maaruse_andmed==null && other.getMaaruse_andmed()==null) || 
              (this.maaruse_andmed!=null &&
               this.maaruse_andmed.equals(other.getMaaruse_andmed())));
@@ -123,6 +150,9 @@ public class Ky_menetlusinfo_v2_Query  implements java.io.Serializable {
         }
         if (getKr_menetluse_nr() != null) {
             _hashCode += getKr_menetluse_nr().hashCode();
+        }
+        if (getMenetleja_info() != null) {
+            _hashCode += getMenetleja_info().hashCode();
         }
         if (getMaaruse_andmed() != null) {
             _hashCode += getMaaruse_andmed().hashCode();

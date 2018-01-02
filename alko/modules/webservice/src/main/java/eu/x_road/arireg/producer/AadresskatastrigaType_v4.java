@@ -34,6 +34,12 @@ public class AadresskatastrigaType_v4  implements java.io.Serializable {
 
     private java.lang.String katastriyksus;
 
+    private java.lang.String taisaadress;
+
+    private java.lang.String taisaadress_tapsustus;
+
+    private java.lang.String tyyp;
+
     public AadresskatastrigaType_v4() {
     }
 
@@ -49,7 +55,10 @@ public class AadresskatastrigaType_v4  implements java.io.Serializable {
            java.lang.String tase8,
            java.lang.String ads_oid,
            java.lang.String koodaadress,
-           java.lang.String katastriyksus) {
+           java.lang.String katastriyksus,
+           java.lang.String taisaadress,
+           java.lang.String taisaadress_tapsustus,
+           java.lang.String tyyp) {
            this.asukoht = asukoht;
            this.ehak = ehak;
            this.riik = riik;
@@ -62,6 +71,9 @@ public class AadresskatastrigaType_v4  implements java.io.Serializable {
            this.ads_oid = ads_oid;
            this.koodaadress = koodaadress;
            this.katastriyksus = katastriyksus;
+           this.taisaadress = taisaadress;
+           this.taisaadress_tapsustus = taisaadress_tapsustus;
+           this.tyyp = tyyp;
     }
 
 
@@ -304,6 +316,66 @@ public class AadresskatastrigaType_v4  implements java.io.Serializable {
         this.katastriyksus = katastriyksus;
     }
 
+
+    /**
+     * Gets the taisaadress value for this AadresskatastrigaType_v4.
+     * 
+     * @return taisaadress
+     */
+    public java.lang.String getTaisaadress() {
+        return taisaadress;
+    }
+
+
+    /**
+     * Sets the taisaadress value for this AadresskatastrigaType_v4.
+     * 
+     * @param taisaadress
+     */
+    public void setTaisaadress(java.lang.String taisaadress) {
+        this.taisaadress = taisaadress;
+    }
+
+
+    /**
+     * Gets the taisaadress_tapsustus value for this AadresskatastrigaType_v4.
+     * 
+     * @return taisaadress_tapsustus
+     */
+    public java.lang.String getTaisaadress_tapsustus() {
+        return taisaadress_tapsustus;
+    }
+
+
+    /**
+     * Sets the taisaadress_tapsustus value for this AadresskatastrigaType_v4.
+     * 
+     * @param taisaadress_tapsustus
+     */
+    public void setTaisaadress_tapsustus(java.lang.String taisaadress_tapsustus) {
+        this.taisaadress_tapsustus = taisaadress_tapsustus;
+    }
+
+
+    /**
+     * Gets the tyyp value for this AadresskatastrigaType_v4.
+     * 
+     * @return tyyp
+     */
+    public java.lang.String getTyyp() {
+        return tyyp;
+    }
+
+
+    /**
+     * Sets the tyyp value for this AadresskatastrigaType_v4.
+     * 
+     * @param tyyp
+     */
+    public void setTyyp(java.lang.String tyyp) {
+        this.tyyp = tyyp;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof AadresskatastrigaType_v4)) return false;
@@ -351,7 +423,16 @@ public class AadresskatastrigaType_v4  implements java.io.Serializable {
               this.koodaadress.equals(other.getKoodaadress()))) &&
             ((this.katastriyksus==null && other.getKatastriyksus()==null) || 
              (this.katastriyksus!=null &&
-              this.katastriyksus.equals(other.getKatastriyksus())));
+              this.katastriyksus.equals(other.getKatastriyksus()))) &&
+            ((this.taisaadress==null && other.getTaisaadress()==null) || 
+             (this.taisaadress!=null &&
+              this.taisaadress.equals(other.getTaisaadress()))) &&
+            ((this.taisaadress_tapsustus==null && other.getTaisaadress_tapsustus()==null) || 
+             (this.taisaadress_tapsustus!=null &&
+              this.taisaadress_tapsustus.equals(other.getTaisaadress_tapsustus()))) &&
+            ((this.tyyp==null && other.getTyyp()==null) || 
+             (this.tyyp!=null &&
+              this.tyyp.equals(other.getTyyp())));
         __equalsCalc = null;
         return _equals;
     }
@@ -398,6 +479,15 @@ public class AadresskatastrigaType_v4  implements java.io.Serializable {
         }
         if (getKatastriyksus() != null) {
             _hashCode += getKatastriyksus().hashCode();
+        }
+        if (getTaisaadress() != null) {
+            _hashCode += getTaisaadress().hashCode();
+        }
+        if (getTaisaadress_tapsustus() != null) {
+            _hashCode += getTaisaadress_tapsustus().hashCode();
+        }
+        if (getTyyp() != null) {
+            _hashCode += getTyyp().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;

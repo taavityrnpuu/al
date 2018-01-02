@@ -14,6 +14,8 @@ public class Erakonnanimekiri_vastus  implements java.io.Serializable {
 
     private java.util.Date esit_kpv;
 
+    private java.math.BigInteger lehekylgede_arv;
+
     private eu.x_road.arireg.producer.Erakonnanimekiri_liige[] liikmed;
 
     public Erakonnanimekiri_vastus() {
@@ -23,10 +25,12 @@ public class Erakonnanimekiri_vastus  implements java.io.Serializable {
            java.math.BigInteger kood,
            java.lang.String nimi,
            java.util.Date esit_kpv,
+           java.math.BigInteger lehekylgede_arv,
            eu.x_road.arireg.producer.Erakonnanimekiri_liige[] liikmed) {
            this.kood = kood;
            this.nimi = nimi;
            this.esit_kpv = esit_kpv;
+           this.lehekylgede_arv = lehekylgede_arv;
            this.liikmed = liikmed;
     }
 
@@ -92,6 +96,26 @@ public class Erakonnanimekiri_vastus  implements java.io.Serializable {
 
 
     /**
+     * Gets the lehekylgede_arv value for this Erakonnanimekiri_vastus.
+     * 
+     * @return lehekylgede_arv
+     */
+    public java.math.BigInteger getLehekylgede_arv() {
+        return lehekylgede_arv;
+    }
+
+
+    /**
+     * Sets the lehekylgede_arv value for this Erakonnanimekiri_vastus.
+     * 
+     * @param lehekylgede_arv
+     */
+    public void setLehekylgede_arv(java.math.BigInteger lehekylgede_arv) {
+        this.lehekylgede_arv = lehekylgede_arv;
+    }
+
+
+    /**
      * Gets the liikmed value for this Erakonnanimekiri_vastus.
      * 
      * @return liikmed
@@ -131,6 +155,9 @@ public class Erakonnanimekiri_vastus  implements java.io.Serializable {
             ((this.esit_kpv==null && other.getEsit_kpv()==null) || 
              (this.esit_kpv!=null &&
               this.esit_kpv.equals(other.getEsit_kpv()))) &&
+            ((this.lehekylgede_arv==null && other.getLehekylgede_arv()==null) || 
+             (this.lehekylgede_arv!=null &&
+              this.lehekylgede_arv.equals(other.getLehekylgede_arv()))) &&
             ((this.liikmed==null && other.getLiikmed()==null) || 
              (this.liikmed!=null &&
               java.util.Arrays.equals(this.liikmed, other.getLiikmed())));
@@ -153,6 +180,9 @@ public class Erakonnanimekiri_vastus  implements java.io.Serializable {
         }
         if (getEsit_kpv() != null) {
             _hashCode += getEsit_kpv().hashCode();
+        }
+        if (getLehekylgede_arv() != null) {
+            _hashCode += getLehekylgede_arv().hashCode();
         }
         if (getLiikmed() != null) {
             for (int i=0;

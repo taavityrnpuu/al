@@ -11,6 +11,21 @@ public class Toimiku_dokumendid_dokument  implements java.io.Serializable {
     /* Dokumendid vastuses. */
     private java.math.BigInteger dokumendi_id;
 
+    /* Määruse või kirja number. */
+    private java.lang.String dokumendi_number;
+
+    /* M – Määrus, D – Dokument,  K - Kiri. */
+    private java.lang.String dokumendi_tyyp;
+
+    /* M – Määrus, D – Dokument,  K - Kiri. */
+    private java.lang.String dokumendi_tyyp_tekstina;
+
+    /* Dokumendi toimiku liik */
+    private java.lang.String dokumendi_toimik;
+
+    /* Dokumendi toimiku liik tekstina */
+    private java.lang.String dokumendi_toimik_tekstina;
+
     /* Dokumendid vastuses. */
     private java.math.BigInteger pohi_dokumendi_id;
 
@@ -67,6 +82,11 @@ public class Toimiku_dokumendid_dokument  implements java.io.Serializable {
 
     public Toimiku_dokumendid_dokument(
            java.math.BigInteger dokumendi_id,
+           java.lang.String dokumendi_number,
+           java.lang.String dokumendi_tyyp,
+           java.lang.String dokumendi_tyyp_tekstina,
+           java.lang.String dokumendi_toimik,
+           java.lang.String dokumendi_toimik_tekstina,
            java.math.BigInteger pohi_dokumendi_id,
            java.lang.String menetluse_number,
            java.util.Date menetluse_algus_kuupaev,
@@ -85,6 +105,11 @@ public class Toimiku_dokumendid_dokument  implements java.io.Serializable {
            java.lang.String dokumendi_failinimi,
            java.lang.Integer dokumendi_suurus) {
            this.dokumendi_id = dokumendi_id;
+           this.dokumendi_number = dokumendi_number;
+           this.dokumendi_tyyp = dokumendi_tyyp;
+           this.dokumendi_tyyp_tekstina = dokumendi_tyyp_tekstina;
+           this.dokumendi_toimik = dokumendi_toimik;
+           this.dokumendi_toimik_tekstina = dokumendi_toimik_tekstina;
            this.pohi_dokumendi_id = pohi_dokumendi_id;
            this.menetluse_number = menetluse_number;
            this.menetluse_algus_kuupaev = menetluse_algus_kuupaev;
@@ -122,6 +147,106 @@ public class Toimiku_dokumendid_dokument  implements java.io.Serializable {
      */
     public void setDokumendi_id(java.math.BigInteger dokumendi_id) {
         this.dokumendi_id = dokumendi_id;
+    }
+
+
+    /**
+     * Gets the dokumendi_number value for this Toimiku_dokumendid_dokument.
+     * 
+     * @return dokumendi_number   * Määruse või kirja number.
+     */
+    public java.lang.String getDokumendi_number() {
+        return dokumendi_number;
+    }
+
+
+    /**
+     * Sets the dokumendi_number value for this Toimiku_dokumendid_dokument.
+     * 
+     * @param dokumendi_number   * Määruse või kirja number.
+     */
+    public void setDokumendi_number(java.lang.String dokumendi_number) {
+        this.dokumendi_number = dokumendi_number;
+    }
+
+
+    /**
+     * Gets the dokumendi_tyyp value for this Toimiku_dokumendid_dokument.
+     * 
+     * @return dokumendi_tyyp   * M – Määrus, D – Dokument,  K - Kiri.
+     */
+    public java.lang.String getDokumendi_tyyp() {
+        return dokumendi_tyyp;
+    }
+
+
+    /**
+     * Sets the dokumendi_tyyp value for this Toimiku_dokumendid_dokument.
+     * 
+     * @param dokumendi_tyyp   * M – Määrus, D – Dokument,  K - Kiri.
+     */
+    public void setDokumendi_tyyp(java.lang.String dokumendi_tyyp) {
+        this.dokumendi_tyyp = dokumendi_tyyp;
+    }
+
+
+    /**
+     * Gets the dokumendi_tyyp_tekstina value for this Toimiku_dokumendid_dokument.
+     * 
+     * @return dokumendi_tyyp_tekstina   * M – Määrus, D – Dokument,  K - Kiri.
+     */
+    public java.lang.String getDokumendi_tyyp_tekstina() {
+        return dokumendi_tyyp_tekstina;
+    }
+
+
+    /**
+     * Sets the dokumendi_tyyp_tekstina value for this Toimiku_dokumendid_dokument.
+     * 
+     * @param dokumendi_tyyp_tekstina   * M – Määrus, D – Dokument,  K - Kiri.
+     */
+    public void setDokumendi_tyyp_tekstina(java.lang.String dokumendi_tyyp_tekstina) {
+        this.dokumendi_tyyp_tekstina = dokumendi_tyyp_tekstina;
+    }
+
+
+    /**
+     * Gets the dokumendi_toimik value for this Toimiku_dokumendid_dokument.
+     * 
+     * @return dokumendi_toimik   * Dokumendi toimiku liik
+     */
+    public java.lang.String getDokumendi_toimik() {
+        return dokumendi_toimik;
+    }
+
+
+    /**
+     * Sets the dokumendi_toimik value for this Toimiku_dokumendid_dokument.
+     * 
+     * @param dokumendi_toimik   * Dokumendi toimiku liik
+     */
+    public void setDokumendi_toimik(java.lang.String dokumendi_toimik) {
+        this.dokumendi_toimik = dokumendi_toimik;
+    }
+
+
+    /**
+     * Gets the dokumendi_toimik_tekstina value for this Toimiku_dokumendid_dokument.
+     * 
+     * @return dokumendi_toimik_tekstina   * Dokumendi toimiku liik tekstina
+     */
+    public java.lang.String getDokumendi_toimik_tekstina() {
+        return dokumendi_toimik_tekstina;
+    }
+
+
+    /**
+     * Sets the dokumendi_toimik_tekstina value for this Toimiku_dokumendid_dokument.
+     * 
+     * @param dokumendi_toimik_tekstina   * Dokumendi toimiku liik tekstina
+     */
+    public void setDokumendi_toimik_tekstina(java.lang.String dokumendi_toimik_tekstina) {
+        this.dokumendi_toimik_tekstina = dokumendi_toimik_tekstina;
     }
 
 
@@ -479,6 +604,21 @@ public class Toimiku_dokumendid_dokument  implements java.io.Serializable {
             ((this.dokumendi_id==null && other.getDokumendi_id()==null) || 
              (this.dokumendi_id!=null &&
               this.dokumendi_id.equals(other.getDokumendi_id()))) &&
+            ((this.dokumendi_number==null && other.getDokumendi_number()==null) || 
+             (this.dokumendi_number!=null &&
+              this.dokumendi_number.equals(other.getDokumendi_number()))) &&
+            ((this.dokumendi_tyyp==null && other.getDokumendi_tyyp()==null) || 
+             (this.dokumendi_tyyp!=null &&
+              this.dokumendi_tyyp.equals(other.getDokumendi_tyyp()))) &&
+            ((this.dokumendi_tyyp_tekstina==null && other.getDokumendi_tyyp_tekstina()==null) || 
+             (this.dokumendi_tyyp_tekstina!=null &&
+              this.dokumendi_tyyp_tekstina.equals(other.getDokumendi_tyyp_tekstina()))) &&
+            ((this.dokumendi_toimik==null && other.getDokumendi_toimik()==null) || 
+             (this.dokumendi_toimik!=null &&
+              this.dokumendi_toimik.equals(other.getDokumendi_toimik()))) &&
+            ((this.dokumendi_toimik_tekstina==null && other.getDokumendi_toimik_tekstina()==null) || 
+             (this.dokumendi_toimik_tekstina!=null &&
+              this.dokumendi_toimik_tekstina.equals(other.getDokumendi_toimik_tekstina()))) &&
             ((this.pohi_dokumendi_id==null && other.getPohi_dokumendi_id()==null) || 
              (this.pohi_dokumendi_id!=null &&
               this.pohi_dokumendi_id.equals(other.getPohi_dokumendi_id()))) &&
@@ -543,6 +683,21 @@ public class Toimiku_dokumendid_dokument  implements java.io.Serializable {
         int _hashCode = 1;
         if (getDokumendi_id() != null) {
             _hashCode += getDokumendi_id().hashCode();
+        }
+        if (getDokumendi_number() != null) {
+            _hashCode += getDokumendi_number().hashCode();
+        }
+        if (getDokumendi_tyyp() != null) {
+            _hashCode += getDokumendi_tyyp().hashCode();
+        }
+        if (getDokumendi_tyyp_tekstina() != null) {
+            _hashCode += getDokumendi_tyyp_tekstina().hashCode();
+        }
+        if (getDokumendi_toimik() != null) {
+            _hashCode += getDokumendi_toimik().hashCode();
+        }
+        if (getDokumendi_toimik_tekstina() != null) {
+            _hashCode += getDokumendi_toimik_tekstina().hashCode();
         }
         if (getPohi_dokumendi_id() != null) {
             _hashCode += getPohi_dokumendi_id().hashCode();

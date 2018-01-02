@@ -30,6 +30,14 @@ public class Detailandmed_v5_aadress  implements java.io.Serializable {
 
     private java.lang.String aadress_ads__ads_normaliseeritud_taisaadress;
 
+    private java.lang.String aadress_ads__adob_id;
+
+    private java.lang.String aadress_ads__koodaadress;
+
+    private java.lang.String aadress_ads__ads_normaliseeritud_taisaadress_tapsustus;
+
+    private java.lang.String aadress_ads__tyyp;
+
     private java.lang.String postiindeks;
 
     private java.util.Date algus_kpv;
@@ -51,6 +59,10 @@ public class Detailandmed_v5_aadress  implements java.io.Serializable {
            java.lang.String aadress_ads__ads_oid,
            java.lang.String aadress_ads__adr_id,
            java.lang.String aadress_ads__ads_normaliseeritud_taisaadress,
+           java.lang.String aadress_ads__adob_id,
+           java.lang.String aadress_ads__koodaadress,
+           java.lang.String aadress_ads__ads_normaliseeritud_taisaadress_tapsustus,
+           java.lang.String aadress_ads__tyyp,
            java.lang.String postiindeks,
            java.util.Date algus_kpv,
            java.util.Date lopp_kpv) {
@@ -65,6 +77,10 @@ public class Detailandmed_v5_aadress  implements java.io.Serializable {
            this.aadress_ads__ads_oid = aadress_ads__ads_oid;
            this.aadress_ads__adr_id = aadress_ads__adr_id;
            this.aadress_ads__ads_normaliseeritud_taisaadress = aadress_ads__ads_normaliseeritud_taisaadress;
+           this.aadress_ads__adob_id = aadress_ads__adob_id;
+           this.aadress_ads__koodaadress = aadress_ads__koodaadress;
+           this.aadress_ads__ads_normaliseeritud_taisaadress_tapsustus = aadress_ads__ads_normaliseeritud_taisaadress_tapsustus;
+           this.aadress_ads__tyyp = aadress_ads__tyyp;
            this.postiindeks = postiindeks;
            this.algus_kpv = algus_kpv;
            this.lopp_kpv = lopp_kpv;
@@ -292,6 +308,86 @@ public class Detailandmed_v5_aadress  implements java.io.Serializable {
 
 
     /**
+     * Gets the aadress_ads__adob_id value for this Detailandmed_v5_aadress.
+     * 
+     * @return aadress_ads__adob_id
+     */
+    public java.lang.String getAadress_ads__adob_id() {
+        return aadress_ads__adob_id;
+    }
+
+
+    /**
+     * Sets the aadress_ads__adob_id value for this Detailandmed_v5_aadress.
+     * 
+     * @param aadress_ads__adob_id
+     */
+    public void setAadress_ads__adob_id(java.lang.String aadress_ads__adob_id) {
+        this.aadress_ads__adob_id = aadress_ads__adob_id;
+    }
+
+
+    /**
+     * Gets the aadress_ads__koodaadress value for this Detailandmed_v5_aadress.
+     * 
+     * @return aadress_ads__koodaadress
+     */
+    public java.lang.String getAadress_ads__koodaadress() {
+        return aadress_ads__koodaadress;
+    }
+
+
+    /**
+     * Sets the aadress_ads__koodaadress value for this Detailandmed_v5_aadress.
+     * 
+     * @param aadress_ads__koodaadress
+     */
+    public void setAadress_ads__koodaadress(java.lang.String aadress_ads__koodaadress) {
+        this.aadress_ads__koodaadress = aadress_ads__koodaadress;
+    }
+
+
+    /**
+     * Gets the aadress_ads__ads_normaliseeritud_taisaadress_tapsustus value for this Detailandmed_v5_aadress.
+     * 
+     * @return aadress_ads__ads_normaliseeritud_taisaadress_tapsustus
+     */
+    public java.lang.String getAadress_ads__ads_normaliseeritud_taisaadress_tapsustus() {
+        return aadress_ads__ads_normaliseeritud_taisaadress_tapsustus;
+    }
+
+
+    /**
+     * Sets the aadress_ads__ads_normaliseeritud_taisaadress_tapsustus value for this Detailandmed_v5_aadress.
+     * 
+     * @param aadress_ads__ads_normaliseeritud_taisaadress_tapsustus
+     */
+    public void setAadress_ads__ads_normaliseeritud_taisaadress_tapsustus(java.lang.String aadress_ads__ads_normaliseeritud_taisaadress_tapsustus) {
+        this.aadress_ads__ads_normaliseeritud_taisaadress_tapsustus = aadress_ads__ads_normaliseeritud_taisaadress_tapsustus;
+    }
+
+
+    /**
+     * Gets the aadress_ads__tyyp value for this Detailandmed_v5_aadress.
+     * 
+     * @return aadress_ads__tyyp
+     */
+    public java.lang.String getAadress_ads__tyyp() {
+        return aadress_ads__tyyp;
+    }
+
+
+    /**
+     * Sets the aadress_ads__tyyp value for this Detailandmed_v5_aadress.
+     * 
+     * @param aadress_ads__tyyp
+     */
+    public void setAadress_ads__tyyp(java.lang.String aadress_ads__tyyp) {
+        this.aadress_ads__tyyp = aadress_ads__tyyp;
+    }
+
+
+    /**
      * Gets the postiindeks value for this Detailandmed_v5_aadress.
      * 
      * @return postiindeks
@@ -395,6 +491,18 @@ public class Detailandmed_v5_aadress  implements java.io.Serializable {
             ((this.aadress_ads__ads_normaliseeritud_taisaadress==null && other.getAadress_ads__ads_normaliseeritud_taisaadress()==null) || 
              (this.aadress_ads__ads_normaliseeritud_taisaadress!=null &&
               this.aadress_ads__ads_normaliseeritud_taisaadress.equals(other.getAadress_ads__ads_normaliseeritud_taisaadress()))) &&
+            ((this.aadress_ads__adob_id==null && other.getAadress_ads__adob_id()==null) || 
+             (this.aadress_ads__adob_id!=null &&
+              this.aadress_ads__adob_id.equals(other.getAadress_ads__adob_id()))) &&
+            ((this.aadress_ads__koodaadress==null && other.getAadress_ads__koodaadress()==null) || 
+             (this.aadress_ads__koodaadress!=null &&
+              this.aadress_ads__koodaadress.equals(other.getAadress_ads__koodaadress()))) &&
+            ((this.aadress_ads__ads_normaliseeritud_taisaadress_tapsustus==null && other.getAadress_ads__ads_normaliseeritud_taisaadress_tapsustus()==null) || 
+             (this.aadress_ads__ads_normaliseeritud_taisaadress_tapsustus!=null &&
+              this.aadress_ads__ads_normaliseeritud_taisaadress_tapsustus.equals(other.getAadress_ads__ads_normaliseeritud_taisaadress_tapsustus()))) &&
+            ((this.aadress_ads__tyyp==null && other.getAadress_ads__tyyp()==null) || 
+             (this.aadress_ads__tyyp!=null &&
+              this.aadress_ads__tyyp.equals(other.getAadress_ads__tyyp()))) &&
             ((this.postiindeks==null && other.getPostiindeks()==null) || 
              (this.postiindeks!=null &&
               this.postiindeks.equals(other.getPostiindeks()))) &&
@@ -447,6 +555,18 @@ public class Detailandmed_v5_aadress  implements java.io.Serializable {
         }
         if (getAadress_ads__ads_normaliseeritud_taisaadress() != null) {
             _hashCode += getAadress_ads__ads_normaliseeritud_taisaadress().hashCode();
+        }
+        if (getAadress_ads__adob_id() != null) {
+            _hashCode += getAadress_ads__adob_id().hashCode();
+        }
+        if (getAadress_ads__koodaadress() != null) {
+            _hashCode += getAadress_ads__koodaadress().hashCode();
+        }
+        if (getAadress_ads__ads_normaliseeritud_taisaadress_tapsustus() != null) {
+            _hashCode += getAadress_ads__ads_normaliseeritud_taisaadress_tapsustus().hashCode();
+        }
+        if (getAadress_ads__tyyp() != null) {
+            _hashCode += getAadress_ads__tyyp().hashCode();
         }
         if (getPostiindeks() != null) {
             _hashCode += getPostiindeks().hashCode();

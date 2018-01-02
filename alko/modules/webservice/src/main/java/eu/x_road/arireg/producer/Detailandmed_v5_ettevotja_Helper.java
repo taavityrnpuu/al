@@ -33,6 +33,13 @@ public class Detailandmed_v5_ettevotja_Helper {
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("kmkr_number");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "kmkr_number"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://www.w3.org/2001/XMLSchema", "string"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("yldandmed");
         elemField.setXmlName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "yldandmed"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "detailandmed_v5_yldandmed"));

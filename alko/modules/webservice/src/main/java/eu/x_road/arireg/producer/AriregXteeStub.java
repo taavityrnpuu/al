@@ -16,7 +16,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
     static org.apache.axis.description.OperationDesc [] _operations;
 
     static {
-        _operations = new org.apache.axis.description.OperationDesc[66];
+        _operations = new org.apache.axis.description.OperationDesc[67];
         _initOperationDesc1();
         _initOperationDesc2();
         _initOperationDesc3();
@@ -149,13 +149,12 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         _operations[8] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
-        oper.setName("klassifikaatorid_v1");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "klassifikaatorid_paring"), eu.x_road.arireg.producer.Klassifikaatorid_paring.class, false, false);
+        oper.setName("esindus_v2");
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_paring"), eu.x_road.arireg.producer.Paringesindus_v6_paring.class, false, false);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "klassifikaatorid_paring"), eu.x_road.arireg.producer.Klassifikaatorid_paring.class, false, false);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_paring"), eu.x_road.arireg.producer.Paringesindus_v6_paring.class, false, false);
         oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "klassifikaatorid_vastus"), eu.x_road.arireg.producer.Klassifikaator[].class, false, false);
-        param.setItemQName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "klassifikaator"));
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_vastus"), eu.x_road.arireg.producer.Paringesindus_v6_vastus.class, false, false);
         oper.addParameter(param);
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
@@ -168,6 +167,20 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         org.apache.axis.description.OperationDesc oper;
         org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
+        oper.setName("klassifikaatorid_v1");
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "klassifikaatorid_paring"), eu.x_road.arireg.producer.Klassifikaatorid_paring.class, false, false);
+        oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "klassifikaatorid_paring"), eu.x_road.arireg.producer.Klassifikaatorid_paring.class, false, false);
+        oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "klassifikaatorid_vastus"), eu.x_road.arireg.producer.Klassifikaator[].class, false, false);
+        param.setItemQName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "klassifikaator"));
+        oper.addParameter(param);
+        oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
+        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
+        oper.setUse(org.apache.axis.constants.Use.LITERAL);
+        _operations[10] = oper;
+
+        oper = new org.apache.axis.description.OperationDesc();
         oper.setName("lihtandmedTasuta_v1");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringliht_tasuta_paring"), eu.x_road.arireg.producer.Paringliht_tasuta_paring.class, false, false);
         oper.addParameter(param);
@@ -178,7 +191,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[10] = oper;
+        _operations[11] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("lihtandmed_v1");
@@ -191,7 +204,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[11] = oper;
+        _operations[12] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("majandusaastaAruanneteLoetelu_v1");
@@ -205,7 +218,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[12] = oper;
+        _operations[13] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("majandusaastaAruanneteKirjed_v1");
@@ -218,7 +231,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[13] = oper;
+        _operations[14] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("seotudIsikuOtsing_v1");
@@ -231,7 +244,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[14] = oper;
+        _operations[15] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("aruandeAuditeerimiseAndmed_v1");
@@ -244,7 +257,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[15] = oper;
+        _operations[16] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("aruandeMyygituluEMTAKjargi_v1");
@@ -257,7 +270,20 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[16] = oper;
+        _operations[17] = oper;
+
+        oper = new org.apache.axis.description.OperationDesc();
+        oper.setName("toimikuDokument_v1");
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v1_Request"), eu.x_road.arireg.producer.Toimiku_dokument_v1_Request.class, false, false);
+        oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v1_Request"), eu.x_road.arireg.producer.Toimiku_dokument_v1_Request.class, false, false);
+        oper.addParameter(param);
+        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v1_Vastus"), eu.x_road.arireg.producer.Toimiku_dokument_v1_Vastus.class, false, false);
+        oper.addParameter(param);
+        oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
+        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
+        oper.setUse(org.apache.axis.constants.Use.LITERAL);
+        _operations[18] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("arikeelud_v1");
@@ -270,8 +296,13 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[17] = oper;
+        _operations[19] = oper;
 
+    }
+
+    private static void _initOperationDesc3(){
+        org.apache.axis.description.OperationDesc oper;
+        org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("ariregistriToimik_v1");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "ariregistri_toimik_Request"), eu.x_road.arireg.producer.Ariregistri_toimik_Request.class, false, false);
@@ -283,7 +314,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[18] = oper;
+        _operations[20] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("detailandmedEP_v1");
@@ -296,13 +327,8 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[19] = oper;
+        _operations[21] = oper;
 
-    }
-
-    private static void _initOperationDesc3(){
-        org.apache.axis.description.OperationDesc oper;
-        org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("erakondaKuuluvus_v1");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "erakondakuuluvus_paring"), eu.x_road.arireg.producer.Erakondakuuluvus_paring.class, false, false);
@@ -314,7 +340,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[20] = oper;
+        _operations[22] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("erakonnaNimekiri_v1");
@@ -327,7 +353,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[21] = oper;
+        _operations[23] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("esindusIseendaKohta_v1");
@@ -340,7 +366,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[22] = oper;
+        _operations[24] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("evportaalDigiteeriDokumendid_v1");
@@ -353,7 +379,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[23] = oper;
+        _operations[25] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("evportaalDigiteeriToimik_v1");
@@ -366,7 +392,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[24] = oper;
+        _operations[26] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("evportaalMargiKattetoimetatuks_v1");
@@ -379,7 +405,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[25] = oper;
+        _operations[27] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("ettevotjaMuudatusedTasutaTootukassa_v1");
@@ -392,7 +418,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[26] = oper;
+        _operations[28] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("ettevotjaMuudatusedTasuta_v1");
@@ -405,8 +431,13 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[27] = oper;
+        _operations[29] = oper;
 
+    }
+
+    private static void _initOperationDesc4(){
+        org.apache.axis.description.OperationDesc oper;
+        org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("EVKKanded_v1");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "EVK_kanded_v1_paring"), eu.x_road.arireg.producer.EVK_kanded_v1_paring.class, false, false);
@@ -418,7 +449,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[28] = oper;
+        _operations[30] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("kustutamine_v1");
@@ -431,13 +462,8 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[29] = oper;
+        _operations[31] = oper;
 
-    }
-
-    private static void _initOperationDesc4(){
-        org.apache.axis.description.OperationDesc oper;
-        org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("kyMenetlusinfo_v1");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "ky_menetlusinfo_v2_Query"), eu.x_road.arireg.producer.Ky_menetlusinfo_v2_Query.class, false, false);
@@ -449,7 +475,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[30] = oper;
+        _operations[32] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("kyRegistriosaMuutused_v1");
@@ -462,7 +488,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[31] = oper;
+        _operations[33] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("maaruseDokument_v1");
@@ -475,7 +501,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[32] = oper;
+        _operations[34] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("menetlusinfo_v1");
@@ -489,7 +515,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[33] = oper;
+        _operations[35] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("mtaBilanss_v1");
@@ -502,7 +528,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[34] = oper;
+        _operations[36] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("mtaBilanssFail_v1");
@@ -515,7 +541,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[35] = oper;
+        _operations[37] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("mtaBilSisu_v1");
@@ -528,7 +554,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[36] = oper;
+        _operations[38] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("mtaBilSisuFail_v1");
@@ -541,8 +567,13 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[37] = oper;
+        _operations[39] = oper;
 
+    }
+
+    private static void _initOperationDesc5(){
+        org.apache.axis.description.OperationDesc oper;
+        org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("mtaEvSeisundid_v1");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "mtaev_seisundid_paring"), eu.x_road.arireg.producer.Mtaev_seisundid_paring.class, false, false);
@@ -554,7 +585,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[38] = oper;
+        _operations[40] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("mtaHoiatused_v1");
@@ -567,13 +598,8 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[39] = oper;
+        _operations[41] = oper;
 
-    }
-
-    private static void _initOperationDesc5(){
-        org.apache.axis.description.OperationDesc oper;
-        org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("mtaMajPaevik_v1");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "mtamajpaevik_paring"), eu.x_road.arireg.producer.Mtamajpaevik_paring.class, false, false);
@@ -585,7 +611,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[40] = oper;
+        _operations[42] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("mtaMajAruOsad_v1");
@@ -598,7 +624,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[41] = oper;
+        _operations[43] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("mtaOtsused_v1");
@@ -611,7 +637,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[42] = oper;
+        _operations[44] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("mtaPaevik_v1");
@@ -624,7 +650,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[43] = oper;
+        _operations[45] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("mtaTrahvid_v1");
@@ -637,7 +663,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[44] = oper;
+        _operations[46] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("napTasumiseLisamine_v1");
@@ -650,7 +676,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[45] = oper;
+        _operations[47] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("nimeSobivus_v1");
@@ -663,7 +689,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[46] = oper;
+        _operations[48] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("rkoarr_asutused_v1");
@@ -677,8 +703,13 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[47] = oper;
+        _operations[49] = oper;
 
+    }
+
+    private static void _initOperationDesc6(){
+        org.apache.axis.description.OperationDesc oper;
+        org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("registrikaart_v1");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "registrikaart_paring"), eu.x_road.arireg.producer.Registrikaart_paring.class, false, false);
@@ -690,7 +721,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[48] = oper;
+        _operations[50] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("sooritaKanne_v1");
@@ -703,13 +734,8 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[49] = oper;
+        _operations[51] = oper;
 
-    }
-
-    private static void _initOperationDesc6(){
-        org.apache.axis.description.OperationDesc oper;
-        org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("toimikuDokumendid_v1");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokumendidRequest"), eu.x_road.arireg.producer.Toimiku_dokumendidRequest.class, false, false);
@@ -721,20 +747,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[50] = oper;
-
-        oper = new org.apache.axis.description.OperationDesc();
-        oper.setName("toimikuDokument_v1");
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v2_Request"), eu.x_road.arireg.producer.Toimiku_dokument_v2_Request.class, false, false);
-        oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v2_Request"), eu.x_road.arireg.producer.Toimiku_dokument_v2_Request.class, false, false);
-        oper.addParameter(param);
-        param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v2_Vastus"), eu.x_road.arireg.producer.Toimiku_dokument_v2_Vastus.class, false, false);
-        oper.addParameter(param);
-        oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
-        oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
-        oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[51] = oper;
+        _operations[52] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("transactionStatement");
@@ -747,7 +760,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[52] = oper;
+        _operations[53] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("evapiLooKanne_v1");
@@ -760,7 +773,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[53] = oper;
+        _operations[54] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("evapiKinnitaKanne_v1");
@@ -773,7 +786,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[54] = oper;
+        _operations[55] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("evapiKustutaKanne_v1");
@@ -786,7 +799,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[55] = oper;
+        _operations[56] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("evapiMaaruseDokument_v1");
@@ -799,7 +812,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[56] = oper;
+        _operations[57] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("evapiMenetlusinfo_v1");
@@ -813,7 +826,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[57] = oper;
+        _operations[58] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("evapiRiigiloivuViitenumber_v1");
@@ -826,8 +839,13 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[58] = oper;
+        _operations[59] = oper;
 
+    }
+
+    private static void _initOperationDesc7(){
+        org.apache.axis.description.OperationDesc oper;
+        org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("xbrlAruandeNaitajad_v1");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "xbrl_aruande_naitajad_paring"), eu.x_road.arireg.producer.Xbrl_aruande_naitajad_paring.class, false, false);
@@ -839,13 +857,8 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[59] = oper;
+        _operations[60] = oper;
 
-    }
-
-    private static void _initOperationDesc7(){
-        org.apache.axis.description.OperationDesc oper;
-        org.apache.axis.description.ParameterDesc param;
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("xbrlEsita_v1");
         param = new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "xbrlesita_paring"), eu.x_road.arireg.producer.Xbrlesita_paring.class, false, false);
@@ -857,7 +870,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[60] = oper;
+        _operations[61] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("xbrlPdfEsita_v1");
@@ -870,7 +883,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[61] = oper;
+        _operations[62] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("xbrlEsindus_v1");
@@ -883,7 +896,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[62] = oper;
+        _operations[63] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("earveLisaKlient_v1");
@@ -896,7 +909,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[63] = oper;
+        _operations[64] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("earveEemaldaKlient_v1");
@@ -909,7 +922,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[64] = oper;
+        _operations[65] = oper;
 
         oper = new org.apache.axis.description.OperationDesc();
         oper.setName("earveRegistriParing_v1");
@@ -922,7 +935,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
         oper.setReturnType(org.apache.axis.encoding.XMLType.AXIS_VOID);
         oper.setStyle(org.apache.axis.constants.Style.WRAPPED);
         oper.setUse(org.apache.axis.constants.Use.LITERAL);
-        _operations[65] = oper;
+        _operations[66] = oper;
 
     }
 
@@ -2111,6 +2124,22 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "detailandmed_v5_valisleping");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.Detailandmed_v5_valisleping.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "detailandmed_v5_valislepingud");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.Detailandmed_v5_valisleping[].class;
+            cachedSerClasses.add(cls);
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "detailandmed_v5_valisleping");
+            qName2 = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "item");
+            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
+            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
+
             qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "detailandmed_v5_valismaa_ariyhing");
             cachedSerQNames.add(qName);
             cls = eu.x_road.arireg.producer.Detailandmed_v5_valismaa_ariyhing.class;
@@ -2515,6 +2544,21 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
+    }
+    private void addBindings2() {
+            java.lang.Class cls;
+            javax.xml.namespace.QName qName;
+            javax.xml.namespace.QName qName2;
+            java.lang.Class beansf = org.apache.axis.encoding.ser.BeanSerializerFactory.class;
+            java.lang.Class beandf = org.apache.axis.encoding.ser.BeanDeserializerFactory.class;
+            java.lang.Class enumsf = org.apache.axis.encoding.ser.EnumSerializerFactory.class;
+            java.lang.Class enumdf = org.apache.axis.encoding.ser.EnumDeserializerFactory.class;
+            java.lang.Class arraysf = org.apache.axis.encoding.ser.ArraySerializerFactory.class;
+            java.lang.Class arraydf = org.apache.axis.encoding.ser.ArrayDeserializerFactory.class;
+            java.lang.Class simplesf = org.apache.axis.encoding.ser.SimpleSerializerFactory.class;
+            java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
+            java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
+            java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
             qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "ettevotja_muudatus_tootukassa_kanded");
             cachedSerQNames.add(qName);
             cls = eu.x_road.arireg.producer.Ettevotja_muudatus_tootukassa_kanne[].class;
@@ -2531,21 +2575,6 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-    }
-    private void addBindings2() {
-            java.lang.Class cls;
-            javax.xml.namespace.QName qName;
-            javax.xml.namespace.QName qName2;
-            java.lang.Class beansf = org.apache.axis.encoding.ser.BeanSerializerFactory.class;
-            java.lang.Class beandf = org.apache.axis.encoding.ser.BeanDeserializerFactory.class;
-            java.lang.Class enumsf = org.apache.axis.encoding.ser.EnumSerializerFactory.class;
-            java.lang.Class enumdf = org.apache.axis.encoding.ser.EnumDeserializerFactory.class;
-            java.lang.Class arraysf = org.apache.axis.encoding.ser.ArraySerializerFactory.class;
-            java.lang.Class arraydf = org.apache.axis.encoding.ser.ArrayDeserializerFactory.class;
-            java.lang.Class simplesf = org.apache.axis.encoding.ser.SimpleSerializerFactory.class;
-            java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
-            java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
-            java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
             qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "ettevotja_muudatus_tootukassa_kanne");
             cachedSerQNames.add(qName);
             cls = eu.x_road.arireg.producer.Ettevotja_muudatus_tootukassa_kanne.class;
@@ -2684,6 +2713,13 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "EVapiLooKanneAadress_v1");
             cachedSerQNames.add(qName);
             cls = eu.x_road.arireg.producer.EVapiLooKanneAadress_v1.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "EVapiLooKannedokumentType_v1");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.EVapiLooKannedokumentType_v1.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -3078,6 +3114,13 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "markusLiigigaTegevusega");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.MarkusLiigigaTegevusega.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
             qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "menetlusinfo_v3_dokument");
             cachedSerQNames.add(qName);
             cls = eu.x_road.arireg.producer.Menetlusinfo_v3_dokument.class;
@@ -3240,6 +3283,21 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
             cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
 
+    }
+    private void addBindings3() {
+            java.lang.Class cls;
+            javax.xml.namespace.QName qName;
+            javax.xml.namespace.QName qName2;
+            java.lang.Class beansf = org.apache.axis.encoding.ser.BeanSerializerFactory.class;
+            java.lang.Class beandf = org.apache.axis.encoding.ser.BeanDeserializerFactory.class;
+            java.lang.Class enumsf = org.apache.axis.encoding.ser.EnumSerializerFactory.class;
+            java.lang.Class enumdf = org.apache.axis.encoding.ser.EnumDeserializerFactory.class;
+            java.lang.Class arraysf = org.apache.axis.encoding.ser.ArraySerializerFactory.class;
+            java.lang.Class arraydf = org.apache.axis.encoding.ser.ArrayDeserializerFactory.class;
+            java.lang.Class simplesf = org.apache.axis.encoding.ser.SimpleSerializerFactory.class;
+            java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
+            java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
+            java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
             qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "mtaev_seisundid_vastus");
             cachedSerQNames.add(qName);
             cls = eu.x_road.arireg.producer.Mtaev_seisundid_vastus.class;
@@ -3270,21 +3328,6 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-    }
-    private void addBindings3() {
-            java.lang.Class cls;
-            javax.xml.namespace.QName qName;
-            javax.xml.namespace.QName qName2;
-            java.lang.Class beansf = org.apache.axis.encoding.ser.BeanSerializerFactory.class;
-            java.lang.Class beandf = org.apache.axis.encoding.ser.BeanDeserializerFactory.class;
-            java.lang.Class enumsf = org.apache.axis.encoding.ser.EnumSerializerFactory.class;
-            java.lang.Class enumdf = org.apache.axis.encoding.ser.EnumDeserializerFactory.class;
-            java.lang.Class arraysf = org.apache.axis.encoding.ser.ArraySerializerFactory.class;
-            java.lang.Class arraydf = org.apache.axis.encoding.ser.ArrayDeserializerFactory.class;
-            java.lang.Class simplesf = org.apache.axis.encoding.ser.SimpleSerializerFactory.class;
-            java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
-            java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
-            java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
             qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "mtahoiatused_vastus");
             cachedSerQNames.add(qName);
             cls = eu.x_road.arireg.producer.Mtahoiatused_vastus.class;
@@ -3595,6 +3638,84 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v4_vastus");
             cachedSerQNames.add(qName);
             cls = eu.x_road.arireg.producer.Paringesindus_v4_vastus.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_eritingimus");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.Paringesindus_v6_eritingimus.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_eritingimused");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.Paringesindus_v6_eritingimus[].class;
+            cachedSerClasses.add(cls);
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_eritingimus");
+            qName2 = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "item");
+            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
+            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
+
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_ettevote");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.Paringesindus_v6_ettevote.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_ettevotted");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.Paringesindus_v6_ettevote[].class;
+            cachedSerClasses.add(cls);
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_ettevote");
+            qName2 = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "item");
+            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
+            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
+
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_grupid");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.Paringesindus_v6_grupp[].class;
+            cachedSerClasses.add(cls);
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_grupp");
+            qName2 = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "grupp");
+            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
+            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
+
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_grupp");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.Paringesindus_v6_grupp.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_isik");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.Paringesindus_v6_isik.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_isikud");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.Paringesindus_v6_isik[].class;
+            cachedSerClasses.add(cls);
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_isik");
+            qName2 = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "item");
+            cachedSerFactories.add(new org.apache.axis.encoding.ser.ArraySerializerFactory(qName, qName2));
+            cachedDeserFactories.add(new org.apache.axis.encoding.ser.ArrayDeserializerFactory());
+
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_paring");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.Paringesindus_v6_paring.class;
+            cachedSerClasses.add(cls);
+            cachedSerFactories.add(beansf);
+            cachedDeserFactories.add(beandf);
+
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_vastus");
+            cachedSerQNames.add(qName);
+            cls = eu.x_road.arireg.producer.Paringesindus_v6_vastus.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -3923,6 +4044,21 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
+    }
+    private void addBindings4() {
+            java.lang.Class cls;
+            javax.xml.namespace.QName qName;
+            javax.xml.namespace.QName qName2;
+            java.lang.Class beansf = org.apache.axis.encoding.ser.BeanSerializerFactory.class;
+            java.lang.Class beandf = org.apache.axis.encoding.ser.BeanDeserializerFactory.class;
+            java.lang.Class enumsf = org.apache.axis.encoding.ser.EnumSerializerFactory.class;
+            java.lang.Class enumdf = org.apache.axis.encoding.ser.EnumDeserializerFactory.class;
+            java.lang.Class arraysf = org.apache.axis.encoding.ser.ArraySerializerFactory.class;
+            java.lang.Class arraydf = org.apache.axis.encoding.ser.ArrayDeserializerFactory.class;
+            java.lang.Class simplesf = org.apache.axis.encoding.ser.SimpleSerializerFactory.class;
+            java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
+            java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
+            java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
             qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "sooritakanne_pohikiri_v4");
             cachedSerQNames.add(qName);
             cls = eu.x_road.arireg.producer.Sooritakanne_pohikiri_v4.class;
@@ -3981,16 +4117,16 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v2_Request");
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v1_Request");
             cachedSerQNames.add(qName);
-            cls = eu.x_road.arireg.producer.Toimiku_dokument_v2_Request.class;
+            cls = eu.x_road.arireg.producer.Toimiku_dokument_v1_Request.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
 
-            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v2_Vastus");
+            qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v1_Vastus");
             cachedSerQNames.add(qName);
-            cls = eu.x_road.arireg.producer.Toimiku_dokument_v2_Vastus.class;
+            cls = eu.x_road.arireg.producer.Toimiku_dokument_v1_Vastus.class;
             cachedSerClasses.add(cls);
             cachedSerFactories.add(beansf);
             cachedDeserFactories.add(beandf);
@@ -4023,21 +4159,6 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             cachedSerFactories.add(enumsf);
             cachedDeserFactories.add(enumdf);
 
-    }
-    private void addBindings4() {
-            java.lang.Class cls;
-            javax.xml.namespace.QName qName;
-            javax.xml.namespace.QName qName2;
-            java.lang.Class beansf = org.apache.axis.encoding.ser.BeanSerializerFactory.class;
-            java.lang.Class beandf = org.apache.axis.encoding.ser.BeanDeserializerFactory.class;
-            java.lang.Class enumsf = org.apache.axis.encoding.ser.EnumSerializerFactory.class;
-            java.lang.Class enumdf = org.apache.axis.encoding.ser.EnumDeserializerFactory.class;
-            java.lang.Class arraysf = org.apache.axis.encoding.ser.ArraySerializerFactory.class;
-            java.lang.Class arraydf = org.apache.axis.encoding.ser.ArrayDeserializerFactory.class;
-            java.lang.Class simplesf = org.apache.axis.encoding.ser.SimpleSerializerFactory.class;
-            java.lang.Class simpledf = org.apache.axis.encoding.ser.SimpleDeserializerFactory.class;
-            java.lang.Class simplelistsf = org.apache.axis.encoding.ser.SimpleListSerializerFactory.class;
-            java.lang.Class simplelistdf = org.apache.axis.encoding.ser.SimpleListDeserializerFactory.class;
             qName = new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "x_nimevastetyyp");
             cachedSerQNames.add(qName);
             cls = eu.x_road.arireg.producer.X_nimevastetyyp.class;
@@ -4863,12 +4984,53 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
 }
     }
 
-    public void klassifikaatorid_v1(eu.x_road.arireg.producer.Klassifikaatorid_paring keha, eu.x_road.arireg.producer.holders.Klassifikaatorid_paringHolder paring, eu.x_road.arireg.producer.holders.Klassifikaatorid_vastusHolder keha2) throws java.rmi.RemoteException {
+    public void esindus_v2(eu.x_road.arireg.producer.Paringesindus_v6_paring keha, eu.x_road.arireg.producer.holders.Paringesindus_v6_paringHolder paring, eu.x_road.arireg.producer.holders.Paringesindus_v6_vastusHolder keha2) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
         _call.setOperation(_operations[9]);
+        _call.setUseSOAPAction(true);
+        _call.setSOAPActionURI("");
+        _call.setEncodingStyle(null);
+        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
+        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setOperationName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "esindus_v2"));
+
+        setRequestHeaders(_call);
+        setAttachments(_call);
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {keha});
+
+        if (_resp instanceof java.rmi.RemoteException) {
+            throw (java.rmi.RemoteException)_resp;
+        }
+        else {
+            extractAttachments(_call);
+            java.util.Map _output;
+            _output = _call.getOutputParams();
+            try {
+                paring.value = (eu.x_road.arireg.producer.Paringesindus_v6_paring) _output.get(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"));
+            } catch (java.lang.Exception _exception) {
+                paring.value = (eu.x_road.arireg.producer.Paringesindus_v6_paring) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring")), eu.x_road.arireg.producer.Paringesindus_v6_paring.class);
+            }
+            try {
+                keha2.value = (eu.x_road.arireg.producer.Paringesindus_v6_vastus) _output.get(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"));
+            } catch (java.lang.Exception _exception) {
+                keha2.value = (eu.x_road.arireg.producer.Paringesindus_v6_vastus) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha")), eu.x_road.arireg.producer.Paringesindus_v6_vastus.class);
+            }
+        }
+  } catch (org.apache.axis.AxisFault axisFaultException) {
+  throw axisFaultException;
+}
+    }
+
+    public void klassifikaatorid_v1(eu.x_road.arireg.producer.Klassifikaatorid_paring keha, eu.x_road.arireg.producer.holders.Klassifikaatorid_paringHolder paring, eu.x_road.arireg.producer.holders.Klassifikaatorid_vastusHolder keha2) throws java.rmi.RemoteException {
+        if (super.cachedEndpoint == null) {
+            throw new org.apache.axis.NoEndPointException();
+        }
+        org.apache.axis.client.Call _call = createCall();
+        _call.setOperation(_operations[10]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -4909,7 +5071,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[10]);
+        _call.setOperation(_operations[11]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -4950,7 +5112,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[11]);
+        _call.setOperation(_operations[12]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -4991,7 +5153,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[12]);
+        _call.setOperation(_operations[13]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5032,7 +5194,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[13]);
+        _call.setOperation(_operations[14]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5073,7 +5235,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[14]);
+        _call.setOperation(_operations[15]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5114,7 +5276,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[15]);
+        _call.setOperation(_operations[16]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5155,7 +5317,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[16]);
+        _call.setOperation(_operations[17]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5191,12 +5353,53 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
 }
     }
 
+    public void toimikuDokument_v1(eu.x_road.arireg.producer.Toimiku_dokument_v1_Request keha, eu.x_road.arireg.producer.holders.Toimiku_dokument_v1_RequestHolder paring, eu.x_road.arireg.producer.holders.Toimiku_dokument_v1_VastusHolder keha2) throws java.rmi.RemoteException {
+        if (super.cachedEndpoint == null) {
+            throw new org.apache.axis.NoEndPointException();
+        }
+        org.apache.axis.client.Call _call = createCall();
+        _call.setOperation(_operations[18]);
+        _call.setUseSOAPAction(true);
+        _call.setSOAPActionURI("");
+        _call.setEncodingStyle(null);
+        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
+        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
+        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
+        _call.setOperationName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimikuDokument_v1"));
+
+        setRequestHeaders(_call);
+        setAttachments(_call);
+ try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {keha});
+
+        if (_resp instanceof java.rmi.RemoteException) {
+            throw (java.rmi.RemoteException)_resp;
+        }
+        else {
+            extractAttachments(_call);
+            java.util.Map _output;
+            _output = _call.getOutputParams();
+            try {
+                paring.value = (eu.x_road.arireg.producer.Toimiku_dokument_v1_Request) _output.get(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"));
+            } catch (java.lang.Exception _exception) {
+                paring.value = (eu.x_road.arireg.producer.Toimiku_dokument_v1_Request) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring")), eu.x_road.arireg.producer.Toimiku_dokument_v1_Request.class);
+            }
+            try {
+                keha2.value = (eu.x_road.arireg.producer.Toimiku_dokument_v1_Vastus) _output.get(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"));
+            } catch (java.lang.Exception _exception) {
+                keha2.value = (eu.x_road.arireg.producer.Toimiku_dokument_v1_Vastus) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha")), eu.x_road.arireg.producer.Toimiku_dokument_v1_Vastus.class);
+            }
+        }
+  } catch (org.apache.axis.AxisFault axisFaultException) {
+  throw axisFaultException;
+}
+    }
+
     public void arikeelud_v1(eu.x_road.arireg.producer.Paringarikeelud_paring keha, eu.x_road.arireg.producer.holders.Paringarikeelud_paringHolder paring, eu.x_road.arireg.producer.holders.Paringarikeelud_vastusHolder keha2) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[17]);
+        _call.setOperation(_operations[19]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5237,7 +5440,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[18]);
+        _call.setOperation(_operations[20]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5278,7 +5481,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[19]);
+        _call.setOperation(_operations[21]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5319,7 +5522,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[20]);
+        _call.setOperation(_operations[22]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5360,7 +5563,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[21]);
+        _call.setOperation(_operations[23]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5401,7 +5604,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[22]);
+        _call.setOperation(_operations[24]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5442,7 +5645,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[23]);
+        _call.setOperation(_operations[25]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5483,7 +5686,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[24]);
+        _call.setOperation(_operations[26]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5524,7 +5727,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[25]);
+        _call.setOperation(_operations[27]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5565,7 +5768,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[26]);
+        _call.setOperation(_operations[28]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5606,7 +5809,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[27]);
+        _call.setOperation(_operations[29]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5647,7 +5850,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[28]);
+        _call.setOperation(_operations[30]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5688,7 +5891,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[29]);
+        _call.setOperation(_operations[31]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5729,7 +5932,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[30]);
+        _call.setOperation(_operations[32]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5770,7 +5973,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[31]);
+        _call.setOperation(_operations[33]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5811,7 +6014,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[32]);
+        _call.setOperation(_operations[34]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5852,7 +6055,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[33]);
+        _call.setOperation(_operations[35]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5893,7 +6096,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[34]);
+        _call.setOperation(_operations[36]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5934,7 +6137,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[35]);
+        _call.setOperation(_operations[37]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -5975,7 +6178,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[36]);
+        _call.setOperation(_operations[38]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6016,7 +6219,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[37]);
+        _call.setOperation(_operations[39]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6057,7 +6260,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[38]);
+        _call.setOperation(_operations[40]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6098,7 +6301,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[39]);
+        _call.setOperation(_operations[41]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6139,7 +6342,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[40]);
+        _call.setOperation(_operations[42]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6180,7 +6383,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[41]);
+        _call.setOperation(_operations[43]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6221,7 +6424,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[42]);
+        _call.setOperation(_operations[44]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6262,7 +6465,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[43]);
+        _call.setOperation(_operations[45]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6303,7 +6506,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[44]);
+        _call.setOperation(_operations[46]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6344,7 +6547,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[45]);
+        _call.setOperation(_operations[47]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6385,7 +6588,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[46]);
+        _call.setOperation(_operations[48]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6426,7 +6629,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[47]);
+        _call.setOperation(_operations[49]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6467,7 +6670,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[48]);
+        _call.setOperation(_operations[50]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6508,7 +6711,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[49]);
+        _call.setOperation(_operations[51]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6549,7 +6752,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[50]);
+        _call.setOperation(_operations[52]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6585,53 +6788,12 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
 }
     }
 
-    public void toimikuDokument_v1(eu.x_road.arireg.producer.Toimiku_dokument_v2_Request keha, eu.x_road.arireg.producer.holders.Toimiku_dokument_v2_RequestHolder paring, eu.x_road.arireg.producer.holders.Toimiku_dokument_v2_VastusHolder keha2) throws java.rmi.RemoteException {
-        if (super.cachedEndpoint == null) {
-            throw new org.apache.axis.NoEndPointException();
-        }
-        org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[51]);
-        _call.setUseSOAPAction(true);
-        _call.setSOAPActionURI("");
-        _call.setEncodingStyle(null);
-        _call.setProperty(org.apache.axis.client.Call.SEND_TYPE_ATTR, Boolean.FALSE);
-        _call.setProperty(org.apache.axis.AxisEngine.PROP_DOMULTIREFS, Boolean.FALSE);
-        _call.setSOAPVersion(org.apache.axis.soap.SOAPConstants.SOAP11_CONSTANTS);
-        _call.setOperationName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimikuDokument_v1"));
-
-        setRequestHeaders(_call);
-        setAttachments(_call);
- try {        java.lang.Object _resp = _call.invoke(new java.lang.Object[] {keha});
-
-        if (_resp instanceof java.rmi.RemoteException) {
-            throw (java.rmi.RemoteException)_resp;
-        }
-        else {
-            extractAttachments(_call);
-            java.util.Map _output;
-            _output = _call.getOutputParams();
-            try {
-                paring.value = (eu.x_road.arireg.producer.Toimiku_dokument_v2_Request) _output.get(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"));
-            } catch (java.lang.Exception _exception) {
-                paring.value = (eu.x_road.arireg.producer.Toimiku_dokument_v2_Request) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring")), eu.x_road.arireg.producer.Toimiku_dokument_v2_Request.class);
-            }
-            try {
-                keha2.value = (eu.x_road.arireg.producer.Toimiku_dokument_v2_Vastus) _output.get(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"));
-            } catch (java.lang.Exception _exception) {
-                keha2.value = (eu.x_road.arireg.producer.Toimiku_dokument_v2_Vastus) org.apache.axis.utils.JavaUtils.convert(_output.get(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha")), eu.x_road.arireg.producer.Toimiku_dokument_v2_Vastus.class);
-            }
-        }
-  } catch (org.apache.axis.AxisFault axisFaultException) {
-  throw axisFaultException;
-}
-    }
-
     public void transactionStatement(eu.x_road.arireg.producer.MokaQuery keha, eu.x_road.arireg.producer.holders.MokaQueryHolder paring, eu.x_road.arireg.producer.holders.MokaResponseHolder keha2) throws java.rmi.RemoteException {
         if (super.cachedEndpoint == null) {
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[52]);
+        _call.setOperation(_operations[53]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6672,7 +6834,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[53]);
+        _call.setOperation(_operations[54]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6713,7 +6875,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[54]);
+        _call.setOperation(_operations[55]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6754,7 +6916,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[55]);
+        _call.setOperation(_operations[56]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6795,7 +6957,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[56]);
+        _call.setOperation(_operations[57]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6836,7 +6998,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[57]);
+        _call.setOperation(_operations[58]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6877,7 +7039,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[58]);
+        _call.setOperation(_operations[59]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6918,7 +7080,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[59]);
+        _call.setOperation(_operations[60]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -6959,7 +7121,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[60]);
+        _call.setOperation(_operations[61]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -7000,7 +7162,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[61]);
+        _call.setOperation(_operations[62]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -7041,7 +7203,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[62]);
+        _call.setOperation(_operations[63]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -7082,7 +7244,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[63]);
+        _call.setOperation(_operations[64]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -7123,7 +7285,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[64]);
+        _call.setOperation(_operations[65]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);
@@ -7164,7 +7326,7 @@ public class AriregXteeStub extends org.apache.axis.client.Stub implements eu.x_
             throw new org.apache.axis.NoEndPointException();
         }
         org.apache.axis.client.Call _call = createCall();
-        _call.setOperation(_operations[65]);
+        _call.setOperation(_operations[66]);
         _call.setUseSOAPAction(true);
         _call.setSOAPActionURI("");
         _call.setEncodingStyle(null);

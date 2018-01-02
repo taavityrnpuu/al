@@ -8,10 +8,10 @@
 package eu.x_road.arireg.producer;
 
 public class SooritaKanne_v4  implements java.io.Serializable {
-    /* V - ettevõtjaportaal, N - e-notar */
+    /* V - ettevõtjaportaal, N - e-notar, K - KR */
     private java.lang.String kande_paritolu;
 
-    /* Notari või ettevõtjaportaali kande ID */
+    /* Notari või KR või ettevõtjaportaali kande ID */
     private java.lang.String kande_id;
 
     /* Kandeliik ettevõtjaportaali klassifikaatori järgi */
@@ -68,6 +68,10 @@ public class SooritaKanne_v4  implements java.io.Serializable {
      * KOGL, KOGUD või KLOOS */
     private java.lang.String registri_piirkond;
 
+    private java.lang.Boolean lisa_arp_markus;
+
+    private java.lang.Boolean eemalda_arp_markus;
+
     /* Siia alla tuleb ettevõtjate loetelu, igal ettevõtjal oma kande
      * sisu ja dokumendid */
     private eu.x_road.arireg.producer.Sooritakanne_ettevotjad_v4[] ettevotjad;
@@ -94,6 +98,8 @@ public class SooritaKanne_v4  implements java.io.Serializable {
            java.lang.String viitenumber_loiv,
            java.lang.String viitenumber_okap,
            java.lang.String registri_piirkond,
+           java.lang.Boolean lisa_arp_markus,
+           java.lang.Boolean eemalda_arp_markus,
            eu.x_road.arireg.producer.Sooritakanne_ettevotjad_v4[] ettevotjad) {
            this.kande_paritolu = kande_paritolu;
            this.kande_id = kande_id;
@@ -113,6 +119,8 @@ public class SooritaKanne_v4  implements java.io.Serializable {
            this.viitenumber_loiv = viitenumber_loiv;
            this.viitenumber_okap = viitenumber_okap;
            this.registri_piirkond = registri_piirkond;
+           this.lisa_arp_markus = lisa_arp_markus;
+           this.eemalda_arp_markus = eemalda_arp_markus;
            this.ettevotjad = ettevotjad;
     }
 
@@ -120,7 +128,7 @@ public class SooritaKanne_v4  implements java.io.Serializable {
     /**
      * Gets the kande_paritolu value for this SooritaKanne_v4.
      * 
-     * @return kande_paritolu   * V - ettevõtjaportaal, N - e-notar
+     * @return kande_paritolu   * V - ettevõtjaportaal, N - e-notar, K - KR
      */
     public java.lang.String getKande_paritolu() {
         return kande_paritolu;
@@ -130,7 +138,7 @@ public class SooritaKanne_v4  implements java.io.Serializable {
     /**
      * Sets the kande_paritolu value for this SooritaKanne_v4.
      * 
-     * @param kande_paritolu   * V - ettevõtjaportaal, N - e-notar
+     * @param kande_paritolu   * V - ettevõtjaportaal, N - e-notar, K - KR
      */
     public void setKande_paritolu(java.lang.String kande_paritolu) {
         this.kande_paritolu = kande_paritolu;
@@ -140,7 +148,7 @@ public class SooritaKanne_v4  implements java.io.Serializable {
     /**
      * Gets the kande_id value for this SooritaKanne_v4.
      * 
-     * @return kande_id   * Notari või ettevõtjaportaali kande ID
+     * @return kande_id   * Notari või KR või ettevõtjaportaali kande ID
      */
     public java.lang.String getKande_id() {
         return kande_id;
@@ -150,7 +158,7 @@ public class SooritaKanne_v4  implements java.io.Serializable {
     /**
      * Sets the kande_id value for this SooritaKanne_v4.
      * 
-     * @param kande_id   * Notari või ettevõtjaportaali kande ID
+     * @param kande_id   * Notari või KR või ettevõtjaportaali kande ID
      */
     public void setKande_id(java.lang.String kande_id) {
         this.kande_id = kande_id;
@@ -504,6 +512,46 @@ public class SooritaKanne_v4  implements java.io.Serializable {
 
 
     /**
+     * Gets the lisa_arp_markus value for this SooritaKanne_v4.
+     * 
+     * @return lisa_arp_markus
+     */
+    public java.lang.Boolean getLisa_arp_markus() {
+        return lisa_arp_markus;
+    }
+
+
+    /**
+     * Sets the lisa_arp_markus value for this SooritaKanne_v4.
+     * 
+     * @param lisa_arp_markus
+     */
+    public void setLisa_arp_markus(java.lang.Boolean lisa_arp_markus) {
+        this.lisa_arp_markus = lisa_arp_markus;
+    }
+
+
+    /**
+     * Gets the eemalda_arp_markus value for this SooritaKanne_v4.
+     * 
+     * @return eemalda_arp_markus
+     */
+    public java.lang.Boolean getEemalda_arp_markus() {
+        return eemalda_arp_markus;
+    }
+
+
+    /**
+     * Sets the eemalda_arp_markus value for this SooritaKanne_v4.
+     * 
+     * @param eemalda_arp_markus
+     */
+    public void setEemalda_arp_markus(java.lang.Boolean eemalda_arp_markus) {
+        this.eemalda_arp_markus = eemalda_arp_markus;
+    }
+
+
+    /**
      * Gets the ettevotjad value for this SooritaKanne_v4.
      * 
      * @return ettevotjad   * Siia alla tuleb ettevõtjate loetelu, igal ettevõtjal oma kande
@@ -596,6 +644,12 @@ public class SooritaKanne_v4  implements java.io.Serializable {
             ((this.registri_piirkond==null && other.getRegistri_piirkond()==null) || 
              (this.registri_piirkond!=null &&
               this.registri_piirkond.equals(other.getRegistri_piirkond()))) &&
+            ((this.lisa_arp_markus==null && other.getLisa_arp_markus()==null) || 
+             (this.lisa_arp_markus!=null &&
+              this.lisa_arp_markus.equals(other.getLisa_arp_markus()))) &&
+            ((this.eemalda_arp_markus==null && other.getEemalda_arp_markus()==null) || 
+             (this.eemalda_arp_markus!=null &&
+              this.eemalda_arp_markus.equals(other.getEemalda_arp_markus()))) &&
             ((this.ettevotjad==null && other.getEttevotjad()==null) || 
              (this.ettevotjad!=null &&
               java.util.Arrays.equals(this.ettevotjad, other.getEttevotjad())));
@@ -669,6 +723,12 @@ public class SooritaKanne_v4  implements java.io.Serializable {
         }
         if (getRegistri_piirkond() != null) {
             _hashCode += getRegistri_piirkond().hashCode();
+        }
+        if (getLisa_arp_markus() != null) {
+            _hashCode += getLisa_arp_markus().hashCode();
+        }
+        if (getEemalda_arp_markus() != null) {
+            _hashCode += getEemalda_arp_markus().hashCode();
         }
         if (getEttevotjad() != null) {
             for (int i=0;

@@ -85,6 +85,8 @@ public class Detailandmed_v5_yldandmed  implements java.io.Serializable {
 
     private eu.x_road.arireg.producer.Detailandmed_v5_esmanimetamise_aeg[] esmanimetamise_ajad;
 
+    private eu.x_road.arireg.producer.Detailandmed_v5_valisleping[] valislepingud;
+
     private eu.x_road.arireg.producer.Detailandmed_v5_markus_kaardil[] markused_kaardil;
 
     private eu.x_road.arireg.producer.Detailandmed_v5_tegevusala_kaardil[] tegevusalad_kaardil;
@@ -144,6 +146,7 @@ public class Detailandmed_v5_yldandmed  implements java.io.Serializable {
            eu.x_road.arireg.producer.Detailandmed_v5_asutamise_aeg[] asutamise_ajad,
            eu.x_road.arireg.producer.Detailandmed_v5_tegutsemise_tahtaeg[] tegutsemise_tahtajad,
            eu.x_road.arireg.producer.Detailandmed_v5_esmanimetamise_aeg[] esmanimetamise_ajad,
+           eu.x_road.arireg.producer.Detailandmed_v5_valisleping[] valislepingud,
            eu.x_road.arireg.producer.Detailandmed_v5_markus_kaardil[] markused_kaardil,
            eu.x_road.arireg.producer.Detailandmed_v5_tegevusala_kaardil[] tegevusalad_kaardil,
            eu.x_road.arireg.producer.Detailandmed_v5_eesmark_kaardil[] eesmargid_kaardil,
@@ -190,6 +193,7 @@ public class Detailandmed_v5_yldandmed  implements java.io.Serializable {
            this.asutamise_ajad = asutamise_ajad;
            this.tegutsemise_tahtajad = tegutsemise_tahtajad;
            this.esmanimetamise_ajad = esmanimetamise_ajad;
+           this.valislepingud = valislepingud;
            this.markused_kaardil = markused_kaardil;
            this.tegevusalad_kaardil = tegevusalad_kaardil;
            this.eesmargid_kaardil = eesmargid_kaardil;
@@ -962,6 +966,26 @@ public class Detailandmed_v5_yldandmed  implements java.io.Serializable {
 
 
     /**
+     * Gets the valislepingud value for this Detailandmed_v5_yldandmed.
+     * 
+     * @return valislepingud
+     */
+    public eu.x_road.arireg.producer.Detailandmed_v5_valisleping[] getValislepingud() {
+        return valislepingud;
+    }
+
+
+    /**
+     * Sets the valislepingud value for this Detailandmed_v5_yldandmed.
+     * 
+     * @param valislepingud
+     */
+    public void setValislepingud(eu.x_road.arireg.producer.Detailandmed_v5_valisleping[] valislepingud) {
+        this.valislepingud = valislepingud;
+    }
+
+
+    /**
      * Gets the markused_kaardil value for this Detailandmed_v5_yldandmed.
      * 
      * @return markused_kaardil
@@ -1246,6 +1270,9 @@ public class Detailandmed_v5_yldandmed  implements java.io.Serializable {
             ((this.esmanimetamise_ajad==null && other.getEsmanimetamise_ajad()==null) || 
              (this.esmanimetamise_ajad!=null &&
               java.util.Arrays.equals(this.esmanimetamise_ajad, other.getEsmanimetamise_ajad()))) &&
+            ((this.valislepingud==null && other.getValislepingud()==null) || 
+             (this.valislepingud!=null &&
+              java.util.Arrays.equals(this.valislepingud, other.getValislepingud()))) &&
             ((this.markused_kaardil==null && other.getMarkused_kaardil()==null) || 
              (this.markused_kaardil!=null &&
               java.util.Arrays.equals(this.markused_kaardil, other.getMarkused_kaardil()))) &&
@@ -1541,6 +1568,17 @@ public class Detailandmed_v5_yldandmed  implements java.io.Serializable {
                  i<java.lang.reflect.Array.getLength(getEsmanimetamise_ajad());
                  i++) {
                 java.lang.Object obj = java.lang.reflect.Array.get(getEsmanimetamise_ajad(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
+        }
+        if (getValislepingud() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getValislepingud());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getValislepingud(), i);
                 if (obj != null &&
                     !obj.getClass().isArray()) {
                     _hashCode += obj.hashCode();

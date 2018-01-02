@@ -53,6 +53,11 @@ public class AriregXteeImpl implements eu.x_road.arireg.producer.AriregXtee{
         keha2.value = new eu.x_road.arireg.producer.Paringesindus_v4_vastus();
     }
 
+    public void esindus_v2(eu.x_road.arireg.producer.Paringesindus_v6_paring keha, eu.x_road.arireg.producer.holders.Paringesindus_v6_paringHolder paring, eu.x_road.arireg.producer.holders.Paringesindus_v6_vastusHolder keha2) throws java.rmi.RemoteException {
+        paring.value = new eu.x_road.arireg.producer.Paringesindus_v6_paring();
+        keha2.value = new eu.x_road.arireg.producer.Paringesindus_v6_vastus();
+    }
+
     public void klassifikaatorid_v1(eu.x_road.arireg.producer.Klassifikaatorid_paring keha, eu.x_road.arireg.producer.holders.Klassifikaatorid_paringHolder paring, eu.x_road.arireg.producer.holders.Klassifikaatorid_vastusHolder keha2) throws java.rmi.RemoteException {
         paring.value = new eu.x_road.arireg.producer.Klassifikaatorid_paring();
         keha2.value = new eu.x_road.arireg.producer.Klassifikaator[0];
@@ -91,6 +96,11 @@ public class AriregXteeImpl implements eu.x_road.arireg.producer.AriregXtee{
     public void aruandeMyygituluEMTAKjargi_v1(eu.x_road.arireg.producer.Aruande_myygitulu_paring keha, eu.x_road.arireg.producer.holders.Aruande_myygitulu_paringHolder paring, eu.x_road.arireg.producer.holders.Aruande_myygitulu_vastusHolder keha2) throws java.rmi.RemoteException {
         paring.value = new eu.x_road.arireg.producer.Aruande_myygitulu_paring();
         keha2.value = new eu.x_road.arireg.producer.Aruande_myygitulu_vastus();
+    }
+
+    public void toimikuDokument_v1(eu.x_road.arireg.producer.Toimiku_dokument_v1_Request keha, eu.x_road.arireg.producer.holders.Toimiku_dokument_v1_RequestHolder paring, eu.x_road.arireg.producer.holders.Toimiku_dokument_v1_VastusHolder keha2) throws java.rmi.RemoteException {
+        paring.value = new eu.x_road.arireg.producer.Toimiku_dokument_v1_Request();
+        keha2.value = new eu.x_road.arireg.producer.Toimiku_dokument_v1_Vastus();
     }
 
     public void arikeelud_v1(eu.x_road.arireg.producer.Paringarikeelud_paring keha, eu.x_road.arireg.producer.holders.Paringarikeelud_paringHolder paring, eu.x_road.arireg.producer.holders.Paringarikeelud_vastusHolder keha2) throws java.rmi.RemoteException {
@@ -261,11 +271,6 @@ public class AriregXteeImpl implements eu.x_road.arireg.producer.AriregXtee{
     public void toimikuDokumendid_v1(eu.x_road.arireg.producer.Toimiku_dokumendidRequest keha, eu.x_road.arireg.producer.holders.Toimiku_dokumendidRequestHolder paring, eu.x_road.arireg.producer.holders.Toimiku_dokumendidVastusHolder keha2) throws java.rmi.RemoteException {
         paring.value = new eu.x_road.arireg.producer.Toimiku_dokumendidRequest();
         keha2.value = new eu.x_road.arireg.producer.Toimiku_dokumendidVastus();
-    }
-
-    public void toimikuDokument_v1(eu.x_road.arireg.producer.Toimiku_dokument_v2_Request keha, eu.x_road.arireg.producer.holders.Toimiku_dokument_v2_RequestHolder paring, eu.x_road.arireg.producer.holders.Toimiku_dokument_v2_VastusHolder keha2) throws java.rmi.RemoteException {
-        paring.value = new eu.x_road.arireg.producer.Toimiku_dokument_v2_Request();
-        keha2.value = new eu.x_road.arireg.producer.Toimiku_dokument_v2_Vastus();
     }
 
     public void transactionStatement(eu.x_road.arireg.producer.MokaQuery keha, eu.x_road.arireg.producer.holders.MokaQueryHolder paring, eu.x_road.arireg.producer.holders.MokaResponseHolder keha2) throws java.rmi.RemoteException {

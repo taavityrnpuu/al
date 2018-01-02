@@ -28,6 +28,18 @@ public class RKOARRAsutused_v1_Asutus  implements java.io.Serializable {
 
     private java.math.BigInteger aadress_adr_id;
 
+    private java.lang.String aadress_ads_oid;
+
+    private java.lang.String aadress_ads_normaliseeritud_taisaadress;
+
+    private java.lang.String aadress_adob_id;
+
+    private java.lang.String aadress_koodaadress;
+
+    private java.lang.String aadress_ads_normaliseeritud_taisaadress_tapsustus;
+
+    private java.lang.String aadress_tyyp;
+
     private java.lang.String evreg_kood;
 
     private eu.x_road.arireg.producer.RKOARRAsutused_v1_KOAS[] korgemalseisev_asutus;
@@ -48,6 +60,12 @@ public class RKOARRAsutused_v1_Asutus  implements java.io.Serializable {
            java.lang.String aadress_tekst,
            java.lang.String aadress_postiindeks,
            java.math.BigInteger aadress_adr_id,
+           java.lang.String aadress_ads_oid,
+           java.lang.String aadress_ads_normaliseeritud_taisaadress,
+           java.lang.String aadress_adob_id,
+           java.lang.String aadress_koodaadress,
+           java.lang.String aadress_ads_normaliseeritud_taisaadress_tapsustus,
+           java.lang.String aadress_tyyp,
            java.lang.String evreg_kood,
            eu.x_road.arireg.producer.RKOARRAsutused_v1_KOAS[] korgemalseisev_asutus,
            eu.x_road.arireg.producer.RKOARRAsutused_v1_Sidevahend[] sidevahend) {
@@ -61,6 +79,12 @@ public class RKOARRAsutused_v1_Asutus  implements java.io.Serializable {
            this.aadress_tekst = aadress_tekst;
            this.aadress_postiindeks = aadress_postiindeks;
            this.aadress_adr_id = aadress_adr_id;
+           this.aadress_ads_oid = aadress_ads_oid;
+           this.aadress_ads_normaliseeritud_taisaadress = aadress_ads_normaliseeritud_taisaadress;
+           this.aadress_adob_id = aadress_adob_id;
+           this.aadress_koodaadress = aadress_koodaadress;
+           this.aadress_ads_normaliseeritud_taisaadress_tapsustus = aadress_ads_normaliseeritud_taisaadress_tapsustus;
+           this.aadress_tyyp = aadress_tyyp;
            this.evreg_kood = evreg_kood;
            this.korgemalseisev_asutus = korgemalseisev_asutus;
            this.sidevahend = sidevahend;
@@ -268,6 +292,126 @@ public class RKOARRAsutused_v1_Asutus  implements java.io.Serializable {
 
 
     /**
+     * Gets the aadress_ads_oid value for this RKOARRAsutused_v1_Asutus.
+     * 
+     * @return aadress_ads_oid
+     */
+    public java.lang.String getAadress_ads_oid() {
+        return aadress_ads_oid;
+    }
+
+
+    /**
+     * Sets the aadress_ads_oid value for this RKOARRAsutused_v1_Asutus.
+     * 
+     * @param aadress_ads_oid
+     */
+    public void setAadress_ads_oid(java.lang.String aadress_ads_oid) {
+        this.aadress_ads_oid = aadress_ads_oid;
+    }
+
+
+    /**
+     * Gets the aadress_ads_normaliseeritud_taisaadress value for this RKOARRAsutused_v1_Asutus.
+     * 
+     * @return aadress_ads_normaliseeritud_taisaadress
+     */
+    public java.lang.String getAadress_ads_normaliseeritud_taisaadress() {
+        return aadress_ads_normaliseeritud_taisaadress;
+    }
+
+
+    /**
+     * Sets the aadress_ads_normaliseeritud_taisaadress value for this RKOARRAsutused_v1_Asutus.
+     * 
+     * @param aadress_ads_normaliseeritud_taisaadress
+     */
+    public void setAadress_ads_normaliseeritud_taisaadress(java.lang.String aadress_ads_normaliseeritud_taisaadress) {
+        this.aadress_ads_normaliseeritud_taisaadress = aadress_ads_normaliseeritud_taisaadress;
+    }
+
+
+    /**
+     * Gets the aadress_adob_id value for this RKOARRAsutused_v1_Asutus.
+     * 
+     * @return aadress_adob_id
+     */
+    public java.lang.String getAadress_adob_id() {
+        return aadress_adob_id;
+    }
+
+
+    /**
+     * Sets the aadress_adob_id value for this RKOARRAsutused_v1_Asutus.
+     * 
+     * @param aadress_adob_id
+     */
+    public void setAadress_adob_id(java.lang.String aadress_adob_id) {
+        this.aadress_adob_id = aadress_adob_id;
+    }
+
+
+    /**
+     * Gets the aadress_koodaadress value for this RKOARRAsutused_v1_Asutus.
+     * 
+     * @return aadress_koodaadress
+     */
+    public java.lang.String getAadress_koodaadress() {
+        return aadress_koodaadress;
+    }
+
+
+    /**
+     * Sets the aadress_koodaadress value for this RKOARRAsutused_v1_Asutus.
+     * 
+     * @param aadress_koodaadress
+     */
+    public void setAadress_koodaadress(java.lang.String aadress_koodaadress) {
+        this.aadress_koodaadress = aadress_koodaadress;
+    }
+
+
+    /**
+     * Gets the aadress_ads_normaliseeritud_taisaadress_tapsustus value for this RKOARRAsutused_v1_Asutus.
+     * 
+     * @return aadress_ads_normaliseeritud_taisaadress_tapsustus
+     */
+    public java.lang.String getAadress_ads_normaliseeritud_taisaadress_tapsustus() {
+        return aadress_ads_normaliseeritud_taisaadress_tapsustus;
+    }
+
+
+    /**
+     * Sets the aadress_ads_normaliseeritud_taisaadress_tapsustus value for this RKOARRAsutused_v1_Asutus.
+     * 
+     * @param aadress_ads_normaliseeritud_taisaadress_tapsustus
+     */
+    public void setAadress_ads_normaliseeritud_taisaadress_tapsustus(java.lang.String aadress_ads_normaliseeritud_taisaadress_tapsustus) {
+        this.aadress_ads_normaliseeritud_taisaadress_tapsustus = aadress_ads_normaliseeritud_taisaadress_tapsustus;
+    }
+
+
+    /**
+     * Gets the aadress_tyyp value for this RKOARRAsutused_v1_Asutus.
+     * 
+     * @return aadress_tyyp
+     */
+    public java.lang.String getAadress_tyyp() {
+        return aadress_tyyp;
+    }
+
+
+    /**
+     * Sets the aadress_tyyp value for this RKOARRAsutused_v1_Asutus.
+     * 
+     * @param aadress_tyyp
+     */
+    public void setAadress_tyyp(java.lang.String aadress_tyyp) {
+        this.aadress_tyyp = aadress_tyyp;
+    }
+
+
+    /**
      * Gets the evreg_kood value for this RKOARRAsutused_v1_Asutus.
      * 
      * @return evreg_kood
@@ -384,6 +528,24 @@ public class RKOARRAsutused_v1_Asutus  implements java.io.Serializable {
             ((this.aadress_adr_id==null && other.getAadress_adr_id()==null) || 
              (this.aadress_adr_id!=null &&
               this.aadress_adr_id.equals(other.getAadress_adr_id()))) &&
+            ((this.aadress_ads_oid==null && other.getAadress_ads_oid()==null) || 
+             (this.aadress_ads_oid!=null &&
+              this.aadress_ads_oid.equals(other.getAadress_ads_oid()))) &&
+            ((this.aadress_ads_normaliseeritud_taisaadress==null && other.getAadress_ads_normaliseeritud_taisaadress()==null) || 
+             (this.aadress_ads_normaliseeritud_taisaadress!=null &&
+              this.aadress_ads_normaliseeritud_taisaadress.equals(other.getAadress_ads_normaliseeritud_taisaadress()))) &&
+            ((this.aadress_adob_id==null && other.getAadress_adob_id()==null) || 
+             (this.aadress_adob_id!=null &&
+              this.aadress_adob_id.equals(other.getAadress_adob_id()))) &&
+            ((this.aadress_koodaadress==null && other.getAadress_koodaadress()==null) || 
+             (this.aadress_koodaadress!=null &&
+              this.aadress_koodaadress.equals(other.getAadress_koodaadress()))) &&
+            ((this.aadress_ads_normaliseeritud_taisaadress_tapsustus==null && other.getAadress_ads_normaliseeritud_taisaadress_tapsustus()==null) || 
+             (this.aadress_ads_normaliseeritud_taisaadress_tapsustus!=null &&
+              this.aadress_ads_normaliseeritud_taisaadress_tapsustus.equals(other.getAadress_ads_normaliseeritud_taisaadress_tapsustus()))) &&
+            ((this.aadress_tyyp==null && other.getAadress_tyyp()==null) || 
+             (this.aadress_tyyp!=null &&
+              this.aadress_tyyp.equals(other.getAadress_tyyp()))) &&
             ((this.evreg_kood==null && other.getEvreg_kood()==null) || 
              (this.evreg_kood!=null &&
               this.evreg_kood.equals(other.getEvreg_kood()))) &&
@@ -433,6 +595,24 @@ public class RKOARRAsutused_v1_Asutus  implements java.io.Serializable {
         }
         if (getAadress_adr_id() != null) {
             _hashCode += getAadress_adr_id().hashCode();
+        }
+        if (getAadress_ads_oid() != null) {
+            _hashCode += getAadress_ads_oid().hashCode();
+        }
+        if (getAadress_ads_normaliseeritud_taisaadress() != null) {
+            _hashCode += getAadress_ads_normaliseeritud_taisaadress().hashCode();
+        }
+        if (getAadress_adob_id() != null) {
+            _hashCode += getAadress_adob_id().hashCode();
+        }
+        if (getAadress_koodaadress() != null) {
+            _hashCode += getAadress_koodaadress().hashCode();
+        }
+        if (getAadress_ads_normaliseeritud_taisaadress_tapsustus() != null) {
+            _hashCode += getAadress_ads_normaliseeritud_taisaadress_tapsustus().hashCode();
+        }
+        if (getAadress_tyyp() != null) {
+            _hashCode += getAadress_tyyp().hashCode();
         }
         if (getEvreg_kood() != null) {
             _hashCode += getEvreg_kood().hashCode();

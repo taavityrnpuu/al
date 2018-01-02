@@ -183,6 +183,12 @@ public class EnterpriseRegisterQueryImpl {
 					else if(side.getLiik().equals("EMAIL")){
 						cti.setEmail(side.getSisu());
 					}
+					else if(side.getLiik().equals("TEL") && (cti.getPhone() == null || cti.getPhone().equals(""))){
+						cti.setPhone(side.getSisu());
+					}
+					else if(side.getLiik().equals("FAX")){
+						cti.setFax(side.getSisu());
+					}
 					else{
 						System.out.println("- - - - - - - - - - TUNDMATU LIIK: "+side.getLiik());
 					}

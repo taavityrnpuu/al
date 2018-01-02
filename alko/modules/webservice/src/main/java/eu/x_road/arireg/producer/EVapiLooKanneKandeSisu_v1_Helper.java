@@ -27,6 +27,13 @@ public class EVapiLooKanneKandeSisu_v1_Helper {
         elemField.setNillable(false);
         typeDesc.addFieldDesc(elemField);
         elemField = new org.apache.axis.description.ElementDesc();
+        elemField.setFieldName("asukoht_pohikirjas");
+        elemField.setXmlName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "asukoht_pohikirjas"));
+        elemField.setXmlType(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "EVapiLooKanneAadress_v1"));
+        elemField.setMinOccurs(0);
+        elemField.setNillable(false);
+        typeDesc.addFieldDesc(elemField);
+        elemField = new org.apache.axis.description.ElementDesc();
         elemField.setFieldName("pohitegevusala");
         elemField.setXmlName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "pohitegevusala"));
         elemField.setXmlType(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "EVapiLooKanneTegevusala_v1"));

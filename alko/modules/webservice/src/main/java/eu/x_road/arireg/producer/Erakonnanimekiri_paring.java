@@ -10,12 +10,16 @@ package eu.x_road.arireg.producer;
 public class Erakonnanimekiri_paring  implements java.io.Serializable {
     private java.math.BigInteger kood;
 
+    private java.math.BigInteger lehekylg;
+
     public Erakonnanimekiri_paring() {
     }
 
     public Erakonnanimekiri_paring(
-           java.math.BigInteger kood) {
+           java.math.BigInteger kood,
+           java.math.BigInteger lehekylg) {
            this.kood = kood;
+           this.lehekylg = lehekylg;
     }
 
 
@@ -38,6 +42,26 @@ public class Erakonnanimekiri_paring  implements java.io.Serializable {
         this.kood = kood;
     }
 
+
+    /**
+     * Gets the lehekylg value for this Erakonnanimekiri_paring.
+     * 
+     * @return lehekylg
+     */
+    public java.math.BigInteger getLehekylg() {
+        return lehekylg;
+    }
+
+
+    /**
+     * Sets the lehekylg value for this Erakonnanimekiri_paring.
+     * 
+     * @param lehekylg
+     */
+    public void setLehekylg(java.math.BigInteger lehekylg) {
+        this.lehekylg = lehekylg;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof Erakonnanimekiri_paring)) return false;
@@ -52,7 +76,10 @@ public class Erakonnanimekiri_paring  implements java.io.Serializable {
         _equals = true && 
             ((this.kood==null && other.getKood()==null) || 
              (this.kood!=null &&
-              this.kood.equals(other.getKood())));
+              this.kood.equals(other.getKood()))) &&
+            ((this.lehekylg==null && other.getLehekylg()==null) || 
+             (this.lehekylg!=null &&
+              this.lehekylg.equals(other.getLehekylg())));
         __equalsCalc = null;
         return _equals;
     }
@@ -66,6 +93,9 @@ public class Erakonnanimekiri_paring  implements java.io.Serializable {
         int _hashCode = 1;
         if (getKood() != null) {
             _hashCode += getKood().hashCode();
+        }
+        if (getLehekylg() != null) {
+            _hashCode += getLehekylg().hashCode();
         }
         __hashCodeCalc = false;
         return _hashCode;

@@ -8,6 +8,8 @@
 package eu.x_road.arireg.producer;
 
 public class Paringesindus_v4_isik  implements java.io.Serializable {
+    private java.lang.String isiku_liik;
+
     private java.lang.String fyysilise_isiku_eesnimi;
 
     private java.lang.String fyysilise_isiku_perenimi;
@@ -30,6 +32,7 @@ public class Paringesindus_v4_isik  implements java.io.Serializable {
     }
 
     public Paringesindus_v4_isik(
+           java.lang.String isiku_liik,
            java.lang.String fyysilise_isiku_eesnimi,
            java.lang.String fyysilise_isiku_perenimi,
            java.lang.String fyysilise_isiku_kood,
@@ -39,6 +42,7 @@ public class Paringesindus_v4_isik  implements java.io.Serializable {
            java.lang.String fyysilise_isiku_roll,
            java.lang.String fyysilise_isiku_roll_tekstina,
            java.lang.String ainuesindusoigus_olemas) {
+           this.isiku_liik = isiku_liik;
            this.fyysilise_isiku_eesnimi = fyysilise_isiku_eesnimi;
            this.fyysilise_isiku_perenimi = fyysilise_isiku_perenimi;
            this.fyysilise_isiku_kood = fyysilise_isiku_kood;
@@ -48,6 +52,26 @@ public class Paringesindus_v4_isik  implements java.io.Serializable {
            this.fyysilise_isiku_roll = fyysilise_isiku_roll;
            this.fyysilise_isiku_roll_tekstina = fyysilise_isiku_roll_tekstina;
            this.ainuesindusoigus_olemas = ainuesindusoigus_olemas;
+    }
+
+
+    /**
+     * Gets the isiku_liik value for this Paringesindus_v4_isik.
+     * 
+     * @return isiku_liik
+     */
+    public java.lang.String getIsiku_liik() {
+        return isiku_liik;
+    }
+
+
+    /**
+     * Sets the isiku_liik value for this Paringesindus_v4_isik.
+     * 
+     * @param isiku_liik
+     */
+    public void setIsiku_liik(java.lang.String isiku_liik) {
+        this.isiku_liik = isiku_liik;
     }
 
 
@@ -242,6 +266,9 @@ public class Paringesindus_v4_isik  implements java.io.Serializable {
         __equalsCalc = obj;
         boolean _equals;
         _equals = true && 
+            ((this.isiku_liik==null && other.getIsiku_liik()==null) || 
+             (this.isiku_liik!=null &&
+              this.isiku_liik.equals(other.getIsiku_liik()))) &&
             ((this.fyysilise_isiku_eesnimi==null && other.getFyysilise_isiku_eesnimi()==null) || 
              (this.fyysilise_isiku_eesnimi!=null &&
               this.fyysilise_isiku_eesnimi.equals(other.getFyysilise_isiku_eesnimi()))) &&
@@ -280,6 +307,9 @@ public class Paringesindus_v4_isik  implements java.io.Serializable {
         }
         __hashCodeCalc = true;
         int _hashCode = 1;
+        if (getIsiku_liik() != null) {
+            _hashCode += getIsiku_liik().hashCode();
+        }
         if (getFyysilise_isiku_eesnimi() != null) {
             _hashCode += getFyysilise_isiku_eesnimi().hashCode();
         }

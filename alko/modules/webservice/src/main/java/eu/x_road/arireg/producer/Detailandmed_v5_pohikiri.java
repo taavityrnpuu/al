@@ -24,6 +24,8 @@ public class Detailandmed_v5_pohikiri  implements java.io.Serializable {
 
     private java.lang.String selgitus;
 
+    private boolean sisaldab_erioigusi;
+
     private java.util.Date algus_kpv;
 
     private java.util.Date lopp_kpv;
@@ -40,6 +42,7 @@ public class Detailandmed_v5_pohikiri  implements java.io.Serializable {
            java.util.Date kinnitamise_kpv,
            java.util.Date muutmise_kpv,
            java.lang.String selgitus,
+           boolean sisaldab_erioigusi,
            java.util.Date algus_kpv,
            java.util.Date lopp_kpv) {
            this.kirje_id = kirje_id;
@@ -50,6 +53,7 @@ public class Detailandmed_v5_pohikiri  implements java.io.Serializable {
            this.kinnitamise_kpv = kinnitamise_kpv;
            this.muutmise_kpv = muutmise_kpv;
            this.selgitus = selgitus;
+           this.sisaldab_erioigusi = sisaldab_erioigusi;
            this.algus_kpv = algus_kpv;
            this.lopp_kpv = lopp_kpv;
     }
@@ -216,6 +220,26 @@ public class Detailandmed_v5_pohikiri  implements java.io.Serializable {
 
 
     /**
+     * Gets the sisaldab_erioigusi value for this Detailandmed_v5_pohikiri.
+     * 
+     * @return sisaldab_erioigusi
+     */
+    public boolean isSisaldab_erioigusi() {
+        return sisaldab_erioigusi;
+    }
+
+
+    /**
+     * Sets the sisaldab_erioigusi value for this Detailandmed_v5_pohikiri.
+     * 
+     * @param sisaldab_erioigusi
+     */
+    public void setSisaldab_erioigusi(boolean sisaldab_erioigusi) {
+        this.sisaldab_erioigusi = sisaldab_erioigusi;
+    }
+
+
+    /**
      * Gets the algus_kpv value for this Detailandmed_v5_pohikiri.
      * 
      * @return algus_kpv
@@ -290,6 +314,7 @@ public class Detailandmed_v5_pohikiri  implements java.io.Serializable {
             ((this.selgitus==null && other.getSelgitus()==null) || 
              (this.selgitus!=null &&
               this.selgitus.equals(other.getSelgitus()))) &&
+            this.sisaldab_erioigusi == other.isSisaldab_erioigusi() &&
             ((this.algus_kpv==null && other.getAlgus_kpv()==null) || 
              (this.algus_kpv!=null &&
               this.algus_kpv.equals(other.getAlgus_kpv()))) &&
@@ -331,6 +356,7 @@ public class Detailandmed_v5_pohikiri  implements java.io.Serializable {
         if (getSelgitus() != null) {
             _hashCode += getSelgitus().hashCode();
         }
+        _hashCode += (isSisaldab_erioigusi() ? Boolean.TRUE : Boolean.FALSE).hashCode();
         if (getAlgus_kpv() != null) {
             _hashCode += getAlgus_kpv().hashCode();
         }

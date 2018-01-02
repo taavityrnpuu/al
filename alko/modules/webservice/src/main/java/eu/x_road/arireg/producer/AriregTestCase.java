@@ -1107,7 +1107,7 @@ public class AriregTestCase extends junit.framework.TestCase {
         binding.setTimeout(60000);
 
         // Test operation
-        binding.toimikuDokument_v1(new eu.x_road.arireg.producer.Toimiku_dokument_v2_Request(), new eu.x_road.arireg.producer.holders.Toimiku_dokument_v2_RequestHolder(), new eu.x_road.arireg.producer.holders.Toimiku_dokument_v2_VastusHolder());
+        //binding.toimikuDokument_v1(new eu.x_road.arireg.producer.Toimiku_dokument_v2_Request(), new eu.x_road.arireg.producer.holders.Toimiku_dokument_v2_RequestHolder(), new eu.x_road.arireg.producer.holders.Toimiku_dokument_v2_VastusHolder());
         // TBD - validate results
     }
 

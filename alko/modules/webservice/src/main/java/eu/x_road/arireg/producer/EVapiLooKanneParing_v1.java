@@ -39,6 +39,9 @@ public class EVapiLooKanneParing_v1  implements java.io.Serializable {
     /* Siia alla tuleb kande sisu */
     private eu.x_road.arireg.producer.EVapiLooKanneKandeSisu_v1 kande_sisu;
 
+    /* Siia pannakse lisadokumendid */
+    private eu.x_road.arireg.producer.EVapiLooKannedokumentType_v1[] dokumendid;
+
     public EVapiLooKanneParing_v1() {
     }
 
@@ -51,7 +54,8 @@ public class EVapiLooKanneParing_v1  implements java.io.Serializable {
            java.lang.String esitaja_nimi,
            java.lang.String esitaja_kood,
            java.lang.String viitenumber_loiv,
-           eu.x_road.arireg.producer.EVapiLooKanneKandeSisu_v1 kande_sisu) {
+           eu.x_road.arireg.producer.EVapiLooKanneKandeSisu_v1 kande_sisu,
+           eu.x_road.arireg.producer.EVapiLooKannedokumentType_v1[] dokumendid) {
            this.partner_auth = partner_auth;
            this.lisa_inglk_dokumendid = lisa_inglk_dokumendid;
            this.kande_id = kande_id;
@@ -61,6 +65,7 @@ public class EVapiLooKanneParing_v1  implements java.io.Serializable {
            this.esitaja_kood = esitaja_kood;
            this.viitenumber_loiv = viitenumber_loiv;
            this.kande_sisu = kande_sisu;
+           this.dokumendid = dokumendid;
     }
 
 
@@ -251,6 +256,34 @@ public class EVapiLooKanneParing_v1  implements java.io.Serializable {
         this.kande_sisu = kande_sisu;
     }
 
+
+    /**
+     * Gets the dokumendid value for this EVapiLooKanneParing_v1.
+     * 
+     * @return dokumendid   * Siia pannakse lisadokumendid
+     */
+    public eu.x_road.arireg.producer.EVapiLooKannedokumentType_v1[] getDokumendid() {
+        return dokumendid;
+    }
+
+
+    /**
+     * Sets the dokumendid value for this EVapiLooKanneParing_v1.
+     * 
+     * @param dokumendid   * Siia pannakse lisadokumendid
+     */
+    public void setDokumendid(eu.x_road.arireg.producer.EVapiLooKannedokumentType_v1[] dokumendid) {
+        this.dokumendid = dokumendid;
+    }
+
+    public eu.x_road.arireg.producer.EVapiLooKannedokumentType_v1 getDokumendid(int i) {
+        return this.dokumendid[i];
+    }
+
+    public void setDokumendid(int i, eu.x_road.arireg.producer.EVapiLooKannedokumentType_v1 _value) {
+        this.dokumendid[i] = _value;
+    }
+
     private java.lang.Object __equalsCalc = null;
     public synchronized boolean equals(java.lang.Object obj) {
         if (!(obj instanceof EVapiLooKanneParing_v1)) return false;
@@ -289,7 +322,10 @@ public class EVapiLooKanneParing_v1  implements java.io.Serializable {
               this.viitenumber_loiv.equals(other.getViitenumber_loiv()))) &&
             ((this.kande_sisu==null && other.getKande_sisu()==null) || 
              (this.kande_sisu!=null &&
-              this.kande_sisu.equals(other.getKande_sisu())));
+              this.kande_sisu.equals(other.getKande_sisu()))) &&
+            ((this.dokumendid==null && other.getDokumendid()==null) || 
+             (this.dokumendid!=null &&
+              java.util.Arrays.equals(this.dokumendid, other.getDokumendid())));
         __equalsCalc = null;
         return _equals;
     }
@@ -327,6 +363,17 @@ public class EVapiLooKanneParing_v1  implements java.io.Serializable {
         }
         if (getKande_sisu() != null) {
             _hashCode += getKande_sisu().hashCode();
+        }
+        if (getDokumendid() != null) {
+            for (int i=0;
+                 i<java.lang.reflect.Array.getLength(getDokumendid());
+                 i++) {
+                java.lang.Object obj = java.lang.reflect.Array.get(getDokumendid(), i);
+                if (obj != null &&
+                    !obj.getClass().isArray()) {
+                    _hashCode += obj.hashCode();
+                }
+            }
         }
         __hashCodeCalc = false;
         return _hashCode;

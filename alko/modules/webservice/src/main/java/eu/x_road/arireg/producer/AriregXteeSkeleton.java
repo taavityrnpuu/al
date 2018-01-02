@@ -148,6 +148,19 @@ public class AriregXteeSkeleton implements eu.x_road.arireg.producer.AriregXtee,
         }
         ((java.util.List)_myOperations.get("esindus_v1")).add(_oper);
         _params = new org.apache.axis.description.ParameterDesc [] {
+            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_paring"), eu.x_road.arireg.producer.Paringesindus_v6_paring.class, false, false), 
+            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_paring"), eu.x_road.arireg.producer.Paringesindus_v6_paring.class, false, false), 
+            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringesindus_v6_vastus"), eu.x_road.arireg.producer.Paringesindus_v6_vastus.class, false, false), 
+        };
+        _oper = new org.apache.axis.description.OperationDesc("esindus_v2", _params, null);
+        _oper.setElementQName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "esindus_v2"));
+        _oper.setSoapAction("");
+        _myOperationsList.add(_oper);
+        if (_myOperations.get("esindus_v2") == null) {
+            _myOperations.put("esindus_v2", new java.util.ArrayList());
+        }
+        ((java.util.List)_myOperations.get("esindus_v2")).add(_oper);
+        _params = new org.apache.axis.description.ParameterDesc [] {
             new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "klassifikaatorid_paring"), eu.x_road.arireg.producer.Klassifikaatorid_paring.class, false, false), 
             new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "klassifikaatorid_paring"), eu.x_road.arireg.producer.Klassifikaatorid_paring.class, false, false), 
             new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "klassifikaatorid_vastus"), eu.x_road.arireg.producer.Klassifikaator[].class, false, false), 
@@ -251,6 +264,19 @@ public class AriregXteeSkeleton implements eu.x_road.arireg.producer.AriregXtee,
             _myOperations.put("aruandeMyygituluEMTAKjargi_v1", new java.util.ArrayList());
         }
         ((java.util.List)_myOperations.get("aruandeMyygituluEMTAKjargi_v1")).add(_oper);
+        _params = new org.apache.axis.description.ParameterDesc [] {
+            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v1_Request"), eu.x_road.arireg.producer.Toimiku_dokument_v1_Request.class, false, false), 
+            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v1_Request"), eu.x_road.arireg.producer.Toimiku_dokument_v1_Request.class, false, false), 
+            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v1_Vastus"), eu.x_road.arireg.producer.Toimiku_dokument_v1_Vastus.class, false, false), 
+        };
+        _oper = new org.apache.axis.description.OperationDesc("toimikuDokument_v1", _params, null);
+        _oper.setElementQName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimikuDokument_v1"));
+        _oper.setSoapAction("");
+        _myOperationsList.add(_oper);
+        if (_myOperations.get("toimikuDokument_v1") == null) {
+            _myOperations.put("toimikuDokument_v1", new java.util.ArrayList());
+        }
+        ((java.util.List)_myOperations.get("toimikuDokument_v1")).add(_oper);
         _params = new org.apache.axis.description.ParameterDesc [] {
             new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringarikeelud_paring"), eu.x_road.arireg.producer.Paringarikeelud_paring.class, false, false), 
             new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paringarikeelud_paring"), eu.x_road.arireg.producer.Paringarikeelud_paring.class, false, false), 
@@ -694,19 +720,6 @@ public class AriregXteeSkeleton implements eu.x_road.arireg.producer.AriregXtee,
         }
         ((java.util.List)_myOperations.get("toimikuDokumendid_v1")).add(_oper);
         _params = new org.apache.axis.description.ParameterDesc [] {
-            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v2_Request"), eu.x_road.arireg.producer.Toimiku_dokument_v2_Request.class, false, false), 
-            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v2_Request"), eu.x_road.arireg.producer.Toimiku_dokument_v2_Request.class, false, false), 
-            new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimiku_dokument_v2_Vastus"), eu.x_road.arireg.producer.Toimiku_dokument_v2_Vastus.class, false, false), 
-        };
-        _oper = new org.apache.axis.description.OperationDesc("toimikuDokument_v1", _params, null);
-        _oper.setElementQName(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "toimikuDokument_v1"));
-        _oper.setSoapAction("");
-        _myOperationsList.add(_oper);
-        if (_myOperations.get("toimikuDokument_v1") == null) {
-            _myOperations.put("toimikuDokument_v1", new java.util.ArrayList());
-        }
-        ((java.util.List)_myOperations.get("toimikuDokument_v1")).add(_oper);
-        _params = new org.apache.axis.description.ParameterDesc [] {
             new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.IN, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "MokaQuery"), eu.x_road.arireg.producer.MokaQuery.class, false, false), 
             new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "paring"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "MokaQuery"), eu.x_road.arireg.producer.MokaQuery.class, false, false), 
             new org.apache.axis.description.ParameterDesc(new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "keha"), org.apache.axis.description.ParameterDesc.OUT, new javax.xml.namespace.QName("http://arireg.x-road.eu/producer/", "MokaResponse"), eu.x_road.arireg.producer.MokaResponse.class, false, false), 
@@ -942,6 +955,11 @@ public class AriregXteeSkeleton implements eu.x_road.arireg.producer.AriregXtee,
         impl.esindus_v1(keha, paring, keha2);
     }
 
+    public void esindus_v2(eu.x_road.arireg.producer.Paringesindus_v6_paring keha, eu.x_road.arireg.producer.holders.Paringesindus_v6_paringHolder paring, eu.x_road.arireg.producer.holders.Paringesindus_v6_vastusHolder keha2) throws java.rmi.RemoteException
+    {
+        impl.esindus_v2(keha, paring, keha2);
+    }
+
     public void klassifikaatorid_v1(eu.x_road.arireg.producer.Klassifikaatorid_paring keha, eu.x_road.arireg.producer.holders.Klassifikaatorid_paringHolder paring, eu.x_road.arireg.producer.holders.Klassifikaatorid_vastusHolder keha2) throws java.rmi.RemoteException
     {
         impl.klassifikaatorid_v1(keha, paring, keha2);
@@ -980,6 +998,11 @@ public class AriregXteeSkeleton implements eu.x_road.arireg.producer.AriregXtee,
     public void aruandeMyygituluEMTAKjargi_v1(eu.x_road.arireg.producer.Aruande_myygitulu_paring keha, eu.x_road.arireg.producer.holders.Aruande_myygitulu_paringHolder paring, eu.x_road.arireg.producer.holders.Aruande_myygitulu_vastusHolder keha2) throws java.rmi.RemoteException
     {
         impl.aruandeMyygituluEMTAKjargi_v1(keha, paring, keha2);
+    }
+
+    public void toimikuDokument_v1(eu.x_road.arireg.producer.Toimiku_dokument_v1_Request keha, eu.x_road.arireg.producer.holders.Toimiku_dokument_v1_RequestHolder paring, eu.x_road.arireg.producer.holders.Toimiku_dokument_v1_VastusHolder keha2) throws java.rmi.RemoteException
+    {
+        impl.toimikuDokument_v1(keha, paring, keha2);
     }
 
     public void arikeelud_v1(eu.x_road.arireg.producer.Paringarikeelud_paring keha, eu.x_road.arireg.producer.holders.Paringarikeelud_paringHolder paring, eu.x_road.arireg.producer.holders.Paringarikeelud_vastusHolder keha2) throws java.rmi.RemoteException
@@ -1150,11 +1173,6 @@ public class AriregXteeSkeleton implements eu.x_road.arireg.producer.AriregXtee,
     public void toimikuDokumendid_v1(eu.x_road.arireg.producer.Toimiku_dokumendidRequest keha, eu.x_road.arireg.producer.holders.Toimiku_dokumendidRequestHolder paring, eu.x_road.arireg.producer.holders.Toimiku_dokumendidVastusHolder keha2) throws java.rmi.RemoteException
     {
         impl.toimikuDokumendid_v1(keha, paring, keha2);
-    }
-
-    public void toimikuDokument_v1(eu.x_road.arireg.producer.Toimiku_dokument_v2_Request keha, eu.x_road.arireg.producer.holders.Toimiku_dokument_v2_RequestHolder paring, eu.x_road.arireg.producer.holders.Toimiku_dokument_v2_VastusHolder keha2) throws java.rmi.RemoteException
-    {
-        impl.toimikuDokument_v1(keha, paring, keha2);
     }
 
     public void transactionStatement(eu.x_road.arireg.producer.MokaQuery keha, eu.x_road.arireg.producer.holders.MokaQueryHolder paring, eu.x_road.arireg.producer.holders.MokaResponseHolder keha2) throws java.rmi.RemoteException
