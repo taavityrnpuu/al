@@ -76,24 +76,21 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		boolean onIsikukood = false;
 		boolean fromCas = false;
 		
-		if(userName.startsWith("{CAS}")){
+		if(userName.startsWith("{ENT}")){
+			onIsikukood = true;
+			userName = userName.replace("{ENT}", "");
+		}
+		
+		if(userName.indexOf("{FROM_CAS}") > -1){
 			fromCas = true;
-			userName = userName.replace("{CAS}", "");
+			userName = userName.replace("{FROM_CAS}", "");
 		}
-
-		ResultSet rs = PostgreUtils.query("SELECT 1 FROM person WHERE reg_id = '"+userName.replaceAll("'", "")+"'");
-		try{
-			while(rs.next()){
-				onIsikukood = true;
-			}
-		}
-		catch(Exception xc){
-			xc.printStackTrace();
-		}
-
+		
+		LOGGER.info("fromCas: " + fromCas+", username: "+userName);
+		
 		if(onIsikukood){
 			if(fromCas){
-				userName = "{CAS}"+userName;
+				userName = "{FROM_CAS}"+userName;
 			}
 			return loadUserByRegistrationId(userName);
 		}
@@ -166,9 +163,13 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		User details = null;
 		boolean fromCas = false;
 		
-		if(idCode.startsWith("{CAS}")){
+		if(idCode.startsWith("{ENT}")){
+			idCode = idCode.replace("{ENT}", "");
+		}
+		
+		if(idCode.indexOf("{FROM_CAS}") > -1){
 			fromCas = true;
-			idCode = idCode.replace("{CAS}", "");
+			idCode = idCode.replace("{FROM_CAS}", "");
 		}
 
 		// AlkoUserDetails ad = new AlkoUserDetails("aaa", "bbb",

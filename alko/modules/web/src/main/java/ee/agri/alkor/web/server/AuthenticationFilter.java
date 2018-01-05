@@ -59,9 +59,11 @@ public class AuthenticationFilter extends AuthenticationProcessingFilter {
 			
 			request.getSession().setAttribute("user_ik", idCode);
 			
+			/*
 			if(request.getSession().getAttribute("fromCas") != null && request.getSession().getAttribute("fromCas").equals("1")){
-				username = "{CAS}"+username;
+				username = "{FROM_CAS}"+username;
 			}
+			*/
 			
 			authRequest = new UsernamePasswordAuthenticationToken(username, password);
 			request.getSession().setAttribute(ACEGI_SECURITY_LAST_USERNAME_KEY, username);
@@ -75,8 +77,11 @@ public class AuthenticationFilter extends AuthenticationProcessingFilter {
 				String idCode = (String) request.getSession().getAttribute("user_ik");
 				String regCode = (String) request.getSession().getAttribute("login_reg_code");
 				password = getMD5("qcy3zev"); // EIT puhul
-				String name = "EIT"; boolean isVTA = false;
-
+				String name = "EIT"; boolean isVTA = false; boolean enterprise = true;
+				System.out.println("regCode: "+regCode);
+				
+				LOGGER.info("regCode: "+regCode);
+				
 				if(regCode == null || regCode.equals("") || regCode.equals("null")){
 
 					ResultSet rs = PostgreUtils.query("SELECT name, password FROM sys_user WHERE person_id = (SELECT id FROM person WHERE reg_id = '"+idCode.replaceAll("'", "")+"' LIMIT 1)");
@@ -88,22 +93,31 @@ public class AuthenticationFilter extends AuthenticationProcessingFilter {
 						}
 					}
 					catch(Exception xc){
-						xc.printStackTrace();
+						//xc.printStackTrace();
 					}
+					
+					enterprise = false;
 				}
 
 				UserAuthlog ua = new UserAuthlog(idCode, name);
+				ua.checkAndCreate();
 
+				LOGGER.info("isVTA: "+isVTA+", name: "+name+", idCode: "+idCode+", enterprise: "+enterprise);
+				
 				if(!isVTA){
 					if(request.getSession().getAttribute("fromCas") != null && request.getSession().getAttribute("fromCas").equals("1")){
-						idCode = "{CAS}"+idCode;
+						idCode = "{FROM_CAS}"+idCode;
+					}
+					if(enterprise){
+						idCode = "{ENT}"+idCode;
 					}
 					authRequest = new UsernamePasswordAuthenticationToken(idCode, password);
 				}
 				else{
 					if(request.getSession().getAttribute("fromCas") != null && request.getSession().getAttribute("fromCas").equals("1")){
-						name = "{CAS}"+name;
+						name = "{FROM_CAS}"+name;
 					}
+
 					authRequest = new UsernamePasswordAuthenticationToken(name, password);
 				}
 

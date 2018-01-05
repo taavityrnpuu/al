@@ -102,52 +102,68 @@ public class LoginServiceServlet extends HttpServlet {
 
 		checkAndCreateUserArireg(ik);
 
-		try {
+		try{
+			String templ = getTemplate(request, "login_template.html");
+			
+			try {
 
-			String sql = "select 1 from sys_user as sys join person as p on p.id = sys.person_id and p.reg_id = '" + ik
-					+ "' or p.reg_id = 'EE" + ik + "' where sys.active = true";
-			ResultSet rs = PostgreUtils.query(sql);
-
-			while (rs.next()) {
-				isVta = true;
-				hasRoles = true;
-			}
-
-			if (isVta) {
-				tableBody += getTableRow("Riik (VTA, EMTA jt)", "", null, null);
-			}
-
-			PostgreUtils.update("UPDATE enterprise_person_ref SET valid = false where valid = true and id_code = '" + ik
-					+ "' and valid_until < now() and valid_until is not null");
-
-			sql = "select ent_name, reg_nr, null as valid_until from user_arireg where id_code = '" + ik + "' UNION "
-					+ "select e.name, e.reg_id, (SELECT valid_until FROM enterprise_person_ref WHERE valid = true and id_code = '"
-					+ ik + "' and enterprise_id = e.id) "
-					+ "from enterprise e where id in (SELECT enterprise_id FROM enterprise_person_ref WHERE valid = true and id_code = '"
-					+ ik + "')";
-
-			rs = PostgreUtils.query(sql);
-
-			if (rs != null && !rs.wasNull()) {
+				String sql = "select 1 from sys_user as sys join person as p on p.id = sys.person_id and (p.reg_id = '" + ik
+						+ "' or p.reg_id = 'EE" + ik + "') where sys.active = true";
+				ResultSet rs = PostgreUtils.query(sql);
 
 				while (rs.next()) {
-					tableBody += getTableRow(StringEscapeUtils.escapeHtml(rs.getString("ent_name")),
-							rs.getString("reg_nr"), rs.getString("reg_nr"), rs.getDate("valid_until"));
+					isVta = true;
 					hasRoles = true;
 				}
 
+				if (isVta) {
+					tableBody += getTableRow("Riik (VTA, EMTA jt)", "", null, null);
+				}
+
+				PostgreUtils.update("UPDATE enterprise_person_ref SET valid = false where valid = true and id_code = '" + ik
+						+ "' and valid_until < now() and valid_until is not null");
+
+				sql = "select ent_name, reg_nr, null as valid_until from user_arireg where id_code = '" + ik + "' UNION "
+						+ "select e.name, e.reg_id, (SELECT valid_until FROM enterprise_person_ref WHERE valid = true and id_code = '"
+						+ ik + "' and enterprise_id = e.id) "
+						+ "from enterprise e where id in (SELECT enterprise_id FROM enterprise_person_ref WHERE valid = true and id_code = '"
+						+ ik + "')";
+
+				rs = PostgreUtils.query(sql);
+
+				if (rs != null && !rs.wasNull()) {
+
+					while (rs.next()) {
+						tableBody += getTableRow(StringEscapeUtils.escapeHtml(rs.getString("ent_name")),
+								rs.getString("reg_nr"), rs.getString("reg_nr"), rs.getDate("valid_until"));
+						hasRoles = true;
+					}
+
+				}
+
+				String body = "";
+
+				if(hasRoles){
+					body = getTemplate(request, "table_body.html");
+					body = body.replace("{{TABLE_BODY}}", tableBody);
+				}
+				else{
+					body = getTemplate(request, "login_failure.html");
+				}
+				
+				templ = templ.replace("{{BODY}}", body);
+
+				out.write(templ);
+			} catch (Exception ex) {
+				ex.printStackTrace();
+				
+				templ = templ.replace("{{BODY}}", ex.getMessage());
+				out.write(templ);
 			}
 
-			String script = "showDiv(" + hasRoles + ")";
-			String templ = getTemplate(request);
-			templ = templ.replace("{{SCRIPT}}", script);
-			templ = templ.replace("{{TABLE_BODY}}", tableBody);
-
-			out.write(templ);
-		} catch (Exception ex) {
-			ex.printStackTrace();
+		}catch(Exception x){
+			out.write(x.getMessage());
 		}
-
 	}
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
@@ -247,10 +263,10 @@ public class LoginServiceServlet extends HttpServlet {
 			}
 		}
 	}
+	
+	public String getTemplate(HttpServletRequest request, String tmpl) throws Exception {
 
-	public String getTemplate(HttpServletRequest request) throws Exception {
-
-		URL url = this.getClass().getClassLoader().getResource("login_template.html");
+		URL url = this.getClass().getClassLoader().getResource(tmpl);
 		File file = new File(url.getPath());
 		FileInputStream fis = new FileInputStream(file);
 
