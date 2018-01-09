@@ -1,5 +1,6 @@
 package ee.agri.alkor.model;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import javax.persistence.Column;
@@ -10,6 +11,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
@@ -153,5 +155,17 @@ public class RegistryEntry extends ABaseBean implements IHistorical {
 		this.application = application;
 	}
 
-
+	@Transient
+	public String getValidUntilFormatted(){
+		if(this.getValidUntil() != null){
+			try{
+				SimpleDateFormat sdf = new SimpleDateFormat("dd.MM.yyyy");
+				return sdf.format(this.getValidUntil());
+			}catch(Exception x){
+				x.printStackTrace();
+			}
+		}
+		
+		return "";
+	}
 }

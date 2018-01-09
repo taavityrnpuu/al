@@ -51,25 +51,12 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 	public SystemUser loadUserByName(String userName) throws UsernameNotFoundException, DataAccessException {
 		SystemUser user = null;
 		try {
-			if (userName.startsWith("{UNIQ}")) {
-				String id = userName.substring(userName.indexOf("}") + 1);
-				XTeeId xteeId = (XTeeId) getHibernateTemplate().find("from XTeeId x where x.id=?", id).get(0);
-				if (xteeId != null) {
-					userName = IClassificatorService.EIT_USERNAME;
-					user = findUser(userName);
-
-					return user;
-				}
-			} else {
-				user = findUser(userName);
-				return user;
-			}
+			user = findUser(userName);
+			return user;
 		} catch (Exception e) {
 			LOGGER.error(e.getMessage(), e);
 			throw new UsernameNotFoundException(userName);
 		}
-		return null;
-
 	}
 
 	public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException, InsufficientAuthenticationException {
@@ -86,7 +73,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 			userName = userName.replace("{FROM_CAS}", "");
 		}
 		
-		LOGGER.info("fromCas: " + fromCas+", username: "+userName);
+		LOGGER.info("fromCas: " + fromCas+", username: "+userName+", onIsikukood: "+onIsikukood);
 		
 		if(onIsikukood){
 			if(fromCas){
@@ -100,29 +87,6 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		LOGGER.info("loadUserByUsername");
 		String regCode = null;
 		try {
-			/*if (userName.startsWith("{UNIQ}")) {
-				String id = userName.substring(userName.indexOf("}") + 1);
-				LOGGER.info("id: " + id);
-				XTeeId xteeId = (XTeeId) getHibernateTemplate().find("from XTeeId x where x.id=?", id).get(0);
-				if (xteeId != null) {
-					userName = IClassificatorService.EIT_USERNAME;
-					regCode = xteeId.getRegistryCode();
-
-					// getHibernateTemplate().delete(xteeId); // miks?
-					user = findUser(userName);
-
-					String headerName = xteeId.getRepresentativeName();
-					int index = headerName != null ? headerName.indexOf(' ') : -1;
-					String firstName = index != -1 ? headerName.substring(0, index) : (headerName == null || headerName.length() < 1) ? null : headerName;
-					String lastName = index != -1 ? headerName.substring(index + 1, headerName.length()) : null;
-
-					details = new AlkoUserDetails(userName, user.getPassword(), firstName, lastName, xteeId.getRepresentativePersonalCode(),
-							makeAuthorities(user), user, regCode, xteeId.getrepresentativeOccupation());
-					LOGGER.debug("user details : " + details);
-					return details;
-
-				}
-			} else {*/
 				
 				String idCode = "";
 				ResultSet rs2 = PostgreUtils.query("SELECT reg_id FROM person WHERE id = (SELECT person_id FROM sys_user WHERE name = '"+userName.replaceAll("'", "")+"' LIMIT 1)");
@@ -378,19 +342,10 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 
 					AuthenticationLog authLogEntry = new AuthenticationLog();
 
-					if ("EIT".equals(userName) && userDetails != null) { // kui
-																			// kasutaja
-																			// tuleb
-																			// läbi
-																			// EITi
+					if ("EIT".equals(userName) && userDetails != null) { // kui kasutaja tuleb läbi EITi
 						LOGGER.debug("EIT kasutaja!");
-						authLogEntry.setUserFullName(getEnterpriseName(userDetails.getRegCode(), // registrikoodi
-																									// järgi
-																									// ettevõtte
-																									// nimi
-								userDetails.getFirstName() + " " + userDetails.getLastName())); // fallback
-																								// isiku
-																								// nimele
+						authLogEntry.setUserFullName(getEnterpriseName(userDetails.getRegCode(), // registrikoodi järgi ettevõtte nimi
+								userDetails.getFirstName() + " " + userDetails.getLastName())); // fallback isiku nimele
 						authLogEntry.setRegistrationId(userDetails.getIdCode());
 
 					} else {
@@ -476,7 +431,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 
 	private String getEnterpriseName(String regNr, String nullValue) {
 		try {
-			ResultSet rs = PostgreUtils.query("SELECT name FROM enterprise WHERE reg_id = '"+regNr.replaceAll("'","\"")+"'");
+			ResultSet rs = PostgreUtils.query("SELECT name FROM enterprise WHERE reg_id = '"+regNr.replaceAll("'","\"")+"' ORDER BY COALESCE(active, false) DESC LIMIT 1");
 			if(rs.next()){
 				nullValue = rs.getString("name");
 			}

@@ -67,7 +67,8 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 			public Object doInHibernate(Session session) {
 				
 				LOGGER.info("Executing sendRegistryEntryExpireNotifications");
-				Query q = session.createQuery("from RegistryEntry e where (e.expiryNotificationSent = false or e.expiryNotificationSent is null) and date_trunc('day',e.validUntil) = (current_date + "+getDaysBeforeRegistryEntryExpiry()+")");
+				Query q = session.createQuery("from RegistryEntry e where (e.expiryNotificationSent = false or e.expiryNotificationSent is null) and"
+						+ "  date_trunc('day',e.validUntil) >= (current_date + "+((int)Math.floor((getDaysBeforeRegistryEntryExpiry() / 2)))+") AND date_trunc('day',e.validUntil) <= (current_date + "+getDaysBeforeRegistryEntryExpiry()+")");
 
 				
 				Map<Enterprise, List<RegistryEntry>> entriesMap = new HashMap<Enterprise, List<RegistryEntry>>();
@@ -114,7 +115,7 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 						            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
 						            message.setSubject("Riikliku alkoholiregistri registrikande kehtivuse kaotamisest teavitamine");
 						            message.setTo(applicant.getContactInfo().getEmail());
-						            String[] bccAddresses = {"tanja@piksel.ee", "alkoreg@vet.agri.ee"};
+						            String[] bccAddresses = {"olle@piksel.ee", "alkoreg@vet.agri.ee"};
 						            
 						            message.setBcc(bccAddresses);
 						            message.setFrom(EmailNotificationJobs.this.getMailFrom()); 
@@ -123,7 +124,6 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 						            Calendar cal = Calendar.getInstance();
 						            String DATE_FORMAT = "dd.MM.yyyy";
 						            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-						            
 						            
 						            model.put("current_date", sdf.format(cal.getTime()));
 						            model.put("applicant", applicant);

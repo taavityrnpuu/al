@@ -32,8 +32,8 @@ public class AuthenticationFilter extends AuthenticationProcessingFilter {
 		
 		String username = null;
 		String password = null;
-		String id = request.getParameter("nonce");
-		LOGGER.info("id:" + id);
+		//String id = request.getParameter("nonce");
+		//LOGGER.info("id:" + id);
 		try {
 			username = URLDecoder.decode(obtainUsername(request), "UTF-8");
 		} catch (Exception e) {

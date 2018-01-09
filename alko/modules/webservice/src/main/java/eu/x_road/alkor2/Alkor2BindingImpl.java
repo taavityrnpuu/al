@@ -1062,43 +1062,16 @@ public class Alkor2BindingImpl implements eu.x_road.alkor2.Alkor2Port {
 
 		Legacy1Response result = new Legacy1Response();
 
-		String reportingEnterriseRegNr = null;
 		XteeHeaderMap header = null;
 		try {
 			header = getXteeHeader();
-			if ((header.getSubEnterpriseRegNr() != null)
-					&& (header.getSubEnterpriseRegNr().trim().length() > 0))
-				reportingEnterriseRegNr = header.getSubEnterpriseRegNr().trim();
-			else
-				reportingEnterriseRegNr = header.getEnterpriseRegNr().trim();
 
 			String baseURI = registryService.getBaseURI();
-			if ((registryService
-					.getEnterpriseByActivity(reportingEnterriseRegNr)) == null) {
+			
+			result.setUrl(new URI(baseURI+"/#LoginPage"));
 
-				result.setUrl(new URI(baseURI + "/index.html#LoginErrorPage6"));
-				url.value = new URI(baseURI + "/index.html#LoginErrorPage6");
-			} else {
-
-				XTeeId xId = new XTeeId();
-				xId.setId(header.getId());
-				xId.setRegistryCode(header.getRequestEnterprise());
-				xId.setRepresentativeName(header.getRepresenativeName());
-				xId.setRepresentativePersonalCode(header
-						.getRepresentativeRegNr());
-				xId.setrepresentativeOccupation(header
-						.getRepresentativeProfession() == null ? "" : header
-						.getRepresentativeProfession());
-				xId.setCreated(new Date());
-				registryService.saveXid(xId);
-
-				result.setUrl(new URI(baseURI
-						+ "/j_acegi_security_check?nonce=" + header.getId()));
-
-				url.value = new URI(baseURI + "/j_acegi_security_check?nonce="
-						+ header.getId());
-
-			}
+			url.value = new URI(baseURI+"/#LoginPage");
+			
 			 putHeader(header);
 		} catch (Exception e) {
 

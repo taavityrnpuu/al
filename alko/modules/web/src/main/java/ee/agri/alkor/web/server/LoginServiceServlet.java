@@ -99,48 +99,54 @@ public class LoginServiceServlet extends HttpServlet {
 		
 		boolean isVta = false;
 		boolean hasRoles = false;
+		
+		System.out.println("CAS'st isikukood: " + ik);
 
-		checkAndCreateUserArireg(ik);
+		if(ik != null && !ik.equals("")){
+			checkAndCreateUserArireg(ik);
+		}
 
 		try{
 			String templ = getTemplate(request, "login_template.html");
 			
 			try {
 
-				String sql = "select 1 from sys_user as sys join person as p on p.id = sys.person_id and (p.reg_id = '" + ik
-						+ "' or p.reg_id = 'EE" + ik + "') where sys.active = true";
-				ResultSet rs = PostgreUtils.query(sql);
-
-				while (rs.next()) {
-					isVta = true;
-					hasRoles = true;
-				}
-
-				if (isVta) {
-					tableBody += getTableRow("Riik (VTA, EMTA jt)", "", null, null);
-				}
-
-				PostgreUtils.update("UPDATE enterprise_person_ref SET valid = false where valid = true and id_code = '" + ik
-						+ "' and valid_until < now() and valid_until is not null");
-
-				sql = "select ent_name, reg_nr, null as valid_until from user_arireg where id_code = '" + ik + "' UNION "
-						+ "select e.name, e.reg_id, (SELECT valid_until FROM enterprise_person_ref WHERE valid = true and id_code = '"
-						+ ik + "' and enterprise_id = e.id) "
-						+ "from enterprise e where id in (SELECT enterprise_id FROM enterprise_person_ref WHERE valid = true and id_code = '"
-						+ ik + "')";
-
-				rs = PostgreUtils.query(sql);
-
-				if (rs != null && !rs.wasNull()) {
-
+				if(ik != null && !ik.equals("")){
+					String sql = "select 1 from sys_user as sys join person as p on p.id = sys.person_id and (p.reg_id = '" + ik
+							+ "' or p.reg_id = 'EE" + ik + "') where sys.active = true";
+					ResultSet rs = PostgreUtils.query(sql);
+	
 					while (rs.next()) {
-						tableBody += getTableRow(StringEscapeUtils.escapeHtml(rs.getString("ent_name")),
-								rs.getString("reg_nr"), rs.getString("reg_nr"), rs.getDate("valid_until"));
+						isVta = true;
 						hasRoles = true;
 					}
-
+	
+					if (isVta) {
+						tableBody += getTableRow("Riik (VTA, EMTA jt)", "", null, null);
+					}
+	
+					PostgreUtils.update("UPDATE enterprise_person_ref SET valid = false where valid = true and id_code = '" + ik
+							+ "' and valid_until < now() and valid_until is not null");
+	
+					sql = "select ent_name, reg_nr, null as valid_until from user_arireg where id_code = '" + ik + "' UNION "
+							+ "select e.name, e.reg_id, (SELECT valid_until FROM enterprise_person_ref WHERE valid = true and id_code = '"
+							+ ik + "' and enterprise_id = e.id) "
+							+ "from enterprise e where id in (SELECT enterprise_id FROM enterprise_person_ref WHERE valid = true and id_code = '"
+							+ ik + "')";
+	
+					rs = PostgreUtils.query(sql);
+	
+					if (rs != null && !rs.wasNull()) {
+	
+						while (rs.next()) {
+							tableBody += getTableRow(StringEscapeUtils.escapeHtml(rs.getString("ent_name")),
+									rs.getString("reg_nr"), rs.getString("reg_nr"), rs.getDate("valid_until"));
+							hasRoles = true;
+						}
+	
+					}
 				}
-
+				
 				String body = "";
 
 				if(hasRoles){
@@ -234,9 +240,11 @@ public class LoginServiceServlet extends HttpServlet {
 					}
 
 					if (enterpriseExists) {
-						sql = "UPDATE enterprise SET name = '" + entName + "' WHERE reg_id = '" + regNr
-								+ "' and name != '" + entName + "'";
-						PostgreUtils.update(sql);
+						if(entName != null && !entName.equals("")){
+							sql = "UPDATE enterprise SET name = '" + entName + "' WHERE reg_id = '" + regNr
+									+ "' and name != '" + entName + "'";
+							PostgreUtils.update(sql);
+						}
 					} else {
 						sql = "INSERT INTO enterprise (id, reg_id, name, version) VALUES (nextval('ENTERPRISE_SEQ'), '"
 								+ regNr + "','" + entName + "', 1)";

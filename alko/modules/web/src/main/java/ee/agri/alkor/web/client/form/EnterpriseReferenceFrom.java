@@ -165,7 +165,7 @@ public class EnterpriseReferenceFrom extends Form {
 					ServiceContext
 							.getInstance()
 							.getRegistryService()
-							.saveEnterpriseReference(tbEesNimi.getValue(), tbPereNimi.getValue(), tbIsikukood.getValue(), tbAmetikoht.getValue().replaceAll("\n", "").replaceAll("\r", ""), tbKehtibkuni.getText(), Form.getUserInfo().getRegCode(),
+							.saveEnterpriseReference(tbEesNimi.getValue().trim(), tbPereNimi.getValue().trim(), tbIsikukood.getValue().trim(), tbAmetikoht.getValue().replaceAll("\n", "").replaceAll("\r", ""), tbKehtibkuni.getText(), Form.getUserInfo().getRegCode(),
 									new AsyncCallback() {
 
 										public void onFailure(Throwable caught) {

@@ -25,68 +25,90 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 
 	public UserInfo getUserInfo() {
 		Object curUser = AuthenticationServiceDelegate.getCurrentUser();
-		if (curUser == null)
-			return null;
-		else if (curUser instanceof String) {
-			return new UserInfo((String) curUser, null);
-		} else {
-			AlkoUserDetails userDetails = (AlkoUserDetails) curUser;
-			UserInfo user = new UserInfo();
+		try{
+			if (curUser == null){
+				LOGGER.debug("curUser is NULL");
+				//throw new Exception("curUser is NULL");
+			}
+			else if (curUser instanceof String) {
+				return new UserInfo((String) curUser, null);
+			}
+			else if(curUser instanceof AlkoUserDetails){
+				AlkoUserDetails userDetails = (AlkoUserDetails) curUser;
+				UserInfo user = new UserInfo();
 
-			String firstName = "";
-			String lastName = "";
+				String firstName = "tundmatu";
+				String lastName = "kasutaja";
+				
+				String regCode = userDetails.getRegCode();
+				String idCode = userDetails.getIdCode();
 
-			if (userDetails.getRegCode() != null && !userDetails.getRegCode().equals("")) { // kui
-																							// on
-																							// EIT
-																							// siis
-																							// nime
-																							// pole
-																							// olemas
-				try {
-					ResultSet rs = PostgreUtils
-							.query("SELECT * FROM enterprise WHERE reg_id = '" + userDetails.getRegCode() + "'");
-					while (rs.next()) {
-						firstName = rs.getString("name");
+				if (regCode != null && !regCode.equals("")) { // ettevõtja
+					try {
+						ResultSet rs = PostgreUtils.query("SELECT * FROM enterprise WHERE reg_id = '" + regCode.replaceAll("'", "") + "'");
+						while (rs.next()) {
+							firstName = rs.getString("name");
+						}
+					} catch (Exception x) {
+						x.printStackTrace();
 					}
-				} catch (Exception x) {
+					lastName = regCode + " (" + idCode + ")";
+				} else {
+					try {
+						ResultSet rs = PostgreUtils.query(""
+								+ "SELECT * "
+								+ "FROM person p "
+								+ "JOIN sys_user u ON u.person_id = p.id "
+								+ "WHERE p.reg_id IN ('" + idCode.replaceAll("'", "") + "', 'EE" + idCode.replaceAll("'", "") + "')");
+						while (rs.next()) {
+							firstName = rs.getString("first_name");
+							lastName = rs.getString("last_name");
+						}
+					} catch (Exception x) {
+						x.printStackTrace();
+					}
+				}
+
+				user.setName((userDetails.getUsername() != null && !userDetails.getUsername().equals("") ? userDetails.getUsername() : "anonymousUser"));
+				user.setFirstName(firstName);
+				user.setLastName(lastName);
+				user.setRegCode(regCode);
+				
+				try{
+					user.setUserManageMap(ClientDataFactory.create(userDetails.getSystemUser()));
+				}catch(Exception x){
 					x.printStackTrace();
 				}
-				lastName = userDetails.getRegCode() + " (" + userDetails.getIdCode() + ")";
-			} else {
-				try {
-					ResultSet rs = PostgreUtils
-							.query("SELECT * FROM person WHERE reg_id = '" + userDetails.getIdCode() + "'");
-					while (rs.next()) {
-						firstName = rs.getString("first_name");
-						lastName = rs.getString("last_name");
+				
+				Set roles = new HashSet();
+				try{
+					GrantedAuthority[] authRoles = userDetails.getAuthorities();
+					if(authRoles != null){
+						for (int i = 0; i < authRoles.length; i++) {
+							roles.add(authRoles[i].getAuthority());
+						}
 					}
-				} catch (Exception x) {
-					firstName = "tundmatu";
-					lastName = "kasutaja";
+				}catch(Exception x){
 					x.printStackTrace();
 				}
-			}
+				user.setRoles(roles);
 
-			user.setName(userDetails.getUsername());
-			GrantedAuthority[] authRoles = userDetails.getAuthorities();
-			Set roles = new HashSet();
-			for (int i = 0; i < authRoles.length; i++) {
-				roles.add(authRoles[i].getAuthority());
+				// PersonMap p =(PersonMap) user.getUserManageMap().get("person");
+				//
+				// System.out.println("UM: " + p.get("registrationId"));
+				// System.out.println("SEE ON IK! " + userDetails.getFirstName() + "
+				// " + userDetails.getLastName());
+				return user;
 			}
-			user.setRoles(roles);
-			user.setFirstName(firstName);
-			user.setLastName(lastName);
-			user.setUserManageMap(ClientDataFactory.create(userDetails.getSystemUser()));
-			user.setRegCode(userDetails.getRegCode());
-
-			// PersonMap p =(PersonMap) user.getUserManageMap().get("person");
-			//
-			// System.out.println("UM: " + p.get("registrationId"));
-			// System.out.println("SEE ON IK! " + userDetails.getFirstName() + "
-			// " + userDetails.getLastName());
-			return user;
+			else{
+				throw new Exception("curUser is unknown instance");
+			}
 		}
+		catch(Exception x){
+			x.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	public UserInfo invalidateSession(boolean keepUser) {

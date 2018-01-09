@@ -2230,38 +2230,18 @@ ee.riik.xtee.alkor2.producers.producer.alkor2.AretoPortType {
       paring.value = keha;
       ee.riik.xtee.alkor2.producers.producer.alkor2.Legacy_response result = new ee.riik.xtee.alkor2.producers.producer.alkor2.Legacy_response();
       keha2.value = result;
-      String reportingEnterriseRegNr = null;
       XteeHeaderMap header = null;
       try
       {
          header = getXteeHeader();
-         if ((header.getSubEnterpriseRegNr() != null)
-               && (header.getSubEnterpriseRegNr().trim().length() > 0))
-            reportingEnterriseRegNr = header.getSubEnterpriseRegNr().trim();
-         else
-            reportingEnterriseRegNr = header.getEnterpriseRegNr().trim();
 
          String baseURI = registryService.getBaseURI();
-         if ((registryService.getEnterpriseByActivity(reportingEnterriseRegNr)) == null)
-         {
-            LOGGER.info("legacy1(), enterprise not registered, code :" + reportingEnterriseRegNr);
-            result.setUrl(new URI(baseURI + "/index.html#LoginErrorPage6"));
-         }
-         else
-         {
-            LOGGER.debug(header);
-            XTeeId xId = new XTeeId();
-            xId.setId(header.getId());
-            xId.setRegistryCode(header.getRequestEnterprise());
-            xId.setRepresentativeName(header.getRepresenativeName());
-            xId.setRepresentativePersonalCode(header.getRepresentativeRegNr());
-            xId.setrepresentativeOccupation(header.getRepresentativeProfession() == null ? "" : header.getRepresentativeProfession());
-            xId.setCreated(new Date());
-            registryService.saveXid(xId);
-            LOGGER.debug(xId);
-            result.setUrl(new URI(baseURI + "/j_acegi_security_check?nonce="+header.getId()));
-            LOGGER.debug("URI XTEELE:" + baseURI + "/j_acegi_security_check?nonce="+header.getId());
-         }
+        
+        LOGGER.debug(header);
+        
+        result.setUrl(new URI(baseURI+"/#LoginPage"));
+        LOGGER.debug("URI XTEELE:" + baseURI+"/#LoginPage");
+         
          putHeader(header);
       } catch (Exception e) {
          LOGGER.error(e, e);

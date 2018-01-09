@@ -9,10 +9,10 @@ $!current_date<br />
 Alkoholiregistri volitatud töötleja Veterinaar- ja Toiduamet tuletab meelde, et Alkoholiseaduse §13¹ lg 1 alusel alkoholiregistrisse tehtud registrikanne kehtib viis aastat. Registrikande pikendamiseks järgmiseks viieks aastaks palun esitada vähemalt 30 päeva enne registrikande kehtivusaja lõppemist alkoholiregistri volitatud töötlejale asjakohane taotlus (täiendav info: http://www.vet.agri.ee). Registrikande kehtivuse pikendamise eest tasutakse riigilõiv, mille suuruseks on 4 eurot.<br />
 <br />
 <br />
-Järgmised Teie poolt Riiklikusse alkoholiregistrisse kantud alkohoolsete jookide registrikanded kaotavad kehtivuse 60 päeva pärast:<br />
+Järgmised Teie poolt Riiklikusse alkoholiregistrisse kantud alkohoolsete jookide registrikanded kaotavad kehtivuse 60 või vähema päeva pärast:<br />
 <br />
 #foreach( $regentry in $regentries )
-	$!regentry.nr <br />
+	$!regentry.nr : aegub $!regentry.getValidUntilFormatted() <br />
 #end
 <br />
 <br />

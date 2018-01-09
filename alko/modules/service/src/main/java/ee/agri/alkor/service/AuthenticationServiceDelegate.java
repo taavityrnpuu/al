@@ -28,10 +28,22 @@ public class AuthenticationServiceDelegate
 	}
 
 	public static Object getCurrentUser() {
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		if(auth == null)
-			return null;
-		return auth.getPrincipal();
+		try{
+			if(SecurityContextHolder.getContext() == null){
+				throw new Exception("SecurityContextHolder.getContext() IS NULL");
+			}
+			
+			Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+			if(auth == null){
+				return null;
+			}
+			
+			return auth.getPrincipal();
+		}catch(Exception x){
+			x.printStackTrace();
+		}
+		
+		return null;
 	}
 
 	public static String getCurrentUserName() {
