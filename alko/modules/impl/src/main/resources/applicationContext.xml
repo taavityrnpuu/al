@@ -35,8 +35,8 @@
 	<bean id="myRegistryServiceDao"
 		class="ee.agri.alkor.impl.RegistryServiceImpl">
 		<property name="sessionFactory" ref="jndiSessionFactory" />
-		<property name="docRoot" value="/data" />
-		<property name="baseURI" value="https://alkoreg.agri.ee" />
+		<property name="docRoot" value="@docRoot@" />
+		<property name="baseURI" value="@baseURI@" />
 		<property name="applicationNrBase" value="0" />
 		<property name="pdfCreator" ref="pdfCreator" />
 	</bean>
@@ -120,7 +120,7 @@
 	<bean id="notificationJobs"
 		class="ee.agri.alkor.impl.EmailNotificationJobs">
 		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
-		<property name="mode" value="LIVE" />
+		<property name="mode" value="@mode@" />
 		<property name="daysBeforeRegistryEntryExpiry" value="60" />
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 		<property name="mailSender" ref="mailSender" />
@@ -136,7 +136,7 @@
 	<bean id="ExpiredExendUntilApplicationJobs"
 		class="ee.agri.alkor.impl.ExendUntilApplicationExpiryNotificationJobs">
 		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
-		<property name="mode" value="LIVE" />
+		<property name="mode" value="@mode@" />
 		<property name="daysBeforeNotificationIsSent" value="1" />
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 		<property name="mailSender" ref="mailSender" />
@@ -235,10 +235,10 @@
 	</bean>
 	
   <bean id="pgDataSource" class="ee.agri.alkor.impl.DbBean" destroy-method="close">
-    <property name="driverClassName" value="org.postgresql.Driver"/>
-    <property name="url" value="jdbc:postgresql://localhost:5432/test"/>
-    <property name="username" value="alkor"/>
-    <property name="password" value="TE100pcm"/>
+    <property name="driverClassName" value="@db.driver@"/>
+    <property name="url" value="@db.url@"/>
+    <property name="username" value="@db.user@"/>
+    <property name="password" value="@db.password@"/>
   </bean>
 
 	<tx:annotation-driven transaction-manager="myTxManager" />
