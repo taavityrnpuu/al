@@ -2,7 +2,6 @@ package ee.agri.alkor.web.server;
 
 import java.net.URLDecoder;
 import java.security.cert.X509Certificate;
-import java.sql.ResultSet;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -17,6 +16,7 @@ import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
 import org.apache.log4j.Logger;
 
 import ee.agri.alkor.impl.PostgreUtils;
+import ee.agri.alkor.impl.ResultSet;
 
 /**
  * 

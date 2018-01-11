@@ -1,6 +1,6 @@
 package ee.agri.alkor.web.server;
 
-import java.sql.ResultSet;
+import ee.agri.alkor.impl.ResultSet;
 import java.util.Date;
 
 import ee.agri.alkor.impl.PostgreUtils;

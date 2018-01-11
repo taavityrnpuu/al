@@ -1,8 +1,5 @@
 package ee.agri.alkor.impl;
 
-import java.sql.ResultSet;
-
-import ee.agri.alkor.impl.PostgreUtils;
 
 public abstract class Config {
 	public static String DIGIDOCSERVICE_URL = "https://digidocservice.sk.ee";

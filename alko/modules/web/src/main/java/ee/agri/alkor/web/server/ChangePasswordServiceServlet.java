@@ -21,7 +21,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
+import ee.agri.alkor.impl.ResultSet;
 import java.sql.Statement;
 
 import javax.servlet.ServletException;

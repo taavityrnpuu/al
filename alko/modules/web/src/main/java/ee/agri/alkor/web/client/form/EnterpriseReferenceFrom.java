@@ -388,6 +388,7 @@ public class EnterpriseReferenceFrom extends Form {
 				Button yes = new Button("Jah", this);
 				yes.addClickListener(new ClickListener() {
 					public void onClick(Widget sender) {
+						Window.alert(String.valueOf(id));
 						ServiceContext.getInstance().getRegistryService().deleteEnterpriseReference(String.valueOf(id), new AsyncCallback() {
 
 							public void onFailure(Throwable caught) {

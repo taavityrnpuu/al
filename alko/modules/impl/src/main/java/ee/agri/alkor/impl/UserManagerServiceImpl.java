@@ -27,7 +27,6 @@ import ee.agri.alkor.service.SystemException;
 
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.sql.ResultSet;
 
 import ee.piksel.util.*;
 

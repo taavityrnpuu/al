@@ -12,7 +12,6 @@ import java.math.BigInteger;
 import java.net.URLEncoder;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.sql.Timestamp;
@@ -225,10 +224,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			ResultSet rs = PostgreUtils.query(sql);
 
 			while (rs.next()) {
-				rs.close();
 				return true;
 			}
-			rs.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -244,10 +241,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			ResultSet rs = PostgreUtils.query(sql2);
 
 			while (rs.next()) {
-				rs.close();
 				return false;
 			}
-			rs.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -266,17 +261,14 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			while (rs.next()) {
 				id = rs.getString("id");
 			}
-			rs.close();
 
 			sql = "SELECT count(*) as cnt FROM product_move_report_record WHERE report_id = '" + id + "'";
 
 			ResultSet rs2 = PostgreUtils.query(sql);
 
 			while (rs2.next()) {
-				rs2.close();
 				return true;
 			}
-			rs2.close();
 			PostgreUtils.delete("DELETE FROM product_move_report WHERE id = '" + id + "'");
 
 			return false;
@@ -300,10 +292,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				ResultSet rs = PostgreUtils.query(sql);
 
 				while (rs.next()) {
-					rs.close();
 					return true;
 				}
-				rs.close();
 			} catch (Exception ex) {
 				ex.printStackTrace();
 			}
@@ -337,7 +327,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				}
 			}
 			
-			rs.close();
 		} catch (Exception ex) {
 			ex.printStackTrace();
 		}
@@ -721,27 +710,10 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					Long taotlejaId = taotleja.getId();
 					Long applId = application.getId();
 
-					Connection c = null;
-					Statement stmt = null;
-					Statement stmt2 = null;
-					Statement stmt3 = null;
-					Statement st = null;
-					Statement st2 = null;
-					Statement st3 = null;
-					Statement st4 = null;
-					Statement st10 = null;
-
-					try {
-						Class.forName("org.postgresql.Driver");
-						c = DriverManager.getConnection("jdbc:postgresql://localhost/test", "alkor", "TE100pcm");
-					} catch (Exception e) {
-
-					}
 					LOGGER.info("REPROCESS");
 					try {
-						stmt = c.createStatement();
 						LOGGER.info("Teeme päringu ja vaatame mis toimub");
-						ResultSet rs = stmt.executeQuery(
+						ResultSet rs = PostgreUtils.query(
 								"select 1 from reg_application where appl_state_class_id not in(400, 406, 408) and id = '"
 										+ applId + "';");
 
@@ -753,14 +725,12 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 							 * Tulemust pole, updateme eelmise riigilõivu ära
 							 */
 							LOGGER.info("ETTEVÕTJA MUUTUS, KAKUME RIIGILÕIVU MAHA");
-							stmt2 = c.createStatement();
-							stmt3 = c.createStatement();
-							ResultSet rs2 = stmt2.executeQuery(
+							ResultSet rs2 = PostgreUtils.query(
 									"select enterprise_binded_to, amount, created from payment_matching_log where amount>0 and payment_application_id ='"
 											+ applId + "' order by id desc limit 1;");
 							while (rs2.next()) {
-								int ent = rs2.getInt(1);
-								String amnt = rs2.getString(2);
+								int ent = rs2.getInteger("enterprise_binded_to");
+								String amnt = String.valueOf(rs2.getDouble("amount"));
 
 								String first = amnt.substring(0, 1);
 								if (first == "-") {
@@ -788,10 +758,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 								 * tagastada ex sisuga 666
 								 */
 
-								st10 = c.createStatement();
 								LOGGER.info("Teeme päringu ja vaatame mis toimub");
 
-								String created = rs2.getString(3);
+								String created = rs2.getString("created");
 
 								SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 								Date cr = sdf.parse(created);
@@ -803,12 +772,10 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 								LOGGER.info("RL UPDATE, raha juurde " + amnt + " enterprise: " + ent);
 
 								LOGGER.info("RL UPDATE");
-								st = c.createStatement();
-								st.executeUpdate("UPDATE enterprise SET balance = balance + '" + amnt + "' where id = '"
+								PostgreUtils.update("UPDATE enterprise SET balance = balance + '" + amnt + "' where id = '"
 										+ ent + "'");
 								LOGGER.info("RL UPDATE");
 
-								st4 = c.createStatement();
 								// st4.executeUpdate("UPDATE enterprise SET
 								// balance = balance - '"
 								// + amnt
@@ -817,8 +784,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 								String query = "INSERT INTO payment_matching_log(id, created, created_by, amount, payment_application_id, enterprise_binded_to) VALUES ("
 										+ applId + ent + randomInt + ent + ",CURRENT_TIMESTAMP,'sys', '-" + amnt + "', "
 										+ applId + ", " + ent + ")";
-								st2 = c.createStatement();
-								st2.executeUpdate(query);
+
+								PostgreUtils.insert(query);
 
 								randomInt = randomGenerator.nextInt(500);
 
@@ -848,8 +815,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 							// st2 = c.createStatement();
 							// st2.executeUpdate(query);
 							application.setLatestPayment("");
-
-							c.commit();
 						}
 					} catch (Exception e) {
 						e.printStackTrace();
@@ -1316,22 +1281,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	}
 
 	public boolean enterpriseChanged(Long taotlejaId, Long applId) {
-		Connection c = null;
-		Statement stmt = null;
-		Statement stmt2 = null;
-		Statement stmt3 = null;
-		Statement st = null;
-		Statement st2 = null;
-		Statement st3 = null;
-		Statement st4 = null;
-
-		try {
-			Class.forName("org.postgresql.Driver");
-			c = DriverManager.getConnection("jdbc:postgresql://localhost/test", "alkor", "TE100pcm");
-		} catch (Exception e) {
-			LOGGER.info("return false");
-			return false;
-		}
 
 		if (taotlejaId == 0 || applId == 0) {
 			return false;
@@ -1342,9 +1291,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		// Long applId = application.getId();
 
 		try {
-			stmt = c.createStatement();
 			LOGGER.info("Teeme päringu ja vaatame mis toimub");
-			ResultSet rs = stmt.executeQuery("select 1 from reg_application where appl_subj_id ='" + taotlejaId
+			ResultSet rs = PostgreUtils.query("select 1 from reg_application where appl_subj_id ='" + taotlejaId
 					+ "' and nr = '" + applId + "';");
 
 			if (rs.isBeforeFirst()) {
@@ -1457,27 +1405,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						Long taotlejaId = taotleja.getId();
 						Long applId = application.getId();
 
-						Connection c = null;
-						Statement stmt = null;
-						Statement stmt2 = null;
-						Statement stmt3 = null;
-						Statement st = null;
-						Statement st2 = null;
-						Statement st3 = null;
-						Statement st4 = null;
-						Statement st10 = null;
-
 						try {
-							Class.forName("org.postgresql.Driver");
-							c = DriverManager.getConnection("jdbc:postgresql://localhost/test", "alkor", "TE100pcm");
-						} catch (Exception e) {
-
-						}
-
-						try {
-							stmt = c.createStatement();
 							LOGGER.info("Teeme päringu ja vaatame mis toimub");
-							ResultSet rs = stmt.executeQuery("select 1 from reg_application where (appl_subj_id ='"
+							ResultSet rs = PostgreUtils.query("select 1 from reg_application where (appl_subj_id ='"
 									+ taotlejaId + "' or appl_state_class_id not in(400, 406, 408, 403)) and id = '"
 									+ applId + "';");
 
@@ -1489,14 +1419,13 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 								 * ära
 								 */
 								LOGGER.info("ETTEVÕTJA MUUTUS, KAKUME RIIGILÕIVU MAHA");
-								stmt2 = c.createStatement();
-								stmt3 = c.createStatement();
-								ResultSet rs2 = stmt2.executeQuery(
+
+								ResultSet rs2 = PostgreUtils.query(
 										"select enterprise_binded_to, amount, created from payment_matching_log where payment_application_id ='"
 												+ applId + "' limit 1;");
 								while (rs2.next()) {
-									int ent = rs2.getInt(1);
-									String amnt = rs2.getString(2);
+									int ent = rs2.getInteger("enterprise_binded_to");
+									String amnt = rs2.getString("amount");
 									String first = amnt.substring(0, 1);
 									if (first == "-") {
 										amnt = amnt.substring(1);
@@ -1522,12 +1451,11 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 									 * tuleb tagastada ex sisuga 666
 									 */
 
-									st10 = c.createStatement();
 									LOGGER.info("Teeme päringu ja vaatame mis toimub");
-									ResultSet rsRaha = st10.executeQuery(
+									ResultSet rsRaha = PostgreUtils.query(
 											"select balance from enterprise where id ='" + taotlejaId + "'");
 									while (rsRaha.next()) {
-										Float raha = rsRaha.getFloat(1);
+										Float raha = rsRaha.getFloat("balance");
 										float papp = Float.parseFloat(amnt);
 
 										if (raha < papp) {
@@ -1537,7 +1465,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 										}
 									}
 
-									String created = rs2.getString(3);
+									String created = rs2.getString("created");
 
 									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 									Date cr = sdf.parse(created);
@@ -1549,27 +1477,23 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 									LOGGER.info("RL UPDATE, raha juurde " + amnt + " enterprise: " + ent);
 
 									LOGGER.info("RL UPDATE");
-									st = c.createStatement();
-									st.executeUpdate("UPDATE enterprise SET balance = balance + '" + amnt
+									PostgreUtils.update("UPDATE enterprise SET balance = balance + '" + amnt
 											+ "' where id = '" + ent + "'");
 									LOGGER.info("RL UPDATE");
 
-									st4 = c.createStatement();
-									st4.executeUpdate("UPDATE enterprise SET balance = balance - '" + amnt
+									PostgreUtils.update("UPDATE enterprise SET balance = balance - '" + amnt
 											+ "' where id = '" + taotlejaId + "'");
 									String query = "INSERT INTO payment_matching_log(id, created, created_by, amount, payment_application_id, enterprise_binded_to) VALUES ("
 											+ applId + ent + randomInt + ent + ",CURRENT_TIMESTAMP,'sys', '-" + amnt
 											+ "', " + applId + ", " + ent + ")";
-									st2 = c.createStatement();
-									st2.executeUpdate(query);
+									PostgreUtils.insert(query);
 
 									randomInt = randomGenerator.nextInt(500);
 
 									String query2 = "INSERT INTO payment_matching_log(id, created, created_by, amount, payment_application_id, enterprise_binded_to) VALUES ("
 											+ applId + ent + randomInt + ent + ",CURRENT_TIMESTAMP,'sys', '" + amnt
 											+ "', " + applId + ", " + taotlejaId + ")";
-									st3 = c.createStatement();
-									st3.executeUpdate(query2);
+									PostgreUtils.insert(query2);
 								}
 								// LOGGER.info("VANAD READ MAHA, RL");
 								// String query =
@@ -1580,7 +1504,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 								// st2.executeUpdate(query);
 								application.setLatestPayment("");
 							}
-							c.commit();
+							
 						} catch (Exception e) {
 							e.printStackTrace();
 							String msg = e.getMessage();
@@ -1756,26 +1680,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						Long taotlejaId = taotleja.getId();
 						Long applId = application.getId();
 
-						Connection c = null;
-						Statement stmt = null;
-						Statement stmt2 = null;
-						Statement stmt3 = null;
-						Statement st = null;
-						Statement st2 = null;
-						Statement st3 = null;
-						Statement st4 = null;
-
 						try {
-							Class.forName("org.postgresql.Driver");
-							c = DriverManager.getConnection("jdbc:postgresql://localhost/test", "alkor", "TE100pcm");
-						} catch (Exception e) {
-
-						}
-
-						try {
-							stmt = c.createStatement();
 							LOGGER.info("Teeme päringu ja vaatame mis toimub");
-							ResultSet rs = stmt.executeQuery("select 1 from reg_application where appl_subj_id ='"
+							ResultSet rs = PostgreUtils.query("select 1 from reg_application where appl_subj_id ='"
 									+ taotlejaId + "' and id = '" + applId + "';");
 
 							if (rs.isBeforeFirst()) {
@@ -1786,14 +1693,12 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 								 * ära
 								 */
 								LOGGER.info("ETTEVÕTJA MUUTUS, KAKUME RIIGILÕIVU MAHA");
-								stmt2 = c.createStatement();
-								stmt3 = c.createStatement();
-								ResultSet rs2 = stmt2.executeQuery(
+								ResultSet rs2 = PostgreUtils.query(
 										"select enterprise_binded_to, amount, created from payment_matching_log where payment_application_id ='"
 												+ applId + "' limit 1;");
 								while (rs2.next()) {
-									int ent = rs2.getInt(1);
-									String amnt = rs2.getString(2);
+									int ent = rs2.getInteger("enterprise_binded_to");
+									String amnt = rs2.getString("amount");
 									String first = amnt.substring(0, 1);
 									if (first == "-") {
 										amnt = amnt.substring(1);
@@ -1813,7 +1718,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 										amnt = Float.toString(jagatis);
 									}
 
-									String created = rs2.getString(3);
+									String created = rs2.getString("created");
 
 									SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 									Date cr = sdf.parse(created);
@@ -1825,26 +1730,22 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 									LOGGER.info("RL UPDATE, raha juurde " + amnt + " enterprise: " + ent);
 
 									LOGGER.info("RL UPDATE");
-									st = c.createStatement();
-									st.executeUpdate("UPDATE enterprise SET balance = balance + '" + amnt
+									PostgreUtils.update("UPDATE enterprise SET balance = balance + '" + amnt
 											+ "' where id = '" + ent + "'");
 									LOGGER.info("RL UPDATE");
-									st4 = c.createStatement();
-									st4.executeUpdate("UPDATE enterprise SET balance = balance - '" + amnt
+									PostgreUtils.update("UPDATE enterprise SET balance = balance - '" + amnt
 											+ "' where id = '" + taotlejaId + "'");
 									String query = "INSERT INTO payment_matching_log(id, created, created_by, amount, payment_application_id, enterprise_binded_to) VALUES ("
 											+ applId + ent + randomInt + ent + ",CURRENT_TIMESTAMP,'sys', '-" + amnt
 											+ "', " + applId + ", " + ent + ")";
-									st2 = c.createStatement();
-									st2.executeUpdate(query);
+									PostgreUtils.insert(query);
 
 									randomInt = randomGenerator.nextInt(500);
 
 									String query2 = "INSERT INTO payment_matching_log(id, created, created_by, amount, payment_application_id, enterprise_binded_to) VALUES ("
 											+ applId + ent + randomInt + ent + ",CURRENT_TIMESTAMP,'sys', '" + amnt
 											+ "', " + applId + ", " + taotlejaId + ")";
-									st3 = c.createStatement();
-									st3.executeUpdate(query2);
+									PostgreUtils.insert(query2);
 								}
 								// LOGGER.info("VANAD READ MAHA, RL");
 								// String query =
@@ -1855,7 +1756,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 								// st2.executeUpdate(query);
 								application.setLatestPayment("");
 							}
-							c.commit();
+							
 						} catch (Exception e) {
 							e.printStackTrace();
 						}

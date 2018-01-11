@@ -3,7 +3,7 @@ package ee.agri.alkor.web.server;
 import java.util.HashSet;
 import java.util.Set;
 
-import java.sql.ResultSet;
+import ee.agri.alkor.impl.ResultSet;
 import javax.servlet.http.HttpSession;
 
 import org.acegisecurity.GrantedAuthority;

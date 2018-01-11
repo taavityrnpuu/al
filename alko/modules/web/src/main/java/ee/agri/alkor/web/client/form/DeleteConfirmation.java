@@ -402,7 +402,7 @@ public class DeleteConfirmation extends Form {
 			private void init() {
 				VerticalPanel popup = new VerticalPanel();
 				HTML html = new HTML(
-						"Kas olete kindel, et soovite dokumenti kustutada?");
+						"Kas olete kindel, et soovite põhjendust kustutada?");
 				html.setWidth("100%");
 				HorizontalPanel buttons = new HorizontalPanel();
 				Button yes = new Button("Jah", this);

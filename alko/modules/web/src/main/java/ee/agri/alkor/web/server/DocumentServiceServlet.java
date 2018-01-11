@@ -11,7 +11,7 @@ import java.net.URLDecoder;
 import java.security.Principal;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
+import ee.agri.alkor.impl.ResultSet;
 import java.sql.Statement;
 import java.util.Date;
 import java.util.Iterator;

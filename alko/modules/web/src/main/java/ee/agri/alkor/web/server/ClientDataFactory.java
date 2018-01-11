@@ -6,7 +6,7 @@ import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
+import ee.agri.alkor.impl.ResultSet;
 import java.sql.Statement;
 import java.text.ParsePosition;
 import java.text.SimpleDateFormat;
@@ -19,7 +19,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.sql.ResultSet;
 
 import org.apache.commons.beanutils.BeanUtilsBean;
 import org.apache.commons.beanutils.PropertyUtils;

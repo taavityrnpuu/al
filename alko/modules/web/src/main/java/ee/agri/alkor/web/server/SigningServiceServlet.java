@@ -28,7 +28,7 @@ import java.util.Calendar;
 import java.util.concurrent.ExecutionException;
 import java.sql.Connection;
 import java.sql.DriverManager;
-import java.sql.ResultSet;
+import ee.agri.alkor.impl.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 

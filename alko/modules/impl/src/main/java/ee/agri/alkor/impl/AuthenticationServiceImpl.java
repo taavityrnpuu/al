@@ -1,7 +1,6 @@
 package ee.agri.alkor.impl;
 
 import java.awt.image.renderable.RenderableImage;
-import java.sql.ResultSet;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
@@ -36,7 +35,6 @@ import ee.agri.alkor.service.IAuthenticationService;
 import ee.agri.alkor.service.IClassificatorService;
 import ee.agri.alkor.service.SessionFilter;
 
-import ee.agri.alkor.impl.PostgreUtils;
 
 /**
  * Implements necessary methods for Acegi security framework.
