@@ -6,6 +6,7 @@ import java.util.List;
 
 import ee.agri.alkor.model.Enterprise;
 import ee.agri.alkor.model.Faq;
+import ee.agri.alkor.model.IEntity;
 import ee.agri.alkor.model.News;
 import ee.agri.alkor.model.PaymentMatchingLog;
 import ee.agri.alkor.model.Person;
@@ -594,6 +595,8 @@ public interface IRegistryService extends IBaseService {
 
 
    void saveXid(XTeeId xid);
+   
+   void saveHistory(IEntity entity);
 
 
    /**

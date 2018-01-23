@@ -79,8 +79,6 @@ public class XteeQueryService implements IXteeServices, InitializingBean {
 			HashMap<String, String> rs = ServiceFactory.getRegistryService().getConfigFromDatabase();
 			url = rs.get("XTEESERVICE_URL_MTR");
 			
-			System.out.println(url);
-			
 			MtrLocator service = new MtrLocator();
 			Mtr_bindingStub port = null;
 		

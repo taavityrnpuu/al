@@ -163,13 +163,14 @@ public class ExcelFile extends HSSFWorkbook {
 		else
 			i = 1;
 		List resultList = filter.getResultsList();
+
 		for (Object obj : resultList) {
 
 			i++;
+			
 			createAndAddDataRow(sheet, i, obj,isSearchView);
 
 		}
-
 	}
 
 	/**

@@ -413,9 +413,14 @@ public class EnterpriseRegisterQueryImpl {
 	}
 
 	public String getQueringPersonRegNr() {
-		Object curUser = AuthenticationServiceDelegate.getCurrentUser();
-	    AlkoUserDetails userDetails = (AlkoUserDetails)curUser;       
-	    return userDetails.getIdCode();
+		if(queringPersonRegNr != null && !queringPersonRegNr.equals("")){
+			return queringPersonRegNr;
+		}
+		else{
+			Object curUser = AuthenticationServiceDelegate.getCurrentUser();
+		    AlkoUserDetails userDetails = (AlkoUserDetails)curUser;       
+		    return userDetails.getIdCode();
+		}
 	}
 
 	public void setQueringPersonRegNr(String queringPersonRegNr) {

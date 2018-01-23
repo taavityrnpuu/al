@@ -5,14 +5,18 @@ package ee.agri.alkor.impl.util;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.sql.SQLException;
 import java.util.Hashtable;
 
 import org.apache.log4j.Logger;
 import org.hibernate.EntityMode;
 import org.hibernate.FlushMode;
+import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.orm.hibernate3.HibernateCallback;
 
+import ee.agri.alkor.impl.BaseBO;
 import ee.agri.alkor.impl.ClassificatorServiceImpl;
 import ee.agri.alkor.model.Address;
 import ee.agri.alkor.model.Decision;
@@ -119,25 +123,35 @@ public class HistoryUtil {
 		if (history == null) {
 			return;
 		}
+		
+		try{
+			System.out.println("-------------------- doHistory:"+history.getClass().getName());
+		}catch(Exception x){
+			System.out.println("-------------------- doHistory");
+		}
+		
 		//get the current session
 		//session = session.getSessionFactory().getCurrentSession();
 		history = doMapping(entity, history, session);
 
 		// Save change to history
 		//LOGGER.debug(history.getClass().getName() + " " + ((IEntity) history).getId());
-//		try {
-//			ServiceFactory.getRegistryService().saveOrUpdate((IEntity)history);
-//		} catch (ConstraintViolationException e) {
-//			LOGGER.error(e.getMessage());
-//			e.printStackTrace();
-//		}
-		Session sess = session.getSessionFactory().openSession();
-		sess.setFlushMode(FlushMode.MANUAL);
-		Transaction tx = sess.beginTransaction();
-		sess.save(history);
-		sess.flush();
-		tx.commit();
-		sess.close();
+		try {
+			//ServiceFactory.getRegistryService().saveOrUpdate((IEntity)history);
+			ServiceFactory.getRegistryService().saveHistory((IEntity)history);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		//Session sess = session.getSessionFactory().openSession();
+		
+//		Session sess = session;
+//		sess.setFlushMode(FlushMode.MANUAL);
+//		Transaction tx = sess.beginTransaction();
+//		sess.save(history);
+//		sess.flush();
+//		tx.commit();
+//		sess.close();
 	}
 
 	private static void invokeMethod(String methodName, Object history, Object value,

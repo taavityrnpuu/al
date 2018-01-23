@@ -45,6 +45,7 @@ import ee.agri.alkor.model.AlkoUserDetails;
 import ee.agri.alkor.model.Decision;
 import ee.agri.alkor.model.Enterprise;
 import ee.agri.alkor.model.Faq;
+import ee.agri.alkor.model.IEntity;
 import ee.agri.alkor.model.News;
 import ee.agri.alkor.model.PaymentMatchingLog;
 import ee.agri.alkor.model.Person;
@@ -2317,7 +2318,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	}
 
 	public void createExcelExportDocument(SearchFilter searchFilter, OutputStream output) {
-
+System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		SearchFilter results = null;
 		if (searchFilter.isLimited()) {
 			results = searchApplications(searchFilter);
@@ -4213,6 +4214,16 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		});
 	}
 
+
+	public void saveHistory(final IEntity entity) {
+		getHibernateTemplate().execute(new HibernateCallback() {
+			public Object doInHibernate(Session session) {
+				session.save(entity);
+				return null;
+			}
+		});
+	}
+	
 	public boolean isPaymentUnique(final String orderNumber) {
 		try {
 			return (Boolean) getHibernateTemplate().execute(new HibernateCallback() {

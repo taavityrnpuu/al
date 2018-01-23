@@ -27,7 +27,7 @@ public class ClassificatorServiceImpl implements ClassificatorService {
 
    public List findClassItems(String category) {
       IClassificatorService service = ServiceFactory.getClassificatorService();
-      List<Classificator> serverList = service.findClassItems(category);//TODO: kas see peab siin olema?
+      //List<Classificator> serverList = service.findClassItems(category);//TODO: kas see peab siin olema?
 
       List classList = ClientDataFactory.create(category, service.findClassItems(category));
 
@@ -39,7 +39,7 @@ public class ClassificatorServiceImpl implements ClassificatorService {
    
    public List findClassItems2(String category) {
 	      IClassificatorService service = ServiceFactory.getClassificatorService();
-	      List<Classificator> serverList = service.findClassItems2(category);//TODO: kas see peab siin olema?
+	      //List<Classificator> serverList = service.findClassItems2(category);//TODO: kas see peab siin olema?
 
 	      List classList = ClientDataFactory.create(category, service.findClassItems2(category));
 
