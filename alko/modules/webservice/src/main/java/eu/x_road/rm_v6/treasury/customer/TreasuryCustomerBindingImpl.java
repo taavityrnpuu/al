@@ -23,15 +23,21 @@ import org.apache.axis.attachments.Attachments;
 import org.apache.axis.message.SOAPEnvelope;
 import org.apache.axis.message.SOAPHeader;
 import org.apache.axis.message.SOAPHeaderElement;
+import org.apache.log4j.Logger;
 
 import ee.agri.alkor.model.Enterprise;
 import ee.agri.alkor.model.RegistryPayment;
+import ee.agri.alkor.model.RegistryPaymentLog;
+import ee.agri.alkor.service.AuthenticationServiceDelegate;
 import ee.agri.alkor.service.IRegistryService;
 import ee.agri.alkor.service.ServiceFactory;
 import ee.agri.alkor.xtee.impl.XteeHeaderMap;
+import ee.riik.xtee.alkor2.producers.producer.alkor2.AretoBindingImpl;
 
 public class TreasuryCustomerBindingImpl implements eu.x_road.rm_v6.treasury.customer.TreasuryClientPortType {
 
+	private static Logger LOGGER = Logger.getLogger(TreasuryCustomerBindingImpl.class);
+	
 	private final IRegistryService registryService;
 	private final DecimalFormat ethanolRateFormat;
 
@@ -108,7 +114,7 @@ public class TreasuryCustomerBindingImpl implements eu.x_road.rm_v6.treasury.cus
 						sb.append("\n");
 					}
 					sb.append("} // end of MokaQuery\n");
-					// LOGGER.debug(sb.toString());
+					//LOGGER.debug(sb.toString());
 
 					XteeHeaderMap header = null;
 					try {
@@ -176,18 +182,31 @@ public class TreasuryCustomerBindingImpl implements eu.x_road.rm_v6.treasury.cus
 								// + payment.getReferenceNr() + ") ADDING ANYWAY
 								// !!!");
 							}
+							
+							Enterprise enterprise = registryService.getEnterpriseByActivity(payment.getPayerRegistrationNr());
+							if(enterprise != null){
+								payment.setBoundEnterprise(enterprise);
+
+								registryService.bindPaymentToEnterpise(payment);
+							}
+							
 							RegistryPayment payment2 = (RegistryPayment) registryService.saveOrUpdate(payment);
 							// try to automatically bind an enterprise to a
 							// payment
 							// by
 							// enterprise registration nr
-							Enterprise enterprise = registryService
-									.getEnterpriseByActivity(payment.getPayerRegistrationNr());
+							
+							/*
+							Enterprise enterprise = registryService.getEnterpriseByActivity(payment.getPayerRegistrationNr());
 							if (enterprise != null) {
 								registryService.bindPaymentToEnterpriseById(enterprise.getId(), payment2.getId());
 							} else {
 
 							}
+							*/
+							
+							LOGGER.info("--- payment: "+(payment2 != null ? payment2.getId() : "NULL")+" , enterprise: "+(enterprise != null ? enterprise.getId() : "NULL")+" (reg_nr: "+payment.getPayerRegistrationNr()+")");
+							
 						} catch (Exception e) {
 							resultText = "Exception when saving transaction: " + e.getMessage();
 							rc = 2;

@@ -12,8 +12,10 @@ import org.apache.log4j.Logger;
 import org.hibernate.CacheMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.annotations.Synchronize;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate3.HibernateTemplate;
 import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -35,6 +37,10 @@ import ee.agri.alkor.service.SystemException;
 public abstract class BaseBO extends HibernateDaoSupport implements IBaseService {
 
 	private static Logger LOGGER = Logger.getLogger(BaseBO.class);
+	
+	synchronized public HibernateTemplate getHibernateTemplateSync(){
+		return this.getHibernateTemplate();
+	}
 
 	@Transactional(rollbackFor = org.hibernate.exception.ConstraintViolationException.class)
 	public IEntity saveOrUpdate(IEntity obj) throws ConstraintViolationException {
@@ -659,6 +665,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 	 * 
 	 * @author raido.kalbre
 	 */
+
 	private static Query createQuery(Session session, Map<String, Object> queryParams, SearchFilter filter,
 			String queryString) {
 		Query q2 = session.createQuery(queryString); //

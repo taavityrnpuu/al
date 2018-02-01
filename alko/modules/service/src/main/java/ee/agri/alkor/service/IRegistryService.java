@@ -15,6 +15,7 @@ import ee.agri.alkor.model.ProductMovementReportRecord;
 import ee.agri.alkor.model.RegistryApplication;
 import ee.agri.alkor.model.RegistryDocument;
 import ee.agri.alkor.model.RegistryEntry;
+import ee.agri.alkor.model.RegistryPayment;
 import ee.agri.alkor.model.XTeeId;
 import ee.agri.alkor.model.classes.ApplicationState;
 import java.sql.ResultSet;
@@ -544,6 +545,8 @@ public interface IRegistryService extends IBaseService {
     * @return
     */
    Boolean bindPaymentToEnterpriseById(Long enterpriseId, Long paymentId);
+   
+   Boolean bindPaymentToEnterpise(RegistryPayment payment);
 
    /**
     * Unbinds payment from enterprise and substracts amount from enterprise's account

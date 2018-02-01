@@ -983,6 +983,31 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			throw new SystemException(e);
 		}
 	}
+	
+	public Boolean bindPaymentToEnterpise(final RegistryPayment payment) {
+		try {
+			getHibernateTemplate().execute(new HibernateCallback() {
+				public Object doInHibernate(Session session) {
+					createPaymentForEnterpise(session, payment.getBoundEnterprise(), payment);
+					return true;
+				}
+			});
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemException(e);
+		}
+		return false;
+	}
+	
+	@Transactional
+	private void createPaymentForEnterpise(Session session, Enterprise enterprise, RegistryPayment payment) {
+		BigDecimal balance = enterprise.getBalance() != null ? enterprise.getBalance() : new BigDecimal(0);
+		enterprise.setBalance(balance.add(payment.getAmount()));
+		RegistryPaymentLog registryPaymentLog = createLogInstance(enterprise, payment.getAmount());
+		session.saveOrUpdate(enterprise);
+		session.saveOrUpdate(registryPaymentLog);
+	}
+
 
 	/**
 	 * Binds payment to enterprise
@@ -2026,17 +2051,34 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						throw new SystemException(ex);
 					}
 
-					long prod = application.getProduct().getId();
-					try{
-						ResultSet rs = PostgreUtils.query("SELECT product_id FROM reg_application WHERE nr = '"+oldNumber+"'");
-						while(rs.next()){
-							prod = rs.getLong("product_id");
+					long prod = (application.getProduct().getId() != null ? application.getProduct().getId() : 0l);
+					LOGGER.debug("--- application.getProduct().getId(): "+prod);
+					
+					if(prod == 0l){
+						try{
+							ResultSet rs = PostgreUtils.query("SELECT product_id FROM reg_application WHERE nr = '"+oldNumber+"'");
+							while(rs.next()){
+								prod = rs.getLong("product_id");
+							}
+						}catch (Exception e) {
+							e.printStackTrace();
 						}
-					}catch (Exception e) {
-						e.printStackTrace();
+						LOGGER.debug("--- product_id FROM reg_application: "+prod);
 					}
 					
-					LOGGER.debug("product ID " + Long.toString(prod));
+					if(prod == 0l){
+						try{
+							ResultSet rs = PostgreUtils.query("SELECT id FROM product WHERE appl_id = "+application.getId());
+							while(rs.next()){
+								prod = rs.getLong("id");
+							}
+						}catch (Exception e) {
+							e.printStackTrace();
+						}
+						LOGGER.debug("--- id FROM product: "+prod);
+					}
+					
+					LOGGER.debug("product ID " + Long.toString(prod)+" , oldNumber: "+oldNumber+", appl_id: "+application.getId());
 
 					Iterator it = session.createQuery("select id from RegistryApplication where product_id = ?")
 							.setLong(0, prod).iterate();
@@ -2047,6 +2089,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 							it.next();
 						} while (it.hasNext());
 					}
+					
 					int nextNr = cnt;
 					/*
 					 * LOGGER.debug("PXL oldnr: " + oldNumber); if
@@ -2553,7 +2596,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		}
 	}
 
-	private List<RegistryDocument> findProductDocumentsPublic(final Long productId, final boolean asUser) {
+	synchronized private List<RegistryDocument> findProductDocumentsPublic(final Long productId, final boolean asUser) {
 		try {
 			return (List<RegistryDocument>) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
@@ -2787,7 +2830,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		}
 	}
 
-	public List<RegistryDocument> findApplicationDocumentsPublic(final String applicationNr) {
+	synchronized public List<RegistryDocument> findApplicationDocumentsPublic(final String applicationNr) {
 		try {
 			return (List<RegistryDocument>) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
@@ -2815,7 +2858,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		}
 	}
 
-	public List<RegistryDocument> findApplicationDocuments(final Long applicationId) {
+	synchronized public List<RegistryDocument> findApplicationDocuments(final Long applicationId) {
 		try {
 			return (List<RegistryDocument>) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
@@ -2830,7 +2873,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		}
 	}
 
-	public List<RegistryDocument> findApplicationDocumentsPublic(final Long applicationId) {
+	synchronized public List<RegistryDocument> findApplicationDocumentsPublic(final Long applicationId) {
 		try {
 			return (List<RegistryDocument>) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
@@ -2845,7 +2888,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		}
 	}
 
-	public List<RegistryDocument> findApplicationDocumentsArchived(final Long applicationId) {
+	synchronized public List<RegistryDocument> findApplicationDocumentsArchived(final Long applicationId) {
 		try {
 			return (List<RegistryDocument>) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
@@ -2922,7 +2965,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		// + "' and d.language.code = ?", langCode);
 	}
 
-	public Enterprise findEnterpriseByName(String name) {
+	synchronized public Enterprise findEnterpriseByName(String name) {
 		Enterprise ent = null;
 		try {
 			ent = (Enterprise) getHibernateTemplate().find("from Enterprise e where e.name = ?", name).get(0);
@@ -2932,7 +2975,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		return ent;
 	}
 
-	public Enterprise findEnterpriseByRegNr(String regNr) {
+	synchronized public Enterprise findEnterpriseByRegNr(String regNr) {
 		Enterprise ent = null;
 		try {
 			ent = (Enterprise) getHibernateTemplate()
@@ -3277,7 +3320,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 				.setLong(0, new Long(applicationId)).list();
 	}
 
-	private List<RegistryDocument> findApplicationDocumentsPublic(Session session, String applicationId) {
+	synchronized private List<RegistryDocument> findApplicationDocumentsPublic(Session session, String applicationId) {
 
 		return session
 				.createQuery(
@@ -3305,7 +3348,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		return l;
 	}
 
-	private List<RegistryDocument> findApplicationDocumentsPublic(Session session, Long applicationId) {
+	synchronized private List<RegistryDocument> findApplicationDocumentsPublic(Session session, Long applicationId) {
 		/*
 		 * Implementation of cache
 		 */
@@ -4191,7 +4234,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		return content;
 	}
 
-	public List<Enterprise> findEnterpriseByNameorRegNr(String name, String regNr) {
+	synchronized public List<Enterprise> findEnterpriseByNameorRegNr(String name, String regNr) {
 		if (name != null && name.length() > 0 && regNr != null && regNr.length() > 0) {
 			return getHibernateTemplate().find("from Enterprise e where e.name like ? and e.registrationId like ?",
 					new Object[] { "%" + name + "%", "%" + regNr + "%" });

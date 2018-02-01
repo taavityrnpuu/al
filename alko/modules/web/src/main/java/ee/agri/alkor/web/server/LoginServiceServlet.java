@@ -100,6 +100,7 @@ public class LoginServiceServlet extends HttpServlet {
 			request.getSession().setAttribute("fromCas", "1");
 		} else {
 			ik = (String) request.getSession().getAttribute("user_ik");
+			System.out.println("CAS principal puudu. Võtame isikukoodi sessioonist");
 		}
 
 		boolean isVta = false;

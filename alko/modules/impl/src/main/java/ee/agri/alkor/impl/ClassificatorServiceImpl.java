@@ -107,7 +107,7 @@ public class ClassificatorServiceImpl extends BaseBO implements IClassificatorSe
 		return findAllClassItems(category, true);
 	}
 
-	public List<Classificator> findAllClassItems(String category, boolean all) {
+	synchronized public List<Classificator> findAllClassItems(final String category, boolean all) {
 
 		 //final StringBuffer sbuf = new StringBuffer("SELECT * from classificator WHERE category = '").append(category.replace("Otsi","")).append("' ");
 		final StringBuffer sbuf = new StringBuffer("from ").append(category.replace("Otsi", ""));
@@ -115,7 +115,7 @@ public class ClassificatorServiceImpl extends BaseBO implements IClassificatorSe
 			sbuf.append(" where active=true");
 		}
 		
-		 if (!all) { sbuf.append(" AND active=true"); }
+		// if (!all) { sbuf.append(" AND active=true"); }
 		 
 		if (category.equals("Month")) {
 			sbuf.append(" order by id");
@@ -161,16 +161,16 @@ public class ClassificatorServiceImpl extends BaseBO implements IClassificatorSe
 		  return list;
 		 */
 		
-		System.out.println("--------------------- findAllClassItems: " + category);
-		System.out.println("--------------------- SQL: " + sbuf.toString());
+		System.out.println("--- findAllClassItems: " + category+" , SQL: " + sbuf.toString());
 		
 		Exception x = new Exception("findAllClassItems error");
-
+/*
 		//for (int times = 5; times > 0; times--) {
 			try {
 				return (List<Classificator>) getHibernateTemplate().execute(new HibernateCallback() {
 					public Object doInHibernate(Session session) {
 						List<Classificator> list = session.createQuery(sbuf.toString()).list();
+						System.out.println("--- "+category+", list.size(): " + (list != null ? list.size() : "NULL"));
 						return list;
 					}
 				});
@@ -182,7 +182,21 @@ public class ClassificatorServiceImpl extends BaseBO implements IClassificatorSe
 				// throw new SystemException(e);
 			}
 		//}
-
+*/
+		
+		//for (int times = 5; times > 0; times--) {
+			try {
+				List<Classificator> list = (List<Classificator>) getHibernateTemplate().find(sbuf.toString());
+				System.out.println("--- "+category+", list.size(): " + (list != null ? list.size() : "NULL"));
+				return list;
+			} catch (IndexOutOfBoundsException iof) {
+				return new ArrayList<Classificator>();
+			} catch (Exception e) {
+				//System.out.println("--- "+category+" loading EXCEPTION "+ times + "/5 tries");
+				x = e;
+			}
+		//}
+		
 		throw new SystemException(x);
 	}
 
@@ -305,7 +319,7 @@ public class ClassificatorServiceImpl extends BaseBO implements IClassificatorSe
 	/**
 	 * @author raido.kalbre
 	 */
-	public List<Classificator> findEnterpriseSpecificClassItems(String className, String regCode) {
+	synchronized public List<Classificator> findEnterpriseSpecificClassItems(String className, String regCode) {
 
 		String query = "";
 

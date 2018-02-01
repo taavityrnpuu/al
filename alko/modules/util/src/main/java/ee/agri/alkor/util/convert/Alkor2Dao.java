@@ -60,14 +60,14 @@ public class Alkor2Dao extends HibernateDaoSupport implements IAlkor2Service {
 			 * @see org.springframework.orm.hibernate3.HibernateCallback#doInHibernate(org.hibernate.Session)
 			 */
 			public Object doInHibernate(Session arg0) throws HibernateException, SQLException {
-				StatelessSession session = arg0.getSessionFactory().openStatelessSession();
-				Transaction tx = session.beginTransaction();
-				List<RegistryEntry> entrys = session.createQuery("from RegistryEntry").list();
+				//StatelessSession session = arg0.getSessionFactory().openStatelessSession();
+				//Transaction tx = session.beginTransaction();
+				List<RegistryEntry> entrys = arg0.createQuery("from RegistryEntry").list();
 				Hashtable<String, RegistryEntry> entryTable = new Hashtable<String, RegistryEntry>();
 				for(RegistryEntry entry : entrys) {
 					entryTable.put(entry.getNr(), entry);
 				}
-				session.close();
+				//session.close();
 				return entryTable;
 			}
 		});

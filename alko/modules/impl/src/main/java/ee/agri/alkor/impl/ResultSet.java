@@ -1,5 +1,6 @@
 package ee.agri.alkor.impl;
 
+import java.math.BigInteger;
 import java.sql.ResultSetMetaData;
 import java.sql.Timestamp;
 import java.util.Date;
@@ -90,6 +91,10 @@ public class ResultSet {
 				if (objects.get(index).get(key) instanceof Long) {
 					return (Long) objects.get(index).get(key);
 				}
+				else if (objects.get(index).get(key) instanceof BigInteger) {
+					return ((BigInteger) objects.get(index).get(key)).longValue();
+				}
+				
 				return Long.valueOf(String.valueOf(objects.get(index).get(key)));
 			} catch (Exception x) {
 				x.printStackTrace();

@@ -124,12 +124,6 @@ public class HistoryUtil {
 			return;
 		}
 		
-		try{
-			System.out.println("-------------------- doHistory:"+history.getClass().getName());
-		}catch(Exception x){
-			System.out.println("-------------------- doHistory");
-		}
-		
 		//get the current session
 		//session = session.getSessionFactory().getCurrentSession();
 		history = doMapping(entity, history, session);

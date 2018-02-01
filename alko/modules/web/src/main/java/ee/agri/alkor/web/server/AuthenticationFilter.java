@@ -46,7 +46,9 @@ public class AuthenticationFilter extends AuthenticationProcessingFilter {
 		if ((username != null) && (password != null)) {
 
 			String idCode = "";
-
+			
+			LOGGER.info("logged by login form: "+username);
+			
 			ResultSet rs = PostgreUtils.query("SELECT reg_id FROM person WHERE id = (SELECT person_id FROM sys_user WHERE name = '"+username.replaceAll("'", "")+"' LIMIT 1)");
 			try{
 				while(rs.next()){
@@ -56,6 +58,8 @@ public class AuthenticationFilter extends AuthenticationProcessingFilter {
 			catch(Exception xc){
 				xc.printStackTrace();
 			}
+			
+			LOGGER.info("user_ik: "+idCode);
 			
 			request.getSession().setAttribute("user_ik", idCode);
 			
@@ -102,7 +106,7 @@ public class AuthenticationFilter extends AuthenticationProcessingFilter {
 				UserAuthlog ua = new UserAuthlog(idCode, name);
 				ua.checkAndCreate();
 
-				LOGGER.info("isVTA: "+isVTA+", name: "+name+", idCode: "+idCode+", enterprise: "+enterprise);
+				LOGGER.info(": "+isVTA+", name: "+name+", idCode: "+idCode+", enterprise: "+enterprise);
 				
 				if(!isVTA){
 					if(request.getSession().getAttribute("fromCas") != null && request.getSession().getAttribute("fromCas").equals("1")){

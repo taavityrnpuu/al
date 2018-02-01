@@ -10,18 +10,20 @@ import ee.agri.alkor.util.AppContextHelper;
 import ee.agri.alkor.impl.DbBean;
 
 import org.apache.commons.dbcp2.BasicDataSource;
+import org.hibernate.Session;
+import org.hibernate.query.NativeQuery;
 import org.jboss.resource.adapter.jdbc.WrapperDataSource;
 import org.springframework.orm.hibernate3.HibernateTransactionManager;
 
 public class PostgreUtils {
 	static DbBean dbBean = (DbBean) AppContextHelper.getInstance().getBean("pgDataSource");
-	static HibernateTransactionManager myTxManager = (HibernateTransactionManager) AppContextHelper.getInstance().getBean("myTxManager");
+	//static HibernateTransactionManager myTxManager = (HibernateTransactionManager) AppContextHelper.getInstance().getBean("myTxManager");
 	
 	private static Connection connect() {
 		try {
 			Class.forName("org.postgresql.Driver");
 			Connection conn = DriverManager.getConnection(dbBean.getUrl() , dbBean.getUsername(), dbBean.getPassword());
-
+			
 			//Connection conn = myTxManager.getDataSource().getConnection();
 
 			return conn;
