@@ -2663,7 +2663,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 				.find("from RegistryEntry e where e.application.id = ?", applicationId).get(0);
 	}
 
-	public RegistryApplication findRegistryApplication(final String applicationNr) {
+	synchronized public RegistryApplication findRegistryApplication(final String applicationNr) {
 		try {
 			return (RegistryApplication) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
@@ -2678,7 +2678,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		}
 	}
 
-	public RegistryApplication findRegistryApplicationById(final Long id) {
+	synchronized public RegistryApplication findRegistryApplicationById(final Long id) {
 		try {
 			return (RegistryApplication) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
@@ -2691,12 +2691,12 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		}
 	}
 
-	public RegistryApplication findRegistryApplicationById(Session session, Long applicationId) {
+	synchronized public RegistryApplication findRegistryApplicationById(Session session, Long applicationId) {
 		return (RegistryApplication) session.createQuery("from RegistryApplication a where a.id = ?")
 				.setLong(0, applicationId).uniqueResult();
 	}
 
-	public RegistryApplication findRegistryApplication(Session session, String applicationNr) {
+	synchronized public RegistryApplication findRegistryApplication(Session session, String applicationNr) {
 		return (RegistryApplication) session.createQuery("from RegistryApplication a where a.nr = ?")
 				.setString(0, applicationNr).list().get(0);
 	}
@@ -4258,7 +4258,7 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 	}
 
 
-	public void saveHistory(final IEntity entity) {
+	synchronized public void saveHistory(final IEntity entity) {
 		getHibernateTemplate().execute(new HibernateCallback() {
 			public Object doInHibernate(Session session) {
 				session.save(entity);

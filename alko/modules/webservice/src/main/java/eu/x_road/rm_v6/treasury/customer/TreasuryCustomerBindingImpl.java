@@ -191,6 +191,7 @@ public class TreasuryCustomerBindingImpl implements eu.x_road.rm_v6.treasury.cus
 							}
 							
 							RegistryPayment payment2 = (RegistryPayment) registryService.saveOrUpdate(payment);
+						
 							// try to automatically bind an enterprise to a
 							// payment
 							// by
@@ -205,7 +206,7 @@ public class TreasuryCustomerBindingImpl implements eu.x_road.rm_v6.treasury.cus
 							}
 							*/
 							
-							LOGGER.info("--- payment: "+(payment2 != null ? payment2.getId() : "NULL")+" , enterprise: "+(enterprise != null ? enterprise.getId() : "NULL")+" (reg_nr: "+payment.getPayerRegistrationNr()+")");
+							LOGGER.debug("--- payment: "+(payment2 != null ? payment2.getId() : "NULL")+" , enterprise: "+(enterprise != null ? enterprise.getId() : "NULL")+" (reg_nr: "+payment.getPayerRegistrationNr()+")");
 							
 						} catch (Exception e) {
 							resultText = "Exception when saving transaction: " + e.getMessage();

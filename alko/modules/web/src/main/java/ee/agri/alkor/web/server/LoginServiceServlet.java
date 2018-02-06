@@ -363,7 +363,7 @@ public class LoginServiceServlet extends HttpServlet {
 				String regNr = entry.getKey();
 				String[] split = entry.getValue();
 
-				String entName = split[0];
+				String entName = split[0].replaceAll("'", "\'");
 				String isikName = split[1].replaceAll("'", "\'");
 				String isikRoll = split[2].replaceAll("'", "\'");
 
@@ -405,7 +405,7 @@ public class LoginServiceServlet extends HttpServlet {
 					String regNr = entry.getKey();
 					String[] split = entry.getValue();
 
-					String entName = split[0];
+					String entName = split[0].replaceAll("'", "\'");
 					String isikName = split[1].replaceAll("'", "\'");
 					String isikRoll = split[2].replaceAll("'", "\'");
 

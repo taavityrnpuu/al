@@ -161,7 +161,7 @@ public class ClassificatorServiceImpl extends BaseBO implements IClassificatorSe
 		  return list;
 		 */
 		
-		System.out.println("--- findAllClassItems: " + category+" , SQL: " + sbuf.toString());
+		//System.out.println("--- findAllClassItems: " + category+" , SQL: " + sbuf.toString());
 		
 		Exception x = new Exception("findAllClassItems error");
 /*
@@ -187,7 +187,7 @@ public class ClassificatorServiceImpl extends BaseBO implements IClassificatorSe
 		//for (int times = 5; times > 0; times--) {
 			try {
 				List<Classificator> list = (List<Classificator>) getHibernateTemplate().find(sbuf.toString());
-				System.out.println("--- "+category+", list.size(): " + (list != null ? list.size() : "NULL"));
+				//System.out.println("--- "+category+", list.size(): " + (list != null ? list.size() : "NULL"));
 				return list;
 			} catch (IndexOutOfBoundsException iof) {
 				return new ArrayList<Classificator>();
