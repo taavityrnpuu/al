@@ -272,10 +272,13 @@ public interface RegistryService extends BaseService {
    Boolean unbindPaymentFromEnterprise(Long enterpriseId,Long paymentId);
 
    ApplicationMap processPaymentMatching(ApplicationMap registryApplication,
-         String tax) throws ConstraintViolationException, SessionExpiredException ;
+         String tax) throws ConstraintViolationException, SessionExpiredException;
    
    ApplicationMap processPaymentMatching2(ApplicationMap registryApplication,
-	         String tax) throws ConstraintViolationException, SessionExpiredException ;
+	         String tax) throws ConstraintViolationException, SessionExpiredException;
+   
+   String takeBackPaymentMatching(ApplicationMap registryApplication,
+	         String tax) throws SessionExpiredException;
 
    ApplicationMap saveNewExtendApplication(ApplicationMap registryApplication) throws SessionExpiredException;
    boolean checkCanExtend(long id) throws SystemException;

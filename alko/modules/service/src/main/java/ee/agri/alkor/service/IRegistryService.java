@@ -560,6 +560,8 @@ public interface IRegistryService extends IBaseService {
    
    RegistryApplication processPaymentMatching2(RegistryApplication registryApplication,
 	         String tax, PaymentMatchingLog paymentMatchingLog) throws ConstraintViolationException;
+   
+   String takeBackPaymentMatching(RegistryApplication registryApplication, String tax) throws SystemException;
 
    RegistryApplication saveNewExtendApplication(RegistryApplication registryApplication);
    

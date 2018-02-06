@@ -128,9 +128,11 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	}
 
 	public RegistryApplication saveExtendApplicationDecision(final RegistryApplication registryApplication) {
+
 		try {
 			return (RegistryApplication) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
+
 					Decision decision = registryApplication.getDecision();
 					decision.setDate(new Date());
 					RegistryEntry registryEntry = registryApplication.getRegistryEntry();
@@ -560,6 +562,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	}
 
 	public RegistryApplication saveApplicationDecision(final RegistryApplication appl) {
+
 		try {
 			// getHibernateTemplate().setEntityInterceptor(new
 			// AuditInterceptor());
@@ -1006,6 +1009,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		RegistryPaymentLog registryPaymentLog = createLogInstance(enterprise, payment.getAmount());
 		session.saveOrUpdate(enterprise);
 		session.saveOrUpdate(registryPaymentLog);
+		session.saveOrUpdate(payment);
 	}
 
 
@@ -4032,6 +4036,48 @@ System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		refreshEnterprises(registryApplication);
 
 		return registryApplication;
+	}
+	
+	public String takeBackPaymentMatching(RegistryApplication registryApplication, final String tax) {
+
+		Enterprise applicant = findEnterprise(registryApplication.getApplicant().getId());
+		BigDecimal decimalTax = BigDecimal.valueOf(Double.parseDouble(tax));
+
+		try {
+			String sql = "SELECT id, amount, enterprise_binded_to "
+					+ " FROM payment_matching_log "
+					+ " WHERE payment_application_id = "+registryApplication.getId()
+					+ " AND amount = "+decimalTax
+					+ " AND enterprise_binded_to = "+applicant.getId()
+					+ " AND created_by = '"+AuthenticationServiceDelegate.getCurrentUserName()+"'"
+					+ " ORDER BY created DESC LIMIT 1";
+			
+			ResultSet rs = PostgreUtils.query(sql);
+			
+			LOGGER.info("--- returning money and deleteing payment log entry: "+sql);
+			
+			if(rs.next()){
+				String id = rs.getString("id");
+				String amount = rs.getString("amount");
+				String ent = rs.getString("enterprise_binded_to");
+
+				LOGGER.info("--- id: "+id+", amount: "+amount+", ent: "+ent);
+				
+				if(id != null && id != "0"){
+					PostgreUtils.delete("DELETE FROM payment_matching_log WHERE id = "+id);
+					PostgreUtils.update("UPDATE enterprise SET balance = balance + "+amount+" WHERE id = "+ent);
+				}
+			}
+			else{
+				LOGGER.info("--- not found");
+			}
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw new SystemException(e);
+		}
+
+		return "";
 	}
 
 	/**

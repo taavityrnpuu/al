@@ -145,6 +145,9 @@ public interface RegistryServiceAsync {
    
    void processPaymentMatching2(ApplicationMap registryApplication,
 	         String tax, AsyncCallback asyncCallback);
+   
+   void takeBackPaymentMatching(ApplicationMap registryApplication,
+	         String tax, AsyncCallback asyncCallback);
 
    void saveNewExtendApplication(ApplicationMap registryApplication,AsyncCallback asyncCallback);
    void checkCanExtend(long id,AsyncCallback asyncCallback);

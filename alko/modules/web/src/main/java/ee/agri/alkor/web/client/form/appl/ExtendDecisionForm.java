@@ -1,6 +1,5 @@
 package ee.agri.alkor.web.client.form.appl;
 
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Cookies;
@@ -78,17 +77,13 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 	public ExtendDecisionForm(Form parent, ApplicationMap applicationMapping) {
 		this(parent);
 		if (applicationMapping != null)
-			System.out.println("info ExtendDecisionForm:"
-					+ applicationMapping.getProperty(ApplicationMap.NR)
-					+ "/"
-					+ applicationMapping
-							.getProperty(ApplicationMap.PRODUCT_NAME));
+			System.out.println("info ExtendDecisionForm:" + applicationMapping.getProperty(ApplicationMap.NR) + "/"
+					+ applicationMapping.getProperty(ApplicationMap.PRODUCT_NAME));
 		else
 			System.out.println("data is null on init");
 		setData(applicationMapping);
 		if (applicationMapping.getProperty(ApplicationMap.DECISION) == null) {
-			applicationMapping.setProperty(ApplicationMap.DECISION,
-					new DecisionMap());
+			applicationMapping.setProperty(ApplicationMap.DECISION, new DecisionMap());
 		}
 
 	}
@@ -109,23 +104,20 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 
 		HorizontalPanel buttons = new HorizontalPanel();
 		SaveExtendDecisionListener saveExtendDecisionListener = new SaveExtendDecisionListener();
-		Button back = new Button("Tagasi",
-				new ReturnFormListener(this, parent) {
-					public void onReturn() {
-						ApplicationForm applForm = (ApplicationForm) parent;
-						applForm.updateApplication(getData());
-					}
-				});
+		Button back = new Button("Tagasi", new ReturnFormListener(this, parent) {
+			public void onReturn() {
+				ApplicationForm applForm = (ApplicationForm) parent;
+				applForm.updateApplication(getData());
+			}
+		});
 		save = new Button("Salvesta", saveExtendDecisionListener);
 
 		back.setWidth("9em");
 		save.setWidth("9em");
 
-		buttons.add(UIutils.createSpacer(
-				UIutils.SPACER_BEFORE_BUTTON_PANEL_WIDTH,
+		buttons.add(UIutils.createSpacer(UIutils.SPACER_BEFORE_BUTTON_PANEL_WIDTH,
 				UIutils.SPACER_BEFORE_BUTTON_PANEL_HEIGHT));
-		if (UIutils
-				.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK })) {
+		if (UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK })) {
 
 			buttons.add(save);
 			buttons.add(UIutils.createSpacer(6, 1));
@@ -147,8 +139,7 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 		FlexCellFormatter cellFormatter = main.getFlexCellFormatter();
 		cellFormatter.setWidth(1, 1, "100%");
 		cellFormatter.setColSpan(0, 0, 2);
-		cellFormatter.setHorizontalAlignment(2, 0,
-				HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setHorizontalAlignment(2, 0, HasHorizontalAlignment.ALIGN_LEFT);
 		askClassificators();
 		initWidget(main);
 	}
@@ -191,69 +182,23 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 		form.setText(2, 6, "Allkirjasta otsus:");
 		form.setText(3, 6, "Prindi õiend:");
 		form.setText(4, 6, "Allkirjasta õiend:");
-		//form.setText(5, 6, "Prindi ärakiri:");
+		// form.setText(5, 6, "Prindi ärakiri:");
 		form.setText(5, 6, "Riigilõiv:");
 
-		form.setWidget(
-				0,
-				1,
-				addFormField(FORM_NAME, ApplicationMap.NR, new TextBox(),
-						"10em"));
-		form.setWidget(
-				1,
-				1,
-				addFormField(FORM_NAME, ApplicationMap.ARRIVED, arrived, "10em")); // arrived
-		form.setWidget(
-				2,
-				1,
-				addFormField(FORM_NAME, ApplicationMap.PRODUCT_NAME,
-						new TextBox(), "10em")); // product
-		form.setWidget(
-				3,
-				1,
-				addFormField(FORM_NAME, ApplicationMap.PRODUCT_GRADE, grade,
-						"10em"));// grade
-		form.setWidget(
-				4,
-				1,
-				addFormField(FORM_NAME, ApplicationMap.PRODUCT_VOLUME_NAME,
-						new TextBox(), "10em"));// volume
-		form.setWidget(
-				5,
-				1,
-				addFormField(FORM_NAME, ApplicationMap.PRODUCT_TYPE_NAME,
-						new TextBox(), "10em")); // type
-		form.setWidget(
-				6,
-				1,
-				addFormField(FORM_NAME, ApplicationMap.APPLICANT_NAME,
-						new TextBox(), "10em"));// applicant
-		form.setWidget(
-				0,
-				4,
-				addFormField(FORM_NAME, ApplicationMap.DECISION_NR, decisionNr,
-						"10em"));// decisionNr
-		form.setWidget(
-				2,
-				4,
-				addFormField(FORM_NAME, ApplicationMap.PRODUCT_PRODUCER_NAME,
-						new TextBox(), "10em"));// manufacturer
-		form.setWidget(
-				3,
-				4,
-				addFormField(FORM_NAME,
-						ApplicationMap.PRODUCT_PRODUCER_COUNTRY_NAME,
-						new TextBox(), "10em"));// motherland
-		form.setWidget(
-				1,
-				4,
-				addFormField(FORM_NAME, ApplicationMap.DECISION_DATE,
-						decisionDate, "10em"));// decision date
-		form.setWidget(
-				0,
-				7,
-				addFormField(FORM_NAME, ApplicationMap.REGISTRYENTRY_NR,
-						new TextBox(), "10em"));// regNr
+		form.setWidget(0, 1, addFormField(FORM_NAME, ApplicationMap.NR, new TextBox(), "10em"));
+		form.setWidget(1, 1, addFormField(FORM_NAME, ApplicationMap.ARRIVED, arrived, "10em")); // arrived
+		form.setWidget(2, 1, addFormField(FORM_NAME, ApplicationMap.PRODUCT_NAME, new TextBox(), "10em")); // product
+		form.setWidget(3, 1, addFormField(FORM_NAME, ApplicationMap.PRODUCT_GRADE, grade, "10em"));// grade
+		form.setWidget(4, 1, addFormField(FORM_NAME, ApplicationMap.PRODUCT_VOLUME_NAME, new TextBox(), "10em"));// volume
+		form.setWidget(5, 1, addFormField(FORM_NAME, ApplicationMap.PRODUCT_TYPE_NAME, new TextBox(), "10em")); // type
+		form.setWidget(6, 1, addFormField(FORM_NAME, ApplicationMap.APPLICANT_NAME, new TextBox(), "10em"));// applicant
+		form.setWidget(0, 4, addFormField(FORM_NAME, ApplicationMap.DECISION_NR, decisionNr, "10em"));// decisionNr
+		form.setWidget(2, 4, addFormField(FORM_NAME, ApplicationMap.PRODUCT_PRODUCER_NAME, new TextBox(), "10em"));// manufacturer
+		form.setWidget(3, 4,
+				addFormField(FORM_NAME, ApplicationMap.PRODUCT_PRODUCER_COUNTRY_NAME, new TextBox(), "10em"));// motherland
+		form.setWidget(1, 4, addFormField(FORM_NAME, ApplicationMap.DECISION_DATE, decisionDate, "10em"));// decision
+																											// date
+		form.setWidget(0, 7, addFormField(FORM_NAME, ApplicationMap.REGISTRYENTRY_NR, new TextBox(), "10em"));// regNr
 
 		boolean visible = getData().getProperty(ApplicationMap.DECISION_NR) == null;
 
@@ -269,95 +214,78 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 		form.setWidget(10, 0, UIutils.createSpacer(1, 40));
 		decisionPrintLink = new DecisionPrintButton();
 		decisionSignLink = new DecisionSignButton();
-		
+
 		// kui otsus pole allkirjastatud
-				ServiceContext
-						.getInstance()
-						.getRegistryService()
-						.isSigned(
-								Integer.valueOf(getData().getText(ApplicationMap.ID)),
-								ServiceConstants.EX_DECISION_DOC_NAME
-										+ getData().getText(ApplicationMap.DECISION_NR)
-										+ " (asice)", new AsyncCallback() {
+		ServiceContext.getInstance().getRegistryService().isSigned(
+				Integer.valueOf(getData().getText(ApplicationMap.ID)),
+				ServiceConstants.EX_DECISION_DOC_NAME + getData().getText(ApplicationMap.DECISION_NR) + " (asice)",
+				new AsyncCallback() {
 
-									public void onFailure(Throwable caught) {
-										Window.alert(String.valueOf(caught.getMessage()));
-									}
+					public void onFailure(Throwable caught) {
+						Window.alert(String.valueOf(caught.getMessage()));
+					}
 
-									public void onSuccess(Object result) {
-										try {
-											boolean res = ((Boolean) result)
-													.booleanValue();
+					public void onSuccess(Object result) {
+						try {
+							boolean res = ((Boolean) result).booleanValue();
 
-											boolean enabled = getData().getProperty(
-													ApplicationMap.DECISION_NR) != null;
+							boolean enabled = getData().getProperty(ApplicationMap.DECISION_NR) != null;
 
-											if (!res && enabled) {
-												decisionSignLink.setVisible(true);
-											}
-										} catch (Exception ex) {
+							if (!res && enabled) {
+								decisionSignLink.setVisible(true);
+							}
+						} catch (Exception ex) {
 
-										}
+						}
 
-									}
-								});
+					}
+				});
 
-				ServiceContext
-						.getInstance()
-						.getRegistryService()
-						.isSigned(
-								Integer.valueOf(getData().getText(ApplicationMap.ID)),
-								ServiceConstants.EX_COR_DOC_NAME
-										+ getData().getText(ApplicationMap.DECISION_NR)
-										+ " (asice)", new AsyncCallback() {
+		ServiceContext.getInstance().getRegistryService().isSigned(
+				Integer.valueOf(getData().getText(ApplicationMap.ID)),
+				ServiceConstants.EX_COR_DOC_NAME + getData().getText(ApplicationMap.DECISION_NR) + " (asice)",
+				new AsyncCallback() {
 
-									public void onFailure(Throwable caught) {
-										Window.alert(String.valueOf(caught.getMessage()));
-									}
+					public void onFailure(Throwable caught) {
+						Window.alert(String.valueOf(caught.getMessage()));
+					}
 
-									public void onSuccess(Object result) {
+					public void onSuccess(Object result) {
 
-										try {
-											boolean res = ((Boolean) result)
-													.booleanValue();
+						try {
+							boolean res = ((Boolean) result).booleanValue();
 
-											boolean enabled = getData().getProperty(
-													ApplicationMap.DECISION_NR) != null;
+							boolean enabled = getData().getProperty(ApplicationMap.DECISION_NR) != null;
 
-											boolean oiendKeelatud = ((String) getData()
-													.getProperty(
-															ApplicationMap.STATE_CODE))
-													.equals(ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY);
+							boolean oiendKeelatud = ((String) getData().getProperty(ApplicationMap.STATE_CODE))
+									.equals(ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY);
 
-											if (!res && enabled && !oiendKeelatud) {
-												correctionSignLink.setVisible(true);
-											}
-										} catch (Exception ex) {
+							if (!res && enabled && !oiendKeelatud) {
+								correctionSignLink.setVisible(true);
+							}
+						} catch (Exception ex) {
 
-										}
+						}
 
-									}
-								});
-		
+					}
+				});
+
 		form.setWidget(1, 7, decisionPrintLink);
 		form.setWidget(2, 7, decisionSignLink);
 		correctionPrintLink = new CorrectionPrintButton();
-		correctionSignLink = new CorrectionSignButton();		
+		correctionSignLink = new CorrectionSignButton();
 		form.setWidget(3, 7, correctionPrintLink);
 		form.setWidget(4, 7, correctionSignLink);
 		declinePrintLink = new DeclinePrintButton();
-		//form.setWidget(5, 7, declinePrintLink);
-		cellFormatter.setHorizontalAlignment(1, 7,
-				HasHorizontalAlignment.ALIGN_LEFT);
-		cellFormatter.setHorizontalAlignment(2, 7,
-				HasHorizontalAlignment.ALIGN_LEFT);
-		cellFormatter.setHorizontalAlignment(3, 7,
-				HasHorizontalAlignment.ALIGN_LEFT);
+		// form.setWidget(5, 7, declinePrintLink);
+		cellFormatter.setHorizontalAlignment(1, 7, HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setHorizontalAlignment(2, 7, HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setHorizontalAlignment(3, 7, HasHorizontalAlignment.ALIGN_LEFT);
 
 		feeBtn = UIutils.createButton(new ClickListener() {
 			public void onClick(Widget arg0) {
-				PaymentMatchingForm payment = new PaymentMatchingForm(
-						ExtendDecisionForm.this, (ApplicationMap) getData());
+				PaymentMatchingForm payment = new PaymentMatchingForm(ExtendDecisionForm.this,
+						(ApplicationMap) getData());
 				openForm(payment);
 			}
 		}, "...");
@@ -366,8 +294,7 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 		feeBtn.setEnabled(true);
 		form.setWidget(5, 7, feeBtn);
 
-		if (UIutils
-				.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK }))
+		if (UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK }))
 			setPrintLinks();
 
 		form.setText(8, 0, "Otsus:");
@@ -379,45 +306,26 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 		form.setText(11, 3, "Menetluses kuni selgitus:");
 		cellFormatter.setColSpan(11, 3, 2);
 
-		form.setWidget(
-				9,
-				0,
-				addFormField(FORM_NAME,
-						ApplicationMap.DECISION_EXTEND_REG_ENTRY,
-						new RadioButtonList(
-								ApplicationMap.DECISION_EXTEND_REG_ENTRY)));
+		form.setWidget(9, 0, addFormField(FORM_NAME, ApplicationMap.DECISION_EXTEND_REG_ENTRY,
+				new RadioButtonList(ApplicationMap.DECISION_EXTEND_REG_ENTRY)));
 		cellFormatter.setColSpan(9, 0, 1);
 
-		form.setWidget(
-				9,
-				1,
-				addFormField(FORM_NAME,
-						ApplicationMap.EXTEND_UNTIL_DECISION_DATE,
-						new CalendarBox(), "10em", null, Validators.DATE));
+		form.setWidget(9, 1, addFormField(FORM_NAME, ApplicationMap.EXTEND_UNTIL_DECISION_DATE, new CalendarBox(),
+				"10em", null, Validators.DATE));
 		cellFormatter.setColSpan(9, 1, 1);
 
-		cellFormatter.setVerticalAlignment(9, 1,
-				HasVerticalAlignment.ALIGN_BOTTOM);
-		cellFormatter.setHorizontalAlignment(9, 1,
-				HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setVerticalAlignment(9, 1, HasVerticalAlignment.ALIGN_BOTTOM);
+		cellFormatter.setHorizontalAlignment(9, 1, HasHorizontalAlignment.ALIGN_LEFT);
 
-		form.setWidget(
-				9,
-				3,
-				addFormField(FORM_NAME, ApplicationMap.DECISION_EXPLANATION,
-						comment));// comment
+		form.setWidget(9, 3, addFormField(FORM_NAME, ApplicationMap.DECISION_EXPLANATION, comment));// comment
 		comment.setSize("100%", "100%");
 		comment.setVisibleLines(4);
 		cellFormatter.setHeight(9, 3, "100%");
 		cellFormatter.setColSpan(9, 3, 3);
 		cellFormatter.setRowSpan(9, 3, 2);
 
-		form.setWidget(
-				12,
-				3,
-				addFormField(FORM_NAME,
-						ApplicationMap.DECISION_EXTEND_UNTIL_EXPLANATION,
-						extendUntilComment));// comment
+		form.setWidget(12, 3,
+				addFormField(FORM_NAME, ApplicationMap.DECISION_EXTEND_UNTIL_EXPLANATION, extendUntilComment));// comment
 		extendUntilComment.setSize("100%", "100%");
 		extendUntilComment.setVisibleLines(4);
 		cellFormatter.setHeight(12, 3, "100%");
@@ -427,38 +335,24 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 		UIutils.setTableTextStyled(form);
 		UIutils.setTextBoxesEnabled(form, false);
 
-		cellFormatter.setHorizontalAlignment(8, 0,
-				HasHorizontalAlignment.ALIGN_LEFT);
-		cellFormatter.setHorizontalAlignment(8, 2,
-				HasHorizontalAlignment.ALIGN_LEFT);
-		cellFormatter.setHorizontalAlignment(9, 3,
-				HasHorizontalAlignment.ALIGN_LEFT);
-		cellFormatter.setHorizontalAlignment(11, 3,
-				HasHorizontalAlignment.ALIGN_LEFT);
-		cellFormatter.setHorizontalAlignment(9, 0,
-				HasHorizontalAlignment.ALIGN_LEFT);
-		cellFormatter.setHorizontalAlignment(12, 3,
-				HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setHorizontalAlignment(8, 0, HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setHorizontalAlignment(8, 2, HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setHorizontalAlignment(9, 3, HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setHorizontalAlignment(11, 3, HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setHorizontalAlignment(9, 0, HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setHorizontalAlignment(12, 3, HasHorizontalAlignment.ALIGN_LEFT);
 
-		cellFormatter.setHorizontalAlignment(9, 3,
-				HasHorizontalAlignment.ALIGN_LEFT);
-		cellFormatter
-				.setVerticalAlignment(9, 3, HasVerticalAlignment.ALIGN_TOP);
+		cellFormatter.setHorizontalAlignment(9, 3, HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setVerticalAlignment(9, 3, HasVerticalAlignment.ALIGN_TOP);
 
-		cellFormatter.setHorizontalAlignment(12, 3,
-				HasHorizontalAlignment.ALIGN_LEFT);
-		cellFormatter.setVerticalAlignment(12, 3,
-				HasVerticalAlignment.ALIGN_TOP);
+		cellFormatter.setHorizontalAlignment(12, 3, HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setVerticalAlignment(12, 3, HasVerticalAlignment.ALIGN_TOP);
 
-		cellFormatter.setHorizontalAlignment(2, 8,
-				HasHorizontalAlignment.ALIGN_LEFT);
-		cellFormatter.setHorizontalAlignment(3, 8,
-				HasHorizontalAlignment.ALIGN_LEFT);
-		cellFormatter.setHorizontalAlignment(4, 8,
-				HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setHorizontalAlignment(2, 8, HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setHorizontalAlignment(3, 8, HasHorizontalAlignment.ALIGN_LEFT);
+		cellFormatter.setHorizontalAlignment(4, 8, HasHorizontalAlignment.ALIGN_LEFT);
 
-		if (!UIutils
-				.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK }))
+		if (!UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK }))
 			UIutils.setElementsEnabled(form, false);
 
 		return form;
@@ -474,8 +368,7 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 		if (enabled) {
 			decisionPrintLink.setVisible(true);
 			decisionSignLink.setVisible(false);
-			if (getData().getProperty(ApplicationMap.STATE_CODE).equals(
-					ServiceConstants.APPL_STATE_REXT)) {
+			if (getData().getProperty(ApplicationMap.STATE_CODE).equals(ServiceConstants.APPL_STATE_REXT)) {
 				correctionPrintLink.setVisible(true);
 				correctionSignLink.setVisible(false);
 			} else {
@@ -483,7 +376,7 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 			}
 		}
 	}
-	
+
 	class DecisionSignButton extends Button {
 
 		/**
@@ -501,25 +394,15 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 				 * then the system creates a new document and displays it in a
 				 * new window If the user answers no we do nothing
 				 */
-				public void onClick(Widget arg0) {	
-				String converted = GWT
-						.getHostPageBaseURL();
-				Window.open(
-						converted
-								+ "signing"
-								+ "?"
-								+ "appid="
-								+ getData().getText(ApplicationMap.ID)
-								+ "&"
-								+ "docname"
-								+ "="
-								+ URL.encode(ServiceConstants.EX_DECISION_DOC_NAME
-										+ getData()
-												.getText(
-														ApplicationMap.DECISION_NR)).replace('/', '_')
-								+ ".pdf",
-						"Otsus", "");
-											
+				public void onClick(Widget arg0) {
+					String converted = GWT.getHostPageBaseURL();
+					Window.open(
+							converted + "signing" + "?" + "appid=" + getData().getText(ApplicationMap.ID) + "&"
+									+ "docname" + "="
+									+ URL.encode(ServiceConstants.EX_DECISION_DOC_NAME
+											+ getData().getText(ApplicationMap.DECISION_NR)).replace('/', '_')
+									+ ".pdf",
+							"Otsus", "");
 
 				}
 			});
@@ -527,7 +410,7 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 		}
 
 	}
-	
+
 	class CorrectionSignButton extends Button {
 
 		/**
@@ -545,25 +428,15 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 				 * then the system creates a new document and displays it in a
 				 * new window If the user answers no we do nothing
 				 */
-				public void onClick(Widget arg0) {	
-				String converted = GWT
-						.getHostPageBaseURL();
-				Window.open(
-						converted
-								+ "signing"
-								+ "?"
-								+ "appid="
-								+ getData().getText(ApplicationMap.ID)
-								+ "&"
-								+ "docname"
-								+ "="
-								+ URL.encode(ServiceConstants.EX_COR_DOC_NAME
-										+ getData()
-												.getText(
-														ApplicationMap.DECISION_NR)).replace('/', '_')
-								+ ".pdf",
-						"Otsus", "");
-											
+				public void onClick(Widget arg0) {
+					String converted = GWT.getHostPageBaseURL();
+					Window.open(
+							converted + "signing" + "?" + "appid=" + getData().getText(ApplicationMap.ID) + "&"
+									+ "docname" + "="
+									+ URL.encode(ServiceConstants.EX_COR_DOC_NAME
+											+ getData().getText(ApplicationMap.DECISION_NR)).replace('/', '_')
+									+ ".pdf",
+							"Otsus", "");
 
 				}
 			});
@@ -578,12 +451,10 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 	}
 
 	private void makeDecisionRadioList() {
-		RadioButtonList decisions = (RadioButtonList) getFormField(FORM_NAME,
-				ApplicationMap.DECISION_EXTEND_REG_ENTRY);
+		RadioButtonList decisions = (RadioButtonList) getFormField(FORM_NAME, ApplicationMap.DECISION_EXTEND_REG_ENTRY);
 
 		decisions.addItem("Pikendatud", ServiceConstants.EXTEND_DECISION);
-		decisions.addItem("Mitte pikendatud",
-				ServiceConstants.NOTEXTENDED_DECISION);
+		decisions.addItem("Mitte pikendatud", ServiceConstants.NOTEXTENDED_DECISION);
 		decisions.addItem("Menetluses kuni", ServiceConstants.EXTENDED_UNTIL);
 
 	}
@@ -599,26 +470,22 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 			setDataFromFormFields(FORM_NAME);
 			final Widget mainSender = sender;
 			mainSender.setVisible(false);
-			
 
 			ApplicationMap extendApplication = (ApplicationMap) getData();
 
 			if ((String) extendApplication
 					.getProperty(ApplicationMap.DECISION_EXTEND_REG_ENTRY) != ServiceConstants.NOTEXTENDED_DECISION) {
 
-				String rl = (String) extendApplication
-						.getProperty(ApplicationMap.LATEST_PAYMENT);
+				String rl = (String) extendApplication.getProperty(ApplicationMap.LATEST_PAYMENT);
 				if ((rl == null || rl == "")
-						&& !UIutils
-								.userHasPriviledge(new String[] { ServiceConstants.ROLE_CLASS_ADM })) {
-					if (!UIutils
-							.userHasPriviledge(new String[] { ServiceConstants.ROLE_CLASS_ADM })) {
+						&& !UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_CLASS_ADM })) {
+					if (!UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_CLASS_ADM })) {
 						String msg = Cookies.getCookie("RL");
 						if (msg.toString() != "TRUE") {
-							//Cookies.setCookie("MyCookie", msg);
-							//ExtendDecisionForm.this
-							//		.setError("Riigilõiv sidumata!");
-							//return;
+							// Cookies.setCookie("MyCookie", msg);
+							// ExtendDecisionForm.this
+							// .setError("Riigilõiv sidumata!");
+							// return;
 						}
 						Cookies.setCookie("RL", "FALSE");
 					}
@@ -627,20 +494,17 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 			String extendedUntilValue = (String) getFormFieldValue(FORM_NAME,
 					ApplicationMap.EXTEND_UNTIL_DECISION_DATE);
 
-			if (ServiceConstants.EXTENDED_UNTIL.equals(extendApplication
-					.getProperty(ApplicationMap.DECISION_EXTEND_REG_ENTRY))
+			if (ServiceConstants.EXTENDED_UNTIL
+					.equals(extendApplication.getProperty(ApplicationMap.DECISION_EXTEND_REG_ENTRY))
 					&& (extendedUntilValue == null || extendedUntilValue == "")) {
-				ExtendDecisionForm.this.getErrors().add(
-						"Pikendatud kuni kuupäev määramata");
+				ExtendDecisionForm.this.getErrors().add("Pikendatud kuni kuupäev määramata");
 				mainSender.setVisible(true);
 			}
 
 			// check if the form has any validation errors
-			if (ExtendDecisionForm.this.getErrors() != null
-					&& !ExtendDecisionForm.this.getErrors().isEmpty()) {
+			if (ExtendDecisionForm.this.getErrors() != null && !ExtendDecisionForm.this.getErrors().isEmpty()) {
 				for (int i = 0; i < getErrors().size(); i++) {
-					ExtendDecisionForm.this.setError((String) getErrors()
-							.get(i));
+					ExtendDecisionForm.this.setError((String) getErrors().get(i));
 				}
 				/*
 				 * Siia ka kontroll
@@ -648,52 +512,30 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 
 			} else {
 				/*
-				ServiceContext
-						.getInstance()
-						.getRegistryService()
-						.saveExtendApplicationDecision(
-								(ApplicationMap) cleanDataBeforeSave(getData()),
-								new AsyncCallback() {
+				 * ServiceContext .getInstance() .getRegistryService()
+				 * .saveExtendApplicationDecision( (ApplicationMap)
+				 * cleanDataBeforeSave(getData()), new AsyncCallback() {
+				 * 
+				 * public void onFailure(Throwable caught) {
+				 * setError(caught.toString()); }
+				 * 
+				 * public void onSuccess(Object result) {
+				 * ExtendDecisionForm.this .setData((ApplicationMap) result);
+				 * ExtendDecisionForm.this.parent .onDataEvent(new
+				 * DataChangeEvent( DataChangeEvent.DATA_MODIFIED,
+				 * (ApplicationMap) result)); setFormFieldsFromData(FORM_NAME);
+				 * ExtendDecisionForm.this .setButtonsEnabled(true);
+				 * setPrintLinks(); setInfo("Salvestamine õnnestus");
+				 * save.setVisible(false); } });
+				 */
 
-									public void onFailure(Throwable caught) {
-										setError(caught.toString());
-									}
-
-									public void onSuccess(Object result) {
-										ExtendDecisionForm.this
-												.setData((ApplicationMap) result);
-										ExtendDecisionForm.this.parent
-												.onDataEvent(new DataChangeEvent(
-														DataChangeEvent.DATA_MODIFIED,
-														(ApplicationMap) result));
-										setFormFieldsFromData(FORM_NAME);
-										ExtendDecisionForm.this
-												.setButtonsEnabled(true);
-										setPrintLinks();
-										setInfo("Salvestamine õnnestus");
-										save.setVisible(false);
-									}
-								});
-				*/
-				
-				
-				
-				
-				
-				
-				
-				
-				
-				if (!ServiceConstants.NOTEXTENDED_DECISION.equals(extendApplication
-						.getProperty(ApplicationMap.DECISION_EXTEND_REG_ENTRY))) {
+				if (!ServiceConstants.NOTEXTENDED_DECISION
+						.equals(extendApplication.getProperty(ApplicationMap.DECISION_EXTEND_REG_ENTRY))) {
 
 					ApplicationMap map = (ApplicationMap) getData();
-					
-					Cookies.setCookie(
-							"TEST",
-							map.toString());
-					
-					
+
+					Cookies.setCookie("TEST", map.toString());
+
 					/**
 					 * String rl = (String) map
 					 * .getProperty(ApplicationMap.LATEST_PAYMENT); if ((rl ==
@@ -712,295 +554,238 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 					 * 
 					 */
 
-					ServiceContext
-							.getInstance()
-							.getRegistryService()
-							.processPaymentMatching(
-									(ApplicationMap) cleanDataBeforeSave(getData()),
-									"4", new AsyncCallback() {
-										public void onSuccess(Object arg0) {
-											// Korras
-											// Cookies.setCookie("RL", "TRUE");
-											// setData((ApplicationMap) arg0);
-											// setFormFieldsFromData(PaymentMatchingForm.this.CHANGE_FORM);
-											// parent.setData(getData());
-											// returnToParent();
-											ServiceContext
-											.getInstance()
-											.getRegistryService()
-											.saveExtendApplicationDecision(
-													(ApplicationMap) cleanDataBeforeSave(getData()),
+					ServiceContext.getInstance().getRegistryService().processPaymentMatching(
+							(ApplicationMap) cleanDataBeforeSave(getData()), "4", new AsyncCallback() {
+								public void onSuccess(Object arg0) {
+									// Korras
+									// Cookies.setCookie("RL", "TRUE");
+									// setData((ApplicationMap) arg0);
+									// setFormFieldsFromData(PaymentMatchingForm.this.CHANGE_FORM);
+									// parent.setData(getData());
+									// returnToParent();
+									ServiceContext.getInstance().getRegistryService().saveExtendApplicationDecision(
+											(ApplicationMap) cleanDataBeforeSave(getData()), new AsyncCallback() {
+
+										public void onFailure(Throwable caught) {
+											ServiceContext.getInstance().getRegistryService().takeBackPaymentMatching(
+													(ApplicationMap) cleanDataBeforeSave(getData()), "4",
 													new AsyncCallback() {
 
+												public void onFailure(Throwable caught) {
+												}
+
+												public void onSuccess(Object result) {
+
+												}
+											});
+
+											setError(caught.toString());
+											mainSender.setVisible(true);
+										}
+
+										public void onSuccess(Object result) {
+											ExtendDecisionForm.this.setData((ApplicationMap) result);
+											ExtendDecisionForm.this.parent.onDataEvent(new DataChangeEvent(
+													DataChangeEvent.DATA_MODIFIED, (ApplicationMap) result));
+											setFormFieldsFromData(FORM_NAME);
+											ExtendDecisionForm.this.setButtonsEnabled(true);
+											setPrintLinks();
+											setInfo("Salvestamine õnnestus");
+											save.setVisible(false);
+
+											ServiceContext.getInstance().getRegistryService().isSigned(
+													Integer.valueOf(getData().getText(ApplicationMap.ID)),
+													ServiceConstants.EX_DECISION_DOC_NAME
+															+ getData().getText(ApplicationMap.DECISION_NR)
+															+ " (asice)",
+													new AsyncCallback() {
+
+												public void onFailure(Throwable caught) {
+													Window.alert(String.valueOf(caught.getMessage()));
+												}
+
+												public void onSuccess(Object result) {
+													try {
+														boolean res = ((Boolean) result).booleanValue();
+
+														boolean enabled = getData()
+																.getProperty(ApplicationMap.DECISION_NR) != null;
+
+														if (!res && enabled) {
+															decisionSignLink.setVisible(true);
+														}
+													} catch (Exception ex) {
+
+													}
+
+												}
+											});
+
+											ServiceContext.getInstance().getRegistryService().isSigned(
+													Integer.valueOf(getData().getText(ApplicationMap.ID)),
+													ServiceConstants.EX_COR_DOC_NAME
+															+ getData().getText(ApplicationMap.DECISION_NR)
+															+ " (asice)",
+													new AsyncCallback() {
+
+												public void onFailure(Throwable caught) {
+													Window.alert(String.valueOf(caught.getMessage()));
+												}
+
+												public void onSuccess(Object result) {
+
+													try {
+														boolean res = ((Boolean) result).booleanValue();
+														boolean enabled = getData()
+																.getProperty(ApplicationMap.DECISION_NR) != null;
+														boolean oiendKeelatud = ((String) getData()
+																.getProperty(ApplicationMap.STATE_CODE)).equals(
+																		ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY);
+
+														if (!res && enabled && !oiendKeelatud) {
+															correctionSignLink.setVisible(true);
+														}
+													} catch (Exception ex) {
+
+													}
+
+												}
+											});
+										}
+									});
+								}
+
+								public void onFailure(Throwable arg0) {
+									if (!UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_CLASS_ADM })) {
+										setError("Ettevõtte saldo pole piisav");
+										mainSender.setVisible(true);
+										return;
+									}
+
+									ConfirmDialog conf = new ConfirmDialog(
+											"Ettevõttel ei ole riigilõiv tasutud (Pole piisav saldo). Jätkan?",
+											new ClickListener() {
+										public void onClick(Widget arg0) {
+											ServiceContext.getInstance().getRegistryService().processPaymentMatching2(
+													(ApplicationMap) cleanDataBeforeSave(getData()), "4",
+													new AsyncCallback() {
+												public void onSuccess(Object arg0) {
+													ServiceContext.getInstance().getRegistryService()
+															.saveExtendApplicationDecision(
+																	(ApplicationMap) cleanDataBeforeSave(getData()),
+																	new AsyncCallback() {
+
 														public void onFailure(Throwable caught) {
+															ServiceContext.getInstance().getRegistryService()
+																	.takeBackPaymentMatching(
+																			(ApplicationMap) cleanDataBeforeSave(
+																					getData()),
+																			"4", new AsyncCallback() {
+
+																public void onFailure(Throwable caught) {
+																}
+
+																public void onSuccess(Object result) {
+
+																}
+															});
+
 															setError(caught.toString());
 															mainSender.setVisible(true);
 														}
 
 														public void onSuccess(Object result) {
-															ExtendDecisionForm.this
-																	.setData((ApplicationMap) result);
-															ExtendDecisionForm.this.parent
-																	.onDataEvent(new DataChangeEvent(
-																			DataChangeEvent.DATA_MODIFIED,
+															ExtendDecisionForm.this.setData((ApplicationMap) result);
+															ExtendDecisionForm.this.parent.onDataEvent(
+																	new DataChangeEvent(DataChangeEvent.DATA_MODIFIED,
 																			(ApplicationMap) result));
 															setFormFieldsFromData(FORM_NAME);
-															ExtendDecisionForm.this
-																	.setButtonsEnabled(true);
+															ExtendDecisionForm.this.setButtonsEnabled(true);
 															setPrintLinks();
 															setInfo("Salvestamine õnnestus");
 															save.setVisible(false);
-															
-															ServiceContext
-															.getInstance()
-															.getRegistryService()
-															.isSigned(
-																	Integer.valueOf(getData()
-																			.getText(
-																					ApplicationMap.ID)),
+
+															ServiceContext.getInstance().getRegistryService().isSigned(
+																	Integer.valueOf(
+																			getData().getText(ApplicationMap.ID)),
 																	ServiceConstants.EX_DECISION_DOC_NAME
 																			+ getData()
-																					.getText(
-																							ApplicationMap.DECISION_NR)
+																					.getText(ApplicationMap.DECISION_NR)
 																			+ " (asice)",
 																	new AsyncCallback() {
 
-																		public void onFailure(
-																				Throwable caught) {
-																			Window.alert(String
-																					.valueOf(caught
-																							.getMessage()));
+																public void onFailure(Throwable caught) {
+																	Window.alert(String.valueOf(caught.getMessage()));
+																}
+
+																public void onSuccess(Object result) {
+																	try {
+																		boolean res = ((Boolean) result).booleanValue();
+																		boolean enabled = getData().getProperty(
+																				ApplicationMap.DECISION_NR) != null;
+																		if (!res && enabled) {
+
+																			decisionSignLink.setVisible(true);
 																		}
+																	} catch (Exception ex) {
 
-																		public void onSuccess(
-																				Object result) {
-																			try {
-																				boolean res = ((Boolean) result)
-																						.booleanValue();
+																	}
 
-																				boolean enabled = getData()
-																						.getProperty(
-																								ApplicationMap.DECISION_NR) != null;
+																}
+															});
 
-																				if (!res
-																						&& enabled) {
-																					decisionSignLink
-																							.setVisible(true);
-																				}
-																			} catch (Exception ex) {
-
-																			}
-
-																		}
-																	});
-
-													ServiceContext
-															.getInstance()
-															.getRegistryService()
-															.isSigned(
-																	Integer.valueOf(getData()
-																			.getText(
-																					ApplicationMap.ID)),
+															ServiceContext.getInstance().getRegistryService().isSigned(
+																	Integer.valueOf(
+																			getData().getText(ApplicationMap.ID)),
 																	ServiceConstants.EX_COR_DOC_NAME
 																			+ getData()
-																					.getText(
-																							ApplicationMap.DECISION_NR)
+																					.getText(ApplicationMap.DECISION_NR)
 																			+ " (asice)",
 																	new AsyncCallback() {
 
-																		public void onFailure(
-																				Throwable caught) {
-																			Window.alert(String
-																					.valueOf(caught
-																							.getMessage()));
-																		}
+																public void onFailure(Throwable caught) {
+																	Window.alert(String.valueOf(caught.getMessage()));
+																}
 
-																		public void onSuccess(
-																				Object result) {
+																public void onSuccess(Object result) {
 
-																			try {
-																				boolean res = ((Boolean) result)
-																						.booleanValue();
-																				boolean enabled = getData()
-																						.getProperty(
-																								ApplicationMap.DECISION_NR) != null;
-																				boolean oiendKeelatud = ((String) getData()
-																						.getProperty(
-																								ApplicationMap.STATE_CODE))
+																	try {
+																		boolean res = ((Boolean) result).booleanValue();
+																		boolean enabled = getData().getProperty(
+																				ApplicationMap.DECISION_NR) != null;
+																		boolean oiendKeelatud = ((String) getData()
+																				.getProperty(ApplicationMap.STATE_CODE))
 																						.equals(ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY);
 
-																				if (!res
-																						&& enabled
-																						&& !oiendKeelatud) {
-																					correctionSignLink
-																							.setVisible(true);
-																				}
-																			} catch (Exception ex) {
-
-																			}
-
+																		if (!res && enabled && !oiendKeelatud) {
+																			correctionSignLink.setVisible(true);
 																		}
-																	});
+																	} catch (Exception ex) {
+
+																	}
+
+																}
+															});
 														}
 													});
-										}
+												}
 
-										public void onFailure(Throwable arg0) {
-											if (!UIutils
-													.userHasPriviledge(new String[] { ServiceConstants.ROLE_CLASS_ADM })) {
-												setError("Ettevõtte saldo pole piisav");
-												mainSender.setVisible(true);
-												return;
-											}
+												public void onFailure(Throwable arg0) {
+													mainSender.setVisible(true);
+												};
 
-											ConfirmDialog conf = new ConfirmDialog(
-													"Ettevõttel ei ole riigilõiv tasutud (Pole piisav saldo). Jätkan?", new ClickListener() {
-														public void onClick(
-																Widget arg0) {
-															ServiceContext
-															.getInstance()
-															.getRegistryService()
-															.processPaymentMatching2(
-																	(ApplicationMap) cleanDataBeforeSave(getData()),
-																	"4", new AsyncCallback() {
-																		public void onSuccess(Object arg0) {
-															ServiceContext
-															.getInstance()
-															.getRegistryService()
-															.saveExtendApplicationDecision(
-																	(ApplicationMap) cleanDataBeforeSave(getData()),
-																	new AsyncCallback() {
+											});
 
-																		public void onFailure(Throwable caught) {
-																			setError(caught.toString());
-																			mainSender.setVisible(true);
-																		}
-
-																		public void onSuccess(Object result) {
-																			ExtendDecisionForm.this
-																					.setData((ApplicationMap) result);
-																			ExtendDecisionForm.this.parent
-																					.onDataEvent(new DataChangeEvent(
-																							DataChangeEvent.DATA_MODIFIED,
-																							(ApplicationMap) result));
-																			setFormFieldsFromData(FORM_NAME);
-																			ExtendDecisionForm.this
-																					.setButtonsEnabled(true);
-																			setPrintLinks();
-																			setInfo("Salvestamine õnnestus");
-																			save.setVisible(false);
-																			
-																			ServiceContext
-																			.getInstance()
-																			.getRegistryService()
-																			.isSigned(
-																					Integer.valueOf(getData()
-																							.getText(
-																									ApplicationMap.ID)),
-																					ServiceConstants.EX_DECISION_DOC_NAME
-																							+ getData()
-																									.getText(
-																											ApplicationMap.DECISION_NR)
-																							+ " (asice)",
-																					new AsyncCallback() {
-
-																						public void onFailure(
-																								Throwable caught) {
-																							Window.alert(String
-																									.valueOf(caught
-																											.getMessage()));
-																						}
-
-																						public void onSuccess(
-																								Object result) {
-																							try {
-																								boolean res = ((Boolean) result)
-																										.booleanValue();
-																								boolean enabled = getData()
-																										.getProperty(
-																												ApplicationMap.DECISION_NR) != null;
-																								if (!res
-																										&& enabled) {
-
-																									decisionSignLink
-																											.setVisible(true);
-																								}
-																							} catch (Exception ex) {
-
-																							}
-
-																						}
-																					});
-
-																	ServiceContext
-																			.getInstance()
-																			.getRegistryService()
-																			.isSigned(
-																					Integer.valueOf(getData()
-																							.getText(
-																									ApplicationMap.ID)),
-																					ServiceConstants.EX_COR_DOC_NAME
-																							+ getData()
-																									.getText(
-																											ApplicationMap.DECISION_NR)
-																							+ " (asice)",
-																					new AsyncCallback() {
-
-																						public void onFailure(
-																								Throwable caught) {
-																							Window.alert(String
-																									.valueOf(caught
-																											.getMessage()));
-																						}
-
-																						public void onSuccess(
-																								Object result) {
-
-																							try {
-																								boolean res = ((Boolean) result)
-																										.booleanValue();
-																								boolean enabled = getData()
-																										.getProperty(
-																												ApplicationMap.DECISION_NR) != null;
-																								boolean oiendKeelatud = ((String) getData()
-																										.getProperty(
-																												ApplicationMap.STATE_CODE))
-																										.equals(ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY);
-
-																								if (!res
-																										&& enabled
-																										&& !oiendKeelatud) {
-																									correctionSignLink
-																											.setVisible(true);
-																								}
-																							} catch (Exception ex) {
-
-																							}
-
-																						}
-																					});
-																		}
-																	});	
-																		}
-																		
-																		public void onFailure(Throwable arg0) {mainSender.setVisible(true);};
-																		
-																	});
-															
-														};
-													});
-											conf.hide();
-											conf.show();
-										}
+										};
 									});
+									conf.hide();
+									conf.show();
+								}
+							});
 				} else {
 					// Ei valitud otsuse tegemist.
-					ServiceContext
-					.getInstance()
-					.getRegistryService()
-					.saveExtendApplicationDecision(
-							(ApplicationMap) cleanDataBeforeSave(getData()),
-							new AsyncCallback() {
+					ServiceContext.getInstance().getRegistryService().saveExtendApplicationDecision(
+							(ApplicationMap) cleanDataBeforeSave(getData()), new AsyncCallback() {
 
 								public void onFailure(Throwable caught) {
 									setError(caught.toString());
@@ -1008,118 +793,74 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 								}
 
 								public void onSuccess(Object result) {
-									ExtendDecisionForm.this
-											.setData((ApplicationMap) result);
-									ExtendDecisionForm.this.parent
-											.onDataEvent(new DataChangeEvent(
-													DataChangeEvent.DATA_MODIFIED,
-													(ApplicationMap) result));
+									ExtendDecisionForm.this.setData((ApplicationMap) result);
+									ExtendDecisionForm.this.parent.onDataEvent(new DataChangeEvent(
+											DataChangeEvent.DATA_MODIFIED, (ApplicationMap) result));
 									setFormFieldsFromData(FORM_NAME);
-									ExtendDecisionForm.this
-											.setButtonsEnabled(true);
+									ExtendDecisionForm.this.setButtonsEnabled(true);
 									setPrintLinks();
 									setInfo("Salvestamine õnnestus");
 									save.setVisible(false);
-									
-									ServiceContext
-									.getInstance()
-									.getRegistryService()
-									.isSigned(
-											Integer.valueOf(getData()
-													.getText(
-															ApplicationMap.ID)),
+
+									ServiceContext.getInstance().getRegistryService().isSigned(
+											Integer.valueOf(getData().getText(ApplicationMap.ID)),
 											ServiceConstants.EX_DECISION_DOC_NAME
-													+ getData()
-															.getText(
-																	ApplicationMap.DECISION_NR)
-													+ " (asice)",
+													+ getData().getText(ApplicationMap.DECISION_NR) + " (asice)",
 											new AsyncCallback() {
 
-												public void onFailure(
-														Throwable caught) {
-													Window.alert(String
-															.valueOf(caught
-																	.getMessage()));
+										public void onFailure(Throwable caught) {
+											Window.alert(String.valueOf(caught.getMessage()));
+										}
+
+										public void onSuccess(Object result) {
+											try {
+												boolean res = ((Boolean) result).booleanValue();
+												boolean enabled = getData()
+														.getProperty(ApplicationMap.DECISION_NR) != null;
+												if (!res && enabled) {
+
+													decisionSignLink.setVisible(true);
 												}
+											} catch (Exception ex) {
 
-												public void onSuccess(
-														Object result) {
-													try {
-														boolean res = ((Boolean) result)
-																.booleanValue();
-														boolean enabled = getData()
-																.getProperty(
-																		ApplicationMap.DECISION_NR) != null;
-														if (!res
-																&& enabled) {
+											}
 
-															decisionSignLink
-																	.setVisible(true);
-														}
-													} catch (Exception ex) {
+										}
+									});
 
-													}
-
-												}
-											});
-
-							ServiceContext
-									.getInstance()
-									.getRegistryService()
-									.isSigned(
-											Integer.valueOf(getData()
-													.getText(
-															ApplicationMap.ID)),
+									ServiceContext.getInstance().getRegistryService().isSigned(
+											Integer.valueOf(getData().getText(ApplicationMap.ID)),
 											ServiceConstants.EX_COR_DOC_NAME
-													+ getData()
-															.getText(
-																	ApplicationMap.DECISION_NR)
-													+ " (asice)",
+													+ getData().getText(ApplicationMap.DECISION_NR) + " (asice)",
 											new AsyncCallback() {
 
-												public void onFailure(
-														Throwable caught) {
-													Window.alert(String
-															.valueOf(caught
-																	.getMessage()));
+										public void onFailure(Throwable caught) {
+											Window.alert(String.valueOf(caught.getMessage()));
+										}
+
+										public void onSuccess(Object result) {
+
+											try {
+												boolean res = ((Boolean) result).booleanValue();
+												boolean enabled = getData()
+														.getProperty(ApplicationMap.DECISION_NR) != null;
+												boolean oiendKeelatud = ((String) getData()
+														.getProperty(ApplicationMap.STATE_CODE)).equals(
+																ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY);
+
+												if (!res && enabled && !oiendKeelatud) {
+													correctionSignLink.setVisible(true);
 												}
+											} catch (Exception ex) {
 
-												public void onSuccess(
-														Object result) {
+											}
 
-													try {
-														boolean res = ((Boolean) result)
-																.booleanValue();
-														boolean enabled = getData()
-																.getProperty(
-																		ApplicationMap.DECISION_NR) != null;
-														boolean oiendKeelatud = ((String) getData()
-																.getProperty(
-																		ApplicationMap.STATE_CODE))
-																.equals(ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY);
-
-														if (!res
-																&& enabled
-																&& !oiendKeelatud) {
-															correctionSignLink
-																	.setVisible(true);
-														}
-													} catch (Exception ex) {
-
-													}
-
-												}
-											});
+										}
+									});
 								}
 							});
 				}
-				
-				
-				
-				
-				
-				
-				
+
 			}
 		}
 	}
@@ -1130,46 +871,30 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 
 			setDataFromFormFields(FORM_NAME);
 			// check if the form has any validation errors
-			if (ExtendDecisionForm.this.getErrors() != null
-					&& !ExtendDecisionForm.this.getErrors().isEmpty()) {
+			if (ExtendDecisionForm.this.getErrors() != null && !ExtendDecisionForm.this.getErrors().isEmpty()) {
 				for (int i = 0; i < getErrors().size(); i++) {
-					ExtendDecisionForm.this.setError((String) getErrors()
-							.get(i));
+					ExtendDecisionForm.this.setError((String) getErrors().get(i));
 				}
 			} else {
-				ServiceContext
-						.getInstance()
-						.getRegistryService()
-						.updateRegistryEntryNr(
-								(ApplicationMap) cleanDataBeforeSave(getData()),
-								new AsyncCallback() {
+				ServiceContext.getInstance().getRegistryService()
+						.updateRegistryEntryNr((ApplicationMap) cleanDataBeforeSave(getData()), new AsyncCallback() {
 
-									public void onFailure(Throwable arg0) {
-										setError(arg0.toString());
-									}
+							public void onFailure(Throwable arg0) {
+								setError(arg0.toString());
+							}
 
-									public void onSuccess(Object arg0) {
-										setInfo("Registrikande number on uuendatud!");
-										getData().setProperty(
-												ApplicationMap.REGISTRY_ENTRY,
-												arg0);
-										System.out
-												.println("data:"
-														+ getData()
-																.getProperty(
-																		ApplicationMap.REGISTRYENTRY_NR));
-										System.out.println("return:"
-												+ ((RegistryEntryMap) arg0)
-														.getText(RegistryEntryMap.NR));
-										ExtendDecisionForm.this.parent
-												.onDataEvent(new DataChangeEvent(
-														DataChangeEvent.DATA_MODIFIED,
-														(ApplicationMap) getData()));
-										setFormFieldsFromData(FORM_NAME);
+							public void onSuccess(Object arg0) {
+								setInfo("Registrikande number on uuendatud!");
+								getData().setProperty(ApplicationMap.REGISTRY_ENTRY, arg0);
+								System.out.println("data:" + getData().getProperty(ApplicationMap.REGISTRYENTRY_NR));
+								System.out.println("return:" + ((RegistryEntryMap) arg0).getText(RegistryEntryMap.NR));
+								ExtendDecisionForm.this.parent.onDataEvent(
+										new DataChangeEvent(DataChangeEvent.DATA_MODIFIED, (ApplicationMap) getData()));
+								setFormFieldsFromData(FORM_NAME);
 
-									}
+							}
 
-								});
+						});
 			}
 
 		}
@@ -1199,106 +924,67 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 				 * new window If the user answers no we do nothing
 				 */
 				public void onClick(Widget arg0) {
-					ServiceContext
-							.getInstance()
-							.getRegistryService()
-							.isExtendDocumentPresent(
-									getData().getText(ApplicationMap.NR),
-									ServiceConstants.DOC_TYPE_EX_DEC,
-									new AsyncCallback() {
-										/*
-										 * (non-Javadoc)
-										 * 
-										 * @see com.google.gwt.user.client.rpc.
-										 * AsyncCallback
-										 * #onFailure(java.lang.Throwable)
-										 */
-										public void onFailure(Throwable arg0) {
-											setError("Dokumendi olemasolu kontroll ebaõnnestus: "
-													+ arg0.getMessage());
-										}
+					ServiceContext.getInstance().getRegistryService().isExtendDocumentPresent(
+							getData().getText(ApplicationMap.NR), ServiceConstants.DOC_TYPE_EX_DEC,
+							new AsyncCallback() {
+						/*
+						 * (non-Javadoc)
+						 * 
+						 * @see com.google.gwt.user.client.rpc. AsyncCallback
+						 * #onFailure(java.lang.Throwable)
+						 */
+						public void onFailure(Throwable arg0) {
+							setError("Dokumendi olemasolu kontroll ebaõnnestus: " + arg0.getMessage());
+						}
 
-										/*
-										 * (non-Javadoc)
-										 * 
-										 * @see com.google.gwt.user.client.rpc.
-										 * AsyncCallback
-										 * #onSuccess(java.lang.Object)
-										 */
-										public void onSuccess(Object arg0) {
-											if (((Boolean) arg0).booleanValue()) {
-												String converted = GWT
-														.getModuleBaseURL();
-												Window.open(
-														converted
-																+ ServiceConstants.DOC_SERVICE_URL
-																+ "?"
-																+ ServiceConstants.DOC_ACTION_PARM
-																+ "="
-																+ ServiceConstants.DOC_ACTION_OPEN
-																+ "&"
-																+ ServiceConstants.DOC_APPID_PARM
-																+ "="
-																+ getData()
-																		.getText(
-																				ApplicationMap.ID)
-																+ "&"
-																+ ServiceConstants.DOC_FILE_PARM
-																+ "="
-																+ URL.encode(
+						/*
+						 * (non-Javadoc)
+						 * 
+						 * @see com.google.gwt.user.client.rpc. AsyncCallback
+						 * #onSuccess(java.lang.Object)
+						 */
+						public void onSuccess(Object arg0) {
+							if (((Boolean) arg0).booleanValue()) {
+								String converted = GWT.getModuleBaseURL();
+								Window.open(converted + ServiceConstants.DOC_SERVICE_URL + "?"
+										+ ServiceConstants.DOC_ACTION_PARM + "=" + ServiceConstants.DOC_ACTION_OPEN
+										+ "&" + ServiceConstants.DOC_APPID_PARM + "="
+										+ getData().getText(ApplicationMap.ID) + "&" + ServiceConstants.DOC_FILE_PARM
+										+ "=" + URL.encode(
 
-																getData()
-																		.getText(
-																				ApplicationMap.DECISION_NR) != null ? ServiceConstants.EX_DECISION_DOC_NAME
-																		+ getData()
-																				.getText(
-																						ApplicationMap.DECISION_NR)
-																				.replace(
-																						'/',
-																						'_')
-																		: ServiceConstants.EX_DECISION_DOC_NAME_NULL)
-																+ ".pdf",
-														"Pikendamise_otsus", "");
-											} else {
+												getData().getText(ApplicationMap.DECISION_NR) != null
+														? ServiceConstants.EX_DECISION_DOC_NAME + getData()
+																.getText(ApplicationMap.DECISION_NR).replace('/', '_')
+														: ServiceConstants.EX_DECISION_DOC_NAME_NULL)
+										+ ".pdf", "Pikendamise_otsus", "");
+							} else {
 
-												ConfirmDialog confirm = new ConfirmDialog(
-														"Kas lisan uue pikendamise otsuse?",
-														new ClickListener() {
+								ConfirmDialog confirm = new ConfirmDialog("Kas lisan uue pikendamise otsuse?",
+										new ClickListener() {
 
-															public void onClick(
-																	Widget arg0) {
-																ServiceContext
-																		.getInstance()
-																		.getRegistryService()
-																		.createNewExtendDocument(
-																				getData()
-																						.getText(
-																								ApplicationMap.NR),
-																				ServiceConstants.DOC_TYPE_EX_DEC,
-																				new AsyncCallback() {
-																					public void onFailure(
-																							Throwable arg0) {
-																						setError("Dokumendi lisamine ebaõnnestus: "
-																								+ arg0.getMessage());
-																					}
-
-																					public void onSuccess(
-																							Object arg0) {
-																						if (((Boolean) arg0)
-																								.booleanValue()) {
-																							setInfo("Uus pikendamise otsus loodud!");
-																						}
-																					}
-																				});
-
-															}
-
-														});
-												confirm.hide();
-												confirm.show();
+									public void onClick(Widget arg0) {
+										ServiceContext.getInstance().getRegistryService().createNewExtendDocument(
+												getData().getText(ApplicationMap.NR), ServiceConstants.DOC_TYPE_EX_DEC,
+												new AsyncCallback() {
+											public void onFailure(Throwable arg0) {
+												setError("Dokumendi lisamine ebaõnnestus: " + arg0.getMessage());
 											}
-										}
-									});
+
+											public void onSuccess(Object arg0) {
+												if (((Boolean) arg0).booleanValue()) {
+													setInfo("Uus pikendamise otsus loodud!");
+												}
+											}
+										});
+
+									}
+
+								});
+								confirm.hide();
+								confirm.show();
+							}
+						}
+					});
 
 				}
 			});
@@ -1325,108 +1011,72 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 				 * If the user answers no we do nothing
 				 */
 				public void onClick(Widget arg0) {
-					ServiceContext
-							.getInstance()
-							.getRegistryService()
-							.isExtendDocumentPresent(
-									getData().getText(ApplicationMap.NR),
-									ServiceConstants.DOC_TYPE_EX_NDEC,
-									new AsyncCallback() {
-										/*
-										 * (non-Javadoc)
-										 * 
-										 * @see com.google.gwt.user.client.rpc.
-										 * AsyncCallback
-										 * #onFailure(java.lang.Throwable)
-										 */
-										public void onFailure(Throwable arg0) {
-											setError("Dokumendi olemasolu kontroll ebaõnnestus: "
-													+ arg0.getMessage());
-										}
+					ServiceContext.getInstance().getRegistryService().isExtendDocumentPresent(
+							getData().getText(ApplicationMap.NR), ServiceConstants.DOC_TYPE_EX_NDEC,
+							new AsyncCallback() {
+						/*
+						 * (non-Javadoc)
+						 * 
+						 * @see com.google.gwt.user.client.rpc. AsyncCallback
+						 * #onFailure(java.lang.Throwable)
+						 */
+						public void onFailure(Throwable arg0) {
+							setError("Dokumendi olemasolu kontroll ebaõnnestus: " + arg0.getMessage());
+						}
 
-										/*
-										 * (non-Javadoc)
-										 * 
-										 * @see com.google.gwt.user.client.rpc.
-										 * AsyncCallback
-										 * #onSuccess(java.lang.Object)
-										 */
-										public void onSuccess(Object arg0) {
-											if (((Boolean) arg0).booleanValue()) {
-												String converted = GWT
-														.getModuleBaseURL();
-												Window.open(
-														converted
-																+ ServiceConstants.DOC_SERVICE_URL
-																+ "?"
-																+ ServiceConstants.DOC_ACTION_PARM
-																+ "="
-																+ ServiceConstants.DOC_ACTION_OPEN
-																+ "&"
-																+ ServiceConstants.DOC_APPID_PARM
-																+ "="
-																+ getData()
-																		.getText(
-																				ApplicationMap.ID)
-																+ "&"
-																+ ServiceConstants.DOC_FILE_PARM
-																+ "="
-																+ URL.encode(getData()
-																		.getText(
-																				ApplicationMap.DECISION_NR) != null ? ServiceConstants.EX_NDEC_DOC_NAME
-																		+ getData()
-																				.getText(
-																						ApplicationMap.DECISION_NR)
-																				.replace(
-																						'/',
-																						'_')
-																		: ServiceConstants.EX_NDEC_DOC_NAME_NULL)
-																+ ".pdf",
-														"Pikendamise_ärakiri",
-														""
+						/*
+						 * (non-Javadoc)
+						 * 
+						 * @see com.google.gwt.user.client.rpc. AsyncCallback
+						 * #onSuccess(java.lang.Object)
+						 */
+						public void onSuccess(Object arg0) {
+							if (((Boolean) arg0).booleanValue()) {
+								String converted = GWT.getModuleBaseURL();
+								Window.open(
+										converted + ServiceConstants.DOC_SERVICE_URL + "?"
+												+ ServiceConstants.DOC_ACTION_PARM + "="
+												+ ServiceConstants.DOC_ACTION_OPEN + "&"
+												+ ServiceConstants.DOC_APPID_PARM + "="
+												+ getData().getText(ApplicationMap.ID) + "&"
+												+ ServiceConstants.DOC_FILE_PARM + "="
+												+ URL.encode(getData().getText(ApplicationMap.DECISION_NR) != null
+														? ServiceConstants.EX_NDEC_DOC_NAME + getData()
+																.getText(ApplicationMap.DECISION_NR).replace('/', '_')
+														: ServiceConstants.EX_NDEC_DOC_NAME_NULL)
+												+ ".pdf",
+										"Pikendamise_ärakiri", ""
 
-												);
-											} else {
-												// if the document doesn't exist
-												// then ask to creata a new one.
-												ConfirmDialog confirm = new ConfirmDialog(
-														"Kas lisan uue pikendamise ärakirja?",
-														new ClickListener() {
+								);
+							} else {
+								// if the document doesn't exist
+								// then ask to creata a new one.
+								ConfirmDialog confirm = new ConfirmDialog("Kas lisan uue pikendamise ärakirja?",
+										new ClickListener() {
 
-															public void onClick(
-																	Widget arg0) {
-																ServiceContext
-																		.getInstance()
-																		.getRegistryService()
-																		.createNewExtendDocument(
-																				getData()
-																						.getText(
-																								ApplicationMap.NR),
-																				ServiceConstants.DOC_TYPE_EX_NDEC,
-																				new AsyncCallback() {
-																					public void onFailure(
-																							Throwable arg0) {
-																						setError("Dokumendi lisamine ebaõnnestus: "
-																								+ arg0.getMessage());
-																					}
-
-																					public void onSuccess(
-																							Object arg0) {
-																						if (((Boolean) arg0)
-																								.booleanValue()) {
-																							setInfo("Uus pikendamise ärakiri loodud!");
-																						}
-																					}
-																				});
-
-															}
-
-														});
-												confirm.hide();
-												confirm.show();
+									public void onClick(Widget arg0) {
+										ServiceContext.getInstance().getRegistryService().createNewExtendDocument(
+												getData().getText(ApplicationMap.NR), ServiceConstants.DOC_TYPE_EX_NDEC,
+												new AsyncCallback() {
+											public void onFailure(Throwable arg0) {
+												setError("Dokumendi lisamine ebaõnnestus: " + arg0.getMessage());
 											}
-										}
-									});
+
+											public void onSuccess(Object arg0) {
+												if (((Boolean) arg0).booleanValue()) {
+													setInfo("Uus pikendamise ärakiri loodud!");
+												}
+											}
+										});
+
+									}
+
+								});
+								confirm.hide();
+								confirm.show();
+							}
+						}
+					});
 
 				}
 			});
@@ -1455,158 +1105,104 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 				public void onClick(Widget arg0) {
 					// if the decision is not entered into the registry then we
 					// can't display a correction document
-					if (!getData().getProperty(ApplicationMap.STATE_CODE)
-							.equals(ServiceConstants.APPL_STATE_REXT)) {
+					if (!getData().getProperty(ApplicationMap.STATE_CODE).equals(ServiceConstants.APPL_STATE_REXT)) {
 						return;
 					}
-					ServiceContext
-							.getInstance()
-							.getRegistryService()
-							.isExtendDocumentPresent(
-									getData().getText(ApplicationMap.NR),
-									ServiceConstants.DOC_TYPE_EX_COR,
-									new AsyncCallback() {
-										/*
-										 * (non-Javadoc)
-										 * 
-										 * @see com.google.gwt.user.client.rpc.
-										 * AsyncCallback
-										 * #onFailure(java.lang.Throwable)
-										 */
-										public void onFailure(Throwable arg0) {
-											setError("Dokumendi olemasolu kontroll ebaõnnestus: "
-													+ arg0.getMessage());
-										}
+					ServiceContext.getInstance().getRegistryService().isExtendDocumentPresent(
+							getData().getText(ApplicationMap.NR), ServiceConstants.DOC_TYPE_EX_COR,
+							new AsyncCallback() {
+						/*
+						 * (non-Javadoc)
+						 * 
+						 * @see com.google.gwt.user.client.rpc. AsyncCallback
+						 * #onFailure(java.lang.Throwable)
+						 */
+						public void onFailure(Throwable arg0) {
+							setError("Dokumendi olemasolu kontroll ebaõnnestus: " + arg0.getMessage());
+						}
 
-										/*
-										 * (non-Javadoc)
-										 * 
-										 * @see com.google.gwt.user.client.rpc.
-										 * AsyncCallback
-										 * #onSuccess(java.lang.Object)
-										 */
-										public void onSuccess(Object arg0) {
-											if (((Boolean) arg0).booleanValue()) {
-												String converted = GWT
-														.getModuleBaseURL();
-												Window.open(
-														converted
-																+ ServiceConstants.DOC_SERVICE_URL
-																+ "?"
-																+ ServiceConstants.DOC_ACTION_PARM
-																+ "="
-																+ ServiceConstants.DOC_ACTION_OPEN
-																+ "&"
-																+ ServiceConstants.DOC_APPID_PARM
-																+ "="
-																+ getData()
-																		.getText(
-																				ApplicationMap.ID)
-																+ "&"
-																+ ServiceConstants.DOC_FILE_PARM
-																+ "="
-																+ URL.encode(getData()
-																		.getText(
-																				ApplicationMap.DECISION_NR) != null ? ServiceConstants.EX_COR_DOC_NAME
-																		+ getData()
-																				.getText(
-																						ApplicationMap.DECISION_NR)
-																				.replace(
-																						'/',
-																						'_')
-																		: ServiceConstants.EX_DECISION_DOC_NAME_NULL)
-																+ ".pdf",
-														"Pikendamise_õiend", "");
-											} else {
+						/*
+						 * (non-Javadoc)
+						 * 
+						 * @see com.google.gwt.user.client.rpc. AsyncCallback
+						 * #onSuccess(java.lang.Object)
+						 */
+						public void onSuccess(Object arg0) {
+							if (((Boolean) arg0).booleanValue()) {
+								String converted = GWT.getModuleBaseURL();
+								Window.open(
+										converted + ServiceConstants.DOC_SERVICE_URL + "?"
+												+ ServiceConstants.DOC_ACTION_PARM + "="
+												+ ServiceConstants.DOC_ACTION_OPEN + "&"
+												+ ServiceConstants.DOC_APPID_PARM + "="
+												+ getData().getText(ApplicationMap.ID) + "&"
+												+ ServiceConstants.DOC_FILE_PARM + "="
+												+ URL.encode(getData().getText(ApplicationMap.DECISION_NR) != null
+														? ServiceConstants.EX_COR_DOC_NAME + getData()
+																.getText(ApplicationMap.DECISION_NR).replace('/', '_')
+														: ServiceConstants.EX_DECISION_DOC_NAME_NULL)
+												+ ".pdf",
+										"Pikendamise_õiend", "");
+							} else {
 
-												ConfirmDialog confirm = new ConfirmDialog(
-														"Kas lisan uue pikendamise õiendi?",
-														new ClickListener() {
+								ConfirmDialog confirm = new ConfirmDialog("Kas lisan uue pikendamise õiendi?",
+										new ClickListener() {
 
-															public void onClick(
-																	Widget arg0) {
-																ServiceContext
-																		.getInstance()
-																		.getRegistryService()
-																		.createNewExtendDocument(
-																				getData()
-																						.getText(
-																								ApplicationMap.NR),
-																				ServiceConstants.DOC_TYPE_EX_COR,
-																				new AsyncCallback() {
-																					public void onFailure(
-																							Throwable arg0) {
-																						setError("Dokumendi lisamine ebaõnnestus: "
-																								+ arg0.getMessage());
-																					}
-
-																					public void onSuccess(
-																							Object arg0) {
-																						if (((Boolean) arg0)
-																								.booleanValue()) {
-																							setInfo("Uus pikendamise õiend loodud!");
-																						}
-																					}
-																				});
-																
-																ServiceContext
-																.getInstance()
-																.getRegistryService()
-																.isSigned(
-																		Integer.valueOf(getData()
-																				.getText(
-																						ApplicationMap.ID)),
-																		ServiceConstants.EX_COR_DOC_NAME
-																				+ getData()
-																						.getText(
-																								ApplicationMap.DECISION_NR)
-																				+ " (asice)",
-																		new AsyncCallback() {
-
-																			public void onFailure(
-																					Throwable caught) {
-																				Window.alert(String
-																						.valueOf(caught
-																								.getMessage()));
-																			}
-
-																			public void onSuccess(
-																					Object result) {
-
-																				try {
-																					boolean res = ((Boolean) result)
-																							.booleanValue();
-
-																					boolean enabled = getData()
-																							.getProperty(
-																									ApplicationMap.DECISION_NR) != null;
-
-																					boolean oiendKeelatud = ((String) getData()
-																							.getProperty(
-																									ApplicationMap.STATE_CODE))
-																							.equals(ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY);
-
-																					if (!res
-																							&& enabled
-																							&& !oiendKeelatud) {
-																						correctionSignLink
-																								.setVisible(true);
-																					}
-																				} catch (Exception ex) {
-
-																				}
-
-																			}
-																		});
-
-															}
-
-														});
-												confirm.hide();
-												confirm.show();
+									public void onClick(Widget arg0) {
+										ServiceContext.getInstance().getRegistryService().createNewExtendDocument(
+												getData().getText(ApplicationMap.NR), ServiceConstants.DOC_TYPE_EX_COR,
+												new AsyncCallback() {
+											public void onFailure(Throwable arg0) {
+												setError("Dokumendi lisamine ebaõnnestus: " + arg0.getMessage());
 											}
-										}
-									});
+
+											public void onSuccess(Object arg0) {
+												if (((Boolean) arg0).booleanValue()) {
+													setInfo("Uus pikendamise õiend loodud!");
+												}
+											}
+										});
+
+										ServiceContext.getInstance().getRegistryService().isSigned(
+												Integer.valueOf(getData().getText(ApplicationMap.ID)),
+												ServiceConstants.EX_COR_DOC_NAME
+														+ getData().getText(ApplicationMap.DECISION_NR) + " (asice)",
+												new AsyncCallback() {
+
+											public void onFailure(Throwable caught) {
+												Window.alert(String.valueOf(caught.getMessage()));
+											}
+
+											public void onSuccess(Object result) {
+
+												try {
+													boolean res = ((Boolean) result).booleanValue();
+
+													boolean enabled = getData()
+															.getProperty(ApplicationMap.DECISION_NR) != null;
+
+													boolean oiendKeelatud = ((String) getData()
+															.getProperty(ApplicationMap.STATE_CODE)).equals(
+																	ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY);
+
+													if (!res && enabled && !oiendKeelatud) {
+														correctionSignLink.setVisible(true);
+													}
+												} catch (Exception ex) {
+
+												}
+
+											}
+										});
+
+									}
+
+								});
+								confirm.hide();
+								confirm.show();
+							}
+						}
+					});
 
 				}
 			});
@@ -1619,26 +1215,16 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 
 		ApplicationMap applicationData = (ApplicationMap) getData();
 		if (applicationData != null) {
-			System.out
-					.println("info:"
-							+ applicationData
-									.getProperty(ApplicationMap.STATE_CODE)
-							+ " "
-							+ applicationData
-									.getProperty(ApplicationMap.EXTEND_UNTIL_DECISION_DATE));
-			if (ServiceConstants.APPL_STATE_REXT_NOT.equals(applicationData
-					.getProperty(ApplicationMap.STATE_CODE)))
-				((ApplicationMap) getData()).setProperty(
-						ApplicationMap.DECISION_EXTEND_REG_ENTRY,
+			System.out.println("info:" + applicationData.getProperty(ApplicationMap.STATE_CODE) + " "
+					+ applicationData.getProperty(ApplicationMap.EXTEND_UNTIL_DECISION_DATE));
+			if (ServiceConstants.APPL_STATE_REXT_NOT.equals(applicationData.getProperty(ApplicationMap.STATE_CODE)))
+				((ApplicationMap) getData()).setProperty(ApplicationMap.DECISION_EXTEND_REG_ENTRY,
 						ServiceConstants.NOTEXTENDED_DECISION);
-			else if (applicationData
-					.getProperty(ApplicationMap.EXTEND_UNTIL_DECISION_DATE) != null)
-				((ApplicationMap) getData()).setProperty(
-						ApplicationMap.DECISION_EXTEND_REG_ENTRY,
+			else if (applicationData.getProperty(ApplicationMap.EXTEND_UNTIL_DECISION_DATE) != null)
+				((ApplicationMap) getData()).setProperty(ApplicationMap.DECISION_EXTEND_REG_ENTRY,
 						ServiceConstants.EXTENDED_UNTIL);
 			else
-				((ApplicationMap) getData()).setProperty(
-						ApplicationMap.DECISION_EXTEND_REG_ENTRY,
+				((ApplicationMap) getData()).setProperty(ApplicationMap.DECISION_EXTEND_REG_ENTRY,
 						ServiceConstants.EXTEND_DECISION);
 		}
 
@@ -1650,8 +1236,7 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 
 		// signer is not relevant on extend until decision
 		if (!(key.equals(ApplicationMap.DECISION_SIGNER_ID) && ((ApplicationMap) getData())
-				.getProperty(ApplicationMap.DECISION_EXTEND_REG_ENTRY).equals(
-						ServiceConstants.EXTENDED_UNTIL)))
+				.getProperty(ApplicationMap.DECISION_EXTEND_REG_ENTRY).equals(ServiceConstants.EXTENDED_UNTIL)))
 			super.checkForErrors(key, widget);
 	}
 

@@ -184,13 +184,18 @@ public class TreasuryCustomerBindingImpl implements eu.x_road.rm_v6.treasury.cus
 							}
 							
 							Enterprise enterprise = registryService.getEnterpriseByActivity(payment.getPayerRegistrationNr());
-							if(enterprise != null){
-								payment.setBoundEnterprise(enterprise);
-
-								registryService.bindPaymentToEnterpise(payment);
-							}
-							
+						
 							RegistryPayment payment2 = (RegistryPayment) registryService.saveOrUpdate(payment);
+
+							// proovime siduda automaatselt, see võib ka ebaõnnestuda
+							if(enterprise != null){
+								try{
+									payment2.setBoundEnterprise(enterprise);
+									registryService.bindPaymentToEnterpise(payment2);
+								}catch(Exception x){
+									x.printStackTrace();
+								}
+							}
 						
 							// try to automatically bind an enterprise to a
 							// payment

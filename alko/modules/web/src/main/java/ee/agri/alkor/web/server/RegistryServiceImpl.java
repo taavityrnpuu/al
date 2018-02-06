@@ -723,6 +723,21 @@ public class RegistryServiceImpl implements RegistryService {
 			throw new SystemException(cve.getMessage());
 		}
 	}
+	
+	public String takeBackPaymentMatching(ApplicationMap registryApplication, String tax) throws SessionExpiredException {
+		try {
+
+			if (!isSessionValid())
+				throw new SessionExpiredException("Seanss on aegunud!");
+
+			return ServiceFactory.getRegistryService().takeBackPaymentMatching(ClientDataFactory.create(registryApplication), tax);
+
+		} catch (Exception cve) {
+			cve.printStackTrace();
+			throw new SystemException(cve.getMessage());
+		}
+	}
+	
 
 	public ApplicationMap saveNewExtendApplication(ApplicationMap applicationMap) throws SessionExpiredException {
 
@@ -733,7 +748,7 @@ public class RegistryServiceImpl implements RegistryService {
 	}
 	
 	public boolean checkCanExtend(long id) throws SystemException {
-			return ServiceFactory.getRegistryService().checkCanExtend(id);
+		return ServiceFactory.getRegistryService().checkCanExtend(id);
 	}
 	
 	public boolean checkCanExtendByProduct(long id) throws SystemException {
