@@ -2365,7 +2365,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	}
 
 	public void createExcelExportDocument(SearchFilter searchFilter, OutputStream output) {
-System.out.println("----- createExcelExportDocument "+searchFilter.isLimited());
 		SearchFilter results = null;
 		if (searchFilter.isLimited()) {
 			results = searchApplications(searchFilter);

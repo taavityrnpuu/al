@@ -8,6 +8,7 @@ public class ClassItemMap
 	public static final String CODE = "code";
 
 	public static final String NAME = "name";
+	public static final String CAPITAL_NAME = "Name";
 
 	public static final String ACTIVE = "active";
 

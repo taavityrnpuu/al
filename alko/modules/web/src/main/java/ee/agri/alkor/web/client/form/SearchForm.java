@@ -288,8 +288,8 @@ public class SearchForm extends Form implements CacheListener{
 			this.setText(0, 4, getLabel(SuperSearchFilter.APPLICANT_EXCISE_STORE_HOUSE_NR)); //"Taotleja aktsiislao tegevusloa number"
 			this.setText(1, 4, getLabel(SuperSearchFilter.APPLICANT_ACKNOWLEDGEMENT_NR)); //"Taotleja aktsiislao tegevusloa number"
 			this.setText(2, 4, getLabel(SuperSearchFilter.APPLICATION_ARRIVED)); //"Taotluse registreerimise aeg"
-			this.setText(4, 4, getLabel(SuperSearchFilter.APPLICATION_STATE)); //"Taotluse staatus"
-			this.setText(5, 4, getLabel(SuperSearchFilter.APPLICATION_DECISION_TYPE)); //"Otsuse liik"
+			this.setText(4, 4, getLabel(SuperSearchFilter.APPLICATION_STATE_NAME)); //"Taotluse staatus"
+			this.setText(5, 4, getLabel(SuperSearchFilter.APPLICATION_DECISION_TYPE_NAME)); //"Otsuse liik"
 
 			/* INPUT */
 			/* column1 */
@@ -380,8 +380,8 @@ public class SearchForm extends Form implements CacheListener{
 			this.setText(5, 7, getLabel(SuperSearchFilter.APPLICANT_EXCISE_STORE_HOUSE_NR));//"Taotleja aktsiislao tegevusloa number");
 			this.setText(6, 7, getLabel(SuperSearchFilter.APPLICANT_ACKNOWLEDGEMENT_NR));//"KĆ¤itlemisettevĆµtte tunnustamise otsuse kuupĆ¤ev");
 			this.setText(7, 7, getLabel(SuperSearchFilter.APPLICATION_ARRIVED));//"Taotluse registreerimise aeg");
-			this.setText(8, 7, getLabel(SuperSearchFilter.APPLICATION_STATE));//"Taotluse staatus");
-			this.setText(9, 7, getLabel(SuperSearchFilter.APPLICATION_DECISION_TYPE));//"Otsuse liik");
+			this.setText(8, 7, getLabel(SuperSearchFilter.APPLICATION_STATE_NAME));//"Taotluse staatus");
+			this.setText(9, 7, getLabel(SuperSearchFilter.APPLICATION_DECISION_TYPE_NAME));//"Otsuse liik");
 			this.setText(10, 7, getLabel(SuperSearchFilter.DEREGISTER_DECISION));//"VĆ¤ljakandmise otsus");
 			this.setText(11, 7, getLabel(SuperSearchFilter.PRODUCT_EXAMPLES_COUNT));//"SĆ¤ilitatavad nĆ¤idised");
 
@@ -453,8 +453,8 @@ public class SearchForm extends Form implements CacheListener{
 			this.setWidget(5, 6, addCheckBox(SuperSearchFilter.APPLICANT_EXCISE_STORE_HOUSE_NR, false));
 			this.setWidget(6, 6, addCheckBox(SuperSearchFilter.APPLICANT_ACKNOWLEDGEMENT_NR, false));
 			this.setWidget(7, 6, addCheckBox(SuperSearchFilter.APPLICATION_ARRIVED, false));
-			this.setWidget(8, 6, addCheckBox(SuperSearchFilter.APPLICATION_STATE, false));
-			this.setWidget(9, 6, addCheckBox(SuperSearchFilter.APPLICATION_DECISION_TYPE, false));
+			this.setWidget(8, 6, addCheckBox(SuperSearchFilter.APPLICATION_STATE_NAME, false));
+			this.setWidget(9, 6, addCheckBox(SuperSearchFilter.APPLICATION_DECISION_TYPE_NAME, false));
 			this.setWidget(10, 6, addCheckBox(SuperSearchFilter.DEREGISTER_DECISION, false));
 			this.setWidget(11, 6, addCheckBox(SuperSearchFilter.PRODUCT_EXAMPLES_COUNT, false));
 

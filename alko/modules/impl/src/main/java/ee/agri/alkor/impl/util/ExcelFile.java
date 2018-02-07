@@ -59,7 +59,7 @@ public class ExcelFile extends HSSFWorkbook {
 		this.createAndAddHeaderRow(sheet);
 		
 			this.createAndAddDataRows
-			(sheet,"SearchView".equals(filter != null ? filter.getObjectClass() : null));
+			(sheet,"SearchViewPrimitive".equals(filter != null ? filter.getObjectClass() : null));
 	}
 
 	/**
@@ -71,7 +71,7 @@ public class ExcelFile extends HSSFWorkbook {
 		HSSFRow headerRow;
 		
 		//Create filter row
-		if(filter.getObjectClass().equals("SearchView")) {
+		if(filter.getObjectClass().equals("SearchViewPrimitive")) {
 			HSSFRow filterRow = sheet.createRow(0);
 			filterRow.createCell(0).setCellValue(new HSSFRichTextString(createFilterString(filter)));
 			//empty row

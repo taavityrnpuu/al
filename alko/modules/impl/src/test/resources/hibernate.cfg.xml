@@ -31,6 +31,7 @@
             <mapping class="ee.agri.alkor.model.News"/>
             <mapping class="ee.agri.alkor.model.Faq"/>
             <mapping class="ee.agri.alkor.model.SearchView"/>
+            <mapping class="ee.agri.alkor.model.SearchViewPrimitive"/>
             <mapping class="ee.agri.alkor.model.PaymentMatchingLog"/>
             <mapping class="ee.agri.alkor.model.ProductMovementReport"/>
             <mapping class="ee.agri.alkor.model.ProductMovementReportRecord"/>

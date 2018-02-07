@@ -124,7 +124,7 @@ public class ExcelFormPanel extends FormPanel {
 				if(searchFilter.isLimited()) {
                form.setWidget(0, 8, new Hidden(ServiceConstants.LIMITED_SEARCH, "1"));
             }
-				if(searchFilter.getObjectClass().equals("SearchView")){
+				if(searchFilter.getObjectClass().equals("SearchViewPrimitive")){
 					form.setWidget(0, 6, new Hidden(ServiceConstants.SEARCH_FILTER_TEXT_PARAMS, URL.encode(searchFilter.getQueryTextValuesString())));
 					form.setWidget(0, 7, new Hidden(ServiceConstants.SEARCH_FILTER_QUERY_LABELS,URL.encode(searchFilter.getQueryTextLabelsString())));
 				}

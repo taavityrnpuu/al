@@ -45,6 +45,7 @@ import ee.agri.alkor.model.RegistryPaymentView;
 import ee.agri.alkor.model.ReportListView;
 import ee.agri.alkor.model.ReportView;
 import ee.agri.alkor.model.SearchView;
+import ee.agri.alkor.model.SearchViewPrimitive;
 import ee.agri.alkor.model.SystemUser;
 import ee.agri.alkor.model.UserGroup;
 import ee.agri.alkor.model.classes.Classificator;
@@ -285,12 +286,12 @@ public class ClientDataFactory {
 		return (MtrAndCustomsQueryResultMap) create(resultMap, queryResult);
 	}
 
-	public static SearchView create(SuperSearchMap dtoMap) {
-		SearchView modelSearchView = new SearchView();
-		return (SearchView) create(modelSearchView, dtoMap);
+	public static SearchViewPrimitive create(SuperSearchMap dtoMap) {
+		SearchViewPrimitive modelSearchView = new SearchViewPrimitive();
+		return (SearchViewPrimitive) create(modelSearchView, dtoMap);
 	}
 
-	public static SuperSearchMap create(SearchView modelSearchView) {
+	public static SuperSearchMap create(SearchViewPrimitive modelSearchView) {
 		SuperSearchMap dtoMap = new SuperSearchMap();
 		return (SuperSearchMap) create(dtoMap, modelSearchView);
 	}
@@ -724,9 +725,9 @@ public class ClientDataFactory {
 			else if (modelObject instanceof AuthenticationLog)
 				dtoObject = create(new AuthLogMap(),
 						(AuthenticationLog) modelObject, createdList);
-			else if (modelObject instanceof SearchView)
+			else if (modelObject instanceof SearchViewPrimitive)
 				dtoObject = create(new SuperSearchMap(),
-						(SearchView) modelObject, createdList);
+						(SearchViewPrimitive) modelObject, createdList);
 			else if (modelObject instanceof RegistryPaymentView)
 				dtoObject = create(new StateFeeMap(),
 						(RegistryPaymentView) modelObject, createdList);

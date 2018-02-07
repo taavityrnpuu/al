@@ -48,6 +48,7 @@
             <mapping class="ee.agri.alkor.model.ProductMovementReport"/>
             <mapping class="ee.agri.alkor.model.ProductMovementReportRecord"/>
             <mapping class="ee.agri.alkor.model.SearchView"/>
+            <mapping class="ee.agri.alkor.model.SearchViewPrimitive"/>
             <mapping class="ee.agri.alkor.model.XTeeId"/>
 
 

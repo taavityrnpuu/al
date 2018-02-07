@@ -185,15 +185,16 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		// SearchView default search
 		// FIX IT!
 		// NO!
-		if (filter.getObjectClass().equals("SearchView") && filter.getOrderBy() != null && filter.getOrderBy()
-				.equals("applicationDecisionDate desc, s.productType.name asc, s.applicationNr desc")) {
+		if (filter.getObjectClass().equals("SearchViewPrimitive") && filter.getOrderBy() != null && filter.getOrderBy()
+				.equals("applicationDecisionDate desc, s.productTypeName asc, s.applicationNr desc")) {
 
+			/*
 			if (l == 0)
 				joinedFrom.append(" ");
 			joinedFrom.append("left join fetch ");
-			joinedFrom.append("s.productType ");
+			joinedFrom.append("s.productTypeName ");
 			l++;
-
+			 */
 		}
 
 		/**
@@ -283,12 +284,15 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 						if (namedParameters.length() != 0) {
 							namedParameters.append("and ");
 						}
-						if (!filter.getObjectClass().equals("RegistryPaymentView")) {
-							namedParameters.append("s.").append(paramName).append(".code").append(" in ")
-									.append("(:" + paramName + "s) ");
-						} else {
+						if (filter.getObjectClass().equals("RegistryPaymentView")) {
 							namedParameters.append("s.").append(paramName).append(" in ")
-									.append("(:" + paramName + "s) ");
+							.append("(:" + paramName + "s) ");
+						} else if (filter.getObjectClass().equals("SearchViewPrimitive")) {
+							namedParameters.append("s.").append(paramName).append("Code").append(" in ")
+							.append("(:" + paramName + "s) ");
+						} else {
+							namedParameters.append("s.").append(paramName).append(".code").append(" in ")
+							.append("(:" + paramName + "s) ");
 						}
 					}
 					continue;
