@@ -3105,7 +3105,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	/**
 	 * Finds enterprise in order of active property by registration nr
 	 */
-	public Enterprise getEnterpriseByActivity(String registrationNr) {
+	synchronized public Enterprise getEnterpriseByActivity(String registrationNr) {
 		Enterprise enter = null;
 		try {
 			enter = (Enterprise) getHibernateTemplate()
