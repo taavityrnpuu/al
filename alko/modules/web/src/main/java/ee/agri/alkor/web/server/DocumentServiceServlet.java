@@ -145,60 +145,70 @@ public class DocumentServiceServlet extends HttpServlet {
 	private IRegistryService registryService;
 
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, java.io.IOException {
+		boolean isUpload = false;
 		try {
 			
 			if(req.getParameter("do") == null || !req.getParameter("do").equals("excel")){
 				
-				DiskFileItemFactory factory = new DiskFileItemFactory();
-				factory.setSizeThreshold(10 * 1024 * 1024);
-	
-				ServletFileUpload upload = new ServletFileUpload(factory);
-	
-				String regNr = null;
-				String periodYear = null;
-				String periodMonth = null;
-	
-				FileItem upLoadFileItem = null;
-				List items = upload.parseRequest(req);
-				Iterator iter = items.iterator();
-				
-				boolean reg_nr_olemas = false;
-	
-				while (iter.hasNext()) {
-					FileItem item = (FileItem) iter.next();
-	
-					if (item.isFormField()) {
-						String name = item.getFieldName();
-						String value = item.getString();
+				if(req.getSession().getAttribute("is_uploading_report") != null){
+					PrintWriter out = resp.getWriter();
+					out.print("Eelmist aruannet veel laetakse... Aruannet saab vaadata seda otsides ning sellega kuvatakse ka mitu rida on juba laetud");
+				}
+				else{
+					DiskFileItemFactory factory = new DiskFileItemFactory();
+					factory.setSizeThreshold(10 * 1024 * 1024);
+		
+					ServletFileUpload upload = new ServletFileUpload(factory);
+		
+					String regNr = null;
+					String periodYear = null;
+					String periodMonth = null;
+		
+					FileItem upLoadFileItem = null;
+					List items = upload.parseRequest(req);
+					Iterator iter = items.iterator();
+					
+					boolean reg_nr_olemas = false;
+		
+					while (iter.hasNext()) {
+						FileItem item = (FileItem) iter.next();
+		
+						if (item.isFormField()) {
+							String name = item.getFieldName();
+							String value = item.getString();
+							
+							if(name.equals("uploadPeriodYear")){
+								periodYear = value;
+							} else if(name.equals("uploadPeriodMonth")) {
+								periodMonth = value;
+							} else if(name.equals("reg_nr") && !reg_nr_olemas) {
+								regNr = value;
+							} else if(name.equals("reg_nr_vta")) {
+								regNr = value;
+								reg_nr_olemas = true;
+							}
+							
+						} else {
+							upLoadFileItem = item;
+						}
+					}
+
+					if (regNr != null && periodYear != null && periodMonth != null && !regNr.equals("") && !periodYear.equals("") && !periodMonth.equals("")) {	
 						
-						if(name.equals("uploadPeriodYear")){
-							periodYear = value;
-						} else if(name.equals("uploadPeriodMonth")) {
-							periodMonth = value;
-						} else if(name.equals("reg_nr") && !reg_nr_olemas) {
-							regNr = value;
-						} else if(name.equals("reg_nr_vta")) {
-							regNr = value;
-							reg_nr_olemas = true;
+						ResultSet rs = PostgreUtils.query("SELECT 1 FROM enterprise WHERE reg_id = '"+regNr.replaceAll("'","''")+"'");
+						if(!rs.next()){
+							throw new SystemException("Vigane esitaja äriregistrikood");
 						}
 						
-					} else {
-						upLoadFileItem = item;
-					}
+						isUpload = true;
+						req.getSession().setAttribute("is_uploading_report", true);
+						
+						processUploadedReport(upLoadFileItem, regNr, periodYear, periodMonth, "EE" + req.getSession().getAttribute("user_ik"));
+						resp.setContentType("text/html");
+						PrintWriter out = resp.getWriter();
+						out.print("1");
+					} 
 				}
-
-				if (regNr != null && periodYear != null && periodMonth != null && !regNr.equals("") && !periodYear.equals("") && !periodMonth.equals("")) {	
-					
-					ResultSet rs = PostgreUtils.query("SELECT 1 FROM enterprise WHERE reg_id = '"+regNr.replaceAll("'","\"")+"'");
-					if(!rs.next()){
-						throw new SystemException("Vigane esitaja äriregistrikood");
-					}
-					
-					processUploadedReport(upLoadFileItem, regNr, periodYear, periodMonth, "EE" + req.getSession().getAttribute("user_ik"));
-					resp.setContentType("text/html");
-					PrintWriter out = resp.getWriter();
-					out.println("1");
-				} 
 			}
 			else {
 				String actionType = req.getParameter(ServiceConstants.DOC_ACTION_PARM);
@@ -214,6 +224,11 @@ public class DocumentServiceServlet extends HttpServlet {
 			resp.setContentType("text/html");
 			PrintWriter out = resp.getWriter();
 			out.println(ex.getMessage());
+		}
+		finally {
+			if(isUpload){
+				req.getSession().setAttribute("is_uploading_report", null);
+			}
 		}
 	}
 
@@ -554,21 +569,72 @@ public class DocumentServiceServlet extends HttpServlet {
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 		String created = format1.format(cal.getTime());
 
+		List<Long> added = new ArrayList<Long>();
 		
+		long startTime = System.currentTimeMillis();
+		long subStart = System.currentTimeMillis();
+		int rowNr = 0;
+		Connection con = null;
+
 		String sql = "INSERT INTO product_move_report (id, created, load_enterprise_id, load_person_id, rep_year, month_class_id, report_ent_id, report_date) " +
-				"VALUES ((select max(id) + 1 from product_move_report), NOW(), '"+regCode+"', '"+ik+"', '"+periodYear+"', (select id from classificator where category = 'Month' and code = '"+periodMonth+"' limit 1), (select id from enterprise where reg_id = '"+regCode+"' limit 1), '"+created+"')";		
+				"VALUES (nextval('product_move_report_seq'), NOW(), '"+regCode+"', '"+ik+"', '"+periodYear+"', (select id from classificator where category = 'Month' and code = '"+periodMonth+"' limit 1), (select id from enterprise where reg_id = '"+regCode+"' limit 1), '"+created+"')";		
 		long reportId = PostgreUtils.insert(sql, "id");
 		
-		List added = new ArrayList();
-
 		try {
+			con = PostgreUtils.getLongConnection();
+				
 			BufferedReader fReader = new BufferedReader(new StringReader(new String(file.getString())));
-			String line = null;
-			HashMap<String, RegistryEntry> entrys = new HashMap<String, RegistryEntry>();
-			int rowNr = 0;
+			String lineFirst = null;
+			List<String> lines = new ArrayList<String>();
+			Map<String, Long> entries = new HashMap<String, Long>();
+			//HashMap<String, RegistryEntry> entrys = new HashMap<String, RegistryEntry>();
 			String vead = "";
+			String regentries = "";
 			
-			while ((line = fReader.readLine()) != null) {
+			long beforeRead = System.currentTimeMillis();
+			
+			// loeme read massiivi
+			while ((lineFirst = fReader.readLine()) != null) {
+				lines.add(lineFirst);
+				try{
+					String[] cols = lineFirst.split(";");
+					
+					String registryEntryNr = cols[0].replaceAll(" ","").replaceAll("\"", "");
+					entries.put(registryEntryNr, null);
+				} catch(Exception x){
+					
+				}
+			}
+			
+			// loeme unikaalsed regentry numbrid stringiks
+			Iterator it = entries.entrySet().iterator();
+		    while (it.hasNext()) {
+		        Map.Entry<String, Long> pair = (Map.Entry<String, Long>)it.next();
+		        if(regentries.length() != 0){
+					regentries += ", ";
+				}
+				regentries += "'"+pair.getKey().replaceAll("'","''")+"'";
+		    }
+			
+			long afterRead = System.currentTimeMillis();
+			System.out.println("----- processUploadedReport "+reportId+" after file read ("+lines.size()+" rows): "+((float)(afterRead - beforeRead) / 1000.0)+" seconds");
+
+			
+			long beforeSelect = System.currentTimeMillis();
+			
+			// küsime kõikide regentryde id'd
+			if(regentries.length() != 0){
+				ResultSet rst = PostgreUtils.query("SELECT id, nr FROM reg_entry WHERE nr IN ("+regentries+")", con);
+				while(rst.next()){
+					entries.put(rst.getString("nr"), rst.getLong("id"));
+				}
+			}
+			
+			long afterSelect = System.currentTimeMillis();
+			System.out.println("----- processUploadedReport "+reportId+" after select ("+lines.size()+" rows): "+((float)(afterSelect - beforeSelect) / 1000.0)+" seconds");
+
+			for(String line : lines){
+				
 				boolean vigane = false;
 				rowNr++;
 
@@ -596,7 +662,7 @@ public class DocumentServiceServlet extends HttpServlet {
 				}
 				
 				for(int i = 0; i < cols.length ;i++){ // escapeme veerud
-					cols[i] = cols[i].replaceAll("'", "\"");
+					cols[i] = cols[i].replaceAll("'", "''");
 				}
 				
 				/*String registryEntryNr = cols[0].trim().toLowerCase();
@@ -618,10 +684,11 @@ public class DocumentServiceServlet extends HttpServlet {
 						continue;
 					}
 				}*/
-				String registryEntryNr = cols[0].replaceAll(" ","");
 				
+				/*
 				String entryID = "";
-				ResultSet rst = PostgreUtils.query("SELECT id FROM reg_entry WHERE nr = '"+registryEntryNr.replaceAll("'","\"")+"' LIMIT 1");
+				ResultSet rst = PostgreUtils.query("SELECT id FROM reg_entry WHERE nr = '"+registryEntryNr.replaceAll("'","''")+"' LIMIT 1", con);
+				
 				if(rst.next()){
 					entryID = rst.getString("id");
 				}
@@ -629,6 +696,17 @@ public class DocumentServiceServlet extends HttpServlet {
 					vead += "ei leitud rea "+rowNr+" registrikande numbrit: "+registryEntryNr+"<br>";
 					vigane = true;
 					//throw new Exception("Vigane sisend, ei leitud rea "+rowNr+" registrikande numbrit");
+				}
+				
+				*/
+				
+				String registryEntryNr = cols[0].replaceAll(" ","");
+				
+				Long entryID = entries.get(registryEntryNr);
+				
+				if(entryID == null || entryID == 0l){
+					vead += "ei leitud rea "+rowNr+" registrikande numbrit: "+registryEntryNr+"<br>";
+					vigane = true;
 				}
 
 				// LOGGER.debug("5");
@@ -653,10 +731,11 @@ public class DocumentServiceServlet extends HttpServlet {
 				
 				if(!vigane){
 					try{
-						sql = "INSERT INTO product_move_report_record (id, amount, created, receiver, party_nr, market_place, market_addr, market_distr, market_orgunit, regentry_id, report_id) VALUES ((select max(id) + 1 from product_move_report_record)," +
-								"'"+amount+"',NOW(),'"+cols[1]+"','"+cols[6]+"','"+cols[2]+"','"+cols[5]+"','"+cols[3]+"','"+cols[4]+"','"+entryID+"','"+reportId+"')";		
-	
-						added.add(PostgreUtils.insert(sql, "id"));
+						sql = "INSERT INTO product_move_report_record (id, amount, created, receiver, party_nr, market_place, market_addr, market_distr, market_orgunit, regentry_id, report_id) VALUES (nextval('product_move_report_record_seq')," +
+								""+amount+",NOW(),'"+cols[1]+"','"+cols[6]+"','"+cols[2]+"','"+cols[5]+"','"+cols[3]+"','"+cols[4]+"',"+entryID+","+reportId+")";		
+
+						added.add(PostgreUtils.insert(sql, "id", con));
+						
 						//report.addRecord(record);	
 					}catch(Exception xx){
 						vead += "ei suutnud lisada rida "+rowNr+": "+xx.getMessage()+"<br>";
@@ -664,19 +743,31 @@ public class DocumentServiceServlet extends HttpServlet {
 						//throw xx;
 					}
 				}
+				
+				if(rowNr % 100 == 0){
+					long subStop = System.currentTimeMillis();
+					System.out.println("----- processUploadedReport "+reportId+" subtime (next 100 rows): "+((float)(subStop - subStart) / 1000.0)+" seconds");
+					subStart = System.currentTimeMillis();
+				}
 			}
+			
 			if(vead.length() > 0){
 				throw new Exception("Vigane sisend:<br>"+vead);
 			}
 			else if(added.size() < rowNr){
 				throw new Exception("Vigane sisend");
 			}
+			
 		} catch (Exception ioe) {
 			PostgreUtils.delete("DELETE FROM product_move_report_record where report_id = '" +  reportId + "'");
 			PostgreUtils.delete("DELETE FROM product_move_report where id = '" +  reportId + "'");
 			
 			ioe.printStackTrace();
 			throw ioe;
+		} finally{
+			long stopTime = System.currentTimeMillis();
+		    System.out.println("----- processUploadedReport "+reportId+" time taken ("+rowNr+" rows): "+((float)(stopTime - startTime) / 1000.0)+" seconds");
+		    PostgreUtils.closeConnection(con);
 		}
 
 		try {

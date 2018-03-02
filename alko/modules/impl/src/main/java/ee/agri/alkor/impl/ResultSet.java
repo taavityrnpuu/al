@@ -72,7 +72,7 @@ public class ResultSet {
 	}
 
 	public Float getFloat(String key) {
-		if (objects.get(index) != null && objects.get(index).equals("null")) {
+		if (objects.get(index) != null && !objects.get(index).equals("null")) {
 			try {
 				if (objects.get(index).get(key) instanceof Float) {
 					return (Float) objects.get(index).get(key);
@@ -86,7 +86,7 @@ public class ResultSet {
 	}
 
 	public Long getLong(String key) {
-		if (objects.get(index) != null && objects.get(index).equals("null")) {
+		if (objects.get(index) != null && !objects.get(index).equals("null")) {
 			try {
 				if (objects.get(index).get(key) instanceof Long) {
 					return (Long) objects.get(index).get(key);
@@ -94,8 +94,7 @@ public class ResultSet {
 				else if (objects.get(index).get(key) instanceof BigInteger) {
 					return ((BigInteger) objects.get(index).get(key)).longValue();
 				}
-				
-				return Long.valueOf(String.valueOf(objects.get(index).get(key)));
+				return Long.parseLong(String.valueOf(objects.get(index).get(key)));
 			} catch (Exception x) {
 				x.printStackTrace();
 			}
@@ -104,12 +103,12 @@ public class ResultSet {
 	}
 
 	public Integer getInteger(String key) {
-		if (objects.get(index) != null && objects.get(index).equals("null")) {
+		if (objects.get(index) != null && !objects.get(index).equals("null")) {
 			try {
 				if (objects.get(index).get(key) instanceof Integer) {
 					return (Integer) objects.get(index).get(key);
 				}
-				return Integer.valueOf(String.valueOf(objects.get(index).get(key)));
+				return Integer.parseInt(String.valueOf(objects.get(index).get(key)));
 			} catch (Exception x) {
 				x.printStackTrace();
 			}
@@ -118,11 +117,11 @@ public class ResultSet {
 	}
 
 	public Double getDouble(String key) {
-		if (objects.get(index) != null && objects.get(index).equals("null")) {
+		if (objects.get(index) != null && !objects.get(index).equals("null")) {
 			if (objects.get(index).get(key) instanceof Double) {
 				return (Double) objects.get(index).get(key);
 			}
-			return Double.valueOf(String.valueOf(objects.get(index).get(key)));
+			return Double.parseDouble(String.valueOf(objects.get(index).get(key)));
 		}
 		return null;
 	}

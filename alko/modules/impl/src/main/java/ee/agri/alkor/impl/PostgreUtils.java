@@ -19,6 +19,29 @@ public class PostgreUtils {
 	static DbBean dbBean = (DbBean) AppContextHelper.getInstance().getBean("pgDataSource");
 	//static HibernateTransactionManager myTxManager = (HibernateTransactionManager) AppContextHelper.getInstance().getBean("myTxManager");
 	
+	public static Connection getLongConnection(){
+		try {
+			Class.forName("org.postgresql.Driver");
+			Connection conn = DriverManager.getConnection(dbBean.getUrl() , dbBean.getUsername(), dbBean.getPassword());
+			
+			return conn;
+		} catch (Exception e) {
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public static void closeConnection(Connection c){
+		try{
+			if(c != null && !c.isClosed()){
+				c.close();
+			}
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
+	}
+	
+	
 	private static Connection connect() {
 		try {
 			Class.forName("org.postgresql.Driver");
@@ -32,7 +55,6 @@ public class PostgreUtils {
 			return null;
 		}
 	}
-	
 
 	public static ee.agri.alkor.impl.ResultSet query(String sql) {
 
@@ -47,6 +69,7 @@ public class PostgreUtils {
 			rs = stmnt.executeQuery(sql);
 			returnable = new ee.agri.alkor.impl.ResultSet(rs);
 		} catch (Exception ex) {
+			System.out.println("SQL: "+sql);
 			ex.printStackTrace();
 			try {
 				c.rollback();
@@ -73,7 +96,36 @@ public class PostgreUtils {
 		}
 
 		return returnable;
+	}
+	
+	public static ee.agri.alkor.impl.ResultSet query(String sql, Connection c) {
 
+		ResultSet rs = null;
+		Statement stmnt = null;
+		ee.agri.alkor.impl.ResultSet returnable = null;
+
+		try {		
+			stmnt = c.createStatement();
+			rs = stmnt.executeQuery(sql);
+			returnable = new ee.agri.alkor.impl.ResultSet(rs);
+		} catch (Exception ex) {
+			System.out.println("SQL: "+sql);
+			ex.printStackTrace();
+		} finally {
+			try{
+				rs.close();
+			} catch (Exception ex){
+				ex.printStackTrace();
+			}
+
+			try{
+				stmnt.close();
+			} catch (Exception ex){
+				ex.printStackTrace();
+			}
+		}
+
+		return returnable;
 	}
 
 	public static void insert(String sql) {
@@ -84,6 +136,7 @@ public class PostgreUtils {
 			stmnt = c.createStatement();
 			stmnt.execute(sql);
 		} catch (Exception ex) {
+			System.out.println("SQL: "+sql);
 			ex.printStackTrace();
 			try {
 				c.rollback();
@@ -103,6 +156,58 @@ public class PostgreUtils {
 			}
 		}
 	}
+	
+	public static void insert(String sql, Connection c) {
+		Statement stmnt = null;
+		try {
+			stmnt = c.createStatement();
+			stmnt.execute(sql);
+		} catch (Exception ex) {
+			System.out.println("SQL: "+sql);
+			ex.printStackTrace();
+		} finally {
+			try{
+				stmnt.close();
+			} catch (Exception ex){
+				ex.printStackTrace();
+			}
+		}
+	}
+	
+	public static long insert(String sql, String returnField, Connection c) {
+		if (sql.substring(sql.length() - 1).equals(";")) {
+			sql = sql.substring(0, sql.length() - 1);
+		}
+
+		sql += " RETURNING " + returnField + ";";
+		long lastId = 0;
+
+		Statement stmnt = null;
+		ResultSet rs = null;
+		try {
+			stmnt = c.createStatement();
+			rs = stmnt.executeQuery(sql);
+			while (rs.next()) {
+				lastId = (long) rs.getInt(1);
+			}
+		} catch (Exception ex) {
+			System.out.println("SQL: "+sql);
+			ex.printStackTrace();
+		} finally {
+			try{
+				rs.close();
+			} catch (Exception ex){
+				ex.printStackTrace();
+			}
+			try{
+				stmnt.close();
+			} catch (Exception ex){
+				ex.printStackTrace();
+			}
+		}
+		
+		return lastId;
+	}
 
 	public static long insert(String sql, String returnField) {
 		if (sql.substring(sql.length() - 1).equals(";")) {
@@ -121,6 +226,7 @@ public class PostgreUtils {
 				lastId = (long) rs.getInt(1);
 			}
 		} catch (Exception ex) {
+			System.out.println("SQL: "+sql);
 			ex.printStackTrace();
 			try {
 				c.rollback();
@@ -162,6 +268,7 @@ public class PostgreUtils {
 			stmnt = c.createStatement();
 			stmnt.execute(sql);
 		} catch (Exception ex) {
+			System.out.println("SQL: "+sql);
 			ex.printStackTrace();
 			isError = true;
 			try {

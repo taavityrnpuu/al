@@ -89,7 +89,7 @@ public class XteeQueryService implements IXteeServices, InitializingBean {
 				port.setHeader(elem);
 			}
 
-			System.out.println("RegistreeringParing - regNumber:" + regNr);
+			System.out.println("RegistreeringParing - regNumber:" + regNr+", url: "+url);
 			RegistreeringParing keha = new RegistreeringParing();
 
             keha.setKood(regNr);

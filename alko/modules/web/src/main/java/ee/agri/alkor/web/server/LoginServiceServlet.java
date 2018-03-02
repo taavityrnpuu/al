@@ -363,9 +363,9 @@ public class LoginServiceServlet extends HttpServlet {
 				String regNr = entry.getKey();
 				String[] split = entry.getValue();
 
-				String entName = split[0].replaceAll("'", "\'");
-				String isikName = split[1].replaceAll("'", "\'");
-				String isikRoll = split[2].replaceAll("'", "\'");
+				String entName = split[0].replaceAll("'", "''");
+				String isikName = split[1].replaceAll("'", "''");
+				String isikRoll = split[2].replaceAll("'", "''");
 
 				regNrs += "'" + regNr + "',";
 				sql = "INSERT INTO user_arireg (id_code, reg_nr, ent_name, person_name, person_role) VALUES ('" + ik
@@ -405,14 +405,24 @@ public class LoginServiceServlet extends HttpServlet {
 					String regNr = entry.getKey();
 					String[] split = entry.getValue();
 
-					String entName = split[0].replaceAll("'", "\'");
-					String isikName = split[1].replaceAll("'", "\'");
-					String isikRoll = split[2].replaceAll("'", "\'");
-
 					regNrs += "'" + regNr + "',";
-					PostgreUtils.update("UPDATE user_arireg SET ent_name = '" + entName + "', person_name = '"
+					
+					String entName = split[0].replaceAll("'", "''");
+					String isikName = split[1].replaceAll("'", "''");
+					String isikRoll = split[2].replaceAll("'", "''");
+
+					ResultSet rs = PostgreUtils.query("SELECT id FROM user_arireg WHERE reg_nr = '" + regNr + "' and id_code = '" + ik + "'");
+					
+					if(rs.next()){
+						PostgreUtils.update("UPDATE user_arireg SET ent_name = '" + entName + "', person_name = '"
 							+ isikName + "', person_role = '" + isikRoll + "', "
 							+ "last_checked = now() WHERE reg_nr = '" + regNr + "' and id_code = '" + ik + "'");
+					}
+					else{
+						sql = "INSERT INTO user_arireg (id_code, reg_nr, ent_name, person_name, person_role) VALUES ('" + ik
+							+ "', '" + regNr + "', '" + entName + "', '" + isikName + "', '" + isikRoll + "')";
+						PostgreUtils.insert(sql);
+					}
 				}
 
 				if (map.size() > 0) {
