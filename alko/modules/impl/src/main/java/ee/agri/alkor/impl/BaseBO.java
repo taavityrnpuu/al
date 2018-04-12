@@ -39,6 +39,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 	private static Logger LOGGER = Logger.getLogger(BaseBO.class);
 	
 	synchronized public HibernateTemplate getHibernateTemplateSync(){
+		System.out.println("----- getHibernateTemplateSync()");
 		return this.getHibernateTemplate();
 	}
 
@@ -746,10 +747,16 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 
 					cal.setTime(today);
 					cal.add(Calendar.DATE, 24);
+					cal.set(Calendar.HOUR_OF_DAY, 0);
+					cal.set(Calendar.MINUTE, 0);
+					cal.set(Calendar.SECOND, 0);
 					q2.setTimestamp(j++, new java.sql.Timestamp(cal.getTimeInMillis()));
 
 					cal.setTime(today);
 					cal.add(Calendar.DATE, 60);
+					cal.set(Calendar.HOUR_OF_DAY, 23);
+					cal.set(Calendar.MINUTE, 59);
+					cal.set(Calendar.SECOND, 59);
 					q2.setTimestamp(j++, new java.sql.Timestamp(cal.getTimeInMillis()));
 				}
 
