@@ -35,6 +35,7 @@
             <mapping class="ee.agri.alkor.model.SystemUser"/>
             <mapping class="ee.agri.alkor.model.UserGroup"/>
             <mapping class="ee.agri.alkor.model.Product"/>
+            <mapping class="ee.agri.alkor.model.ProductPrimitive"/>
             <mapping class="ee.agri.alkor.model.RegistryDocument"/>
             <mapping class="ee.agri.alkor.model.RegistryEntry"/>
             <mapping class="ee.agri.alkor.model.RegistryApplication"/>

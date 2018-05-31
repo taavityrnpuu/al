@@ -329,13 +329,13 @@ public class ExcelFile extends HSSFWorkbook {
 					bufferObj = method.invoke(bufferObj, (Object[])null);
 				}
 			} catch (SecurityException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			} catch (NoSuchMethodException e) {
-				e.printStackTrace();
+				//e.printStackTrace();
 			} catch (InvocationTargetException ite) {
-				ite.printStackTrace();
+				//ite.printStackTrace();
 			} catch (IllegalAccessException iae) {
-				iae.printStackTrace();
+				//iae.printStackTrace();
 		}
 		}
 		return bufferObj;

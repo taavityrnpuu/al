@@ -496,6 +496,7 @@ public class DocumentServiceServlet extends HttpServlet {
 		String queryTextValues = null;
 		String queryTextLabels = null;
 		boolean limited = false;
+		boolean isExcelPrimitive = false;
 
 		try {
 			objectClass = URLDecoder.decode(req.getParameter(ServiceConstants.SEARCH_FILTER_OBJECT_CLASS), "UTF-8");
@@ -512,6 +513,9 @@ public class DocumentServiceServlet extends HttpServlet {
 			if (req.getParameter(ServiceConstants.LIMITED_SEARCH) != null) {
 				limited = URLDecoder.decode(req.getParameter(ServiceConstants.LIMITED_SEARCH), "UTF-8").equals("1");
 			}
+			if(req.getParameter("isExcelPrimitive") != null){
+				isExcelPrimitive = (URLDecoder.decode(req.getParameter("isExcelPrimitive"), "UTF-8").equals("1") ? true : false);
+			}
 		} catch (UnsupportedEncodingException uee) {
 
 		}
@@ -520,12 +524,12 @@ public class DocumentServiceServlet extends HttpServlet {
 		searchFilter.setStartIndex(0);
 		searchFilter.setPageSize(0);
 		searchFilter.setObjectClass(objectClass);
-		searchFilter.setQueryParametersFromString(queryParams);
+		searchFilter.setQueryParametersFromString(queryParams, isExcelPrimitive);
 		searchFilter.setQueryTextParametersFromString(queryTextValues);
 		searchFilter.setQueryLabelsFromString(queryTextLabels);
 		searchFilter.setQueryColumnsFromString(columnList);
-		searchFilter.setSortMapFromString(sortMapString);
-		searchFilter.setOrderBy(orderByString);
+		searchFilter.setSortMapFromString(sortMapString, isExcelPrimitive);
+		searchFilter.setOrderBy(orderByString, isExcelPrimitive);
 		searchFilter.setLimited(limited);
 		resp.setContentType(ServiceConstants.CONTENT_TYPE_EXCEL);
 		resp.setHeader("Content-disposition", "attachment; filename=\"Tulemused.xls\"");

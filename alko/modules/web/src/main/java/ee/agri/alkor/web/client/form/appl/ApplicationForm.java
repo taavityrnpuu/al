@@ -1355,9 +1355,9 @@ public class ApplicationForm extends Form implements CacheListener {
 								/*
 								 * KONTROLL KAS CAUGHT ON 666
 								 */
-								String c = "666";
+								String c = caught != null ? caught.toString() : "";
 
-								if (c == "666") {
+								if (c.contains("666")) {
 									if (!UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_CLASS_ADM })) {
 										setError("Ettevõtte saldo pole piisav");
 										return;

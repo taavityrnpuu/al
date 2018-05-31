@@ -296,9 +296,13 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 			cs.printStackTrace();
 		}
 
+		System.out.println("--- Sending user activation mail with data (email: "+email+", from: "+from+", host: "+host+") - username: "+user.getName());
+		
 		Mailer m = new Mailer();
 		m.setTo(email);
 		m.setFrom(from);
+		m.setUser("alkoholi.register");
+		m.setPw("ai03rr09");
 		m.setSubject("Alkoholiregistri kasutajaandmed");
 		m.setText("Tere tulemast Alkoholiregistri süsteemi!\n\nTeie kasutajatunnus on: " + user.getName()
 				+ "\nTeie aktiveerimiskood on: " + pwd + "\n\nPalume seadistada endale parool aadressil: " + contextPath

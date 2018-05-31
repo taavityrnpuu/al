@@ -39,10 +39,13 @@
 		<init-param>
 			<param-name>casServerUrlPrefix</param-name>
 			<param-value>https://cas.agri.ee/epm-cas/</param-value>
+			<!--<param-value>https://cas-test.agri.ee/epm-cas/login</param-value>  -->
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<param-value>https://alkoreg.agri.ee/</param-value>
+			<param-value>https://192.168.0.37:8443/</param-value> 
+			<!--<param-value>https://alkoreg.agri.ee/</param-value>  -->
+			<!--<param-value>https://alkoregtest.agri.ee/</param-value>  -->
 		</init-param>
 		<init-param>
 			<param-name>redirectAfterValidation</param-name>
@@ -62,10 +65,13 @@
 		<init-param>
 			<param-name>casServerLoginUrl</param-name>
 			<param-value>https://cas.agri.ee/epm-cas/login</param-value>
+			<!--<param-value>https://cas-test.agri.ee/epm-cas/login</param-value>  -->
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<param-value>https://alkoreg.agri.ee/</param-value>
+			<param-value>https://192.168.0.37:8443/</param-value> 
+			<!--<param-value>https://alkoreg.agri.ee/</param-value> -->
+			<!--<param-value>https://alkoregtest.agri.ee/</param-value>  -->
 		</init-param>
 	</filter>
 	<filter-mapping>

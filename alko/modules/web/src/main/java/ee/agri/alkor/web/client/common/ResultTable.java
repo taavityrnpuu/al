@@ -98,7 +98,10 @@ public abstract class ResultTable extends Composite implements AsyncCallback {
    private ExcelFormPanel excelPanel;
 
    private boolean isSmallCount =false;
+   
+   private boolean isSearching = false;
 
+   
    /**
     *
     */
@@ -116,7 +119,11 @@ public abstract class ResultTable extends Composite implements AsyncCallback {
    };
 
    public ResultTable(SearchFilter searchFilter) {
-      this(searchFilter,false);
+      this(searchFilter,false, null, false);
+   }
+   
+   public ResultTable(SearchFilter searchFilter, ClickListener customClickListener, boolean primitive_excel) {
+      this(searchFilter,false, customClickListener, primitive_excel);
    }
 
 
@@ -126,15 +133,20 @@ public abstract class ResultTable extends Composite implements AsyncCallback {
     * @param searchFilter
     *            Otsingufilter mille abil otsitakse
     */
-   public ResultTable(SearchFilter searchFilter, boolean isSmallcount) {
+   public ResultTable(SearchFilter searchFilter, boolean isSmallcount){
+	   this(searchFilter, isSmallcount, null, false);
+   }
+   
+   public ResultTable(SearchFilter searchFilter, boolean isSmallcount, ClickListener customClickListener, boolean primitive_excel) {
       this.isSmallCount=isSmallcount;
+      searchFilter.setExcelPrimitive(primitive_excel);
       this.searchFilter = searchFilter;
 
       mainTable.setWidth("100%");
       mainTable.setWidget(0, 0, UIutils.createSpacer(1, 1));
       mainTable.setWidget(0, 1, createSearchingInfoPanel());
       mainTable.setWidget(0, 2, UIutils.createSpacer(1, 1));
-      mainTable.setWidget(1, 0, createCountPanel());
+      mainTable.setWidget(1, 0, createCountPanel(customClickListener));
       mainTable.setWidget(2, 0, createResultTable());
       mainTable.setWidget(3, 0, UIutils.createSpacer(10, 1));
       mainTable.setWidget(3, 1, createPagination());
@@ -191,7 +203,7 @@ public abstract class ResultTable extends Composite implements AsyncCallback {
     * Method for creating the count panel
     * @return
     */
-   private HorizontalPanel createCountPanel() {
+   private HorizontalPanel createCountPanel(ClickListener customClickListener) {
 
       Label reportCount = new Label("Kirjete arv: ");
       reportCount.setHorizontalAlignment(HasHorizontalAlignment.ALIGN_LEFT);
@@ -204,7 +216,7 @@ public abstract class ResultTable extends Composite implements AsyncCallback {
       countPanel.add(reportCount);
       countPanel.add(UIutils.createSpacer(5, 1));
       countPanel.add(count);
-      excelPanel = new ExcelFormPanel(getFilter());
+      excelPanel = new ExcelFormPanel(getFilter(), customClickListener);
       System.out.println("Init ExcelFormPanel, sortmap size:"+getFilter().getSortMap() == null ? -1 : getFilter().getSortMap().size());
       countPanel.add(excelPanel);
       countPanel.add(UIutils.createSpacer(40, 1));
@@ -261,6 +273,7 @@ public abstract class ResultTable extends Composite implements AsyncCallback {
    public void setSearchFilter(SearchFilter searchFilter) {
       this.searchFilter = searchFilter;
    }
+   
 
    /**
     * Lisab juurde veerud
@@ -345,6 +358,11 @@ public abstract class ResultTable extends Composite implements AsyncCallback {
     *
     */
    public  void getData() {
+	   if(isSearching){
+		   Window.alert("Uue otsingu teostamiseks oodake palun kuni eelmine lõpetab");
+		   return;
+	   }
+	  isSearching = true;
       startSearching();
       getData(this.searchFilter);
    }
@@ -366,6 +384,7 @@ public abstract class ResultTable extends Composite implements AsyncCallback {
    public void stopSearching() {
       searching.setVisible(false);
       t.cancel();
+	   isSearching = false;
    }
 
    /**
@@ -382,6 +401,7 @@ public abstract class ResultTable extends Composite implements AsyncCallback {
       this.searchFilter.reset();
       this.searchFilter.setPageSize(Integer.parseInt(rowC));
       this.searchFilter.setQueryParams(queryParams);
+      
       getData();
       if(excelPanel!=null) {
          this.excelPanel.setSearchFilter(this.searchFilter);

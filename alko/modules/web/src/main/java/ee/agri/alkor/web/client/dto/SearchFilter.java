@@ -8,6 +8,7 @@ import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.ConstantsWithLookup;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 import ee.agri.alkor.web.client.form.SearchFormMessages;
@@ -78,6 +79,8 @@ public class SearchFilter implements IsSerializable  {
 	
 	/** true kui väliskasutaja */
 	private boolean limited;
+	
+	private boolean excel_primitive = false;
 
 
 	/* (non-Javadoc)
@@ -138,8 +141,12 @@ public class SearchFilter implements IsSerializable  {
 	/* (non-Javadoc)
 	 * @see ee.agri.alkor.web.client.dto.ISearchFilter#getOrderBy()
 	 */
+	public String getOrderBy(boolean excel_primitive) {
+		return (excel_primitive ? orderBy.replaceAll("\\.", "_").toLowerCase() : orderBy);
+	}
+	
 	public String getOrderBy() {
-		return orderBy;
+		return getOrderBy(false);
 	}
 
 	/**
@@ -326,7 +333,7 @@ public class SearchFilter implements IsSerializable  {
 	 * in the format of <MIN, MAX>
 	 * @return
 	 */
-	public String getQueryParameterString() {
+	public String getQueryParameterString(boolean excel_primitive) {
 
 		String queryParameterString = new String();
 
@@ -336,6 +343,10 @@ public class SearchFilter implements IsSerializable  {
 		while(it.hasNext()) {
 			String key = (String)it.next();
 			Object value = getQueryParams().get(key);
+			
+			if(excel_primitive){
+				key = key.replaceAll("\\.", "_").toLowerCase();
+			}
 
 			/* If the value is a string then parse it to a "key=value;" item */
 			if (value instanceof String || value instanceof Long) {
@@ -368,7 +379,7 @@ public class SearchFilter implements IsSerializable  {
 				sb.append("}};");
 				queryParameterString += sb.toString();
 			} else {
-				//System.out.println("exceptional case! queryParams key=" + key + ", value=" + value);
+				//Window.alert("exceptional case! queryParams key=" + key + ", value=" + value);
 			}
 		}
 		queryParameterString += "]";
@@ -376,13 +387,16 @@ public class SearchFilter implements IsSerializable  {
 		return queryParameterString;
 
 	}
+	public String getQueryParameterString() {
+		return getQueryParameterString(false);
+	}
 
 	/**
 	 * Method for parsing the columns list of the search filter into a string in the format of:
 	 * [col1Property=col1Name;col2Property=col2Name;...;colNProperty=colNName]
 	 * @return
 	 */
-	public String getQueryColumnListString() {
+	public String getQueryColumnListString(boolean excel_primitive) {
 
 		/* Cycling through the columns and adding them as "column;" */
 		String columnListString = "[";
@@ -393,7 +407,11 @@ public class SearchFilter implements IsSerializable  {
 			if (columnPropertyName == null || columnPropertyName.equals("null")) {
 				continue;
 			}
+			
 			String columnName = (String) getColumns().get(columnPropertyName);
+			if(excel_primitive){
+				columnPropertyName = columnPropertyName.replaceAll("\\.", "_").toLowerCase();
+			}
 			columnListString += columnPropertyName + "=" + columnName + ";";
 		}
 		columnListString += "]";
@@ -401,13 +419,16 @@ public class SearchFilter implements IsSerializable  {
 		return columnListString;
 
 	}
+	public String getQueryColumnListString() {
+		return getQueryColumnListString(false);
+	}
 	
 	/**
 	 * Method for parsing the sortMap of the search filter into a string in the format of:
 	 * [key=value;key=value;...;key=value]
 	 * @return
 	 */
-	public String getsortMapString() {
+	public String getsortMapString(boolean excel_primitive) {
 
 		System.out.println("Executing getsortMapString "+ (this.sortMap == null ? -1 : this.sortMap.size()));
 		
@@ -416,7 +437,13 @@ public class SearchFilter implements IsSerializable  {
 		
 	    while (it.hasNext()) {
 	        Map.Entry pairs = (Map.Entry)it.next();
-	        sortMapString +=pairs.getKey()+"="+pairs.getValue()+";";
+	        String key = (String)pairs.getKey();
+	        String value = (String)pairs.getValue();
+	        if(excel_primitive){
+	        	key.replaceAll("\\.", "_").toLowerCase();
+	        	value.replaceAll("\\.", "_").toLowerCase();
+	        }
+	        sortMapString +=key+"="+value+";";
 	    }
 
 		sortMapString += "]";
@@ -424,13 +451,16 @@ public class SearchFilter implements IsSerializable  {
 		return sortMapString;
 
 	}
+	public String getsortMapString() {
+		return getsortMapString(false);
+	}
 	
 	/**
 	 * Method for parsing the constants of the search filter into a string in the format of:
 	 * [key=value;key=value;...;key=value]
 	 * @return
 	 */
-	public String getQueryTextLabelsString() {
+	public String getQueryTextLabelsString(boolean excel_primitive) {
 		String constantsString = null;
 		String key = null;
 		String value = null;
@@ -440,12 +470,18 @@ public class SearchFilter implements IsSerializable  {
 		while(it.hasNext()){
 			key = (String)it.next();
 			value = getLabel(key,constants);
+			if(excel_primitive){
+				key = key.replaceAll("\\.", "_").toLowerCase();
+			}
 			//System.out.println("encode key:"+key+" value:"+value);
 			constantsString += key + "=" + value + ";";
 		}
 		constantsString += "]";
 		return constantsString;
 
+	}
+	public String getQueryTextLabelsString() {
+		return getQueryTextLabelsString(false);
 	}
 	
 	public void setQueryTextValues(Map map) {
@@ -464,7 +500,7 @@ public class SearchFilter implements IsSerializable  {
 	 * in the format of <MIN, MAX>
 	 * @return
 	 */
-	public String getQueryTextValuesString() {
+	public String getQueryTextValuesString(boolean excel_primitive) {
 
 		String queryParameterString = new String();
 
@@ -474,6 +510,10 @@ public class SearchFilter implements IsSerializable  {
 		while(it.hasNext()) {
 			String key = (String)it.next();
 			Object value = getQueryTextValues().get(key);
+			System.out.println("------ KEY: "+key);
+			if(excel_primitive){
+				key = key.replaceAll("\\.", "_").toLowerCase();
+			}
 
 			/* If the value is a string then parse it to a "key=value;" item */
 			if (value instanceof String || value instanceof Long) {
@@ -514,6 +554,10 @@ public class SearchFilter implements IsSerializable  {
 		return queryParameterString;
 
 	}
+	public String getQueryTextValuesString() {
+		return getQueryTextValuesString(false);
+	}
+	
 	/*
 	 *FIXME : Constants should be available for all Messages classes,
 	 *	currently only  SearchFormMessages needed
@@ -537,5 +581,14 @@ public class SearchFilter implements IsSerializable  {
    public void setLimited(boolean limited) {
       this.limited = limited;
    }
+   
+   public boolean isExcelPrimitive() {
+      return excel_primitive;
+   }
+
+   public void setExcelPrimitive(boolean excel_primitive) {
+      this.excel_primitive = excel_primitive;
+   }
+   
 	
 }

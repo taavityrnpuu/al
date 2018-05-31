@@ -10,6 +10,7 @@ import java.util.Map;
 import org.apache.poi.poifs.property.Parent;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.Cookies;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -19,6 +20,7 @@ import com.google.gwt.user.client.ui.ClickListener;
 import com.google.gwt.user.client.ui.FlexTable;
 import com.google.gwt.user.client.ui.FlexTable.FlexCellFormatter;
 import com.google.gwt.user.client.ui.HasHorizontalAlignment;
+import com.google.gwt.user.client.ui.Hidden;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
@@ -33,9 +35,11 @@ import ee.agri.alkor.web.client.MainPanel;
 import ee.agri.alkor.web.client.ServiceContext;
 import ee.agri.alkor.web.client.common.Column;
 import ee.agri.alkor.web.client.common.ConfirmDialog;
+import ee.agri.alkor.web.client.common.ExcelFormPanel;
 import ee.agri.alkor.web.client.common.FieldResetButton;
 import ee.agri.alkor.web.client.common.Form;
 import ee.agri.alkor.web.client.common.IRowListenerFactory;
+import ee.agri.alkor.web.client.common.InfoDialog;
 import ee.agri.alkor.web.client.common.OFButton;
 import ee.agri.alkor.web.client.common.RangeSelectBox;
 import ee.agri.alkor.web.client.common.ResultTable;
@@ -125,7 +129,7 @@ public class ProductsForm extends Form implements CacheListener {
 
 	public ProductsForm(SelectReturnCallback callback, ProductMap productMap) {
 		super(callback);
-		searchResultsTable = new ProductsTable();
+		createResultTable();
 		if (productMap == null) {
 			setData(new ProductMap());
 		} else {
@@ -136,7 +140,7 @@ public class ProductsForm extends Form implements CacheListener {
 
 	public ProductsForm(SelectReturnCallback callback, ProductMap productMap, boolean isExtendProductValue) {
 		super(callback);
-		searchResultsTable = new ProductsTable();
+		createResultTable();
 		if (productMap == null) {
 			setData(new ProductMap());
 		} else {
@@ -146,6 +150,10 @@ public class ProductsForm extends Form implements CacheListener {
 
 		ProductsForm.this.isExtendProduct = isExtendProductValue;
 		
+	}
+	
+	private void createResultTable(){
+		searchResultsTable = new ProductsTable();
 	}
 
 	public void avail(String key, Object value) {
@@ -217,7 +225,7 @@ public class ProductsForm extends Form implements CacheListener {
 		ServiceContext.getInstance().addCacheListener(ServiceContext.DECISION_REG_ENTRY, this);
 		ServiceContext.getInstance().addCacheListener(ServiceContext.PRODUCT_VOLUME, this);
 
-		searchResultsTable = new ProductsTable();
+		createResultTable();
 
 		manageTitle = new Label(getLabel("manageTableTitle"));// "Toote
 																// lisamine/muutmine"
@@ -887,7 +895,32 @@ public class ProductsForm extends Form implements CacheListener {
 	private class ProductsTable extends ResultTable {
 
 		public ProductsTable() {
-			super(new ProductSearchFilter());
+			super(new ProductSearchFilter(), new ClickListener()  {
+
+				public void onClick(Widget sender) {
+					Map map = getFormFieldValues(SEARCH_FORM);
+					String value = (String) map.get(ProductSearchFilter.INVALID_PRODUCT);
+					if (value != "") {
+						if (value == "expired") {
+							map.put(ProductSearchFilter.REGISTRY_ENTRY_VALID_UNTIL,
+									ProductSearchFilter.LESS_OR_EQUAL_THAN_CURRENT_DATE);
+							map.put(ProductSearchFilter.REGISTRY_ENTRY_CHANGE_REASON, ServiceConstants.EXPIRED_REASON);
+						} else if (value == "excluded") {
+							map.put(ProductSearchFilter.REGISTRY_ENTRY_VALID_UNTIL,
+									ProductSearchFilter.LESS_OR_EQUAL_THAN_CURRENT_DATE);
+							map.put(ProductSearchFilter.REGISTRY_ENTRY_CHANGE_REASON_NOT_LIKE, ServiceConstants.EXPIRED_REASON);
+						}
+						map.remove(ProductSearchFilter.INVALID_PRODUCT);
+					} else {
+						map.remove(ProductSearchFilter.INVALID_PRODUCT);
+					}
+					searchResultsTable.getFilter().setQueryParams(map);
+					searchResultsTable.getFilter().setQueryTextValues(getFormFieldValueTexts(SEARCH_FORM));
+					searchResultsTable.getExcelFormPanel().doExcelSubmit();
+				}
+
+			}, true);
+			
 			boolean hasPriviledge = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK });
 
 			addColumn(new Column(getLabel("tableApplicatntName"), ProductMap.APPLICANT_NAME, null, Column.styleUrl,
@@ -913,6 +946,7 @@ public class ProductsForm extends Form implements CacheListener {
 			} else {
 				addColumn(Column.getViewInstance()); // "vaata"
 			}
+			
 		}
 
 		@Override

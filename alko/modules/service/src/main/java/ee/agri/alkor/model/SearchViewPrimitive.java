@@ -37,6 +37,8 @@ public class SearchViewPrimitive implements IClassificatorAware {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	private Long id;
+	
 	private Long productId;
 
 	private String productName;
@@ -152,7 +154,6 @@ public class SearchViewPrimitive implements IClassificatorAware {
 
 	private String packagerName;
 
-	@Id
 	@Column(name = "PRODUCT_ID")
 	public Long getProductId() {
 		return productId;
@@ -423,7 +424,6 @@ public class SearchViewPrimitive implements IClassificatorAware {
 		this.productHasOtherLabel = productHasOtherLabel;
 	}
 
-	@Id
 	@Column(name = "PRODUCER_ID")
 	public Long getProducerId() {
 		return producerId;
@@ -460,7 +460,6 @@ public class SearchViewPrimitive implements IClassificatorAware {
 		this.producerCountryName = producerCountryName;
 	}
 
-	@Id
 	@Column(name = "APPLICATION_ID")
 	public Long getApplicationId() {
 		return applicationId;
@@ -542,7 +541,6 @@ public class SearchViewPrimitive implements IClassificatorAware {
 		this.deregisterDecision = expl;
 	}
 
-	@Id
 	@Column(name = "APPLICANT_ID")
 	public Long getApplicantId() {
 		return applicantId;
@@ -633,7 +631,6 @@ public class SearchViewPrimitive implements IClassificatorAware {
 		this.registryEntryValidUntil = registryEntryValidUntil;
 	}
 
-	@Id
 	@Column(name = "MARKETER_ID")
 	public Long getMarketerId() {
 		return marketerId;
@@ -652,7 +649,6 @@ public class SearchViewPrimitive implements IClassificatorAware {
 		this.marketerName = marketerName;
 	}
 
-	@Id
 	@Column(name = "IMPORTER_ID")
 	public Long getImporterId() {
 		return importerId;
@@ -671,7 +667,6 @@ public class SearchViewPrimitive implements IClassificatorAware {
 		this.importerName = importerName;
 	}
 
-	@Id
 	@Column(name = "PACKAGER_ID")
 	public Long getPackagerId() {
 		return packagerId;
@@ -733,6 +728,16 @@ public class SearchViewPrimitive implements IClassificatorAware {
 
 	public void setProcessorLastName(String processorLastName) {
 		this.processorLastName = processorLastName;
+	}
+	
+	@Id
+	@Column(name = "id")
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
 	}
 
 }

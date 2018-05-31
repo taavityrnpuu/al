@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import ee.agri.alkor.model.IEntity;
 import ee.agri.alkor.model.Product;
 import ee.agri.alkor.model.RegistryApplication;
+import ee.agri.alkor.model.SearchViewPrimitive;
 import ee.agri.alkor.service.ConstraintViolationException;
 import ee.agri.alkor.service.IBaseService;
 import ee.agri.alkor.service.IClassificatorService;
@@ -215,9 +216,9 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				queryParams.put("productApplicationJoin", "t.product.id");
 				Object paramValue = null;
 				if (queryParams.containsKey("registryEntryApplication.nr")) {
-					paramValue = queryParams.get("registryEntryApplication.nr");
-					queryParams.remove("registryEntryApplication.nr");
-					queryParams.put("nr", paramValue);
+					//paramValue = queryParams.get("registryEntryApplication.nr");
+					//queryParams.remove("registryEntryApplication.nr");
+					//queryParams.put("nr", paramValue);
 				}
 				if (queryParams.containsKey("registryEntryApplication.applicant.name")) {
 					paramValue = queryParams.get("registryEntryApplication.applicant.name");
@@ -580,7 +581,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		// create query
 
 		Query q = createQuery(session, queryParams, filter, countQuery);
-
+		
 		Long count = (Long) q.list().get(0);
 		filter.setTotal(count.intValue());
 
@@ -627,7 +628,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 			q2.setFetchSize(filter.getPageSize());
 		}
 		q2.setCacheable(false);
-		q2.setCacheMode(CacheMode.NORMAL);
+		q2.setCacheMode(CacheMode.IGNORE);
 
 		List queryList = q2.list();
 

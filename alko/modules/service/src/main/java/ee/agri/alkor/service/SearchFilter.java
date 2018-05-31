@@ -123,8 +123,12 @@ public class SearchFilter implements Serializable {
 	 * ! Deprecated
 	 * Use addSortItem instead
 	 */
+	public void setOrderBy(String orderBy, boolean isExcelPrimitive) {
+		this.orderBy = (orderBy != null && isExcelPrimitive ? orderBy.replaceAll("\\.", "_") : orderBy);
+	}
+	
 	public void setOrderBy(String orderBy) {
-		this.orderBy = orderBy;
+		setOrderBy(orderBy, false);
 	}
 
 	public String  getOrderDirection() {
@@ -271,7 +275,7 @@ public class SearchFilter implements Serializable {
 	 * that there is a closing > and that the values inside are delimited by a single comma(,) and that the
 	 * values dont have commas(,) in them.
 	 */
-	public void setQueryParametersFromString(String queryParameterString) {
+	public void setQueryParametersFromString(String queryParameterString, boolean isExcelPrimitive) {
 
 		/* Regular expression to check the keys and values against */
 		String queryStringRegex = "\\[.*\\]";
@@ -287,6 +291,7 @@ public class SearchFilter implements Serializable {
 					queryParameterString.indexOf("]"));
 			String[] keyValuePairs = queryParameterString.split(";");
 
+			
 			/* Iterate over the key/value pairs */
 			for (int i = 0; i < keyValuePairs.length; i++) {
 
@@ -305,14 +310,24 @@ public class SearchFilter implements Serializable {
 					}
 					 //old -> keyValuePair.split("=");
 					
-
 					if (keyValuePairArray != null && keyValuePairArray.length == 2) {
 
 						String key = keyValuePairArray[0];
 						String value = keyValuePairArray[1];
 
+						boolean notLike = false;
+
+						if(key.startsWith(SearchFilter.NOT_LIKE)){
+							notLike = true;
+							key = key.substring((SearchFilter.NOT_LIKE).length(), key.length());
+						}
+
 						/* Check whether the key is legal */
 						if (key.matches(keyRegex)) {
+							
+							if (notLike){
+								key = SearchFilter.NOT_LIKE + key;
+							}
 
 							/* Check whether the value is legal */
 //							if (value.matches(valueRegex)) {
@@ -347,6 +362,9 @@ public class SearchFilter implements Serializable {
 										rf.setMax(max);
 									}
 									rf.setType(type);
+									if(isExcelPrimitive){
+										key = key.replaceAll("\\.", "_");
+									}
 									this.getQueryParams().put(key, rf);
 
 								}
@@ -357,11 +375,17 @@ public class SearchFilter implements Serializable {
 								for(int j = 0; j < vals.length; j++) {
 									values.add(vals[j]);
 								}
+								if(isExcelPrimitive){
+									key = key.replaceAll("\\.", "_");
+								}
 								this.getQueryParams().put(key, values);
 								
 							} else {
 								/* FIXME: this should be an error! The value should match the
 								 * regular expression either for simple text value or <{TYPE}MIN,MAX> value */
+								if(isExcelPrimitive){
+									key = key.replaceAll("\\.", "_");
+								}
 								this.getQueryParams().put(key, value);
 							}
 
@@ -380,6 +404,11 @@ public class SearchFilter implements Serializable {
 			/* FIXME: this should be an error! The queryParameterString should start with [ and end with ] */
 		}
 
+	}
+	
+
+	public void setQueryParametersFromString(String queryParameterString) {
+		setQueryParametersFromString(queryParameterString, false);
 	}
 	
 	
@@ -562,7 +591,7 @@ public class SearchFilter implements Serializable {
 	 *  Method for parsing sorting parameters out of String
 	 * @param sortMapString 
 	 */
-	public void setSortMapFromString(String sortMapString){
+	public void setSortMapFromString(String sortMapString, boolean isExcelPrimitive){
 		Map newSortMap = new HashMap();
 		
 		sortMapString = sortMapString.substring(
@@ -576,11 +605,17 @@ public class SearchFilter implements Serializable {
 			String splitKeyValue[] = sortMapKeyValuePair.split("=");
 			
 			if(splitKeyValue.length == 2){
+				if(isExcelPrimitive){
+					splitKeyValue[0] = splitKeyValue[0].replaceAll("\\.", "_").toLowerCase();
+				}
 				newSortMap.put(splitKeyValue[0], splitKeyValue[1]);
 			}
 		}
 		this.setSortMap(newSortMap);
 	
+	}
+	public void setSortMapFromString(String sortMapString){
+		setSortMapFromString(sortMapString, false);
 	}
 	
 	/**
