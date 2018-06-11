@@ -11,6 +11,7 @@ import javax.servlet.http.HttpSession;
 import org.apache.log4j.Logger;
 import org.gwtwidgets.server.spring.GWTSpringController;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import ee.agri.alkor.model.PaymentMatchingLog;
@@ -366,10 +367,7 @@ public class RegistryServiceImpl implements RegistryService {
 	}
 
 	public SearchFilter searchApplications(String regCode, SearchFilter filter) {
-		filter.getQueryParams().put("IsXTeeForm", regCode); // et olla kindel,
-															// et väliskasutaja
-															// kogu registrit ei
-															// näeks
+		filter.getQueryParams().put("IsXTeeForm", regCode); // et olla kindel, et väliskasutaja kogu registrit ei näeks
 		return ClientDataFactory.create(ServiceFactory.getRegistryService().searchApplications(ClientDataFactory.create(filter)));
 	}
 

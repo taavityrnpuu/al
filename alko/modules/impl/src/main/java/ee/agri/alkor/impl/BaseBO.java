@@ -469,7 +469,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 					where.append("s.registryEntry.validUntil BETWEEN ? AND ?");
 					continue;
 				} else if (paramName.equals("IsXTeeForm")) { // RK lisatud
-					where.append("( s.fromXTee is not null OR (s.fromXTee is null AND s.createdBy = 'EIT') )");
+					where.append("s.applicant.registrationId = ? ");
 					continue;
 				}
 
@@ -685,9 +685,12 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 			paramValue = makeSpecialValue(paramName, paramValue, filter.getObjectClass());
 			//
 
-			if (isSpecialParam(paramValue) || "IsXTeeForm".equals(paramName)) {
+			if (isSpecialParam(paramValue)) {
 				// ei tee midagi
-			} else if (paramValue instanceof RangeFilter) {
+			} else if("IsXTeeForm".equals(paramName)){
+				q2.setParameter(j++, paramValue);
+			}
+			else if (paramValue instanceof RangeFilter) {
 				RangeFilter rf = (RangeFilter) paramValue;
 				String min = rf.getMin();
 				String max = rf.getMax();

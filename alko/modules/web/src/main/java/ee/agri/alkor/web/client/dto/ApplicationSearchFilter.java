@@ -42,6 +42,10 @@ implements IsSerializable {
    public static final String REGISTRYENTRY_NR = ApplicationMap.REGISTRYENTRY_NR;
 
 
+   public ApplicationSearchFilter(boolean limited) {
+	   this();
+	   this.setLimited(limited);
+   }
 
    public ApplicationSearchFilter() {
       super();

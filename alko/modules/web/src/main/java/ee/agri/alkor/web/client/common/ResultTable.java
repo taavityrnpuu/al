@@ -271,6 +271,9 @@ public abstract class ResultTable extends Composite implements AsyncCallback {
    }
 
    public void setSearchFilter(SearchFilter searchFilter) {
+	  if(this.searchFilter != null && this.searchFilter.isLimited()){
+		  searchFilter.setLimited(true);
+	  }
       this.searchFilter = searchFilter;
    }
    
@@ -425,7 +428,12 @@ public abstract class ResultTable extends Composite implements AsyncCallback {
       stopSearching();
 
       if (result != null) {
+    	  boolean isLimited = false;
+          if(this.searchFilter.isLimited()){
+        	  isLimited = true;
+          }
          this.searchFilter = (SearchFilter) result;
+         this.searchFilter.setLimited(isLimited);
       }
       excelPanel.setItemsCount(searchFilter.getTotal());
       show();

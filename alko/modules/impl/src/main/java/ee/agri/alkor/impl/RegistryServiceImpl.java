@@ -38,6 +38,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.gargoylesoftware.htmlunit.html.Util;
 import com.google.gwt.user.client.Cookies;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import ee.agri.alkor.impl.PostgreUtils;
@@ -1170,7 +1171,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
 					LOGGER.debug("XXXXXXXXXXXXXXXXXXXXXXXXXX KAS SEE JUHTUSKI!?");
-
 					if (application.getId() == null) {
 						RegistryApplication savedAppl = null;
 						if (application.getNr() != null) {
@@ -1222,7 +1222,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					if ((application.getNr() == null) && (application.getState() != null)
 							&& (IClassificatorService.APPL_STATE_PRO.equals(application.getState().getCode())))
 						application.setNr(nextApplicationNr(session));
-
+					
 					return null;
 				}
 			});
@@ -1872,7 +1872,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		try {
 			getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
-
+					
 					Person representative = getCurrentUser(session, true);
 
 					application.setEnterpriseRepresentative(null);

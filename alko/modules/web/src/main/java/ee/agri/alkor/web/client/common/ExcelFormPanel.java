@@ -139,14 +139,14 @@ public class ExcelFormPanel extends FormPanel {
 						URL.encode(searchFilter.getOrderBy(searchFilter.isExcelPrimitive()))));
 			}
 			if(searchFilter.isLimited()) {
-				bform.setWidget(0, 8, new Hidden(ServiceConstants.LIMITED_SEARCH, "1"));
+				bform.setWidget(0, 9, new Hidden(ServiceConstants.LIMITED_SEARCH, "1"));
             }
 			if(searchFilter.getObjectClass().equals("SearchViewPrimitive") || searchFilter.isExcelPrimitive()){
 				bform.setWidget(0, 6, new Hidden(ServiceConstants.SEARCH_FILTER_TEXT_PARAMS, URL.encode(searchFilter.getQueryTextValuesString(searchFilter.isExcelPrimitive()))));
 				bform.setWidget(0, 7, new Hidden(ServiceConstants.SEARCH_FILTER_QUERY_LABELS,URL.encode(searchFilter.getQueryTextLabelsString(searchFilter.isExcelPrimitive()))));
 			}
 
-			bform.setWidget(0, 8, new Hidden("isExcelPrimitive",(searchFilter.isExcelPrimitive() ? "1" : "0")));
+			bform.setWidget(0, 10, new Hidden("isExcelPrimitive",(searchFilter.isExcelPrimitive() ? "1" : "0")));
 
 			ExcelFormPanel.this.submit();
 		}
@@ -155,6 +155,9 @@ public class ExcelFormPanel extends FormPanel {
 	public void setSearchFilter(SearchFilter filter) {
 		if(this.searchFilter != null && this.searchFilter.isExcelPrimitive()){
 			filter.setExcelPrimitive(true);
+		}
+		if(this.searchFilter != null && this.searchFilter.isLimited()){
+			filter.setLimited(true);
 		}
 		this.searchFilter = filter;
 	}

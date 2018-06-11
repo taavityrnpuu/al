@@ -1123,6 +1123,7 @@ public class XTeeForm extends Form implements CacheListener {
 					straightToCtlSaveCheck();
 					setFromXTeeFlag((ApplicationMap) getData());
 					getData().setProperty(ApplicationMap.TYPE_CODE, ApplicationMap.TYPE_CODE_ARE);
+					
 					ServiceContext.getInstance().getRegistryService().saveOrUpdate((ApplicationMap) cleanDataBeforeSave(getData()), false, new AsyncCallback() {
 						public void onFailure(Throwable caught) {
 							setError("Taotluse salvestamine ebaõnnestus! Proovige hiljem uuesti.");
@@ -1133,6 +1134,7 @@ public class XTeeForm extends Form implements CacheListener {
 															// listboxide
 															// sisu
 							updateApplication((ApplicationMap) result);
+							
 							XTeeForm.this.setButtonsEnabled(true);
 							XTeeForm.this.setInfo("Taotlus on salvestatud!");
 							setButtonState(FormButtonState.ESITAMATA);
@@ -1511,8 +1513,8 @@ public class XTeeForm extends Form implements CacheListener {
 	private class ApplicationsTable extends ResultTable {
 
 		public ApplicationsTable() {
-			super(new ApplicationSearchFilter());
-			getFilter().setLimited(true);
+			super(new ApplicationSearchFilter(true));
+			
 			GWT.log("LIMTIED:" + getFilter().isLimited());
 			this.addColumn(new Column(getLabel(ApplicationMap.REGISTRYENTRY_NR), ApplicationMap.REGISTRYENTRY_NR, null, Column.styleNormal, null)); // "Regkande nr"
 			this.addColumn(new Column(getLabel(ApplicationMap.REGISTRYENTRY_VALID_FROM), ApplicationMap.REGISTRYENTRY_VALID_FROM, null, Column.styleNormal,
