@@ -174,11 +174,9 @@ public class ApplicationForm extends Form implements CacheListener {
 
 			public void onClick(Widget sender) {
 				Map map = getFormFieldValues(SEARCH_FORM);
-				if (map.containsKey(ApplicationSearchFilter.IS_XTEE_FORM)) { // sorri,
-																				// poisid,
-																				// häkk
-					if ("false".equals(map.get(ApplicationSearchFilter.IS_XTEE_FORM))) {
-						map.remove(ApplicationSearchFilter.IS_XTEE_FORM);
+				if (map.containsKey(ApplicationSearchFilter.IS_ENTERPRISE_ADDED)) { // sorri, poisid, häkk
+					if ("false".equals(map.get(ApplicationSearchFilter.IS_ENTERPRISE_ADDED))) {
+						map.remove(ApplicationSearchFilter.IS_ENTERPRISE_ADDED);
 					}
 				}
 				if (!hasErrors())
@@ -362,7 +360,7 @@ public class ApplicationForm extends Form implements CacheListener {
 		searchForm.setWidget(2, 1, addFormField(SEARCH_FORM, ApplicationSearchFilter.PRODUCT_NAME, new TextBox()));
 		CheckBox cbxtee = new CheckBox();
 		//cbxtee.setVisible(false);
-		searchForm.setWidget(3, 1, addFormField(SEARCH_FORM, ApplicationSearchFilter.IS_XTEE_FORM, cbxtee));
+		searchForm.setWidget(3, 1, addFormField(SEARCH_FORM, ApplicationSearchFilter.IS_ENTERPRISE_ADDED, cbxtee));
 		searchForm.setWidget(0, 4,
 				addFormField(SEARCH_FORM, ApplicationSearchFilter.APPLICANT_NAME, new TextBox(), "100%"));
 		ListBox lb = new ListBox();

@@ -39,6 +39,7 @@ implements IsSerializable {
    public static final String GRADE_FROM = ApplicationMap.PRODUCT_GRADE + "From";
    public static final String GRADE_TO = ApplicationMap.PRODUCT_GRADE + "To";
    public static final String IS_XTEE_FORM = "IsXTeeForm";
+   public static final String IS_ENTERPRISE_ADDED = "IsEnterpriseAdded";
    public static final String REGISTRYENTRY_NR = ApplicationMap.REGISTRYENTRY_NR;
 
 

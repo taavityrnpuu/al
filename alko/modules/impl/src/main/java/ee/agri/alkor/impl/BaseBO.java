@@ -38,8 +38,8 @@ import ee.agri.alkor.service.SystemException;
 public abstract class BaseBO extends HibernateDaoSupport implements IBaseService {
 
 	private static Logger LOGGER = Logger.getLogger(BaseBO.class);
-	
-	synchronized public HibernateTemplate getHibernateTemplateSync(){
+
+	synchronized public HibernateTemplate getHibernateTemplateSync() {
 		System.out.println("----- getHibernateTemplateSync()");
 		return this.getHibernateTemplate();
 	}
@@ -98,8 +98,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		try {
 			return (SearchFilter) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
-					SpecialSearch sb = new SpecialSearch(filter.getObjectClass(), filter.getQueryParams(),
-							filter.getSortMap(), filter.getSortMapOrder());
+					SpecialSearch sb = new SpecialSearch(filter.getObjectClass(), filter.getQueryParams(), filter.getSortMap(), filter.getSortMapOrder());
 					filter.setResultsList(sb.getResults(session, filter.getStartIndex(), filter.getPageSize()));
 					filter.setTotal(sb.getTotal());
 					return filter;
@@ -113,9 +112,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 	}
 
 	/**
-	 * Splits netsetd search property name. Assumes tha if property name part
-	 * ends with 'es'(plural), then there is a collection behind. Only one
-	 * collection is allowed per property.
+	 * Splits netsetd search property name. Assumes tha if property name part ends with 'es'(plural), then there is a collection behind. Only one collection is allowed per property.
 	 * 
 	 * 
 	 * @param paramName
@@ -156,8 +153,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		int alias = 0;
 
 		/**
-		 * left outer join is used to include null relations between entities to
-		 * result
+		 * left outer join is used to include null relations between entities to result
 		 */
 		int l = 0;
 		int index = 0;
@@ -166,14 +162,13 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 
 			for (Object key : sortMap.keySet()) {
 				String keyString = (String) key;
-				if (((index = ((String) key).lastIndexOf('.')) != -1)
-						&& (keyString.equals("address") || keyString.equals("decision"))) { // embedded
-																							// objects
-																							// which
-																							// cause
-																							// exception
-																							// in
-																							// join
+				if (((index = ((String) key).lastIndexOf('.')) != -1) && (keyString.equals("address") || keyString.equals("decision"))) { // embedded
+																																			// objects
+																																			// which
+																																			// cause
+																																			// exception
+																																			// in
+																																			// join
 					if (l == 0)
 						joinedFrom.append(" ");
 					joinedFrom.append("left join fetch ");
@@ -187,28 +182,20 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		// SearchView default search
 		// FIX IT!
 		// NO!
-		if (filter.getObjectClass().equals("SearchViewPrimitive") && filter.getOrderBy() != null && filter.getOrderBy()
-				.equals("applicationDecisionDate desc, s.productTypeName asc, s.applicationNr desc")) {
+		if (filter.getObjectClass().equals("SearchViewPrimitive") && filter.getOrderBy() != null && filter.getOrderBy().equals("applicationDecisionDate desc, s.productTypeName asc, s.applicationNr desc")) {
 
 			/*
-			if (l == 0)
-				joinedFrom.append(" ");
-			joinedFrom.append("left join fetch ");
-			joinedFrom.append("s.productTypeName ");
-			l++;
+			 * if (l == 0) joinedFrom.append(" "); joinedFrom.append("left join fetch "); joinedFrom.append("s.productTypeName "); l++;
 			 */
 		}
 
 		/**
-		 * if searching extended or not extended products add registry
-		 * application to query and search by it
+		 * if searching extended or not extended products add registry application to query and search by it
 		 */
 		String decisionCode = "registryEntryApplication.decision.regEntryDecision.code";
-		if (filter.getObjectClass().equals("Product") && (queryParams.containsKey(decisionCode)
-				|| queryParams.containsKey("decision.regEntryDecision.code"))) {
+		if (filter.getObjectClass().equals("Product") && (queryParams.containsKey(decisionCode) || queryParams.containsKey("decision.regEntryDecision.code"))) {
 			String paramStringValue = (String) queryParams.get(decisionCode);
-			if (IClassificatorService.REGENTRY_DECISION_EXTENDED.equals(paramStringValue)
-					|| IClassificatorService.REGENTRY_DECISION_NOT_EXTENDED.equals(paramStringValue)) {
+			if (IClassificatorService.REGENTRY_DECISION_EXTENDED.equals(paramStringValue) || IClassificatorService.REGENTRY_DECISION_NOT_EXTENDED.equals(paramStringValue)) {
 				from.append(", RegistryApplication t ");
 				joinedFrom.append(", RegistryApplication t ");
 				queryParams.remove(decisionCode);
@@ -216,9 +203,9 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				queryParams.put("productApplicationJoin", "t.product.id");
 				Object paramValue = null;
 				if (queryParams.containsKey("registryEntryApplication.nr")) {
-					//paramValue = queryParams.get("registryEntryApplication.nr");
-					//queryParams.remove("registryEntryApplication.nr");
-					//queryParams.put("nr", paramValue);
+					// paramValue = queryParams.get("registryEntryApplication.nr");
+					// queryParams.remove("registryEntryApplication.nr");
+					// queryParams.put("nr", paramValue);
 				}
 				if (queryParams.containsKey("registryEntryApplication.applicant.name")) {
 					paramValue = queryParams.get("registryEntryApplication.applicant.name");
@@ -232,37 +219,25 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				}
 			}
 		} // else if (filter.getObjectClass().equals("ReportView")) {
-		// String reg_id = (String) queryParams.get("regId");
-		// joinedFrom
-		// .append("LEFT JOIN ( SELECT report.id, count(*) AS total FROM
-		// ProductMovementReportRecord " +
-		// "WHERE report.id in " +
-		// "(SELECT id FROM ProductMovementReport WHERE enterprise.id = (select
-		// id from Enterprise where registrationId = '"+reg_id+"' LIMIT 1)) " +
-		// "GROUP BY ProductMovementReportRecord.report.id) rec ON s.id =
-		// rec.id");
-		// queryParams.remove("ent_reg_nr");
-		// }
-		
-		/*
-		if(filter.getObjectClass().equals("RegistryApplication")){
-			if (!hasWhere) {
-				where.append(" where ");
-				hasWhere = true;
-			} else {
-				where.append(" and ");
-			}
-			where.append(" date_part('year', arrived) > 2009 ");
-			hasWhere = true;
-		}*/
+			// String reg_id = (String) queryParams.get("regId");
+			// joinedFrom
+			// .append("LEFT JOIN ( SELECT report.id, count(*) AS total FROM
+			// ProductMovementReportRecord " +
+			// "WHERE report.id in " +
+			// "(SELECT id FROM ProductMovementReport WHERE enterprise.id = (select
+			// id from Enterprise where registrationId = '"+reg_id+"' LIMIT 1)) " +
+			// "GROUP BY ProductMovementReportRecord.report.id) rec ON s.id =
+			// rec.id");
+			// queryParams.remove("ent_reg_nr");
+			// }
 
 		/*
-		 * else if(filter.getObjectClass().equals("ReportListView") &&
-		 * queryParams.containsKey("ent_reg_nr")){ String reg_id = (String)
-		 * queryParams.get("ent_reg_nr"); joinedFrom.append(
-		 * " JOIN product_move_report mr ON report_id = mr.id JOIN enterprise e ON e.reg_id = '"
-		 * +reg_id+"' AND e.id = mr.report_ent_id ");
-		 * queryParams.remove("ent_reg_nr"); }
+		 * if(filter.getObjectClass().equals("RegistryApplication")){ if (!hasWhere) { where.append(" where "); hasWhere = true; } else { where.append(" and "); } where.append(" date_part('year', arrived) > 2009 "); hasWhere = true; }
+		 */
+
+		/*
+		 * else if(filter.getObjectClass().equals("ReportListView") && queryParams.containsKey("ent_reg_nr")){ String reg_id = (String) queryParams.get("ent_reg_nr"); joinedFrom.append( " JOIN product_move_report mr ON report_id = mr.id JOIN enterprise e ON e.reg_id = '" +reg_id+
+		 * "' AND e.id = mr.report_ent_id "); queryParams.remove("ent_reg_nr"); }
 		 */
 
 		for (String paramName : queryParams.keySet()) { // for loop for 'where'
@@ -287,14 +262,11 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 							namedParameters.append("and ");
 						}
 						if (filter.getObjectClass().equals("RegistryPaymentView")) {
-							namedParameters.append("s.").append(paramName).append(" in ")
-							.append("(:" + paramName + "s) ");
+							namedParameters.append("s.").append(paramName).append(" in ").append("(:" + paramName + "s) ");
 						} else if (filter.getObjectClass().equals("SearchViewPrimitive")) {
-							namedParameters.append("s.").append(paramName).append("Code").append(" in ")
-							.append("(:" + paramName + "s) ");
+							namedParameters.append("s.").append(paramName).append("Code").append(" in ").append("(:" + paramName + "s) ");
 						} else {
-							namedParameters.append("s.").append(paramName).append(".code").append(" in ")
-							.append("(:" + paramName + "s) ");
+							namedParameters.append("s.").append(paramName).append(".code").append(" in ").append("(:" + paramName + "s) ");
 						}
 					}
 					continue;
@@ -311,8 +283,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 					boolean hasMin = false;
 					if (rf.getMin() != null) {
 						hasMin = true;
-						if ("decision.date".equals(paramName)
-								&& isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams))
+						if ("decision.date".equals(paramName) && isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams))
 							where.append("t." + paramName + " >= ? ");
 						else
 							where.append("s." + paramName + " >= ? ");
@@ -321,8 +292,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 						if (hasMin) {
 							where.append("and ");
 						}
-						if ("decision.date".equals(paramName)
-								&& isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams))
+						if ("decision.date".equals(paramName) && isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams))
 							where.append("t." + paramName + " <= ? ");
 						else
 							where.append("s." + paramName + " <= ? ");
@@ -339,8 +309,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				} else if (paramName.equals("registryEntry.validFrom") && filter.getObjectClass().equals("Product")) {
 					where.append("s.registryEntry.validFrom >= ? ");
 					continue;
-				} else if (paramName.equals("registryEntry.validUntil") && filter.getObjectClass().equals("Product")
-						&& !isSpecialParam(paramValue)) {
+				} else if (paramName.equals("registryEntry.validUntil") && filter.getObjectClass().equals("Product") && !isSpecialParam(paramValue)) {
 					where.append("s.registryEntry.validUntil <= ? ");
 					continue;
 				} else if (paramName.equals("start_date") && filter.getObjectClass().equals("AuthenticationLog")) {
@@ -349,12 +318,10 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				} else if (paramName.equals("end_date") && filter.getObjectClass().equals("AuthenticationLog")) {
 					where.append("s.time <= ?");
 					continue;
-				} else if (paramName.equals("start_date")
-						&& filter.getObjectClass().equals("ProductMovementReportRecord")) {
+				} else if (paramName.equals("start_date") && filter.getObjectClass().equals("ProductMovementReportRecord")) {
 					where.append("s.created >= ?");
 					continue;
-				} else if (paramName.equals("end_date")
-						&& filter.getObjectClass().equals("ProductMovementReportRecord")) {
+				} else if (paramName.equals("end_date") && filter.getObjectClass().equals("ProductMovementReportRecord")) {
 					where.append("s.created <= ?");
 					continue;
 				} else if (paramName.equals("start_date") && filter.getObjectClass().equals("ProductMoveReportView")) {
@@ -369,49 +336,36 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				} else if (paramName.equals("end_date") && filter.getObjectClass().equals("ProductMovementReport")) {
 					where.append("s.created <= ?");
 					continue;
-				} else if (paramName.equals("reportPeriodMonthStart")
-						&& filter.getObjectClass().equals("ProductMovementReport")) {
+				} else if (paramName.equals("reportPeriodMonthStart") && filter.getObjectClass().equals("ProductMovementReport")) {
 					where.append("extract(month from s.repDate) >= ?");
 					continue;
-				} else if (paramName.equals("reportPeriodMonthEnd")
-						&& filter.getObjectClass().equals("ProductMovementReport")) {
+				} else if (paramName.equals("reportPeriodMonthEnd") && filter.getObjectClass().equals("ProductMovementReport")) {
 					where.append("extract(month from s.repDate) <= ?");
 					continue;
-				} else if (paramName.equals("reportPeriodMonthStart")
-						&& filter.getObjectClass().equals("ProductMoveReportView")) {
+				} else if (paramName.equals("reportPeriodMonthStart") && filter.getObjectClass().equals("ProductMoveReportView")) {
 					where.append("extract(month from s.repDate) >= ?");
 					continue;
-				} else if (paramName.equals("reportPeriodMonthEnd")
-						&& filter.getObjectClass().equals("ProductMoveReportView")) {
+				} else if (paramName.equals("reportPeriodMonthEnd") && filter.getObjectClass().equals("ProductMoveReportView")) {
 					where.append("extract(month from s.repDate) <= ?");
 					continue;
-				} else if (paramName.equals("repYear") && (filter.getObjectClass().equals("ReportListView")
-						|| filter.getObjectClass().equals("ReportView"))) {
+				} else if (paramName.equals("repYear") && (filter.getObjectClass().equals("ReportListView") || filter.getObjectClass().equals("ReportView"))) {
 					where.append("extract(year from s.reportDate) = ?");
 					continue;
-				} else if (paramName.equals("repMonth") && (filter.getObjectClass().equals("ReportListView")
-						|| filter.getObjectClass().equals("ReportView"))) {
+				} else if (paramName.equals("repMonth") && (filter.getObjectClass().equals("ReportListView") || filter.getObjectClass().equals("ReportView"))) {
 					where.append("extract(month from s.reportDate) = ?");
 					continue;
 				} /*
-					 * else if (paramName.equals("reporting_ent_reg_id") &&
-					 * (filter.getObjectClass().equals("ReportListView")) ) {
-					 * where.append(" s.reportingEntRegId = ?");
-					 * queryParams.remove("reporting_ent_reg_id"); continue; }
-					 */else if (paramName.equals("reportPeriodStart")
-						&& filter.getObjectClass().equals("ProductMovementReport")) {
+					 * else if (paramName.equals("reporting_ent_reg_id") && (filter.getObjectClass().equals("ReportListView")) ) { where.append(" s.reportingEntRegId = ?"); queryParams.remove("reporting_ent_reg_id"); continue; }
+					 */else if (paramName.equals("reportPeriodStart") && filter.getObjectClass().equals("ProductMovementReport")) {
 					where.append("s.repDate >= ?");
 					continue;
-				} else if (paramName.equals("reportPeriodEnd")
-						&& filter.getObjectClass().equals("ProductMovementReport")) {
+				} else if (paramName.equals("reportPeriodEnd") && filter.getObjectClass().equals("ProductMovementReport")) {
 					where.append("s.repDate <= ?");
 					continue;
-				} else if (paramName.equals("reportPeriodStart")
-						&& filter.getObjectClass().equals("ProductMoveReportView")) {
+				} else if (paramName.equals("reportPeriodStart") && filter.getObjectClass().equals("ProductMoveReportView")) {
 					where.append("s.repDate >= ?");
 					continue;
-				} else if (paramName.equals("reportPeriodEnd")
-						&& filter.getObjectClass().equals("ProductMoveReportView")) {
+				} else if (paramName.equals("reportPeriodEnd") && filter.getObjectClass().equals("ProductMoveReportView")) {
 					where.append("s.repDate <= ?");
 					continue;
 				} else if (paramName.equals("start_date") && filter.getObjectClass().equals("ReportListView")) {
@@ -426,12 +380,10 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				} else if (paramName.equals("end_date") && filter.getObjectClass().equals("ReportView")) {
 					where.append("s.created <= ?");
 					continue;
-				} else if (paramName.equals("validUntil") && (filter.getObjectClass().equals("RegistryEntry")
-						|| filter.getObjectClass().equals("RegistryEntryView"))) {
+				} else if (paramName.equals("validUntil") && (filter.getObjectClass().equals("RegistryEntry") || filter.getObjectClass().equals("RegistryEntryView"))) {
 					where.append("s.validUntil" + paramValue);
 					continue;
-				} else if (paramName.equals("registryEntryApplication.registryEntry.validUntil")
-						&& (filter.getObjectClass().equals("Product"))) {
+				} else if (paramName.equals("registryEntryApplication.registryEntry.validUntil") && (filter.getObjectClass().equals("Product"))) {
 					where.append("s.registryEntryApplication.registryEntry.validUntil" + paramValue);
 					continue;
 					// paramValue is set in makeSpecialValue(...)
@@ -444,16 +396,13 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 					continue;
 					// if searched by specific decision codes from product,
 					// search from reg_application instead (s to t)
-				} else if (paramName.equals("decision.regEntryDecision.code")
-						&& isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams)) {
+				} else if (paramName.equals("decision.regEntryDecision.code") && isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams)) {
 					where.append("lower(t.decision.regEntryDecision.code) like ?");
 					continue;
-				} else if (paramName.equals("applicant.name")
-						&& isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams)) {
+				} else if (paramName.equals("applicant.name") && isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams)) {
 					where.append("lower(t.applicant.name) like ?");
 					continue;
-				} else if (paramName.equals("nr")
-						&& isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams)) {
+				} else if (paramName.equals("nr") && isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams)) {
 					where.append("nr like ?");
 					continue;
 				} else if (paramName.equals("product.ethanolRateFrom")) { // RK
@@ -471,6 +420,9 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				} else if (paramName.equals("IsXTeeForm")) { // RK lisatud
 					where.append("s.applicant.registrationId = ? ");
 					continue;
+				} else if (paramName.equals("IsEnterpriseAdded")) {
+					where.append("(s.fromXTee = true OR s.submitterRegId IS NOT NULL)");
+					continue;
 				}
 
 				if (paramValue instanceof List) {
@@ -478,8 +430,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 						namedParameters.append("and ");
 					}
 					if (!filter.getObjectClass().equals("RegistryPaymentView")) {
-						namedParameters.append("s.").append(paramName).append(".code").append(" in ")
-								.append("(:" + paramName + "s) ");
+						namedParameters.append("s.").append(paramName).append(".code").append(" in ").append("(:" + paramName + "s) ");
 					} else {
 						namedParameters.append("s.").append(paramName).append(" in ").append("(:" + paramName + "s) ");
 					}
@@ -495,8 +446,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 							where.append("lower(s.state.code) IN ('add', 'ctl', 'nmo', 'pro') ");
 							continue;
 						} else if ("RGE2".equals(paramValue)) {
-							where.append(
-									"lower(s.state.code) IN ('rge', 'rext') and s.registryEntry.validUntil >= current_date ");
+							where.append("lower(s.state.code) IN ('rge', 'rext') and s.registryEntry.validUntil >= current_date ");
 							continue;
 						} else if ("VOID2".equals(paramValue)) {
 							where.append("s.registryEntry.validUntil <= current_date ");
@@ -576,12 +526,10 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		// LOGGER.info("TIMER countquery [" + timerSessionId + "]: " +
 		// countQuery);
 
-
-
 		// create query
 
 		Query q = createQuery(session, queryParams, filter, countQuery);
-		
+
 		Long count = (Long) q.list().get(0);
 		filter.setTotal(count.intValue());
 
@@ -643,11 +591,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 					// replace original application with
 					// extension application
 					/*
-					 * if (isExtNotExtProductSearch && rowObject != null &&
-					 * rowObject.length > 1 && rowObject[0] instanceof Product
-					 * && rowObject[1] instanceof RegistryApplication) { //
-					 * ((Product)rowObject[0]).setRegistryEntryApplication((
-					 * RegistryApplication)rowObject[1]); }
+					 * if (isExtNotExtProductSearch && rowObject != null && rowObject.length > 1 && rowObject[0] instanceof Product && rowObject[1] instanceof RegistryApplication) { // ((Product)rowObject[0]).setRegistryEntryApplication(( RegistryApplication)rowObject[1]); }
 					 */
 					resultList.add(rowObject[0]);
 				} else {
@@ -655,12 +599,10 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				}
 			}
 			filter.setResultsList(resultList);
-			LOGGER.debug("TIMER stop2 [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime)
-					+ " ms (results:" + resultList.size() + ")");
+			LOGGER.debug("TIMER stop2 [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms (results:" + resultList.size() + ")");
 		} else {
 			filter.setResultsList(queryList);
-			LOGGER.debug("TIMER stop  [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime)
-					+ " ms (results:" + queryList.size() + ")");
+			LOGGER.debug("TIMER stop  [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms (results:" + queryList.size() + ")");
 		}
 
 		return filter;
@@ -672,8 +614,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 	 * @author raido.kalbre
 	 */
 
-	private static Query createQuery(Session session, Map<String, Object> queryParams, SearchFilter filter,
-			String queryString) {
+	private static Query createQuery(Session session, Map<String, Object> queryParams, SearchFilter filter, String queryString) {
 		Query q2 = session.createQuery(queryString); //
 
 		int j = 0;
@@ -685,12 +626,11 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 			paramValue = makeSpecialValue(paramName, paramValue, filter.getObjectClass());
 			//
 
-			if (isSpecialParam(paramValue)) {
+			if (isSpecialParam(paramValue) || "IsEnterpriseAdded".equals(paramName)) {
 				// ei tee midagi
-			} else if("IsXTeeForm".equals(paramName)){
+			} else if ("IsXTeeForm".equals(paramName)) {
 				q2.setParameter(j++, paramValue);
-			}
-			else if (paramValue instanceof RangeFilter) {
+			} else if (paramValue instanceof RangeFilter) {
 				RangeFilter rf = (RangeFilter) paramValue;
 				String min = rf.getMin();
 				String max = rf.getMax();
@@ -726,9 +666,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 					q2.setParameter(j++, max);
 				}
 
-			} else if ((paramName.equals(SearchFilter.END_DATE) || paramName.equals(SearchFilter.START_DATE)
-					|| paramName.equals(SearchFilter.START_TIME) || paramName.equals(SearchFilter.END_TIME))
-					&& !(paramValue instanceof Date)) {
+			} else if ((paramName.equals(SearchFilter.END_DATE) || paramName.equals(SearchFilter.START_DATE) || paramName.equals(SearchFilter.START_TIME) || paramName.equals(SearchFilter.END_TIME)) && !(paramValue instanceof Date)) {
 				String text = paramValue.toString();
 				Calendar cal = Calendar.getInstance();
 				cal.clear();
@@ -767,8 +705,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 			} else if (paramValue instanceof String) {
 
 				String stringValue = "";
-				if ("state.code".equals(paramName) && ("ADDCTLNMOPRO".equals(paramValue) || "RGE2".equals(paramValue)
-						|| "VOID2".equals(paramValue))) {
+				if ("state.code".equals(paramName) && ("ADDCTLNMOPRO".equals(paramValue) || "RGE2".equals(paramValue) || "VOID2".equals(paramValue))) {
 					continue;
 				} else if (paramName.endsWith(".code")) { // cannot have % signs
 					stringValue = (String) paramValue;
@@ -805,8 +742,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 	}
 
 	/**
-	 * Tagastab tõeväärtust: kas tegemist on eriparameetriga või mitte.
-	 * Eriparameetrid on antud konstantidega SearchFilter klassis.
+	 * Tagastab tõeväärtust: kas tegemist on eriparameetriga või mitte. Eriparameetrid on antud konstantidega SearchFilter klassis.
 	 * 
 	 * @param paramValue
 	 *            - parameetri väärtus.
@@ -837,8 +773,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 	 *            class of current search
 	 * @param queryParams
 	 *            parameters included in search
-	 * @return true if extended or not extended products are searched through
-	 *         product's form, false otherwise
+	 * @return true if extended or not extended products are searched through product's form, false otherwise
 	 */
 	private static boolean isExtendedNotExtendedProductSearch(String objectClass, Map<String, Object> queryParams) {
 		if (queryParams == null) {
@@ -847,8 +782,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		String decisionCode = "decision.regEntryDecision.code";
 		if ("Product".equals(objectClass) && queryParams.containsKey(decisionCode)) {
 			String paramValue = (String) queryParams.get(decisionCode);
-			if (IClassificatorService.REGENTRY_DECISION_EXTENDED.equals(paramValue)
-					|| IClassificatorService.REGENTRY_DECISION_NOT_EXTENDED.equals(paramValue)) {
+			if (IClassificatorService.REGENTRY_DECISION_EXTENDED.equals(paramValue) || IClassificatorService.REGENTRY_DECISION_NOT_EXTENDED.equals(paramValue)) {
 				return true;
 			}
 		}
@@ -878,13 +812,11 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 	private static Object makeSpecialValue(String paramName, Object value, String className) {
 		if (value instanceof String) {
 			try {
-				if ((paramName.equals("reportId") && "ReportListView".equals(className))
-						|| (paramName.equals("reportEntId") && "ReportView".equals(className))) {
+				if ((paramName.equals("reportId") && "ReportListView".equals(className)) || (paramName.equals("reportEntId") && "ReportView".equals(className))) {
 					value = Long.valueOf((String) value);
-				} else if (paramName.equals("balance") || paramName.equals("productEthanolRate")
-						|| paramName.equals("ethanolRate") || paramName.startsWith("product.ethanolRate")) { // RK
-																												// lisatud
-																												// viimane
+				} else if (paramName.equals("balance") || paramName.equals("productEthanolRate") || paramName.equals("ethanolRate") || paramName.startsWith("product.ethanolRate")) { // RK
+																																														// lisatud
+																																														// viimane
 					value = new BigDecimal((String) value);
 				} else if (paramName.equals("repYear")) {
 					value = new Integer(value.toString());
@@ -894,9 +826,8 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 																									// lisatud
 																									// viimane
 					value = new Boolean(value.toString());
-				} else if (paramName.equals("registryEntryApplication.needsRenewening")
-						&& "false".equals((String) value)) { // RK
-																// lisatud
+				} else if (paramName.equals("registryEntryApplication.needsRenewening") && "false".equals((String) value)) { // RK
+																																// lisatud
 					value = null; // skippimiseks
 				} else if (paramName.equals("productExamplesCount")) {
 					if ("true".equals(value.toString()))

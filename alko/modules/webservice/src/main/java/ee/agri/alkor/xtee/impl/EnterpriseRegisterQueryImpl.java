@@ -1,5 +1,6 @@
 package ee.agri.alkor.xtee.impl;
 
+import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.net.URL;
 import java.security.SecureRandom;
@@ -13,6 +14,8 @@ import javax.xml.soap.SOAPElement;
 
 import org.apache.axis.message.SOAPHeaderElement;
 import org.apache.log4j.Logger;
+
+import com.google.gwt.user.client.Window;
 
 import ee.agri.alkor.model.Address;
 import ee.agri.alkor.model.ContactInfo;
@@ -116,11 +119,17 @@ public class EnterpriseRegisterQueryImpl {
 	}
 	
 	private Enterprise convertNew(Detailandmed_v5_ettevotja resultItem) {
-		Enterprise ent = new Enterprise();
+		String regnr = String.valueOf(resultItem.getAriregistri_kood());
+		
+		Enterprise ent = ServiceFactory.getRegistryService().getEnterprise(regnr);
+		if(ent == null){
+			ent = new Enterprise();
+		}
+
 		Detailandmed_v5_yldandmed yandmed = resultItem.getYldandmed();
 
 		ent.setName(resultItem.getNimi());
-		ent.setRegistrationId(String.valueOf(resultItem.getAriregistri_kood()));
+		ent.setRegistrationId(regnr);
 		
 		Detailandmed_v5_aadress[] aadressid = yandmed.getAadressid();
 		if(aadressid.length > 0){
@@ -215,7 +224,7 @@ public class EnterpriseRegisterQueryImpl {
 		}
 		ent.setAddress(address);
 		*/
-		
+
 		return ent;
 	}
 
