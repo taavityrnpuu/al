@@ -12,7 +12,8 @@ public class SuperSearchFilter extends SearchFilter implements IsSerializable {
 	public static final String PRODUCT_KN_CODE = "productKnCode";
 	public static final String PRODUCT_ETHANOL_RATE = "productEthanolRate";
 	public static final String PRODUCT_VOLUME = "productVolume";
-	public static final String PRODUCT_VOLUME_CODE = PRODUCT_VOLUME + "." + ClassItemMap.CODE;
+	//public static final String PRODUCT_VOLUME_CODE = PRODUCT_VOLUME + "." + ClassItemMap.CODE;
+	public static final String PRODUCT_VOLUME_CODE = PRODUCT_VOLUME + "Code";
 	//public static final String PRODUCT_VOLUME_NAME = PRODUCT_VOLUME + "." + ClassItemMap.NAME;
 	public static final String PRODUCT_VOLUME_NAME = PRODUCT_VOLUME + ClassItemMap.CAPITAL_NAME;
 	public static final String PRODUCT_ORIGIN_COUNTRY = "productOriginCountry";

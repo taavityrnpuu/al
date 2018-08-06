@@ -1992,7 +1992,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				}
 			}
 			
-			String sql = "select * from reg_entry where valid_until not between (now() + interval '"+ daysFrom +"' day) and (now() + interval '"+ daysTo+"' day)"
+			String sql = "select * from reg_entry where valid_until::date not between (now() + interval '"+ daysFrom +"' day)::date and (now() + interval '"+ daysTo+"' day)::date"
 					+ " and id = (select regentry_id from reg_application where nr = '" + number + "');";
 			ResultSet rl = PostgreUtils.query(sql);
 			if (rl.next()) {
