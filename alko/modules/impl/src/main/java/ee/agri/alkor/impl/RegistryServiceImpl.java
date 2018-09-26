@@ -33,7 +33,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.gargoylesoftware.htmlunit.html.Util;
@@ -904,7 +904,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public Boolean bindPaymentToEnterpriseById(final Long enterpriseId, final Long paymentId) {
 		try {
 			getHibernateTemplate().execute(new HibernateCallback() {
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					Enterprise enterprise = (Enterprise) session.load(Enterprise.class, enterpriseId);
 					RegistryPayment payment = (RegistryPayment) session.load(RegistryPayment.class, paymentId);
 					doBindPaymentToEnterpise(session, enterprise, payment);
@@ -976,7 +976,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public Boolean isPaymentBindedToEnterprise(final Enterprise boundEnterprise, final Long paymentId) {
 		try {
 			return (Boolean) getHibernateTemplate().execute(new HibernateCallback() {
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					return new Boolean(
 							session.createQuery("from RegistryPayment p where p. id = ? and p.boundEnterprise = ?")
 									.setLong(0, paymentId).setEntity(1, boundEnterprise).list().size() != 0);
@@ -2144,7 +2144,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			// getHibernateTemplate().setEntityInterceptor(new
 			// AuditInterceptor());
 			getHibernateTemplate().execute(new HibernateCallback() {
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					saveOrUpdate(session, product);
 					return null;
 				}
@@ -2174,7 +2174,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			// getHibernateTemplate().setEntityInterceptor(new
 			// AuditInterceptor());
 			getHibernateTemplate().execute(new HibernateCallback() {
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					session.saveOrUpdate(product);
 					return product;
 				}
@@ -2199,7 +2199,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			// getHibernateTemplate().setEntityInterceptor(new
 			// AuditInterceptor());
 			getHibernateTemplate().execute(new HibernateCallback() {
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 
 					session.saveOrUpdate(application);
 					session.saveOrUpdate(entry);
@@ -2234,7 +2234,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			// getHibernateTemplate().setEntityInterceptor(new
 			// AuditInterceptor());
 			getHibernateTemplate().execute(new HibernateCallback() {
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					if (news.getId() != null) {
 						session.saveOrUpdate(news);
 					} else
@@ -2256,7 +2256,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			// getHibernateTemplate().setEntityInterceptor(new
 			// AuditInterceptor());
 			getHibernateTemplate().execute(new HibernateCallback() {
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					if (faq.getId() != null) {
 						session.saveOrUpdate(faq);
 					} else
@@ -2852,7 +2852,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		try {
 			return (Person) getHibernateTemplate().execute(new HibernateCallback() {
 
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					return findPerson(session, personalCode);
 				}
 			});
@@ -2947,7 +2947,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		try {
 			return (List<RegistryDocument>) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
-					List<RegistryDocument> l = session.createQuery("from RegistryDocument d where d.docType.code = ? and d.language.code = ?")
+					List<RegistryDocument> l = session.createQuery("from RegistryDocument d where d.docType.code = ?0 and d.language.code = ?1")
 							.setString(0, IClassificatorService.DOC_TYPE_PUB)
 							.setString(1, langCode).list();
 					session.clear();
@@ -3004,16 +3004,16 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	}
 
 	public List<ProductMovementReportRecord> findProductMovementRecords(Long reportId) {
-		return getHibernateTemplate().find("from ProductMovementReportRecord r where r.report.id = ? order by r.id",
+		return (List<ProductMovementReportRecord>) getHibernateTemplate().find("from ProductMovementReportRecord r where r.report.id = ? order by r.id",
 				reportId);
 	}
 
 	public List<Faq> findFaqs() {
-		return getHibernateTemplate().find("from Faq f order by id");
+		return (List<Faq>) getHibernateTemplate().find("from Faq f order by id");
 	}
 
 	public List<News> findNews() {
-		return getHibernateTemplate().find("from News n order by id");
+		return (List<News>) getHibernateTemplate().find("from News n order by id");
 	}
 
 	public RegistryDocument getDocument(Long documentId) {
@@ -3061,7 +3061,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		StringBuffer arg = new StringBuffer("%").append(fileName).append("%");
 
 		try {
-			result = getHibernateTemplate().find("from RegistryDocument d where d.path like ? order by id",
+			result = (List<RegistryDocument>) getHibernateTemplate().find("from RegistryDocument d where d.path like ? order by id",
 					arg.toString());
 			for (RegistryDocument doc : result) {
 				doc.setContent(readFile(doc.getPath()));
@@ -3079,7 +3079,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 		try {
 
-			result = getHibernateTemplate().find(
+			result = (List<RegistryDocument>) getHibernateTemplate().find(
 					"from RegistryDocument d where d.path like ? and d.application.id = ? order by id",
 					new Object[] { arg.toString(), applicationId });
 			for (RegistryDocument doc : result) {
@@ -3694,7 +3694,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			// getHibernateTemplate().setEntityInterceptor(new
 			// AuditInterceptor());
 			getHibernateTemplate().execute(new HibernateCallback() {
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					if (entry.getId() != null) {
 						session.saveOrUpdate(entry);
 					} else
@@ -3734,10 +3734,10 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				/*
 				 * (non-Javadoc)
 				 * 
-				 * @see org.springframework.orm.hibernate3.HibernateCallback
+				 * @see org.springframework.orm.hibernate5.HibernateCallback
 				 * #doInHibernate (org.hibernate.Session)
 				 */
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					// check if there are any correction documents for
 					// this
 					// application
@@ -3761,7 +3761,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	 */
 	public Boolean createNewExtendDocument(final String applicationNr, final String docType) {
 		getHibernateTemplate().execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				try {
 					RegistryApplication appl = (RegistryApplication) session
 							.createQuery("from RegistryApplication a where a.nr = ?").setString(0, applicationNr)
@@ -3795,10 +3795,10 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				/*
 				 * (non-Javadoc)
 				 * 
-				 * @see org.springframework.orm.hibernate3.HibernateCallback
+				 * @see org.springframework.orm.hibernate5.HibernateCallback
 				 * #doInHibernate (org.hibernate.Session)
 				 */
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					// check if there are any correction documents for
 					// this
 					// application
@@ -3827,10 +3827,10 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				/*
 				 * (non-Javadoc)
 				 * 
-				 * @see org.springframework.orm.hibernate3.HibernateCallback
+				 * @see org.springframework.orm.hibernate5.HibernateCallback
 				 * #doInHibernate (org.hibernate.Session)
 				 */
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					// check if there are any decision documents for
 					// this application
 					return new Boolean(
@@ -3855,7 +3855,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	 */
 	public Boolean createNewCorrectionDocument(final String applicationNr) {
 		getHibernateTemplate().execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				try {
 					RegistryApplication appl = (RegistryApplication) session
 							.createQuery("from RegistryApplication a where a.nr = ?").setString(0, applicationNr)
@@ -3886,7 +3886,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	 */
 	public Boolean createNewDecisionDocument(final String applicationNr) {
 		getHibernateTemplate().execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				try {
 					RegistryApplication appl = (RegistryApplication) session
 							.createQuery("from RegistryApplication a where a.nr = ?").setString(0, applicationNr)
@@ -3917,7 +3917,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	 */
 	public Boolean createNewDeclineDocument(final String applicationNr) {
 		getHibernateTemplate().execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public Object doInHibernate(Session session) throws HibernateException {
 				try {
 					RegistryApplication appl = (RegistryApplication) session
 							.createQuery("from RegistryApplication a where a.nr = ?").setString(0, applicationNr)
@@ -3951,10 +3951,10 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				/*
 				 * (non-Javadoc)
 				 * 
-				 * @see org.springframework.orm.hibernate3.HibernateCallback
+				 * @see org.springframework.orm.hibernate5.HibernateCallback
 				 * #doInHibernate (org.hibernate.Session)
 				 */
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					// check if there are any decision documents for
 					// this application
 					return new Boolean(
@@ -4281,12 +4281,12 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 	synchronized public List<Enterprise> findEnterpriseByNameorRegNr(String name, String regNr) {
 		if (name != null && name.length() > 0 && regNr != null && regNr.length() > 0) {
-			return getHibernateTemplate().find("from Enterprise e where e.name like ? and e.registrationId like ?",
+			return (List<Enterprise>) getHibernateTemplate().find("from Enterprise e where e.name like ? and e.registrationId like ?",
 					new Object[] { "%" + name + "%", "%" + regNr + "%" });
 		} else if (name != null && name.length() > 0) {
-			return getHibernateTemplate().find("from Enterprise e where e.name like ? ", "%" + name + "%");
+			return (List<Enterprise>) getHibernateTemplate().find("from Enterprise e where e.name like ? ", "%" + name + "%");
 		} else if (regNr != null && regNr.length() > 0) {
-			return getHibernateTemplate().find("from Enterprise e where e.registrationId like ?", "%" + regNr + "%");
+			return (List<Enterprise>) getHibernateTemplate().find("from Enterprise e where e.registrationId like ?", "%" + regNr + "%");
 		} else
 			return new ArrayList<Enterprise>();
 
@@ -4315,7 +4315,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public boolean isPaymentUnique(final String orderNumber) {
 		try {
 			return (Boolean) getHibernateTemplate().execute(new HibernateCallback() {
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 					return new Boolean(session.createQuery("from RegistryPayment r " + "where r.orderNumber = ? ")
 							.setString(0, orderNumber).list().size() == 0);
 				}
@@ -4330,7 +4330,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public boolean isExtendingAllowed(final String applicationNr) {
 		try {
 			return (Boolean) getHibernateTemplate().execute(new HibernateCallback() {
-				public Object doInHibernate(Session session) throws HibernateException, SQLException {
+				public Object doInHibernate(Session session) throws HibernateException {
 
 					Query q = session.createQuery("FROM RegistryApplication s WHERE s.nr LIKE ? ");
 					q.setString(0, applicationNr + "/P%"); // [applicationNr]/P%

@@ -21,7 +21,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.dao.DataAccessException;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.util.ClassUtils;
 
 import ee.agri.alkor.model.AlkoUserDetails;
@@ -112,7 +112,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 
 	private SystemUser findUser(String username) throws UsernameNotFoundException {
 		try {
-			SystemUser user = (SystemUser) getHibernateTemplate().find("from SystemUser u where u.name = ? and u.active = true", username).get(0);
+			SystemUser user = (SystemUser) getHibernateTemplate().find("from SystemUser u where u.name = ?0 and u.active = true", username).get(0);
 			return user;
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
@@ -163,7 +163,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 				sql = "DELETE FROM user_session where id = " + id;
 				PostgreUtils.delete(sql);
 
-				user = (SystemUser) getHibernateTemplate().find("from SystemUser u where u.person.registrationId = ? and u.active = true", idCode).get(0);
+				user = (SystemUser) getHibernateTemplate().find("from SystemUser u where u.person.registrationId = ?0 and u.active = true", idCode).get(0);
 
 				details = new AlkoUserDetails(user.getName(), user.getPassword(), user.getPerson().getFirstName(), user.getPerson().getLastName(),
 						idCode, makeAuthorities(user), user);			
@@ -348,7 +348,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 
 					} else {
 						Iterator it = session
-								.createQuery("select u.person.firstName, u.person.lastName, u.person.registrationId from SystemUser u where u.name = ?")
+								.createQuery("select u.person.firstName, u.person.lastName, u.person.registrationId from SystemUser u where u.name = ?0")
 								.setString(0, userName).iterate();
 
 						if (it.hasNext()) {
@@ -363,7 +363,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 //					LOGGER.debug("authLogEntry fullName:[" + authLogEntry.getUserFullName() + "] registrationId:[" + userDetails.getIdCode() + "]");
 					// Check for existing log entry.
 					Iterator matchList = session
-							.createQuery("select count(*) from AuthenticationLog l where l.userFullName like ? and l.time > ? and l.time < ?")
+							.createQuery("select count(*) from AuthenticationLog l where l.userFullName like ?0 and l.time > ?1 and l.time < ?2")
 							.setString(0, authLogEntry.getUserFullName()).setTimestamp(1, authTimeStart.getTime()).setTimestamp(2, authTimeEnd.getTime())
 							.list().iterator();
 					// AuthEvent already saved.

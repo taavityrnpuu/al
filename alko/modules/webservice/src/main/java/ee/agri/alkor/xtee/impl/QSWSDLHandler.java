@@ -11,8 +11,8 @@ import org.apache.axis.transport.http.HTTPConstants;
 import org.apache.axis.utils.Messages;
 import org.apache.axis.utils.XMLUtils;
 import org.apache.log4j.Logger;
+import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
@@ -110,7 +110,7 @@ public class QSWSDLHandler extends AbstractQueryStringHandler {
 			response.setContentType("text/xml; charset="
 					+ XMLUtils.getEncoding().toLowerCase());
 			
-			Map args = new HashMap();
+			VelocityContext args = new VelocityContext();
 			args.put("countries", countries);
 			args.put("productTypes", productTypes);
 			args.put("capacityTypes", capacityTypes);
@@ -123,8 +123,7 @@ public class QSWSDLHandler extends AbstractQueryStringHandler {
 			args.put("capacityTypes", capacityTypes);
 			args.put("stockingColorTypes", stockingColorTypes);
 			
-			VelocityEngineUtils.mergeTemplate(
-		               velocityEngine, resourceName, "utf-8", args, writer);
+			velocityEngine.mergeTemplate(resourceName, "utf-8", args, writer);
 		} catch (Exception e) {
 			log.error(e, e);
 			//then report under a 404 error

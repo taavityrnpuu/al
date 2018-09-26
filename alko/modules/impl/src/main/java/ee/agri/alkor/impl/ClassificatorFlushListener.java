@@ -4,8 +4,8 @@ import org.apache.log4j.Logger;
 import org.hibernate.EntityMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.event.FlushEntityEvent;
-import org.hibernate.event.FlushEntityEventListener;
+import org.hibernate.event.spi.FlushEntityEvent;
+import org.hibernate.event.spi.FlushEntityEventListener;
 
 import ee.agri.alkor.model.IClassificatorAware;
 
@@ -21,8 +21,7 @@ public class ClassificatorFlushListener implements FlushEntityEventListener {
 //					LOGGER.debug("onFlushEntity, entity: " + event.getEntity().getClass().getName());
 			
 				
-				Session eventSession = event.getSession().getSession(
-						EntityMode.POJO);
+				Session eventSession = event.getSession().getSession();
 				ClassificatorServiceImpl.linkClassificators(eventSession,
 						(IClassificatorAware) event.getEntity());
 

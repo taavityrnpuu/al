@@ -111,7 +111,7 @@
 			</fileset>
 		</copy>
 	<hibernatetool destdir="${sql.dir}">
-	 <annotationconfiguration
+	 <configuration
 	  configurationfile="${build.dir}/hibernate.cfg.xml"/>
 		 <classpath>
           	<path location="${build.dir}" />

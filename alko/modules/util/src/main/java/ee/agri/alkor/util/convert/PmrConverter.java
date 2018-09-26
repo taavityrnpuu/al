@@ -14,7 +14,7 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 
 import ee.agri.alkor.model.Enterprise;
 import ee.agri.alkor.model.IEntity;
@@ -66,7 +66,7 @@ public class PmrConverter {
 
 			getAlkor1Export().getHibernateTemplate().execute(new HibernateCallback() {
 				/* (non-Javadoc)
-				 * @see org.springframework.orm.hibernate3.HibernateCallback#doInHibernate(org.hibernate.Session)
+				 * @see org.springframework.orm.hibernate5.HibernateCallback#doInHibernate(org.hibernate.Session)
 				 */
 				public Object doInHibernate(Session arg0) throws HibernateException, SQLException {
 					Object count = arg0.createQuery("select count(*) from AtReport").uniqueResult();

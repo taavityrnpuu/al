@@ -18,8 +18,8 @@
 	<property name="ear.dir" location="${build.dir}/ear" />
 
 	<!-- väljundpaki nimi -->
-	<property name="package.file" location="${build.dir}/alkor-ear.ear" />
-
+	<!--<property name="package.file" location="${build.dir}/alkor-ear.ear" />-->
+	<property name="package.file" location="C:/Users/Tiit/Documents/wildfly-14.0.1.Final/standalone/deployments/alkor-ear.ear" />
 	
 	<target name="help" description="Kuvab abiinfot kasutamise kohta.">
 		<echo level="info">

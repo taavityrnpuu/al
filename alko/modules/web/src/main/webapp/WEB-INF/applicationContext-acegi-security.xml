@@ -31,10 +31,10 @@
    <bean id="authenticationManager" class="org.acegisecurity.providers.ProviderManager">
       <property name="providers">
          <list>
-            <ref local="daoAuthenticationProvider"/>
-		      <ref local="x509AuthenticationProvider"/>
-            <ref local="anonymousAuthenticationProvider"/>
-            <ref local="rememberMeAuthenticationProvider"/>
+            <ref bean="daoAuthenticationProvider"/>
+		      <ref bean="x509AuthenticationProvider"/>
+            <ref bean="anonymousAuthenticationProvider"/>
+            <ref bean="rememberMeAuthenticationProvider"/>
          </list>
       </property>
    </bean>
@@ -43,8 +43,8 @@
 
    <bean id="daoAuthenticationProvider" class="org.acegisecurity.providers.dao.DaoAuthenticationProvider" >
       <property name="userDetailsService" ref="authenticationService"/>
-      <property name="userCache"><ref local="userCache"/></property>
-      <!--property name="passwordEncoder"><ref local="passwordEncoder"/></property-->
+      <property name="userCache"><ref bean="userCache"/></property>
+      <!--property name="passwordEncoder"><ref bean="passwordEncoder"/></property-->
    </bean>
 
    <bean id="authenticationService" class="ee.agri.alkor.service.AuthenticationServiceDelegate"/>
@@ -53,7 +53,7 @@
 
    <bean id="userCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
       <property name="cacheManager">
-         <ref local="cacheManager"/>
+         <ref bean="cacheManager"/>
       </property>
       <property name="cacheName">
          <value>userCache</value>
@@ -61,16 +61,16 @@
    </bean>
 
    <bean id="userCache" class="org.acegisecurity.providers.dao.cache.EhCacheBasedUserCache">
-      <property name="cache"><ref local="userCacheBackend"/></property>
+      <property name="cache"><ref bean="userCacheBackend"/></property>
    </bean>
 	<bean id="x509AuthenticationProvider" class="org.acegisecurity.providers.x509.X509AuthenticationProvider">
-		<property name="x509AuthoritiesPopulator"><ref local="x509AuthoritiesPopulator"/></property>
-        <!-- <property name="x509UserCache"><ref local="x509UserCache"/></property> -->
+		<property name="x509AuthoritiesPopulator"><ref bean="x509AuthoritiesPopulator"/></property>
+        <!-- <property name="x509UserCache"><ref bean="x509UserCache"/></property> -->
 	</bean>
 
     <bean id="x509UserCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
        <property name="cacheManager">
-          <ref local="cacheManager"/>
+          <ref bean="cacheManager"/>
        </property>
        <property name="cacheName">
           <value>x509Cache</value>
@@ -78,7 +78,7 @@
     </bean>
 
 	<bean id="x509UserCache" class="org.acegisecurity.providers.x509.cache.EhCacheBasedX509UserCache">
-      <property name="cache"><ref local="x509UserCacheBackend"/></property>
+      <property name="cache"><ref bean="x509UserCacheBackend"/></property>
 	</bean>
 
 	<bean id="x509AuthoritiesPopulator" class="ee.agri.alkor.web.server.DaoX509AuthoritiesPopulator">
@@ -90,8 +90,8 @@
    <bean id="loggerListener" class="ee.agri.alkor.service.AuthenticationServiceDelegate"/>
 
    <bean id="basicProcessingFilter" class="org.acegisecurity.ui.basicauth.BasicProcessingFilter">
-      <property name="authenticationManager"><ref local="authenticationManager"/></property>
-      <property name="authenticationEntryPoint"><ref local="basicProcessingFilterEntryPoint"/></property>
+      <property name="authenticationManager"><ref bean="authenticationManager"/></property>
+      <property name="authenticationEntryPoint"><ref bean="basicProcessingFilterEntryPoint"/></property>
    </bean>
 
    <bean id="basicProcessingFilterEntryPoint" class="org.acegisecurity.ui.basicauth.BasicProcessingFilterEntryPoint">
@@ -111,8 +111,8 @@
    </bean>
 
    <bean id="rememberMeProcessingFilter" class="org.acegisecurity.ui.rememberme.RememberMeProcessingFilter">
-      <property name="authenticationManager"><ref local="authenticationManager"/></property>
-      <property name="rememberMeServices"><ref local="rememberMeServices"/></property>
+      <property name="authenticationManager"><ref bean="authenticationManager"/></property>
+      <property name="rememberMeServices"><ref bean="rememberMeServices"/></property>
    </bean>
 
    <bean id="rememberMeServices" class="org.acegisecurity.ui.rememberme.TokenBasedRememberMeServices">
@@ -142,7 +142,7 @@
         <filter-mapping> in web.xml for the following beans to be used -->
 
    <bean id="channelProcessingFilter" class="org.acegisecurity.securechannel.ChannelProcessingFilter">
-      <property name="channelDecisionManager"><ref local="channelDecisionManager"/></property>
+      <property name="channelDecisionManager"><ref bean="channelDecisionManager"/></property>
       <property name="filterInvocationDefinitionSource">
          <value>
 			    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON
@@ -162,9 +162,9 @@
    <bean id="channelDecisionManager" class="org.acegisecurity.securechannel.ChannelDecisionManagerImpl">
       <property name="channelProcessors">
          <list>
-            <ref local="secureChannelProcessor"/>
-            <ref local="idSecureChannelProcessor"/>
-            <ref local="insecureChannelProcessor"/>
+            <ref bean="secureChannelProcessor"/>
+            <ref bean="idSecureChannelProcessor"/>
+            <ref bean="insecureChannelProcessor"/>
          </list>
       </property>
    </bean>
@@ -212,7 +212,7 @@
    <!-- ===================== HTTP REQUEST SECURITY ==================== -->
 
    <bean id="exceptionTranslationFilter" class="org.acegisecurity.ui.ExceptionTranslationFilter">
-      <property name="authenticationEntryPoint"><ref local="authenticationProcessingFilterEntryPoint"/></property>
+      <property name="authenticationEntryPoint"><ref bean="authenticationProcessingFilterEntryPoint"/></property>
       <property name="accessDeniedHandler">
       	<bean class="org.acegisecurity.ui.AccessDeniedHandlerImpl">
       		<property name="errorPage" value="/accessDenied.jsp"/>
@@ -232,7 +232,7 @@
       </property>
       <property name="defaultTargetUrl"><value>/index.html</value></property>
       <property name="filterProcessesUrl"><value>/j_acegi_security_check</value></property>
-      <property name="rememberMeServices"><ref local="rememberMeServices"/></property>
+      <property name="rememberMeServices"><ref bean="rememberMeServices"/></property>
    </bean>
 
 
@@ -257,7 +257,7 @@
         Accordingly, you should place MOST SPECIFIC (ie a/b/c/d.*) expressions first, with LEAST SPECIFIC (ie a/.*) expressions last -->
    <bean id="filterInvocationInterceptor" class="org.acegisecurity.intercept.web.FilterSecurityInterceptor">
       <property name="authenticationManager"><ref bean="authenticationManager"/></property>
-      <property name="accessDecisionManager"><ref local="httpRequestAccessDecisionManager"/></property>
+      <property name="accessDecisionManager"><ref bean="httpRequestAccessDecisionManager"/></property>
       <property name="objectDefinitionSource">
          <value>
 			    CONVERT_URL_TO_LOWERCASE_BEFORE_COMPARISON

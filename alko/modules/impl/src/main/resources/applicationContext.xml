@@ -4,13 +4,13 @@
 	xmlns:aop="http://www.springframework.org/schema/aop"
 	xmlns:tx="http://www.springframework.org/schema/tx"
 	xsi:schemaLocation="
-       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
-       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.0.xsd
-       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd">
 
 
 	<bean id="mySessionFactory"
-		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+		class="org.springframework.orm.hibernate5.LocalSessionFactoryBean"
 		scope="singleton">
 		<property name="dataSource" ref="myDataSource" />
 		<property name="configLocation"
@@ -23,7 +23,7 @@
 	<bean id="jndiSessionFactory"
 		class="org.springframework.jndi.JndiObjectFactoryBean"
 		depends-on="mySessionFactory">
-		<property name="jndiName" value="java:alkorHS" />
+		<property name="jndiName" value="java:/alkorHS" />
 	</bean>
 
 
@@ -88,7 +88,7 @@
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 	</bean>
 
-	<bean id="velocityEngine"
+	<!--<bean id="velocityEngine"
 		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 		<property name="velocityProperties">
 			<value>
@@ -96,7 +96,7 @@
 				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
 			</value>
 		</property>
-	</bean>
+	</bean>-->
 
 
 	<bean id="mailSender"
@@ -124,7 +124,7 @@
 		<property name="daysBeforeRegistryEntryExpiry" value="60" />
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 		<property name="mailSender" ref="mailSender" />
-		<property name="velocityEngine" ref="velocityEngine" />
+		<!--<property name="velocityEngine" ref="velocityEngine" />-->
 	</bean>
 
 	<bean id="ExpiredRegEntryJobs"
@@ -140,7 +140,7 @@
 		<property name="daysBeforeNotificationIsSent" value="1" />
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 		<property name="mailSender" ref="mailSender" />
-		<property name="velocityEngine" ref="velocityEngine" />
+		<!--<property name="velocityEngine" ref="velocityEngine" />-->
 	</bean>
 	
 	<bean id="notEnteredApplicationsJob"
@@ -177,35 +177,35 @@
 	</bean>
 
 	<bean id="cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="regEntryExpireNotificationJob" />
 		<!-- run every morning at 6 AM -->
 		<property name="cronExpression" value="0 0 6 * * ?" />
 	</bean>
 	
 	<bean id="cronTrigger2"
-		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="regEntryExpiredProcessJob" />
 		<!-- run every morning at 3 AM -->
 		<property name="cronExpression" value="0 0 3 * * ?" />
 	</bean>
 	
 	<bean id="cronTrigger3"
-		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="extendUntilApplicationExpiredProcessJob" />
 		<!-- run every morning at 5 AM -->
 		<property name="cronExpression" value="0 0 5 * * ?" /> 
 	</bean>
 	
 	<bean id="cronTrigger4"
-		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="notEnteredApplicationsJob" />
 		<!-- run every sunday at 4 AM -->
 		<property name="cronExpression" value="0 0 4 * * ?" />
 	</bean>
 	
 	<bean id="cronTrigger5"
-		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="decisionSequenceResetJob" />
 		<!-- run every january 1st 00:01 AM -->
 		<property name="cronExpression" value="0 1 0 1 1 ?" />
@@ -226,21 +226,21 @@
 
 	<bean id="myDataSource"
 		class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:alkorDS" />
+		<property name="jndiName" value="java:/alkorDS" />
 	</bean>
 
 	<bean id="myTxManager"
-		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 	</bean>
 	
-  <bean id="pgDataSource" class="ee.agri.alkor.impl.DbBean" destroy-method="close">
+  <bean id="pgDataSource" class="ee.agri.alkor.impl.DbBean">
     <property name="driverClassName" value="@db.driver@"/>
     <property name="url" value="@db.url@"/>
     <property name="username" value="@db.user@"/>
     <property name="password" value="@db.password@"/>
   </bean>
 
-	<tx:annotation-driven transaction-manager="myTxManager" />
+	<!--<tx:annotation-driven transaction-manager="myTxManager" />-->
 
 </beans>

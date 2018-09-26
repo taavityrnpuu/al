@@ -10,11 +10,13 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.FlushModeType;
+
 import org.apache.log4j.Logger;
 import org.hibernate.FlushMode;
 import org.hibernate.Session;
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
 
 import ee.agri.alkor.model.IClassificatorAware;
@@ -58,7 +60,9 @@ public class ClassificatorServiceImpl extends BaseBO implements IClassificatorSe
 		}
 		// getHibernateTemplate().setEntityInterceptor(new AuditInterceptor());
 		try {
-			getHibernateTemplate().saveOrUpdateAll(classList);
+			for(Classificator classItem : classList) {
+				getHibernateTemplate().saveOrUpdate(classItem);
+			}
 		} catch (DataIntegrityViolationException cve) {
 			throw new ConstraintViolationException(classList.toString());
 		} catch (Exception e) {
@@ -231,7 +235,7 @@ public class ClassificatorServiceImpl extends BaseBO implements IClassificatorSe
 		StringBuffer sbuf = new StringBuffer("from ");
 		sbuf.append(category).append(" c where c.code = '").append(code).append("' ");
 
-		List<Classificator> classificatorList = getHibernateTemplate().find(sbuf.toString());
+		List<Classificator> classificatorList = (List<Classificator>)getHibernateTemplate().find(sbuf.toString());
 		return (classificatorList != null && classificatorList.size() > 0) ? classificatorList.get(0) : null;
 	}
 
@@ -256,7 +260,7 @@ public class ClassificatorServiceImpl extends BaseBO implements IClassificatorSe
 		// LOGGER.debug("linkClassificators, entity: " +
 		// instance.getClass().getName());
 
-		FlushMode before = session.getFlushMode();
+		FlushModeType before = session.getFlushMode();
 
 		session.setFlushMode(FlushMode.COMMIT);
 		alreadyLinkedHierarchy = new HashSet<IClassificatorAware>();

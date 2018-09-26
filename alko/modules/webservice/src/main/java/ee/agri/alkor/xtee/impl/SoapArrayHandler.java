@@ -17,8 +17,8 @@ import org.apache.axis.Message;
 import org.apache.axis.MessageContext;
 import org.apache.axis.handlers.BasicHandler;
 import org.apache.axis.message.RPCParam;
+import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
-import org.springframework.ui.velocity.VelocityEngineUtils;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NamedNodeMap;
@@ -55,7 +55,7 @@ public class SoapArrayHandler extends BasicHandler {
                "applyedApplicationsResponse").item(0);
 
          if (elm != null) {
-            Map args = new HashMap();
+            Map<String, String> args = new HashMap<String, String>();
             /*
 				List apps = (List)msgContext.getProperty("apps");
 				args.put("apps", apps);*/
@@ -69,13 +69,16 @@ public class SoapArrayHandler extends BasicHandler {
 
    }
 
-   private void makeResponse(MessageContext msgContext, String resourceName, Map args) throws Exception {
+   private void makeResponse(MessageContext msgContext, String resourceName, Map<String, String> args) throws Exception {
       VelocityEngine velocityEngine =
             ee.agri.alkor.xtee.ServiceFactory.getVelcityEngine();
       StringWriter writer = new StringWriter();
-
-      VelocityEngineUtils.mergeTemplate(
-            velocityEngine, resourceName, "utf-8", args, writer);
+      
+      VelocityContext velocityContext = new VelocityContext();
+      for (Map.Entry<String, String> entry : args.entrySet()) {
+    	  velocityContext.put(entry.getKey(), entry.getValue());
+      }
+      velocityEngine.mergeTemplate(resourceName, "utf-8", velocityContext, writer);
       msgContext.setMessage(new Message(writer.toString()));
 
    }

@@ -10,7 +10,7 @@
 
 
 	<bean id="mySessionFactory"
-		class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean"
+		class="org.springframework.orm.hibernate5.annotation.AnnotationSessionFactoryBean"
 		scope="singleton">
 		<property name="dataSource" ref="myDataSource" />
 		<property name="configLocation"
@@ -22,7 +22,7 @@
 	<bean id="jndiSessionFactory"
 		class="org.springframework.jndi.JndiObjectFactoryBean"
 		depends-on="mySessionFactory">
-		<property name="jndiName" value="java:alkorHS" />
+		<property name="jndiName" value="java:/alkorHS" />
 	</bean>
 
 
@@ -82,7 +82,7 @@
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 	</bean>
 
-	<bean id="velocityEngine"
+	<!--<bean id="velocityEngine"
 		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 		<property name="velocityProperties">
 			<value>
@@ -90,7 +90,7 @@
 				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
 			</value>
 		</property>
-	</bean>
+	</bean>-->
 
 
 	<bean id="mailSender"
@@ -107,7 +107,7 @@
 		<property name="mode" value="@mode@" />
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 		<property name="mailSender" ref="mailSender" />
-		<property name="velocityEngine" ref="velocityEngine" />
+		<!--<property name="velocityEngine" ref="velocityEngine" />-->
 	</bean>
 	
 	<bean id="ExpiredRegEntryJobs"
@@ -131,7 +131,7 @@
 	</bean>
 
 	<bean id="cronTrigger"
-		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="regEntryExpireNotificationJob" />
 		<!-- run every morning at 6 AM -->
 		<property name="cronExpression" value="0 0 6 * * ?" />
@@ -140,7 +140,7 @@
 	</bean>
 	
 	<bean id="cronTrigger2"
-		class="org.springframework.scheduling.quartz.CronTriggerBean">
+		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="regEntryExpiredProcessJob" />
 		<!-- run every morning at 3 AM -->
 		<property name="cronExpression" value="0 0 3 * * ?" />
@@ -160,11 +160,11 @@
 
 	<bean id="myDataSource"
 		class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:alkorDS" />
+		<property name="jndiName" value="java:/alkorDS" />
 	</bean>
 
 	<bean id="myTxManager"
-		class="org.springframework.orm.hibernate3.HibernateTransactionManager">
+		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 	</bean>
 

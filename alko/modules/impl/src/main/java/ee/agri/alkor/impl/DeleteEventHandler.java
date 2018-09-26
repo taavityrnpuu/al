@@ -4,10 +4,11 @@
 package ee.agri.alkor.impl;
 
 import org.apache.log4j.Logger;
-import org.hibernate.event.PostDeleteEvent;
-import org.hibernate.event.PostDeleteEventListener;
-import org.hibernate.event.PreDeleteEvent;
-import org.hibernate.event.PreDeleteEventListener;
+import org.hibernate.event.spi.PostDeleteEvent;
+import org.hibernate.event.spi.PostDeleteEventListener;
+import org.hibernate.event.spi.PreDeleteEvent;
+import org.hibernate.event.spi.PreDeleteEventListener;
+import org.hibernate.persister.entity.EntityPersister;
 
 import ee.agri.alkor.impl.util.HistoryUtil;
 import ee.agri.alkor.model.ABaseBean;
@@ -55,6 +56,12 @@ public class DeleteEventHandler implements PostDeleteEventListener, PreDeleteEve
 		    bean.setDeletedBy(AuthenticationServiceDelegate.getCurrentUserName());
 		    return true;
 		}
+		return false;
+	}
+
+	@Override
+	public boolean requiresPostCommitHanding(EntityPersister arg0) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 

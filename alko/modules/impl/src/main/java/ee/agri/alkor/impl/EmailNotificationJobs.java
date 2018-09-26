@@ -1,5 +1,6 @@
 package ee.agri.alkor.impl;
 
+import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -11,15 +12,15 @@ import java.util.Map;
 import javax.mail.internet.MimeMessage;
 
 import org.apache.log4j.Logger;
+import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.ui.velocity.VelocityEngineUtils;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import ee.agri.alkor.model.RegistryApplication;
 import ee.agri.alkor.model.Enterprise;
@@ -119,7 +120,7 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 						            
 						            message.setBcc(bccAddresses);
 						            message.setFrom(EmailNotificationJobs.this.getMailFrom()); 
-						            Map model = new HashMap();
+						            Map<String, Object> model = new HashMap();
 						            
 						            Calendar cal = Calendar.getInstance();
 						            String DATE_FORMAT = "dd.MM.yyyy";
@@ -128,11 +129,16 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 						            model.put("current_date", sdf.format(cal.getTime()));
 						            model.put("applicant", applicant);
 						            model.put("regentries", regentries);
-						            String text = VelocityEngineUtils.mergeTemplateIntoString(
-						               velocityEngine, "regentryExpiry.vm", "UTF-8", model);
-						            message.setText(text, true);
 						            
+						            VelocityContext velocityContext = new VelocityContext();
+						            for (Map.Entry<String, Object> entry : model.entrySet()) {
+						            	velocityContext.put(entry.getKey(), entry.getValue());
 						            }
+						            StringWriter text = new StringWriter();
+						            velocityEngine.mergeTemplate("regentryExpiry.vm", "UTF-8", velocityContext, text);
+						            message.setText(text.toString(), true);
+						            
+						        }
 					        };
 					        try {
 					        	EmailNotificationJobs.this.getMailSender().send(preparator);

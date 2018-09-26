@@ -8,8 +8,8 @@ import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.StatelessSession;
 import org.hibernate.Transaction;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
+import org.springframework.orm.hibernate5.HibernateCallback;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
 import ee.agri.alkor.model.IEntity;
@@ -57,7 +57,7 @@ public class Alkor2Dao extends HibernateDaoSupport implements IAlkor2Service {
 	public Hashtable<String, RegistryEntry> findAllRegEntry() {
 		return (Hashtable<String, RegistryEntry>)getHibernateTemplate().execute(new HibernateCallback(){
 			/* (non-Javadoc)
-			 * @see org.springframework.orm.hibernate3.HibernateCallback#doInHibernate(org.hibernate.Session)
+			 * @see org.springframework.orm.hibernate5.HibernateCallback#doInHibernate(org.hibernate.Session)
 			 */
 			public Object doInHibernate(Session arg0) throws HibernateException, SQLException {
 				//StatelessSession session = arg0.getSessionFactory().openStatelessSession();

@@ -6,14 +6,15 @@ package ee.agri.alkor.impl;
 import java.util.Arrays;
 
 import org.apache.log4j.Logger;
-import org.hibernate.event.PostInsertEvent;
-import org.hibernate.event.PostInsertEventListener;
-import org.hibernate.event.PostUpdateEvent;
-import org.hibernate.event.PostUpdateEventListener;
-import org.hibernate.event.PreInsertEvent;
-import org.hibernate.event.PreInsertEventListener;
-import org.hibernate.event.PreUpdateEvent;
-import org.hibernate.event.PreUpdateEventListener;
+import org.hibernate.event.spi.PostInsertEvent;
+import org.hibernate.event.spi.PostInsertEventListener;
+import org.hibernate.event.spi.PostUpdateEvent;
+import org.hibernate.event.spi.PostUpdateEventListener;
+import org.hibernate.event.spi.PreInsertEvent;
+import org.hibernate.event.spi.PreInsertEventListener;
+import org.hibernate.event.spi.PreUpdateEvent;
+import org.hibernate.event.spi.PreUpdateEventListener;
+import org.hibernate.persister.entity.EntityPersister;
 
 import ee.agri.alkor.impl.util.HistoryUtil;
 import ee.agri.alkor.model.ABaseBean;
@@ -85,6 +86,12 @@ public class SaveOrUpdateEventHandler implements PostUpdateEventListener, PostIn
 		    bean.setCreatedBy(AuthenticationServiceDelegate.getCurrentUserName());
 		    return true;
 		}
+		return false;
+	}
+
+	@Override
+	public boolean requiresPostCommitHanding(EntityPersister arg0) {
+		// TODO Auto-generated method stub
 		return false;
 	}
 
