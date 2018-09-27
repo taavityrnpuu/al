@@ -20,8 +20,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.xml.bind.DatatypeConverter;
 
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.acegisecurity.providers.x509.X509AuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.apache.commons.codec.binary.Hex;
 import org.apache.xml.security.utils.Base64;
 import org.bouncycastle.util.io.pem.PemReader;

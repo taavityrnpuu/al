@@ -288,7 +288,7 @@ public class LoginServiceServlet extends HttpServlet {
 				PostgreUtils.insert("INSERT INTO user_session (id_code, reg_nr) VALUES ('" + ik + "','"
 						+ request.getParameter("reg_code").replaceAll("'", "\"") + "')");
 				request.getSession().setAttribute("login_reg_code", (String) request.getParameter("reg_code"));
-				response.sendRedirect("/j_acegi_security_check");
+				response.sendRedirect("/j_spring_security_check");
 			} else { // kasutaja viibimisel loginlehel oli õiguste olukord
 						// muutunud
 				response.sendRedirect("/loginservice");

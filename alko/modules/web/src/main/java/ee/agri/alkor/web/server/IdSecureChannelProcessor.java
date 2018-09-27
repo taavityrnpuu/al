@@ -2,13 +2,14 @@ package ee.agri.alkor.web.server;
 
 import java.io.IOException;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.ServletException;
 
-import org.acegisecurity.ConfigAttribute;
+import org.springframework.security.access.ConfigAttribute;
 import org.acegisecurity.ConfigAttributeDefinition;
-import org.acegisecurity.intercept.web.FilterInvocation;
-import org.acegisecurity.securechannel.SecureChannelProcessor;
+import org.springframework.security.web.FilterInvocation;
+import org.springframework.security.web.access.channel.SecureChannelProcessor;
 import org.apache.log4j.Logger;
 import org.springframework.util.Assert;
 

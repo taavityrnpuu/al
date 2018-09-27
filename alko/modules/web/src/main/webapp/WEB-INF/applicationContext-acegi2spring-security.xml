@@ -1,0 +1,342 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:security="http://www.springframework.org/schema/security"
+
+	xsi:schemaLocation="
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+	http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+
+	<!--
+	- Application context containing authentication, channel
+	- security and web URI beans.
+	-
+	- Only used by "filter" artifact.
+	-
+	- $Id: applicationContext-acegi2spring-security.xml,v 1.1.10.2 2017/03/28 07:19:28 karl Exp $
+	-->
+
+	<!-- ======================== FILTER CHAIN ======================= -->
+
+	<!--  if you wish to use channel security, add "channelProcessingFilter," in front
+	of "httpSessionContextIntegrationFilter" in the list below -->
+	<bean id="filterChainProxy" class="org.springframework.security.web.FilterChainProxy">
+		<constructor-arg>
+			<list>
+				<security:filter-chain pattern="/**" filters="
+					channelProcessingFilter,
+					httpSessionContextIntegrationFilter,
+					logoutFilter,
+					authenticationProcessingFilter,
+					springSecurityFilterChain,
+					securityContextHolderAwareRequestFilter,
+					rememberMeProcessingFilter,
+					anonymousProcessingFilter,
+					exceptionTranslationFilter,
+					filterInvocationInterceptor"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	<!-- ======================== AUTHENTICATION ======================= -->
+	
+	<bean id="authenticationManager" class="org.springframework.security.authentication.ProviderManager">
+		<constructor-arg>
+			<list>
+				<ref bean="daoAuthenticationProvider"/>
+				<!--<ref bean="x509AuthenticationProvider"/>-->
+				<ref bean="anonymousAuthenticationProvider"/>
+				<ref bean="rememberMeAuthenticationProvider"/>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<!--<bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>-->
+
+	<bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider" >
+		<property name="userDetailsService" ref="authenticationService"/>
+		<property name="userCache">
+			<ref bean="userCache"/>
+		</property>
+		<!--property name="passwordEncoder"><ref bean="passwordEncoder"/></property-->
+	</bean>
+
+	<bean id="authenticationService" class="ee.agri.alkor.service.AuthenticationServiceDelegate"/>
+
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean"/>
+
+	<bean id="userCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+		<property name="cacheManager">
+			<ref bean="cacheManager"/>
+		</property>
+		<property name="cacheName">
+			<value>userCache</value>
+		</property>
+	</bean>
+
+	<bean id="userCache" class="org.springframework.security.core.userdetails.cache.EhCacheBasedUserCache">
+		<property name="cache">
+			<ref bean="userCacheBackend"/>
+		</property>
+	</bean>
+	<!--<bean id="x509AuthenticationProvider" class="org.acegisecurity.providers.x509.X509AuthenticationProvider">
+		<property name="x509AuthoritiesPopulator"><ref bean="x509AuthoritiesPopulator"/></property>-->
+			<!-- <property name="x509UserCache"><ref bean="x509UserCache"/></property> -->
+			<!--</bean>-->
+
+			<bean id="x509UserCacheBackend" class="org.springframework.cache.ehcache.EhCacheFactoryBean">
+				<property name="cacheManager">
+					<ref bean="cacheManager"/>
+				</property>
+				<property name="cacheName">
+					<value>x509Cache</value>
+				</property>
+			</bean>
+
+			<!--<bean id="x509UserCache" class="org.acegisecurity.providers.x509.cache.EhCacheBasedX509UserCache">
+		<property name="cache"><ref bean="x509UserCacheBackend"/></property>
+	</bean>-->
+
+	<bean id="x509AuthoritiesPopulator" class="ee.agri.alkor.web.server.DaoX509AuthoritiesPopulator">
+		<property name="userDetailsService" ref="authenticationService"/>
+		<!--  <property name="subjectDNRegex"><value>emailAddress=(.*?),</value></property> -->
+	</bean>
+
+	<!-- Automatically receives AuthenticationEvent messages -->
+	<bean id="loggerListener" class="ee.agri.alkor.service.AuthenticationServiceDelegate"/>
+
+	<bean id="springSecurityFilterChain" class="org.springframework.security.web.authentication.www.BasicAuthenticationFilter">
+		<constructor-arg>
+			<ref bean="authenticationManager"/>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="basicProcessingFilterEntryPoint"/>
+		</constructor-arg>
+	</bean>
+
+	<bean id="basicProcessingFilterEntryPoint" class="org.springframework.security.web.authentication.www.BasicAuthenticationEntryPoint">
+		<property name="realmName">
+			<value>Contacts Realm</value>
+		</property>
+	</bean>
+
+	<bean id="anonymousProcessingFilter" class="org.springframework.security.web.authentication.AnonymousAuthenticationFilter">
+		<constructor-arg>
+			<value>foobar</value>
+		</constructor-arg>
+		<!--<property name="userAttribute"><value>anonymousUser,ROLE_ANONYMOUS</value></property>-->
+	</bean>
+
+	<bean id="anonymousAuthenticationProvider" class="org.springframework.security.authentication.AnonymousAuthenticationProvider">
+		<constructor-arg>
+			<value>foobar</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="httpSessionContextIntegrationFilter" class="org.springframework.security.web.context.SecurityContextPersistenceFilter">
+	</bean>
+
+	<bean id="rememberMeProcessingFilter" class="org.springframework.security.web.authentication.rememberme.RememberMeAuthenticationFilter">
+		<constructor-arg>
+			<ref bean="authenticationManager"/>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="rememberMeServices"/>
+		</constructor-arg>
+	</bean>
+
+	<bean id="rememberMeServices" class="org.springframework.security.web.authentication.rememberme.TokenBasedRememberMeServices">
+		<constructor-arg>
+			<value>springRocks</value>
+		</constructor-arg>
+		<constructor-arg>
+			<ref bean="authenticationService"/>
+		</constructor-arg>
+	</bean>
+
+	<bean id="rememberMeAuthenticationProvider" class="org.springframework.security.authentication.RememberMeAuthenticationProvider">
+		<constructor-arg>
+			<value>springRocks</value>
+		</constructor-arg>
+	</bean>
+
+	<bean id="logoutFilter" class="org.springframework.security.web.authentication.logout.LogoutFilter">
+		<constructor-arg value="/"/>
+		<!-- URL redirected to after logout -->
+		<constructor-arg>
+			<list>
+				<ref bean="rememberMeServices"/>
+				<bean class="org.springframework.security.web.authentication.logout.SecurityContextLogoutHandler"/>
+			</list>
+		</constructor-arg>
+	</bean>
+
+	<bean id="securityContextHolderAwareRequestFilter" class="org.springframework.security.web.servletapi.SecurityContextHolderAwareRequestFilter"/>
+
+	<!-- ===================== HTTP CHANNEL REQUIREMENTS ==================== -->
+
+	<!-- You will need to uncomment the "Spring Channel Processing Filter"
+	<filter-mapping> in web.xml for the following beans to be used -->
+
+	<bean id="channelProcessingFilter" class="org.springframework.security.web.access.channel.ChannelProcessingFilter">
+		<property name="channelDecisionManager">
+			<ref bean="channelDecisionManager"/>
+		</property>
+		<property name="securityMetadataSource">
+			<security:filter-security-metadata-source use-expressions="false">
+				<security:intercept-url pattern="\A/j_spring_security_check.*\Z" access="REQUIRES_SECURE_CHANNEL"/>
+				<security:intercept-url pattern="\A/history.html#LoginErrorPage.*\Z" access="REQUIRES_SECURE_CHANNEL"/>
+				<security:intercept-url pattern="\A/history.html#LoginErrorPage3.*\Z" access="REQUIRES_SECURE_CHANNEL"/>
+				<security:intercept-url pattern="\A/id.*\Z" access="REQUIRES_IDSECURE_CHANNEL"/>
+				<security:intercept-url pattern="\A/services.*\Z" access="REQUIRES_INSECURE_CHANNEL"/>
+				<security:intercept-url pattern="\A/pub.*\Z" access="REQUIRES_INSECURE_CHANNEL"/>
+				<security:intercept-url pattern="\A/soapmonitor.*\Z" access="REQUIRES_INSECURE_CHANNEL"/>
+				<security:intercept-url pattern="\A/xsd.*\Z" access="REQUIRES_INSECURE_CHANNEL"/>
+				<security:intercept-url pattern="\A.*\Z" access="REQUIRES_SECURE_CHANNEL"/>
+			</security:filter-security-metadata-source>
+		</property>
+	</bean>
+
+	<bean id="channelDecisionManager" class="org.springframework.security.web.access.channel.ChannelDecisionManagerImpl">
+		<property name="channelProcessors">
+			<list>
+				<ref bean="secureChannelProcessor"/>
+				<ref bean="idSecureChannelProcessor"/>
+				<ref bean="insecureChannelProcessor"/>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="secureChannelProcessor" class="org.springframework.security.web.access.channel.SecureChannelProcessor">
+		<property name="entryPoint" ref="secureEntry" />
+	</bean>
+	<bean id="idSecureChannelProcessor" class="ee.agri.alkor.web.server.IdSecureChannelProcessor">
+		<property name="secureKeyword" value="REQUIRES_IDSECURE_CHANNEL" />
+		<property name="entryPoint" ref="idSecureEntry" />
+	</bean>
+	<bean id="insecureChannelProcessor" class="org.springframework.security.web.access.channel.InsecureChannelProcessor" />
+
+	<bean id="secureEntry" class="org.springframework.security.web.access.channel.RetryWithHttpsEntryPoint">
+		<property name="portMapper" ref="httpsRequiredPortMapper" />
+	</bean>
+	<bean id="idSecureEntry" class="ee.agri.alkor.web.server.RetryWithIdEntryPoint">
+		<property name="portMapper" ref="certRequiredPortMapper" />
+	</bean>
+
+	<bean id="httpsRequiredPortMapper" class="org.springframework.security.web.PortMapperImpl">
+		<property name="portMappings">
+			<map>
+				<entry key="80" value="8443" />
+				<entry key="8080" value="8443" />
+				<entry key="8543" value="8443" />
+				<entry key="18543" value="18443" />
+			</map>
+		</property>
+	</bean>
+	<bean id="certRequiredPortMapper" class="org.springframework.security.web.PortMapperImpl">
+		<property name="portMappings">
+			<map>
+				<entry key="80" value="8543" />
+				<entry key="8080" value="8543" />
+				<entry key="8443" value="8543" />
+				<entry key="8543" value="8543" />
+				<entry key="18443" value="18543" />
+				<entry key="443" value="8543" />
+				<entry key="8543" value="8543" />
+				<!-- loopback -->
+			</map>
+		</property>
+	</bean>
+
+	<!-- ===================== HTTP REQUEST SECURITY ==================== -->
+
+	<bean id="exceptionTranslationFilter" class="org.springframework.security.web.access.ExceptionTranslationFilter">
+		<constructor-arg>
+			<ref bean="authenticationProcessingFilterEntryPoint"/>
+		</constructor-arg>
+		<property name="accessDeniedHandler">
+			<bean class="org.springframework.security.web.access.AccessDeniedHandlerImpl">
+				<property name="errorPage" value="/accessDenied.jsp"/>
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="authenticationProcessingFilter" class="ee.agri.alkor.web.server.AuthenticationFilter">
+		<property name="authenticationManager">
+			<ref bean="authenticationManager"/>
+		</property>
+		<!--<property name="authenticationFailureUrl"><value>/index.html#LoginErrorPage</value></property>-->
+		<!--<property name="exceptionMappings">
+		<props>
+			<prop key="org.springframework.security.core.userdetails.UsernameNotFoundException">/index.html#LoginErrorPage3</prop>
+			<prop key="ee.agri.alkor.web.server.NoCertificateException">/index.html#LoginErrorPage4</prop>
+			<prop key="org.springframework.security.authentication.InsufficientAuthenticationException">/index.html#LoginErrorPage5</prop>
+		</props>
+		</property>-->
+		<!--<property name="defaultTargetUrl"><value>/index.html</value></property>-->
+		<property name="authenticationSuccessHandler">
+			<bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
+				<property name="defaultTargetUrl" value="/index.html#test"/>
+			</bean>
+		</property>
+		<property name="authenticationFailureHandler">
+			<bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
+				<property name="defaultFailureUrl" value="/index.html#LoginErrorPage"/>
+			</bean>
+		</property>
+		<property name="filterProcessesUrl">
+			<value>/j_spring_security_check</value>
+		</property>
+		<property name="rememberMeServices">
+			<ref bean="rememberMeServices"/>
+		</property>
+	</bean>
+
+
+	<bean id="authenticationProcessingFilterEntryPoint" class="org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint">
+		<constructor-arg>
+			<value>/index.html#LoginPage</value>
+		</constructor-arg>
+		<property name="forceHttps">
+			<value>true</value>
+		</property>
+	</bean>
+
+	<bean id="httpRequestAccessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<property name="allowIfAllAbstainDecisions">
+			<value>false</value>
+		</property>
+		<constructor-arg>
+			<list>
+				<ref bean="roleVoter"/>
+			</list>
+		</constructor-arg>
+	</bean>
+	<!-- An access decision voter that reads ROLE_* configuration settings -->
+	<bean id="roleVoter" class="org.springframework.security.access.vote.RoleVoter"/>
+
+	<!-- Note the order that entries are placed against the objectDefinitionSource is critical.
+	The FilterSecurityInterceptor will work from the top of the list down to the FIRST pattern that matches the request URL.
+	Accordingly, you should place MOST SPECIFIC (ie a/b/c/d.*) expressions first, with LEAST SPECIFIC (ie a/.*) expressions last -->
+	
+	<bean id="filterInvocationInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">
+		<property name="authenticationManager">
+			<ref bean="authenticationManager"/>
+		</property>
+		<property name="accessDecisionManager">
+			<ref bean="httpRequestAccessDecisionManager"/>
+		</property>
+		<property name="securityMetadataSource">
+			<security:filter-security-metadata-source use-expressions="false">
+				<security:intercept-url pattern="/index.html" access="ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP"/>
+				<security:intercept-url pattern="/pub/**" access="ROLE_PUB,ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP"/>
+				<security:intercept-url pattern="/app/**" access="ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP"/>
+				<security:intercept-url pattern="/**" access="ROLE_ANONYMOUS,ROLE_PUB,ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP"/>
+			</security:filter-security-metadata-source>
+		</property>
+	</bean>
+</beans>

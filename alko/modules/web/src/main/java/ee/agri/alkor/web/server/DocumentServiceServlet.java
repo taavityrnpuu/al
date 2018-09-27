@@ -23,9 +23,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.acegisecurity.providers.x509.X509AuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.acegisecurity.providers.x509.X509AuthenticationToken;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -471,11 +471,11 @@ public class DocumentServiceServlet extends HttpServlet {
 	}
 
 	private AlkoUserDetails geUserDetails(Principal user) {
-		if (user instanceof X509AuthenticationToken) {
+		/*if (user instanceof X509AuthenticationToken) {
 			return (AlkoUserDetails) ((X509AuthenticationToken) user).getPrincipal();
-		} else {
+		} else {*/
 			return (AlkoUserDetails) ((UsernamePasswordAuthenticationToken) user).getPrincipal();
-		}
+		//}
 	}
 
 	private boolean publicDoc(Long docId, List<RegistryDocument> list) {

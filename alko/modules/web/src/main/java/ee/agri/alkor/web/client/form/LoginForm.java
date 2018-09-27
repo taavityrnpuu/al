@@ -81,8 +81,8 @@ public class LoginForm extends Form {
 	public void init() {
 		super.init();
 		loginFormPanel = new FormPanel("");
-		loginFormPanel.setAction(GWT.getModuleBaseURL() + "j_acegi_security_check");
-		// loginFormPanel.setAction("j_acegi_security_check");
+		loginFormPanel.setAction(GWT.getModuleBaseURL() + "j_spring_security_check");
+		// loginFormPanel.setAction("j_spring_security_check");
 		loginFormPanel.setMethod(FormPanel.METHOD_POST);
 		loginFormPanel.setEncoding(FormPanel.ENCODING_URLENCODED);
 

@@ -7,12 +7,11 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.http.HttpServletRequest;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.AuthenticationException;
-import org.acegisecurity.providers.AbstractAuthenticationToken;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.acegisecurity.providers.x509.X509AuthenticationToken;
-import org.acegisecurity.ui.webapp.AuthenticationProcessingFilter;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.AuthenticationException;
+import org.springframework.security.authentication.AbstractAuthenticationToken;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 import org.apache.log4j.Logger;
 
 import ee.agri.alkor.impl.PostgreUtils;
@@ -23,7 +22,7 @@ import ee.agri.alkor.impl.ResultSet;
  * @author ivars
  * 
  */
-public class AuthenticationFilter extends AuthenticationProcessingFilter {
+public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	private static Logger LOGGER = Logger.getLogger(AuthenticationFilter.class);
 
 	public Authentication attemptAuthentication(HttpServletRequest request) throws AuthenticationException {
@@ -70,7 +69,7 @@ public class AuthenticationFilter extends AuthenticationProcessingFilter {
 			*/
 			
 			authRequest = new UsernamePasswordAuthenticationToken(username, password);
-			request.getSession().setAttribute(ACEGI_SECURITY_LAST_USERNAME_KEY, username);
+			//request.getSession().setAttribute(SPRING_SECURITY_LAST_USERNAME_KEY, username);
 		}/* else if (id != null && id.length() != 0) {// XTee login
 			// kasutajanimi mida ei kasutataks
 			LOGGER.debug("XTEE LOGINI ÜRITATI");

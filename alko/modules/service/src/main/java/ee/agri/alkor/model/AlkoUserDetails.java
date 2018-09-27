@@ -1,8 +1,10 @@
 package ee.agri.alkor.model;
 
-import org.acegisecurity.GrantedAuthority;
+import java.util.Collection;
 
-public class AlkoUserDetails extends org.acegisecurity.userdetails.User {
+import org.springframework.security.core.GrantedAuthority;
+
+public class AlkoUserDetails extends org.springframework.security.core.userdetails.User {
 
 	/**
 	 *
@@ -40,7 +42,7 @@ public class AlkoUserDetails extends org.acegisecurity.userdetails.User {
    }
 
    public AlkoUserDetails(String username, String password, String firstName,
-			String lastName, GrantedAuthority[] authorities, SystemUser systemUser) {
+			String lastName, Collection<GrantedAuthority> authorities, SystemUser systemUser) {
 
 		super(username, password, true, true,
 				true, true, authorities);
@@ -52,7 +54,7 @@ public class AlkoUserDetails extends org.acegisecurity.userdetails.User {
 	}
    
    public AlkoUserDetails(String username, String password, String firstName,
-			String lastName, String idCode, GrantedAuthority[] authorities, SystemUser systemUser) {
+			String lastName, String idCode, Collection<GrantedAuthority> authorities, SystemUser systemUser) {
 
 		super(username, password, true, true,
 				true, true, authorities);
@@ -65,7 +67,7 @@ public class AlkoUserDetails extends org.acegisecurity.userdetails.User {
 	}
    
    public AlkoUserDetails(String username, String password, String firstName,
-	         String lastName,String idCode, GrantedAuthority[] authorities, SystemUser systemUser, 
+	         String lastName,String idCode, Collection<GrantedAuthority> authorities, SystemUser systemUser, 
 	         String regCode, String occupation) {
 
 	      super(username, password, true, true,
@@ -80,7 +82,7 @@ public class AlkoUserDetails extends org.acegisecurity.userdetails.User {
 	   }
 
 	  public AlkoUserDetails(String username, String password, String firstName,
-	         String lastName, GrantedAuthority[] authorities, SystemUser systemUser, String regCode) {
+	         String lastName, Collection<GrantedAuthority> authorities, SystemUser systemUser, String regCode) {
 
 	      super(username, password, true, true,
 	            true, true, authorities);

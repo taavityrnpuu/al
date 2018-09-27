@@ -6,40 +6,40 @@
 	<context-param>
 		<param-name>contextConfigLocation</param-name>
 		<param-value>
-			/WEB-INF/applicationContext-acegi-security.xml
+			/WEB-INF/applicationContext-acegi2spring-security.xml
 			classpath:applicationContext.xml
 		</param-value>
 	</context-param>
 	
-	<!--<filter>
+	<filter>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
 	</filter>
 	<filter-mapping>
 		<filter-name>springSecurityFilterChain</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>-->
+	</filter-mapping>
 	
 	<!-- <filter> <filter-name>RequestDumpFilter</filter-name> <filter-class>ee.agri.alkor.web.server.RequestDumpFilter</filter-class> 
 		</filter> -->
 
-	<filter>
+	<!--<filter>
 		<filter-name>Acegi Filter Chain Proxy</filter-name>
 		<filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
 		<init-param>
 			<param-name>targetClass</param-name>
 			<param-value>org.acegisecurity.util.FilterChainProxy</param-value>
 		</init-param>
-	</filter>
+	</filter>-->
 
 	<!-- <filter-mapping> <filter-name>RequestDumpFilter</filter-name> <url-pattern>/*</url-pattern> 
 		</filter-mapping> -->
 
 
-	<filter-mapping>
+	<!--<filter-mapping>
 		<filter-name>Acegi Filter Chain Proxy</filter-name>
 		<url-pattern>/*</url-pattern>
-	</filter-mapping>
+	</filter-mapping>-->
 
 	<filter>
 		<filter-name>CAS Validation Filter</filter-name>

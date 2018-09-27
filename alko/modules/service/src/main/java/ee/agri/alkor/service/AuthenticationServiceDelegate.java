@@ -1,9 +1,9 @@
 package ee.agri.alkor.service;
 
-import org.acegisecurity.Authentication;
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.dao.DataAccessException;
 

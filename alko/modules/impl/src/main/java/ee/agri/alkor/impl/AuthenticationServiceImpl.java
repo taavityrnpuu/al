@@ -1,22 +1,24 @@
 package ee.agri.alkor.impl;
 
 import java.awt.image.renderable.RenderableImage;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.InsufficientAuthenticationException;
-import org.acegisecurity.event.authentication.AbstractAuthenticationEvent;
-import org.acegisecurity.event.authentication.AbstractAuthenticationFailureEvent;
-import org.acegisecurity.ui.WebAuthenticationDetails;
-import org.acegisecurity.userdetails.User;
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
+import org.springframework.security.authentication.event.AbstractAuthenticationFailureEvent;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.springframework.context.ApplicationEvent;
@@ -37,7 +39,7 @@ import ee.agri.alkor.service.SessionFilter;
 
 
 /**
- * Implements necessary methods for Acegi security framework.
+ * Implements necessary methods for Spring security framework.
  * 
  * @author ivar
  * 
@@ -445,21 +447,21 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		return nullValue;
 	}
 
-	private GrantedAuthority[] makeAuthorities(SystemUser user) {
-		GrantedAuthority[] roles = null;
+	private Collection<GrantedAuthority> makeAuthorities(SystemUser user) {
+		ArrayList<GrantedAuthority> roles = null;
 		if (user.getName().equals(IClassificatorService.EIT_USERNAME)) {
-			roles = new GrantedAuthority[1];
-			roles[0] = new GrantedAuthorityImpl("ROLE_EIT_GRP");
+			roles = new ArrayList<GrantedAuthority>();
+			roles.add(new SimpleGrantedAuthority("ROLE_EIT_GRP"));
 		} else if (user.getGroups().size() == 0) {
 			// throw new InsufficientAuthenticationException("");
-			// Lisame ANONYMOUS rolli et acegi oleks happy
-			roles = new GrantedAuthority[1];
-			roles[0] = new GrantedAuthorityImpl("ROLE_ANONYMOUS");
+			// Lisame ANONYMOUS rolli et spring oleks happy
+			roles = new ArrayList<GrantedAuthority>();
+			roles.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
 		} else {
-			roles = new GrantedAuthority[user.getGroups().size()];
+			roles = new ArrayList<GrantedAuthority>();
 			int i = 0;
 			for (UserGroup group : user.getGroups()) {
-				roles[i++] = new GrantedAuthorityImpl("ROLE_" + group.getGroupClass().getCode());
+				roles.add(new SimpleGrantedAuthority("ROLE_" + group.getGroupClass().getCode()));
 			}
 		}
 		return roles;

@@ -1093,9 +1093,9 @@ public class Alkor2BindingImpl implements eu.x_road.alkor2.Alkor2Port {
 				registryService.saveXid(xId);
 
 				result.setUrl(new URI(baseURI
-						+ "/j_acegi_security_check?nonce=" + header.getId()));
+						+ "/j_spring_security_check?nonce=" + header.getId()));
 
-				url.value = new URI(baseURI + "/j_acegi_security_check?nonce="
+				url.value = new URI(baseURI + "/j_spring_security_check?nonce="
 						+ header.getId());
 
 			}
