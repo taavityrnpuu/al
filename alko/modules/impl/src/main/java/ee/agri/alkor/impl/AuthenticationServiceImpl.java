@@ -100,6 +100,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 				}
 				
 				user = findUser(userName);
+				LOGGER.info(makeAuthorities(user).toString());
 				details = new AlkoUserDetails(userName, user.getPassword(), user.getPerson().getFirstName(), user.getPerson().getLastName(),
 						idCode, makeAuthorities(user), user);
 				((AlkoUserDetails)details).setFromCas(fromCas);

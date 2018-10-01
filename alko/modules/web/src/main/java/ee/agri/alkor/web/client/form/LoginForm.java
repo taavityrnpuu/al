@@ -86,8 +86,8 @@ public class LoginForm extends Form {
 		loginFormPanel.setMethod(FormPanel.METHOD_POST);
 		loginFormPanel.setEncoding(FormPanel.ENCODING_URLENCODED);
 
-		user.setName("j_username");
-		pass.setName("j_password");
+		user.setName("username");
+		pass.setName("password");
 		pass.setWidth("100%");
 		EnterPressHandler enterPressHandler = new EnterPressHandler();
 		user.addKeyPressHandler(enterPressHandler);

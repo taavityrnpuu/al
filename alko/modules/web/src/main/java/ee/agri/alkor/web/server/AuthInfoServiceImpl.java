@@ -94,7 +94,7 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 					x.printStackTrace();
 				}
 				user.setRoles(roles);
-
+				LOGGER.debug(user.getFirstName() + " " + user.getLastName());
 				// PersonMap p =(PersonMap) user.getUserManageMap().get("person");
 				//
 				// System.out.println("UM: " + p.get("registrationId"));

@@ -55,14 +55,18 @@
 		</constructor-arg>
 	</bean>
 
-	<!--<bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.Md5PasswordEncoder"/>-->
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.password.MessageDigestPasswordEncoder">
+		<constructor-arg>
+			<value>MD5</value>
+		</constructor-arg>
+	</bean>
 
 	<bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider" >
 		<property name="userDetailsService" ref="authenticationService"/>
 		<property name="userCache">
 			<ref bean="userCache"/>
 		</property>
-		<!--property name="passwordEncoder"><ref bean="passwordEncoder"/></property-->
+		<property name="passwordEncoder"><ref bean="passwordEncoder"/></property>
 	</bean>
 
 	<bean id="authenticationService" class="ee.agri.alkor.service.AuthenticationServiceDelegate"/>
@@ -332,9 +336,9 @@
 		</property>
 		<property name="securityMetadataSource">
 			<security:filter-security-metadata-source use-expressions="false">
-				<security:intercept-url pattern="/index.html" access="ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP"/>
-				<security:intercept-url pattern="/pub/**" access="ROLE_PUB,ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP"/>
-				<security:intercept-url pattern="/app/**" access="ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP"/>
+				<security:intercept-url pattern="/index.html*" access="ROLE_ANONYMOUS,ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP"/>
+				<security:intercept-url pattern="/pub/**" access="ROLE_ANONYMOUS,ROLE_PUB,ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP"/>
+				<security:intercept-url pattern="/app/**" access="ROLE_ANONYMOUS,ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP"/>
 				<security:intercept-url pattern="/**" access="ROLE_ANONYMOUS,ROLE_PUB,ROLE_REG_WRK,ROLE_CLASS_ADM,ROLE_USR_ADM,ROLE_AUDIT,ROLE_EIT_GRP"/>
 			</security:filter-security-metadata-source>
 		</property>
