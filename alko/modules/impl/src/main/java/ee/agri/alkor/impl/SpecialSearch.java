@@ -420,38 +420,39 @@ public class SpecialSearch {
 		if (paramValue instanceof RangeFilter) {
 			RangeFilter rf = (RangeFilter) paramValue;
 			boolean hasMin = false;
+			int i = 0;
 			if (rf.getMin() != null) {
 				hasMin = true;
-				where.append("s." + paramName + " >= ? ");
+				where.append("s." + paramName + " >= ?" + i++ + " ");
 			}
 			if (rf.getMax() != null) {
 				if (hasMin) {
 					where.append("AND ");
 				}
-				where.append("s." + paramName + " <= ? ");
+				where.append("s." + paramName + " <= ?" + i++ + " ");
 			}
 			return;
 		} else if ("registryEntryApplication.needsRenewening".equals(paramName)) {
 			if (aliasSet.contains("registryEntry")) {
-				where.append("registryEntry.validUntil BETWEEN ? AND ? ");
+				where.append("registryEntry.validUntil BETWEEN ?0 AND ?1 ");
 			} else {
-				where.append("s.registryEntry.validUntil BETWEEN ? AND ? ");
+				where.append("s.registryEntry.validUntil BETWEEN ?0 AND ?1 ");
 			}
 			return;
 
 		} else if (paramName.equals("IsXTeeForm")) {
-			where.append("s.applicant.registrationId = ? ");
+			where.append("s.applicant.registrationId = ?0 ");
 			return;
 
 		} else if (paramName.startsWith("product.ethanolRate")) {
 			String product = aliasSet.contains("product") ? "product" : "s.product";
 			if ("product.ethanolRateFrom".equals(paramName)) {
 				where.append(product);
-				where.append(".ethanolRate >= ? ");
+				where.append(".ethanolRate >= ?0 ");
 				return;
 			} else if (paramName.equals("product.ethanolRateTo")) {
 				where.append(product);
-				where.append(".ethanolRate <= ? ");
+				where.append(".ethanolRate <= ?0 ");
 				return;
 			}
 		}
@@ -491,9 +492,9 @@ public class SpecialSearch {
 
 			if (paramName.endsWith(".code")) { // kui oli kood, siis sulud kinni
 												// ja LIKE, muidu lihtsalt LIKE
-				where.append(" LIKE ? ");
+				where.append(" LIKE ?0 ");
 			} else {
-				where.append(") LIKE ? ");
+				where.append(") LIKE ?0 ");
 			}
 		}
 	}

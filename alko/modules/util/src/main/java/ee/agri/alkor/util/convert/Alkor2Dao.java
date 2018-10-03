@@ -38,7 +38,7 @@ public class Alkor2Dao extends HibernateDaoSupport implements IAlkor2Service {
 		StringBuffer qsbuf = new StringBuffer("from ")
 			.append(entityClazz.getName())
 			.append( " where ")
-			.append(propName).append(" = ?");
+			.append(propName).append(" = ?0");
 
 		List result = getHibernateTemplate().find(qsbuf.toString(), value);
 		return (result.size() == 0) ? null : result.get(0);

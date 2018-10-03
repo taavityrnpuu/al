@@ -40,7 +40,7 @@ public class RetryWithIdEntryPoint extends RetryWithHttpsEntryPoint {
             includePort = false;
         }
 
-        redirectUrl = "https://" + req.getServerName() + ((includePort) ? (":" + httpsPort) : "") + contextPath + "/j_spring_security_check?type=id";
+        redirectUrl = "https://" + req.getServerName() + ((includePort) ? (":" + httpsPort) : "") + contextPath + "/login?type=id";
     }
 
     if (logger.isDebugEnabled()) {

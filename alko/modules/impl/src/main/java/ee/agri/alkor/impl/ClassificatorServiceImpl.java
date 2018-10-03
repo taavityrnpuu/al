@@ -220,7 +220,7 @@ public class ClassificatorServiceImpl extends BaseBO implements IClassificatorSe
 
 	public static Classificator findClassItem(Session session, String category, String classItemCode) {
 		StringBuffer sbuf = new StringBuffer("from ");
-		sbuf.append(category).append(" c where c.code = ?");
+		sbuf.append(category).append(" c where c.code = ?0");
 		/*
 		 * Classificator c = null; try{ c = (Classificator)
 		 * session.createQuery(sbuf.toString()).setString( 0,
@@ -241,7 +241,7 @@ public class ClassificatorServiceImpl extends BaseBO implements IClassificatorSe
 
 	public static Classificator findClassItem(Session session, Class classificatorClass, String classItemCode) {
 		StringBuffer sbuf = new StringBuffer("from ");
-		sbuf.append(classificatorClass.getName()).append(" c where c.code = ?");
+		sbuf.append(classificatorClass.getName()).append(" c where c.code = ?0");
 
 		Classificator c = null;
 		try {

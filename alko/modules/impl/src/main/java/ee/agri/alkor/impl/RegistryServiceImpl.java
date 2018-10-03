@@ -680,7 +680,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				public Object doInHibernate(Session session) {
 
 					Decision decision = appl.getDecision();
-					Person signer = (Person) session.createQuery("from Person where id = ?")
+					Person signer = (Person) session.createQuery("from Person where id = ?0")
 							.setLong(0, decision.getSigner().getId().longValue()).list().get(0);
 					decision.setSigner(signer);
 
@@ -843,7 +843,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 					List results = session
 							.createQuery(
-									"select s.id from RegistryDocument s where s.application.id = ? and (s.docType.code = ? or s.docType.code = ? or s.docType.code = ?)")
+									"select s.id from RegistryDocument s where s.application.id = ?0 and (s.docType.code = ?1 or s.docType.code = ?2 or s.docType.code = ?3)")
 							.setLong(0, application.getId()).setString(1, "DEC").setString(2, "COR")
 							.setString(3, "NDEC").list();
 					for (int i = 0; i < results.size(); i++) {
@@ -886,10 +886,10 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 					Enterprise enter = (Enterprise) session
 							.createQuery(
-									"from Enterprise e where e.registrationId = ? and e.active is not null order by  e.active desc")
+									"from Enterprise e where e.registrationId = ?0 and e.active is not null order by  e.active desc")
 							.setString(0, registrationId).list().get(0);
 					RegistryPayment payment = (RegistryPayment) session
-							.createQuery("from RegistryPayment r where r.id = ?").setLong(0, paymentId).list().get(0);
+							.createQuery("from RegistryPayment r where r.id = ?0").setLong(0, paymentId).list().get(0);
 					doBindPaymentToEnterpise(session, enter, payment);
 					return true;
 				}
@@ -925,10 +925,10 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
 
-					Enterprise enter = (Enterprise) session.createQuery("from Enterprise e where e.id = ?")
+					Enterprise enter = (Enterprise) session.createQuery("from Enterprise e where e.id = ?0")
 							.setLong(0, enterpriseId).list().get(0);
 					RegistryPayment payment = (RegistryPayment) session
-							.createQuery("from RegistryPayment r where r.id = ?").setLong(0, paymentId).list().get(0);
+							.createQuery("from RegistryPayment r where r.id = ?0").setLong(0, paymentId).list().get(0);
 					doUnbindPaymentToEnterpise(session, enter, payment);
 					return true;
 				}
@@ -978,7 +978,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			return (Boolean) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) throws HibernateException {
 					return new Boolean(
-							session.createQuery("from RegistryPayment p where p. id = ? and p.boundEnterprise = ?")
+							session.createQuery("from RegistryPayment p where p. id = ?0 and p.boundEnterprise = ?1")
 									.setLong(0, paymentId).setEntity(1, boundEnterprise).list().size() != 0);
 				}
 			});
@@ -1079,7 +1079,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 		if (enterprise.getId() != null) {
 			List<ProductEnterpriseRole> roles = session
-					.createQuery("from ProductEnterpriseRole r where r.enterprise.id = ?")
+					.createQuery("from ProductEnterpriseRole r where r.enterprise.id = ?0")
 					.setParameter(0, enterprise.getId()).list();
 
 			Set newRoles = new HashSet();
@@ -1132,7 +1132,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	private Person findPerson(Session session, String registrationId) {
 		Person person = null;
 		try {
-			person = (Person) session.createQuery("from Person p where p.registrationId = ?")
+			person = (Person) session.createQuery("from Person p where p.registrationId = ?0")
 					.setString(0, registrationId).list().get(0);
 		} catch (IndexOutOfBoundsException ie) {
 
@@ -1143,7 +1143,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	private Person findPersonById(Session session, long id) {
 		Person person = null;
 		try {
-			person = (Person) session.createQuery("from Person p where p.id = ?")
+			person = (Person) session.createQuery("from Person p where p.id = ?0")
 					.setLong(0, id).list().get(0);
 		} catch (IndexOutOfBoundsException ie) {
 
@@ -1154,8 +1154,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	private Person findPerson(Session session, String firstName, String lastName) {
 		Person person = null;
 		try {
-			person = (Person) session.createQuery("from Person p where p.firstName = ? and p.lastName = ?")
-					.setString(0, firstName).setString(0, lastName).list();
+			person = (Person) session.createQuery("from Person p where p.firstName = ?0 and p.lastName = ?1")
+					.setString(0, firstName).setString(1, lastName).list();
 		} catch (IndexOutOfBoundsException ie) {
 		}
 		return person;
@@ -2084,7 +2084,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					
 					LOGGER.debug("product ID " + Long.toString(prod)+" , oldNumber: "+oldNumber+", appl_id: "+application.getId());
 
-					Iterator it = session.createQuery("select id from RegistryApplication where product_id = ?")
+					Iterator it = session.createQuery("select id from RegistryApplication where product_id = ?0")
 							.setLong(0, prod).iterate();
 					int cnt = 0;
 					if (it.hasNext()) {
@@ -2297,7 +2297,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				.execute(new HibernateCallback() {
 
 					public Object doInHibernate(Session session) {
-						return session.createQuery("from RegistryApplication a where a.product.id = ?").setLong(0, id)
+						return session.createQuery("from RegistryApplication a where a.product.id = ?0").setLong(0, id)
 								.list();
 					}
 
@@ -2350,7 +2350,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 	public byte[] createApplicationDocument(String docTypeCode, String applicationNr, String signerUserName) {
 		RegistryApplication application = (RegistryApplication) getHibernateTemplate()
-				.find("from RegistryApplication a where a.nr = ?", applicationNr).get(0);
+				.find("from RegistryApplication a where a.nr = ?0", applicationNr).get(0);
 		List<RegistryDocument> documents = findProductDocuments(application.getProduct().getId());
 		File file = getPdfCreator().create(docTypeCode, application, null, documents);
 		byte[] content = null;
@@ -2380,7 +2380,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
 					RegistryDocument doc = (RegistryDocument) session
-							.createQuery("from RegistryDocument d where d.id = ?").setLong(0, documentId.longValue())
+							.createQuery("from RegistryDocument d where d.id = ?0").setLong(0, documentId.longValue())
 							.list().get(0);
 					doc.setArchived((short) 1);
 					doc.setPub((short) 0);
@@ -2439,7 +2439,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 						while (res.next()) {
 							RegistryDocument doc = (RegistryDocument) session
-									.createQuery("from RegistryDocument d where d.id = ?").setLong(0, res.getLong("id"))
+									.createQuery("from RegistryDocument d where d.id = ?0").setLong(0, res.getLong("id"))
 									.list().get(0);
 
 							doc.setArchived((short) 1);
@@ -2493,7 +2493,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
 					RegistryDocument doc = (RegistryDocument) session
-							.createQuery("from RegistryDocument d where d.application.nr = ? and d.name = ?")
+							.createQuery("from RegistryDocument d where d.application.nr = ?0 and d.name = ?1")
 							.setString(0, applicationNr).setString(1, name).list().get(0);
 					doc.setArchived((short) 1);
 					doc.setPub((short) 0);
@@ -2521,7 +2521,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
 					RegistryDocument doc = (RegistryDocument) session
-							.createQuery("from RegistryDocument d where d.application.id = ? and d.name = ?")
+							.createQuery("from RegistryDocument d where d.application.id = ?0 and d.name = ?1")
 							.setLong(0, applicationId.longValue()).setString(1, name).list().get(0);
 					doc.setArchived((short) 1);
 					doc.setPub((short) 0);
@@ -2579,7 +2579,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			return (List<RegistryDocument>) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
 					List<Long> appIds = session
-							.createQuery("select a.id from RegistryApplication a where a.product.id = ?  order by a.nr")
+							.createQuery("select a.id from RegistryApplication a where a.product.id = ?0  order by a.nr")
 							.setLong(0, productId.longValue()).list();
 					List<RegistryDocument> docsList = new ArrayList<RegistryDocument>();
 					for (Long applicationId : appIds) {
@@ -2604,7 +2604,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			return (List<RegistryDocument>) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
 					List<Long> appIds = session
-							.createQuery("select a.id from RegistryApplication a where a.product.id = ? order by a.nr")
+							.createQuery("select a.id from RegistryApplication a where a.product.id = ?0 order by a.nr")
 							.setLong(0, productId.longValue()).list();
 					List<RegistryDocument> docsList = new ArrayList<RegistryDocument>();
 					for (Long applicationId : appIds) {
@@ -2629,7 +2629,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			return (List<RegistryDocument>) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
 					List<Long> appIds = session
-							.createQuery("select a.id from RegistryApplication a where a.product.id = ? order by a.nr")
+							.createQuery("select a.id from RegistryApplication a where a.product.id = ?0 order by a.nr")
 							.setLong(0, productId.longValue()).list();
 					List<RegistryDocument> docsList = new ArrayList<RegistryDocument>();
 					for (Long applicationId : appIds) {
@@ -2650,7 +2650,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	}
 
 	public RegistryEntry findRegistryEntry(String entryNr) {
-		List tulem = getHibernateTemplate().find("from RegistryEntry e where lower(e.nr) = ?", entryNr);
+		List tulem = getHibernateTemplate().find("from RegistryEntry e where lower(e.nr) = ?0", entryNr);
 		if (tulem != null && tulem.size() != 0)
 			return (RegistryEntry) tulem.get(0);
 		return null;
@@ -2658,12 +2658,12 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 	public RegistryEntry findRegistryEntryByApplication(String applicationNr) {
 		return (RegistryEntry) getHibernateTemplate()
-				.find("from RegistryEntry e where e.application.nr = ?", applicationNr).get(0);
+				.find("from RegistryEntry e where e.application.nr = ?0", applicationNr).get(0);
 	}
 
 	public RegistryEntry findRegistryEntryByApplicationId(Long applicationId) {
 		return (RegistryEntry) getHibernateTemplate()
-				.find("from RegistryEntry e where e.application.id = ?", applicationId).get(0);
+				.find("from RegistryEntry e where e.application.id = ?0", applicationId).get(0);
 	}
 
 	synchronized public RegistryApplication findRegistryApplication(final String applicationNr) {
@@ -2695,12 +2695,12 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	}
 
 	synchronized public RegistryApplication findRegistryApplicationById(Session session, Long applicationId) {
-		return (RegistryApplication) session.createQuery("from RegistryApplication a where a.id = ?")
+		return (RegistryApplication) session.createQuery("from RegistryApplication a where a.id = ?0")
 				.setLong(0, applicationId).uniqueResult();
 	}
 
 	synchronized public RegistryApplication findRegistryApplication(Session session, String applicationNr) {
-		return (RegistryApplication) session.createQuery("from RegistryApplication a where a.nr = ?")
+		return (RegistryApplication) session.createQuery("from RegistryApplication a where a.nr = ?0")
 				.setString(0, applicationNr).list().get(0);
 	}
 
@@ -2710,7 +2710,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				public Object doInHibernate(Session session) {
 					Query q = session
 							.createQuery(
-									"from RegistryApplication as a where a.applicant.registrationId = ? and a.state.code in ('ADD','CTL','PRO', 'NMO', 'ARP') and a.type.code in ('ARE','ARP')  order by a.arrived")
+									"from RegistryApplication as a where a.applicant.registrationId = ?0 and a.state.code in ('ADD','CTL','PRO', 'NMO', 'ARP') and a.type.code in ('ARE','ARP')  order by a.arrived")
 							.setString(0, registrationNr);
 					return q.list();
 				}
@@ -2728,9 +2728,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			return (List<RegistryApplication>) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
 					Query q1 = session.createQuery(
-							"from RegistryApplication as a where a.registryEntry.id is not null and a.applicant.registrationId = ? and a.state.code ='"
+							"from RegistryApplication as a where a.registryEntry.id is not null and a.applicant.registrationId = ?0 and a.state.code ='"
 									+ IClassificatorService.APPL_STATE_RGE
-									+ "' and a.registryEntry.validUntil between ? and ?");
+									+ "' and a.registryEntry.validUntil between ?1 and ?2");
 					q1.setString(0, registrationNr);
 					Calendar cal = Calendar.getInstance();
 					cal.add(Calendar.DAY_OF_YEAR, 30);
@@ -2765,8 +2765,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				public Object doInHibernate(Session session) {
 					Query q1 = session
 							.createQuery("from RegistryApplication as a where a.registryEntry.id is not null and "
-									+ "a.applicant.registrationId = ? and a.registryEntry.validFrom < ? and "
-									+ "a.registryEntry.validUntil between ? and ? and " + "a.type.code != '"
+									+ "a.applicant.registrationId = ?0 and a.registryEntry.validFrom < ?1 and "
+									+ "a.registryEntry.validUntil between ?2 and ?3 and " + "a.type.code != '"
 									+ IClassificatorService.APPL_TYPE_ARP + "' and " + "a.state.code not in " + "('"
 									+ IClassificatorService.APPL_STATE_RGN + "','"
 									+ IClassificatorService.APPL_STATE_VOID + "') and " + "a.registryEntry.id not in "
@@ -2925,7 +2925,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		try {
 			return (List<RegistryDocument>) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) {
-					List<RegistryDocument> l = session.createQuery("from RegistryDocument d where d.docType.code = ?")
+					List<RegistryDocument> l = session.createQuery("from RegistryDocument d where d.docType.code = ?0")
 							.setString(0, IClassificatorService.DOC_TYPE_PUB).list();
 					session.clear();
 					return l;
@@ -2971,7 +2971,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	synchronized public Enterprise findEnterpriseByName(String name) {
 		Enterprise ent = null;
 		try {
-			ent = (Enterprise) getHibernateTemplate().find("from Enterprise e where e.name = ?", name).get(0);
+			ent = (Enterprise) getHibernateTemplate().find("from Enterprise e where e.name = ?0", name).get(0);
 		} catch (IndexOutOfBoundsException e) {
 		}
 
@@ -2982,7 +2982,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		Enterprise ent = null;
 		try {
 			ent = (Enterprise) getHibernateTemplate()
-					.find("from Enterprise e where e.registrationId = ? and active=true order by e.created desc", regNr)
+					.find("from Enterprise e where e.registrationId = ?0 and active=true order by e.created desc", regNr)
 					.get(0);
 		} catch (IndexOutOfBoundsException e) {
 		}
@@ -2992,19 +2992,19 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 	public Enterprise findProductMovementReportingEnterprise(String enterpriseRegNr) {
 		return (Enterprise) getHibernateTemplate()
-				.find("select r.reportingEnterprise from ProductMovementReport r where r.reportingEnterprise.registrationId = ? order by r.created desc",
+				.find("select r.reportingEnterprise from ProductMovementReport r where r.reportingEnterprise.registrationId = ?0 order by r.created desc",
 						enterpriseRegNr)
 				.get(0);
 	}
 
 	public Enterprise findProductMovementReportingEnterprise(long reportId) {
 		return (Enterprise) getHibernateTemplate()
-				.find("select r.reportingEnterprise from ProductMovementReport r where r.id = ?", new Long(reportId))
+				.find("select r.reportingEnterprise from ProductMovementReport r where r.id = ?0", new Long(reportId))
 				.get(0);
 	}
 
 	public List<ProductMovementReportRecord> findProductMovementRecords(Long reportId) {
-		return (List<ProductMovementReportRecord>) getHibernateTemplate().find("from ProductMovementReportRecord r where r.report.id = ? order by r.id",
+		return (List<ProductMovementReportRecord>) getHibernateTemplate().find("from ProductMovementReportRecord r where r.report.id = ?0 order by r.id",
 				reportId);
 	}
 
@@ -3020,7 +3020,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		RegistryDocument doc = null;
 		try {
 			LOGGER.info("RRR --- getDocument2 --> from RegistryDocument d where d.id = " + documentId);
-			List results = getHibernateTemplate().find("from RegistryDocument d where d.id = ?", // and
+			List results = getHibernateTemplate().find("from RegistryDocument d where d.id = ?0", // and
 																									// d.application.applicant.registrationId=?
 					new Object[] { documentId });
 			LOGGER.info("RRR --- getDocument2 result size:" + results.size());
@@ -3041,7 +3041,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			LOGGER.info("RRR --- getDocument --> from RegistryDocument d where d.id = " + documentId
 					+ " and d.application.applicant.registrationId=" + regCode);
 			List results = getHibernateTemplate().find(
-					"from RegistryDocument d where d.id = ? and d.application.applicant.registrationId=?",
+					"from RegistryDocument d where d.id = ?0 and d.application.applicant.registrationId=?1",
 					new Object[] { documentId, regCode });
 			LOGGER.info("RRR --- getDocument result size:" + results.size());
 			if (results.size() > 0)
@@ -3061,7 +3061,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		StringBuffer arg = new StringBuffer("%").append(fileName).append("%");
 
 		try {
-			result = (List<RegistryDocument>) getHibernateTemplate().find("from RegistryDocument d where d.path like ? order by id",
+			result = (List<RegistryDocument>) getHibernateTemplate().find("from RegistryDocument d where d.path like ?0 order by id",
 					arg.toString());
 			for (RegistryDocument doc : result) {
 				doc.setContent(readFile(doc.getPath()));
@@ -3080,7 +3080,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		try {
 
 			result = (List<RegistryDocument>) getHibernateTemplate().find(
-					"from RegistryDocument d where d.path like ? and d.application.id = ? order by id",
+					"from RegistryDocument d where d.path like ?0 and d.application.id = ?1 order by id",
 					new Object[] { arg.toString(), applicationId });
 			for (RegistryDocument doc : result) {
 				doc.setContent(readFile(doc.getPath()));
@@ -3095,7 +3095,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		Enterprise enter = null;
 		try {
 			enter = (Enterprise) getHibernateTemplate()
-					.find("from Enterprise e where e.registrationId = ?", registrationNr).get(0);
+					.find("from Enterprise e where e.registrationId = ?0", registrationNr).get(0);
 		} catch (IndexOutOfBoundsException ioe) {
 
 		}
@@ -3109,7 +3109,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		Enterprise enter = null;
 		try {
 			enter = (Enterprise) getHibernateTemplate()
-					.find("from Enterprise e where e.registrationId = ? and e.active is true order by e.active desc, e.modified desc",
+					.find("from Enterprise e where e.registrationId = ?0 and e.active is true order by e.active desc, e.modified desc",
 							registrationNr)
 					.get(0);
 		} catch (IndexOutOfBoundsException ioe) {
@@ -3121,7 +3121,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public Product findProduct(Long productId) {
 		// if (productId==null)
 		// return testReport();
-		return (Product) getHibernateTemplate().find("from Product p where p.id = ?", productId).get(0);
+		return (Product) getHibernateTemplate().find("from Product p where p.id = ?0", productId).get(0);
 	}
 
 	private Product testReport() {
@@ -3283,16 +3283,16 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	}
 
 	public Enterprise findEnterprise(Long enterpriseId) {
-		return (Enterprise) getHibernateTemplate().find("from Enterprise e where e.id = ?", enterpriseId).get(0);
+		return (Enterprise) getHibernateTemplate().find("from Enterprise e where e.id = ?0", enterpriseId).get(0);
 	}
 
 	public RegistryApplication findApplication(Long applicationId) {
 		return (RegistryApplication) getHibernateTemplate()
-				.find("from RegistryApplication r where r.id = ?", applicationId).get(0);
+				.find("from RegistryApplication r where r.id = ?0", applicationId).get(0);
 	}
 
 	private RegistryApplication findApplication(Session session, String applicationNr) {
-		Query q = session.createQuery("from RegistryApplication where nr = ?").setString(0, applicationNr);
+		Query q = session.createQuery("from RegistryApplication where nr = ?0").setString(0, applicationNr);
 		return (RegistryApplication) q.list().get(0);
 	}
 
@@ -3300,18 +3300,18 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			String stateCode, String typeCode) {
 		Query q = session
 				.createQuery(
-						"from RegistryApplication as a where a.applicant.registrationId = ? and a.state.code = ? and a.type.code = ?")
+						"from RegistryApplication as a where a.applicant.registrationId = ?0 and a.state.code = ?1 and a.type.code = ?2")
 				.setString(0, registrationNr).setString(1, stateCode).setString(2, typeCode);
 		return q.list();
 	}
 
 	public Product findApplicationProduct(Session session, String applicationNr) {
-		return (Product) session.createQuery("select a.product from RegistryApplication a where a.nr = ?")
+		return (Product) session.createQuery("select a.product from RegistryApplication a where a.nr = ?0")
 				.setString(0, applicationNr).list().get(0);
 	}
 
 	public Long findApplicationProductId(Session session, String applicationNr) {
-		return (Long) session.createQuery("select a.product.id from RegistryApplication a where a.nr = ?")
+		return (Long) session.createQuery("select a.product.id from RegistryApplication a where a.nr = ?0")
 				.setString(0, applicationNr).list().get(0);
 	}
 
@@ -3319,7 +3319,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 		return session
 				.createQuery(
-						"from RegistryDocument d where d.application.id = ? AND (d.pub = 0 or d.pub is null) and (d.archived = 0 OR d.archived is null) order by d.id")
+						"from RegistryDocument d where d.application.id = ?0 AND (d.pub = 0 or d.pub is null) and (d.archived = 0 OR d.archived is null) order by d.id")
 				.setLong(0, new Long(applicationId)).list();
 	}
 
@@ -3327,14 +3327,14 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 		return session
 				.createQuery(
-						"from RegistryDocument d where d.application.id = ? AND d.pub = 1 AND (d.archived = 0 OR d.archived is null) order by d.id")
+						"from RegistryDocument d where d.application.id = ?0 AND d.pub = 1 AND (d.archived = 0 OR d.archived is null) order by d.id")
 				.setLong(0, new Long(applicationId)).list();
 	}
 
 	private List<RegistryDocument> findApplicationDocumentsArchived(Session session, String applicationId) {
 
 		return session
-				.createQuery("from RegistryDocument d where d.application.id = ? AND d.archived = 1 order by d.id")
+				.createQuery("from RegistryDocument d where d.application.id = ?0 AND d.archived = 1 order by d.id")
 				.setLong(0, new Long(applicationId)).list();
 	}
 
@@ -3345,7 +3345,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		// session.setCacheMode(CacheMode.IGNORE);
 		List<RegistryDocument> l = session
 				.createQuery(
-						"from RegistryDocument d where d.application.id = ? AND (d.pub = 0 or d.pub is null) and (d.archived = 0 OR d.archived is null) order by d.id")
+						"from RegistryDocument d where d.application.id = ?0 AND (d.pub = 0 or d.pub is null) and (d.archived = 0 OR d.archived is null) order by d.id")
 				.setLong(0, applicationId.longValue()).list();
 		session.clear();
 		return l;
@@ -3358,7 +3358,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		// session.setCacheMode(CacheMode.IGNORE);
 		List<RegistryDocument> l = session
 				.createQuery(
-						"from RegistryDocument d where d.application.id = ? AND d.pub = 1 AND (d.archived = 0 OR d.archived is null) order by d.id")
+						"from RegistryDocument d where d.application.id = ?0 AND d.pub = 1 AND (d.archived = 0 OR d.archived is null) order by d.id")
 				.setLong(0, applicationId.longValue()).list();
 		session.clear();
 		return l;
@@ -3370,7 +3370,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		 */
 		// session.setCacheMode(CacheMode.IGNORE);
 		List<RegistryDocument> l = session
-				.createQuery("from RegistryDocument d where d.application.id = ? AND d.archived = 1 order by d.id")
+				.createQuery("from RegistryDocument d where d.application.id = ?0 AND d.archived = 1 order by d.id")
 				.setLong(0, applicationId.longValue()).list();
 		session.clear();
 		return l;
@@ -3382,7 +3382,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		 * Implementation of cache
 		 */
 		List<RegistryDocument> l = session
-				.createQuery("from RegistryDocument d where d.application.id = ? AND d.docType = null order by d.id")
+				.createQuery("from RegistryDocument d where d.application.id = ?0 AND d.docType = null order by d.id")
 				.setLong(0, applicationId.longValue()).list();
 		session.clear();
 		return l;
@@ -3742,7 +3742,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					// this
 					// application
 					return new Boolean(
-							session.createQuery("from RegistryDocument s where s.application.nr=? and docType.code=?")
+							session.createQuery("from RegistryDocument s where s.application.nr=?0 and docType.code=?1")
 									.setString(0, applicationNr).setString(1, docType).list().size() != 0);
 				}
 			});
@@ -3764,7 +3764,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			public Object doInHibernate(Session session) throws HibernateException {
 				try {
 					RegistryApplication appl = (RegistryApplication) session
-							.createQuery("from RegistryApplication a where a.nr = ?").setString(0, applicationNr)
+							.createQuery("from RegistryApplication a where a.nr = ?0").setString(0, applicationNr)
 							.uniqueResult();
 					appl.setProcessor(getCurrentUser(session, false));
 					appl.getDecision().setSigner(getCurrentUser(session, false));
@@ -3803,7 +3803,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					// this
 					// application
 					return new Boolean(
-							session.createQuery("from RegistryDocument s where s.application.nr=? and docType.code=?")
+							session.createQuery("from RegistryDocument s where s.application.nr=?0 and docType.code=?1")
 									.setString(0, applicationNr).setString(1, IClassificatorService.DOC_TYPE_COR).list()
 									.size() != 0);
 				}
@@ -3834,7 +3834,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					// check if there are any decision documents for
 					// this application
 					return new Boolean(
-							session.createQuery("from RegistryDocument s where s.application.nr=? and docType.code=?")
+							session.createQuery("from RegistryDocument s where s.application.nr=?0 and docType.code=?1")
 									.setString(0, applicationNr).setString(1, IClassificatorService.DOC_TYPE_DEC).list()
 									.size() != 0);
 
@@ -3858,7 +3858,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			public Object doInHibernate(Session session) throws HibernateException {
 				try {
 					RegistryApplication appl = (RegistryApplication) session
-							.createQuery("from RegistryApplication a where a.nr = ?").setString(0, applicationNr)
+							.createQuery("from RegistryApplication a where a.nr = ?0").setString(0, applicationNr)
 							.uniqueResult();
 					appl.setProcessor(getCurrentUser(session, false));
 					appl.getDecision().setSigner(getCurrentUser(session, false));
@@ -3889,7 +3889,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			public Object doInHibernate(Session session) throws HibernateException {
 				try {
 					RegistryApplication appl = (RegistryApplication) session
-							.createQuery("from RegistryApplication a where a.nr = ?").setString(0, applicationNr)
+							.createQuery("from RegistryApplication a where a.nr = ?0").setString(0, applicationNr)
 							.uniqueResult();
 					appl.setProcessor(getCurrentUser(session, false));
 					appl.getDecision().setSigner(getCurrentUser(session, false));
@@ -3920,7 +3920,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			public Object doInHibernate(Session session) throws HibernateException {
 				try {
 					RegistryApplication appl = (RegistryApplication) session
-							.createQuery("from RegistryApplication a where a.nr = ?").setString(0, applicationNr)
+							.createQuery("from RegistryApplication a where a.nr = ?0").setString(0, applicationNr)
 							.uniqueResult();
 					appl.setProcessor(getCurrentUser(session, false));
 					appl.getDecision().setSigner(getCurrentUser(session, false));
@@ -3958,7 +3958,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					// check if there are any decision documents for
 					// this application
 					return new Boolean(
-							session.createQuery("from RegistryDocument s where s.application.nr=? and docType.code=?")
+							session.createQuery("from RegistryDocument s where s.application.nr=?0 and docType.code=?1")
 									.setString(0, applicationNr).setString(1, IClassificatorService.DOC_TYPE_NDEC)
 									.list().size() != 0);
 				}
@@ -4183,7 +4183,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					public Object doInHibernate(Session session) {
 						return session
 								.createQuery(
-										"from PaymentMatchingLog d where d.paymentProduct = ? order by created desc")
+										"from PaymentMatchingLog d where d.paymentProduct = ?0 order by created desc")
 								.setLong(0, productId).list();
 
 					}
@@ -4210,7 +4210,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					public Object doInHibernate(Session session) {
 						return session
 								.createQuery(
-										"from PaymentMatchingLog d where d.paymentApplication = ? order by created desc")
+										"from PaymentMatchingLog d where d.paymentApplication = ?0 order by created desc")
 								.setLong(0, applicationId).list();
 
 					}
@@ -4234,7 +4234,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				"createApplicationDocumentByIdAndRegCode :" + docTypeCode + " appId:" + id + " regCode:" + regCode);
 
 		List results = getHibernateTemplate().find(
-				"from RegistryApplication a where a.id = ? and a.applicant.registrationId=?",
+				"from RegistryApplication a where a.id = ?0 and a.applicant.registrationId=?1",
 				new Object[] { id, regCode });
 		if (results.size() > 0)
 			application = (RegistryApplication) results.get(0);
@@ -4253,7 +4253,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		}
 		LOGGER.debug("createApplicationDocumentById :" + docTypeCode + " appId:" + id);
 
-		List results = getHibernateTemplate().find("from RegistryApplication a where a.id = ? ", id);
+		List results = getHibernateTemplate().find("from RegistryApplication a where a.id = ?0 ", id);
 		if (results.size() > 0) {
 			application = (RegistryApplication) results.get(0);
 		} else {
@@ -4281,12 +4281,12 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 	synchronized public List<Enterprise> findEnterpriseByNameorRegNr(String name, String regNr) {
 		if (name != null && name.length() > 0 && regNr != null && regNr.length() > 0) {
-			return (List<Enterprise>) getHibernateTemplate().find("from Enterprise e where e.name like ? and e.registrationId like ?",
+			return (List<Enterprise>) getHibernateTemplate().find("from Enterprise e where e.name like ?0 and e.registrationId like ?1",
 					new Object[] { "%" + name + "%", "%" + regNr + "%" });
 		} else if (name != null && name.length() > 0) {
-			return (List<Enterprise>) getHibernateTemplate().find("from Enterprise e where e.name like ? ", "%" + name + "%");
+			return (List<Enterprise>) getHibernateTemplate().find("from Enterprise e where e.name like ?0 ", "%" + name + "%");
 		} else if (regNr != null && regNr.length() > 0) {
-			return (List<Enterprise>) getHibernateTemplate().find("from Enterprise e where e.registrationId like ?", "%" + regNr + "%");
+			return (List<Enterprise>) getHibernateTemplate().find("from Enterprise e where e.registrationId like ?0", "%" + regNr + "%");
 		} else
 			return new ArrayList<Enterprise>();
 
@@ -4316,7 +4316,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		try {
 			return (Boolean) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) throws HibernateException {
-					return new Boolean(session.createQuery("from RegistryPayment r " + "where r.orderNumber = ? ")
+					return new Boolean(session.createQuery("from RegistryPayment r " + "where r.orderNumber = ?0 ")
 							.setString(0, orderNumber).list().size() == 0);
 				}
 			});
@@ -4332,7 +4332,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			return (Boolean) getHibernateTemplate().execute(new HibernateCallback() {
 				public Object doInHibernate(Session session) throws HibernateException {
 
-					Query q = session.createQuery("FROM RegistryApplication s WHERE s.nr LIKE ? ");
+					Query q = session.createQuery("FROM RegistryApplication s WHERE s.nr LIKE ?0 ");
 					q.setString(0, applicationNr + "/P%"); // [applicationNr]/P%
 															// //
 															// FIXME RK:

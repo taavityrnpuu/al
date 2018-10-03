@@ -6,6 +6,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
@@ -24,8 +25,9 @@ import ee.agri.alkor.impl.ResultSet;
  */
 public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 	private static Logger LOGGER = Logger.getLogger(AuthenticationFilter.class);
-
-	public Authentication attemptAuthentication(HttpServletRequest request) throws AuthenticationException {
+	
+	@Override
+	public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response) throws AuthenticationException {
 		LOGGER.info("AuthenticationFilter:attemptAuthentication started,,,");
 		AbstractAuthenticationToken authRequest = null;
 		
@@ -135,10 +137,20 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			}*/
 		}
 		LOGGER.info("URI:" + request.getRequestURI());
-
 		// Allow subclasses to set the "details" property
 		setDetails(request, authRequest);
-		return this.getAuthenticationManager().authenticate(authRequest);
+		LOGGER.info("AUTH:" + authRequest.getAuthorities().toString() + ", " + authRequest.getCredentials());
+		Authentication authResult = null;
+		
+		//try {
+			authResult = this.getAuthenticationManager().authenticate(authRequest);
+		/*} catch(Exception e) {
+			LOGGER.info(e.getMessage());
+			e.printStackTrace();
+		}
+		
+		LOGGER.info("AUTHRES:" + authResult.getAuthorities().toString() + ", " + authResult.isAuthenticated());*/
+		return authResult;
 	}
 
 	protected void setDetails(HttpServletRequest request, AbstractAuthenticationToken authRequest) {
@@ -180,7 +192,7 @@ public class AuthenticationFilter extends UsernamePasswordAuthenticationFilter {
 			for (int i = 0; i < byteData.length; i++) {
 				sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
 			}
-
+			LOGGER.info(sb.toString().substring(0, 19));
 			return sb.toString().substring(0, 19);
 		} catch (NoSuchAlgorithmException ex) {
 			return input;

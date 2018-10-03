@@ -55,13 +55,13 @@
 		</constructor-arg>
 	</bean>
 
-	<bean id="passwordEncoder" class="org.springframework.security.crypto.password.MessageDigestPasswordEncoder">
-		<constructor-arg>
-			<value>MD5</value>
-		</constructor-arg>
+	<bean id="passwordEncoder" class="org.springframework.security.crypto.password.NoOpPasswordEncoder">
 	</bean>
-
+	
 	<bean id="daoAuthenticationProvider" class="org.springframework.security.authentication.dao.DaoAuthenticationProvider" >
+		<property name="hideUserNotFoundExceptions">
+			<value>false</value>
+		</property>
 		<property name="userDetailsService" ref="authenticationService"/>
 		<property name="userCache">
 			<ref bean="userCache"/>
@@ -191,8 +191,8 @@
 			<ref bean="channelDecisionManager"/>
 		</property>
 		<property name="securityMetadataSource">
-			<security:filter-security-metadata-source use-expressions="false">
-				<security:intercept-url pattern="\A/j_spring_security_check.*\Z" access="REQUIRES_SECURE_CHANNEL"/>
+			<security:filter-security-metadata-source use-expressions="false" request-matcher="regex">
+				<security:intercept-url pattern="\A/login.*\Z" access="REQUIRES_SECURE_CHANNEL"/>
 				<security:intercept-url pattern="\A/history.html#LoginErrorPage.*\Z" access="REQUIRES_SECURE_CHANNEL"/>
 				<security:intercept-url pattern="\A/history.html#LoginErrorPage3.*\Z" access="REQUIRES_SECURE_CHANNEL"/>
 				<security:intercept-url pattern="\A/id.*\Z" access="REQUIRES_IDSECURE_CHANNEL"/>
@@ -284,16 +284,26 @@
 		<!--<property name="defaultTargetUrl"><value>/index.html</value></property>-->
 		<property name="authenticationSuccessHandler">
 			<bean class="org.springframework.security.web.authentication.SavedRequestAwareAuthenticationSuccessHandler">
-				<property name="defaultTargetUrl" value="/index.html#test"/>
+				<property name="defaultTargetUrl" value="/index.html"/>
 			</bean>
 		</property>
-		<property name="authenticationFailureHandler">
+		<!--<property name="authenticationFailureHandler">
 			<bean class="org.springframework.security.web.authentication.SimpleUrlAuthenticationFailureHandler">
-				<property name="defaultFailureUrl" value="/index.html#LoginErrorPage"/>
+				<property name="defaultFailureUrl" value="/index.html#AccessDeniedPage"/>
+			</bean>
+		</property>-->
+		<property name="authenticationFailureHandler">
+			<bean class="org.springframework.security.web.authentication.ExceptionMappingAuthenticationFailureHandler">
+				<property name="exceptionMappings">
+					<map>
+						<entry key="org.springframework.security.authentication.BadCredentialsException" value="/index.html#LoginErrorPage"/>
+						<entry key="org.springframework.security.core.userdetails.UsernameNotFoundException" value="/index.html#LoginErrorPage3"/>
+					</map>
+				</property>
 			</bean>
 		</property>
 		<property name="filterProcessesUrl">
-			<value>/j_spring_security_check</value>
+			<value>/login</value>
 		</property>
 		<property name="rememberMeServices">
 			<ref bean="rememberMeServices"/>

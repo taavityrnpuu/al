@@ -239,9 +239,9 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		 * else if(filter.getObjectClass().equals("ReportListView") && queryParams.containsKey("ent_reg_nr")){ String reg_id = (String) queryParams.get("ent_reg_nr"); joinedFrom.append( " JOIN product_move_report mr ON report_id = mr.id JOIN enterprise e ON e.reg_id = '" +reg_id+
 		 * "' AND e.id = mr.report_ent_id "); queryParams.remove("ent_reg_nr"); }
 		 */
-
+		int j = 0;
 		for (String paramName : queryParams.keySet()) { // for loop for 'where'
-
+			
 			Object paramValue = queryParams.get(paramName);
 
 			// If the parameter is a certain type then the value is converted to
@@ -284,101 +284,101 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 					if (rf.getMin() != null) {
 						hasMin = true;
 						if ("decision.date".equals(paramName) && isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams))
-							where.append("t." + paramName + " >= ? ");
+							where.append("t." + paramName + " >= ?" + j++ + " ");
 						else
-							where.append("s." + paramName + " >= ? ");
+							where.append("s." + paramName + " >= ?" + j++ + " ");
 					}
 					if (rf.getMax() != null) {
 						if (hasMin) {
 							where.append("and ");
 						}
 						if ("decision.date".equals(paramName) && isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams))
-							where.append("t." + paramName + " <= ? ");
+							where.append("t." + paramName + " <= ?" + j++ + " ");
 						else
-							where.append("s." + paramName + " <= ? ");
+							where.append("s." + paramName + " <= ?" + j++ + " ");
 					}
 					continue;
 				}
 
 				if (paramName.equals("startTime") && filter.getObjectClass().equals("RegistryApplication")) {
-					where.append("s.arrived >= ? ");
+					where.append("s.arrived >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("endTime") && filter.getObjectClass().equals("RegistryApplication")) {
-					where.append("s.arrived <= ? ");
+					where.append("s.arrived <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("registryEntry.validFrom") && filter.getObjectClass().equals("Product")) {
-					where.append("s.registryEntry.validFrom >= ? ");
+					where.append("s.registryEntry.validFrom >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("registryEntry.validUntil") && filter.getObjectClass().equals("Product") && !isSpecialParam(paramValue)) {
-					where.append("s.registryEntry.validUntil <= ? ");
+					where.append("s.registryEntry.validUntil <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("start_date") && filter.getObjectClass().equals("AuthenticationLog")) {
-					where.append("s.time >= ?");
+					where.append("s.time >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("end_date") && filter.getObjectClass().equals("AuthenticationLog")) {
-					where.append("s.time <= ?");
+					where.append("s.time <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("start_date") && filter.getObjectClass().equals("ProductMovementReportRecord")) {
-					where.append("s.created >= ?");
+					where.append("s.created >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("end_date") && filter.getObjectClass().equals("ProductMovementReportRecord")) {
-					where.append("s.created <= ?");
+					where.append("s.created <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("start_date") && filter.getObjectClass().equals("ProductMoveReportView")) {
-					where.append("s.created >= ?");
+					where.append("s.created >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("end_date") && filter.getObjectClass().equals("ProductMoveReportView")) {
-					where.append("s.created <= ?");
+					where.append("s.created <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("start_date") && filter.getObjectClass().equals("ProductMovementReport")) {
-					where.append("s.created >= ?");
+					where.append("s.created >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("end_date") && filter.getObjectClass().equals("ProductMovementReport")) {
-					where.append("s.created <= ?");
+					where.append("s.created <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("reportPeriodMonthStart") && filter.getObjectClass().equals("ProductMovementReport")) {
-					where.append("extract(month from s.repDate) >= ?");
+					where.append("extract(month from s.repDate) >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("reportPeriodMonthEnd") && filter.getObjectClass().equals("ProductMovementReport")) {
-					where.append("extract(month from s.repDate) <= ?");
+					where.append("extract(month from s.repDate) <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("reportPeriodMonthStart") && filter.getObjectClass().equals("ProductMoveReportView")) {
-					where.append("extract(month from s.repDate) >= ?");
+					where.append("extract(month from s.repDate) >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("reportPeriodMonthEnd") && filter.getObjectClass().equals("ProductMoveReportView")) {
-					where.append("extract(month from s.repDate) <= ?");
+					where.append("extract(month from s.repDate) <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("repYear") && (filter.getObjectClass().equals("ReportListView") || filter.getObjectClass().equals("ReportView"))) {
-					where.append("extract(year from s.reportDate) = ?");
+					where.append("extract(year from s.reportDate) = ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("repMonth") && (filter.getObjectClass().equals("ReportListView") || filter.getObjectClass().equals("ReportView"))) {
-					where.append("extract(month from s.reportDate) = ?");
+					where.append("extract(month from s.reportDate) = ?" + j++ + " ");
 					continue;
 				} /*
 					 * else if (paramName.equals("reporting_ent_reg_id") && (filter.getObjectClass().equals("ReportListView")) ) { where.append(" s.reportingEntRegId = ?"); queryParams.remove("reporting_ent_reg_id"); continue; }
 					 */else if (paramName.equals("reportPeriodStart") && filter.getObjectClass().equals("ProductMovementReport")) {
-					where.append("s.repDate >= ?");
+					where.append("s.repDate >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("reportPeriodEnd") && filter.getObjectClass().equals("ProductMovementReport")) {
-					where.append("s.repDate <= ?");
+					where.append("s.repDate <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("reportPeriodStart") && filter.getObjectClass().equals("ProductMoveReportView")) {
-					where.append("s.repDate >= ?");
+					where.append("s.repDate >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("reportPeriodEnd") && filter.getObjectClass().equals("ProductMoveReportView")) {
-					where.append("s.repDate <= ?");
+					where.append("s.repDate <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("start_date") && filter.getObjectClass().equals("ReportListView")) {
-					where.append("s.created >= ?");
+					where.append("s.created >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("end_date") && filter.getObjectClass().equals("ReportListView")) {
-					where.append("s.created <= ?");
+					where.append("s.created <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("start_date") && filter.getObjectClass().equals("ReportView")) {
-					where.append("s.created >= ?");
+					where.append("s.created >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("end_date") && filter.getObjectClass().equals("ReportView")) {
-					where.append("s.created <= ?");
+					where.append("s.created <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("validUntil") && (filter.getObjectClass().equals("RegistryEntry") || filter.getObjectClass().equals("RegistryEntryView"))) {
 					where.append("s.validUntil" + paramValue);
@@ -397,28 +397,28 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 					// if searched by specific decision codes from product,
 					// search from reg_application instead (s to t)
 				} else if (paramName.equals("decision.regEntryDecision.code") && isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams)) {
-					where.append("lower(t.decision.regEntryDecision.code) like ?");
+					where.append("lower(t.decision.regEntryDecision.code) like ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("applicant.name") && isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams)) {
-					where.append("lower(t.applicant.name) like ?");
+					where.append("lower(t.applicant.name) like ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("nr") && isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams)) {
-					where.append("nr like ?");
+					where.append("nr like ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("product.ethanolRateFrom")) { // RK
 																			// lisatud
-					where.append("s.product.ethanolRate >= ?");
+					where.append("s.product.ethanolRate >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("product.ethanolRateTo")) { // RK
 																		// lisatud
-					where.append("s.product.ethanolRate <= ?");
+					where.append("s.product.ethanolRate <= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("registryEntryApplication.needsRenewening")) { // RK
 																							// lisatud
-					where.append("s.registryEntry.validUntil BETWEEN ? AND ?");
+					where.append("s.registryEntry.validUntil BETWEEN ?" + j++ + " AND ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("IsXTeeForm")) { // RK lisatud
-					where.append("s.applicant.registrationId = ? ");
+					where.append("s.applicant.registrationId = ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("IsEnterpriseAdded")) {
 					where.append("(s.fromXTee = true OR s.submitterRegId IS NOT NULL)");
@@ -497,7 +497,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				if (paramValue instanceof List) {
 					where.append("(:" + paramName + "s)");
 				} else if (!isSpecialParam(paramValue)) {
-					where.append("? ");
+					where.append("?" + j++ + " ");
 				}
 			}
 

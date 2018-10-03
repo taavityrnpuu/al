@@ -164,7 +164,7 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 					// We have to merge with existing roles.
 					if (user.getId() != null) {
 						List<UserGroup> roles = (List<UserGroup>) session
-								.createQuery("from UserGroup r where r.user.id = ?").setParameter(0, user.getId())
+								.createQuery("from UserGroup r where r.user.id = ?0").setParameter(0, user.getId())
 								.list();
 
 						SystemUser old = findUser(user.getName());
@@ -357,7 +357,7 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 
 	public SystemUser findUser(String userName) {
 		try {
-			return (SystemUser) getHibernateTemplate().find("from SystemUser u where u.name = ?", userName).get(0);
+			return (SystemUser) getHibernateTemplate().find("from SystemUser u where u.name = ?0", userName).get(0);
 		} catch (IndexOutOfBoundsException ioe) {
 			throw new ObjectNotFoundException(SystemUser.class, userName);
 		}
@@ -366,7 +366,7 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 	public SystemUser findUserByPerson(String registrationId) {
 		try {
 			return (SystemUser) getHibernateTemplate()
-					.find("from SystemUser u where u.person.registrationId = ?", registrationId).get(0);
+					.find("from SystemUser u where u.person.registrationId = ?0", registrationId).get(0);
 		} catch (IndexOutOfBoundsException ioe) {
 			throw new ObjectNotFoundException(SystemUser.class, registrationId);
 		}
@@ -411,7 +411,7 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 		return (List<SystemUser>) getHibernateTemplate().execute(new HibernateCallback() {
 
 			public Object doInHibernate(Session session) throws HibernateException {
-				List results = session.createQuery("from SystemUser u join u.groups g where g.groupClass.code = ?")
+				List results = session.createQuery("from SystemUser u join u.groups g where g.groupClass.code = ?0")
 						.setString(0, groupCode).list();
 				List usersList = new ArrayList();
 				for (Iterator it = results.iterator(); it.hasNext();) {
@@ -425,7 +425,7 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 	}
 
 	public static SystemUser findUser(Session session, String userName) {
-		SystemUser user = (SystemUser) session.createQuery("from SystemUser u where u.name = ?").setString(0, userName)
+		SystemUser user = (SystemUser) session.createQuery("from SystemUser u where u.name = ?0").setString(0, userName)
 				.list().get(0);
 		return user;
 	}
