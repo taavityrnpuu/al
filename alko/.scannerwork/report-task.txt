@@ -1,0 +1,6 @@
+projectKey=my:project
+serverUrl=http://localhost:9090
+serverVersion=6.7.5.38563
+dashboardUrl=http://localhost:9090/dashboard/index/my:project
+ceTaskId=AWY-JpUJUecVDQWDPrEP
+ceTaskUrl=http://localhost:9090/api/ce/task?id=AWY-JpUJUecVDQWDPrEP
