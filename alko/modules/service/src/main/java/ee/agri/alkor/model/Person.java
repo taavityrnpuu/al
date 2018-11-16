@@ -6,6 +6,7 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 
 import org.hibernate.annotations.Cache;
@@ -63,7 +64,7 @@ public class Person extends ABaseBean implements IHistorical  {
      */
 	@Id
 	@GeneratedValue(strategy=GenerationType.SEQUENCE, generator="PERSON_SEQ")
-	@javax.persistence.SequenceGenerator(
+	@SequenceGenerator(
     name="PERSON_SEQ",
     sequenceName="PERSON_SEQ",
     allocationSize=50
@@ -131,7 +132,7 @@ public class Person extends ABaseBean implements IHistorical  {
 	
 	public String toString() {
 		return "Person [id=" + id + ", lastName=" + lastName + ", firstName="
-				+ firstName + ", registrationId=" + registrationId
-				+ ", occupation=" + occupation + "]";
+			+ firstName + ", registrationId=" + registrationId
+			+ ", occupation=" + occupation + "]";
 	}
 }

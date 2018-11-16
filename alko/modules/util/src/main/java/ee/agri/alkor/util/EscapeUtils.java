@@ -5,7 +5,7 @@ public class EscapeUtils {
 		String buffer = null;
 		
 		buffer = html.replace("'", "_");
-		buffer = html.replace("´", "_");
+		buffer = html.replace("ï¿½", "_");
 		buffer = html.replace("+", "_");
 		buffer = html.replace("-", "_");
 		buffer = html.replace(",", "_");
@@ -22,9 +22,6 @@ public class EscapeUtils {
 	}
 	
 	public static String unEscapeHTML(String html){
-		String buffer = null;
-		
-		
-		return buffer;
+		return null;
 	}
 }

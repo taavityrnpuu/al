@@ -1,67 +1,24 @@
 package ee.agri.alkor.web.server;
 
-import java.io.ByteArrayInputStream;
-import java.io.File;
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
-import java.net.SocketException;
-import java.net.URLDecoder;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.Principal;
-import java.util.Date;
-import java.util.Iterator;
-import java.util.List;
 import java.io.PrintWriter;
-import java.util.Date;
-import java.text.DateFormat;
-import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import ee.agri.alkor.impl.ResultSet;
-import java.sql.Statement;
 
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.disk.DiskFileItemFactory;
-import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.log4j.Logger;
-
 import ee.agri.alkor.impl.PostgreUtils;
-import ee.agri.alkor.model.AlkoUserDetails;
-import ee.agri.alkor.model.RegistryDocument;
-import ee.agri.alkor.service.IClassificatorService;
-import ee.agri.alkor.service.IRegistryService;
-import ee.agri.alkor.service.SearchFilter;
-import ee.agri.alkor.service.ServiceFactory;
-import ee.agri.alkor.web.service.ServiceConstants;
-import ee.agri.alkor.web.service.SystemException;
-
-import static org.apache.commons.lang.StringEscapeUtils.escapeXml;
 
 public class ChangePasswordServiceServlet extends HttpServlet {
-
-	Connection c = null;
-	Statement stmt = null;
-
-	String contextPath = null;
-
 	public String page(String uname, String error) {
-
-		if (error.equals(null) || error.equals("")) {
+		if (error == null) {
 			error = "";
 		}
-
+		
 		return "<html xmlns=\"http://www.w3.org/1999/xhtml\">" + "<head>"
 				+ "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\">"
 				+ "<meta http-equiv=\"Cache-Control\" content=\"no-store\">"
@@ -172,45 +129,32 @@ public class ChangePasswordServiceServlet extends HttpServlet {
 	public void init() throws ServletException {
 
 	}
-
-	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
-		this.contextPath = request.getContextPath();
-
+	
+	public void doGet(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		String uname = request.getParameter("uname");
+		
 		PrintWriter out = response.getWriter();
-
-		try {
-			ResultSet rs = PostgreUtils.query("select 1 from sys_user where name ='" + uname + "';");
-			if (!rs.isBeforeFirst()) {
-				/*
-				 * naitab lehte valja
-				 */
-				response.sendRedirect(contextPath);
-
-			}
-		} catch (Exception e) {
-			out.write(e.toString());
-
+		
+		ResultSet rs = PostgreUtils.query("select 1 from sys_user where name = '" + uname + "';");
+		if(!rs.isBeforeFirst()) {
+			response.sendRedirect("/");
 		}
-
-		/*
-		 * Lehe kuvamine
-		 */
-		out.write(page(uname, " "));
+		
+		String template = null;
+		template = page(uname, " ");	
+		
+		out.write(template);
 	}
-
-	protected void doPost(HttpServletRequest request, HttpServletResponse response)
-			throws ServletException, IOException {
-		this.contextPath = request.getContextPath();
+	
+	@Override
+	protected void doPost(HttpServletRequest request, HttpServletResponse response)	throws ServletException, IOException {
 		String uname = request.getParameter("uname");
 		String oldpass = request.getParameter("oldpass");
 		String pw = request.getParameter("pw1");
 		PrintWriter out = response.getWriter();
 
 		try {
-			ResultSet rs = PostgreUtils
-					.query("select 1 from sys_user where name ='" + uname + "' and password='" + oldpass + "';");
+			ResultSet rs = PostgreUtils.query("select 1 from sys_user where name ='" + uname + "' and password='" + oldpass + "';");
 			if (!rs.isBeforeFirst()) {
 				/*
 				 * naitab lehte valja
@@ -220,31 +164,27 @@ public class ChangePasswordServiceServlet extends HttpServlet {
 				/*
 				 * Update ja alkoregi suunamine
 				 */
-				boolean active = true;
 				PostgreUtils.update("update sys_user set password = '" + getMD5(pw) + "', active = TRUE where name ='"
 						+ uname + "' and password='" + oldpass + "';");
-				response.sendRedirect(contextPath);
-
+				response.sendRedirect("/");
 			}
 		} catch (Exception e) {
 			out.write(e.toString());
-
 		}
-
 	}
 
 	private String getMD5(String input) {
 		try {
 			MessageDigest md = MessageDigest.getInstance("MD5");
 			md.update(input.getBytes());
-
-			byte byteData[] = md.digest();
-
-			StringBuffer sb = new StringBuffer();
+			
+			byte[] byteData = md.digest();
+			
+			StringBuilder sb = new StringBuilder();
 			for (int i = 0; i < byteData.length; i++) {
 				sb.append(Integer.toString((byteData[i] & 0xff) + 0x100, 16).substring(1));
 			}
-
+			
 			return sb.toString().substring(0, 19);
 		} catch (NoSuchAlgorithmException ex) {
 			return input;

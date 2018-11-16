@@ -1,5 +1,6 @@
 package ee.agri.alkor.model;
 
+import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -139,6 +140,10 @@ public class SystemUser extends ABaseBean
 		this.active = active;
 	}
 
-    
+	public String toString() {
+		return "Person [id=" + id + ", name=" + name + ", person="
+			+ person + ", active=" + active + ", pwdhash=" + password
+			+ ", groups=" + Arrays.toString(groups.toArray()) + "]";
+	}
     
 }

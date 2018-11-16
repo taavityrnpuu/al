@@ -83,13 +83,15 @@ public class XteeQueryService implements IXteeServices, InitializingBean {
 			Mtr_bindingStub port = null;
 		
 			port = (Mtr_bindingStub) service.getmtr_porttype(new URL(url));
-
+			
+			System.out.println("Port: " + port);
+			
 			List<SOAPHeaderElement> elems = makeParingHeaders(getQueringPersonRegNr());
 			for(SOAPHeaderElement elem : elems){
 				port.setHeader(elem);
 			}
 
-			System.out.println("RegistreeringParing - regNumber:" + regNr+", url: "+url);
+			System.out.println("AhaaRegistreeringParing - regNumber:" + regNr+", url: "+url);
 			RegistreeringParing keha = new RegistreeringParing();
 
             keha.setKood(regNr);
@@ -105,7 +107,6 @@ public class XteeQueryService implements IXteeServices, InitializingBean {
 			}
 			
 			if (vastus != null) {
-
 				result.setEneterPriseRegistrationNr(regNr);
 				//result.setMtrRegstrationDate(paringHolder.getRegkp());
 				//result.setExciseLicenseValidDate(???);

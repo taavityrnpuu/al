@@ -20,11 +20,11 @@
 
 	<bean id="myAuditInterceptor" class="ee.agri.alkor.impl.AuditInterceptor" />
 
-	<bean id="jndiSessionFactory"
+	<!--<bean id="jndiSessionFactory"
 		class="org.springframework.jndi.JndiObjectFactoryBean"
 		depends-on="mySessionFactory">
-		<property name="jndiName" value="java:/alkorHS" />
-	</bean>
+		<property name="jndiName" value="java:comp/env/alkorHS" />
+	</bean>-->
 
 
 	<bean id="registryServiceDelegate"
@@ -34,7 +34,7 @@
 
 	<bean id="myRegistryServiceDao"
 		class="ee.agri.alkor.impl.RegistryServiceImpl">
-		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="sessionFactory" ref="mySessionFactory" />
 		<property name="docRoot" value="@docRoot@" />
 		<property name="baseURI" value="@baseURI@" />
 		<property name="applicationNrBase" value="0" />
@@ -70,7 +70,7 @@
 
 	<bean id="myClassificatorServiceDao"
 		class="ee.agri.alkor.impl.ClassificatorServiceImpl">
-		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="sessionFactory" ref="mySessionFactory" />
 	</bean>
 
 	<bean id="userServiceDelegate"
@@ -80,12 +80,12 @@
 
 	<bean id="myUserServiceDao"
 		class="ee.agri.alkor.impl.UserManagerServiceImpl">
-		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="sessionFactory" ref="mySessionFactory" />
 	</bean>
 
 	<bean id="userDetailsServiceDao"
 		class="ee.agri.alkor.impl.AuthenticationServiceImpl">
-		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="sessionFactory" ref="mySessionFactory" />
 	</bean>
 
 	<!--<bean id="velocityEngine"
@@ -109,12 +109,12 @@
 	
 	<bean id="notEnteredApplicationsJobImpl"
 		class="ee.agri.alkor.impl.NotEnteredApplicationJobs">
-		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="sessionFactory" ref="mySessionFactory" />
 	</bean>
 	
 	<bean id="decisionSequenceResetJobImpl"
 		class="ee.agri.alkor.impl.DecisionSequenceResetJobImpl">
-		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="sessionFactory" ref="mySessionFactory" />
 	</bean>
 
 	<bean id="notificationJobs"
@@ -122,7 +122,7 @@
 		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
 		<property name="mode" value="@mode@" />
 		<property name="daysBeforeRegistryEntryExpiry" value="60" />
-		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="sessionFactory" ref="mySessionFactory" />
 		<property name="mailSender" ref="mailSender" />
 		<!--<property name="velocityEngine" ref="velocityEngine" />-->
 	</bean>
@@ -130,7 +130,7 @@
 	<bean id="ExpiredRegEntryJobs"
 		class="ee.agri.alkor.impl.ExpiredRegEntryJobs">
 		<property name="changeReason" value="Registrikanne on aegunud" />
-		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="sessionFactory" ref="mySessionFactory" />
 	</bean>
 	
 	<bean id="ExpiredExendUntilApplicationJobs"
@@ -138,7 +138,7 @@
 		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
 		<property name="mode" value="@mode@" />
 		<property name="daysBeforeNotificationIsSent" value="1" />
-		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="sessionFactory" ref="mySessionFactory" />
 		<property name="mailSender" ref="mailSender" />
 		<!--<property name="velocityEngine" ref="velocityEngine" />-->
 	</bean>
@@ -226,12 +226,12 @@
 
 	<bean id="myDataSource"
 		class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:/alkorDS" />
+		<property name="jndiName" value="java:comp/env/alkorDS" />
 	</bean>
 
 	<bean id="myTxManager"
 		class="org.springframework.orm.hibernate5.HibernateTransactionManager">
-		<property name="sessionFactory" ref="jndiSessionFactory" />
+		<property name="sessionFactory" ref="mySessionFactory" />
 	</bean>
 	
   <bean id="pgDataSource" class="ee.agri.alkor.impl.DbBean">

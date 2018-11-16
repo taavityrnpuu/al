@@ -10,6 +10,7 @@ import org.apache.log4j.Logger;
 import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
@@ -42,51 +43,16 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 
 	@Transactional(rollbackFor = org.hibernate.exception.ConstraintViolationException.class)
 	public SystemUser saveUser(final SystemUser user) throws ConstraintViolationException {
-		// getHibernateTemplate().setEntityInterceptor(new AuditInterceptor());
 		try {
-			System.out.println(user.getId());
-			getHibernateTemplate().execute(new HibernateCallback() {
+			System.out.println("save user: " + user.toString());
+			getHibernateTemplate().execute(new HibernateCallback<Object>() {
 				public Object doInHibernate(Session session) {
 					// We have to merge with existing roles.
 					if (user.getId() != null) {
-						// List<UserGroup> roles = (List<UserGroup>) session
-						// .createQuery(
-						// "from UserGroup r where r.user.id = ?")
-						// .setParameter(0, user.getId()).list();
-						//
-						// SystemUser old = findUser(user.getName());
-						//
-						// Set newRoles = new HashSet();
-						// for (UserGroup role : user.getGroups()) {
-						// UserGroup foundRole = null;
-						// for (UserGroup existingRole : roles) {
-						// if (role.getGroupClass()
-						// .getCode()
-						// .equals(existingRole.getGroupClass()
-						// .getCode()))
-						// foundRole = existingRole;
-						// }
-						// if (foundRole != null) {
-						// newRoles.add(foundRole);
-						// roles.remove(foundRole);
-						// } else {
-						// newRoles.add(role);
-						// }
-						// }
-						// session.clear();
-						// //
-						// for (UserGroup existingRole : roles) {
-						// if (LOGGER.isDebugEnabled())
-						// LOGGER.debug("deleting: "
-						// + existingRole.getGroupClass()
-						// .getCode());
-						//
-						// session.delete(existingRole);
-						// }
-						// user.setGroups(newRoles);
 						PostgreUtils.delete("DELETE FROM user_group where user_id = " + user.getId());
 						session.saveOrUpdate(user);
-
+						Transaction tx = session.beginTransaction();
+						session.flush();
 					} else {
 						/**
 						 * SystemGroup defaultRole = new
@@ -135,22 +101,23 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 
 						}
 						user.setActive(false);
+						
 						session.save(user);
+						Transaction tx = session.beginTransaction();
+						session.flush();
 					}
 
 					return null;
 				}
 			});
 		} catch (DataIntegrityViolationException cve) {
+			System.out.println(cve.getMessage());
+			cve.printStackTrace();
 			throw new ConstraintViolationException(user.getName());
 		} catch (Throwable e) {
 			e.printStackTrace();
 			throw new SystemException(e);
 		}
-
-		// if (user.getId() == null) {
-
-		// }
 
 		return user;
 	}
@@ -268,7 +235,6 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 	}
 
 	public void sendEmail(SystemUser user) {
-
 		String email = user.getPerson().getContactInfo().getEmail();
 		String pwd = user.getPassword();
 
@@ -297,7 +263,7 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 		}
 
 		System.out.println("--- Sending user activation mail with data (email: "+email+", from: "+from+", host: "+host+") - username: "+user.getName());
-		
+		System.out.println(user.toString());
 		Mailer m = new Mailer();
 		m.setTo(email);
 		m.setFrom(from);
@@ -402,7 +368,9 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 	}
 
 	public static SystemUser findUserWithGroups(Session session, String userName) {
+		System.out.println(userName);
 		SystemUser user = findUser(session, userName);
+		System.out.println(user.getName());
 		Hibernate.initialize(user.getGroups());
 		return user;
 	}

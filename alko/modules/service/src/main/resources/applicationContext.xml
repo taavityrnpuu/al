@@ -22,7 +22,7 @@
 	<bean id="jndiSessionFactory"
 		class="org.springframework.jndi.JndiObjectFactoryBean"
 		depends-on="mySessionFactory">
-		<property name="jndiName" value="java:/alkorHS" />
+		<property name="jndiName" value="java:comp/env/alkorHS" />
 	</bean>
 
 
@@ -160,7 +160,7 @@
 
 	<bean id="myDataSource"
 		class="org.springframework.jndi.JndiObjectFactoryBean">
-		<property name="jndiName" value="java:/alkorDS" />
+		<property name="jndiName" value="java:comp/env/alkorDS" />
 	</bean>
 
 	<bean id="myTxManager"

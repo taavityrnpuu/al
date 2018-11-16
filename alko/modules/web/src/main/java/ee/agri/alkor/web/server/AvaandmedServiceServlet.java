@@ -29,7 +29,7 @@ public class AvaandmedServiceServlet extends HttpServlet {
 		response.setCharacterEncoding("utf-8");
 		
 		/*
-		 * avaandmete loogika (V‰lja n‰itamine)
+		 * avaandmete loogika (V√§lja n√§itamine)
 		 * 
 		 * <?xml version="1.0" encoding="UTF-8"?> <alkoholiregister
 		 * time="2014-12-01T13:59:17" ver="1"> <product id="">

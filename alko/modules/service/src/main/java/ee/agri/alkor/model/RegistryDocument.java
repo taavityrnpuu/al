@@ -204,7 +204,7 @@ public class RegistryDocument extends ABaseBean
 		this.contentType = contentType;
 	}
 	@ManyToOne (cascade = CascadeType.REFRESH)
-	@JoinColumn(name="DOC_APPL_ID")
+	@JoinColumn(name="DOC_APPL_ID", nullable=true)
 	@ForeignKey(name="FK_DOC_APPL")
 	public RegistryApplication getApplication() {
 		return application;

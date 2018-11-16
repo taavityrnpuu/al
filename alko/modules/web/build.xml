@@ -118,7 +118,8 @@
 			<fileset dir="${lib.dir}" includes="*.jar">
 				<!-- teegid, mis JBossil endal olemas on (konfliktide vältimiseks ei tohi neid deployda)-->
 				<exclude name="commons-logging*" />
-				<exclude name="log4j*" />
+				<!--<exclude name="log4j*" />-->
+				<exclude name="ejb3-pers*" />
 				<exclude name="gwt-user.jar" />
 			</fileset>
 			<fileset dir="${gwt.installDir}" includes="gwt-servlet*.jar" />

@@ -156,7 +156,7 @@
 	<servlet>
 		<servlet-name>Paroolivahetus</servlet-name>
 		<display-name>Alkoholiregistri paroolivahetus</display-name>
-		<jsp-file>/modules/web/src/main/webapp/WEB-INF/pwd.jsp</jsp-file>
+		<!--<jsp-file>/modules/web/src/main/webapp/WEB-INF/pwd.jsp</jsp-file>-->
 		<servlet-class>
 			ee.agri.alkor.web.server.ChangePasswordServiceServlet
 		</servlet-class>

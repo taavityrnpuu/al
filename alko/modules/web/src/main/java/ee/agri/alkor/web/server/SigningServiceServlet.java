@@ -236,7 +236,7 @@ public class SigningServiceServlet extends HttpServlet {
 
 			DataFileData datafile = new DataFileData();
 			datafile.setContentType("EMBEDDED_BASE64");
-			
+			System.out.println(docPath);
 			File file = new File(docPath);
 			//init array with file length
 			byte[] bytesArray = new byte[(int) file.length()];

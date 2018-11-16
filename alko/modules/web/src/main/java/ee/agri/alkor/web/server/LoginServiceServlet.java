@@ -107,43 +107,43 @@ public class LoginServiceServlet extends HttpServlet {
 		boolean hasRoles = false;
 
 		System.out.println("CAS'st isikukood: " + ik);
-
+		
 		if (ik != null && !ik.equals("")) {
 			checkAndCreateUserArireg(ik);
 		}
-
+		
 		try {
 			String templ = getTemplate(request, "login_template.html");
 
 			try {
-
+				
 				if (ik != null && !ik.equals("")) {
 					String sql = "select 1 from sys_user as sys join person as p on p.id = sys.person_id and (p.reg_id = '"
 							+ ik + "' or p.reg_id = 'EE" + ik + "') where sys.active = true";
 					ResultSet rs = PostgreUtils.query(sql);
-
+					
 					while (rs.next()) {
 						isVta = true;
 						hasRoles = true;
 					}
-
+					
 					if (isVta) {
 						tableBody += getTableRow("Riik (VTA, EMTA jt)", "", null, null);
 					}
-
+					
 					PostgreUtils
 							.update("UPDATE enterprise_person_ref SET valid = false where valid = true and id_code = '"
 									+ ik + "' and valid_until < now() and valid_until is not null");
-
+					
 					sql = "select ent_name, reg_nr, null as valid_until from user_arireg where id_code = '" + ik
 							+ "' UNION "
 							+ "select e.name, e.reg_id, (SELECT valid_until FROM enterprise_person_ref WHERE valid = true and id_code = '"
 							+ ik + "' and enterprise_id = e.id) "
 							+ "from enterprise e where id in (SELECT enterprise_id FROM enterprise_person_ref WHERE valid = true and id_code = '"
 							+ ik + "')";
-
+					
 					rs = PostgreUtils.query(sql);
-
+					
 					if (rs != null && !rs.wasNull()) {
 
 						while (rs.next()) {
@@ -151,7 +151,6 @@ public class LoginServiceServlet extends HttpServlet {
 									rs.getString("reg_nr"), rs.getString("reg_nr"), rs.getDate("valid_until"));
 							hasRoles = true;
 						}
-
 					}
 				}
 
@@ -165,17 +164,17 @@ public class LoginServiceServlet extends HttpServlet {
 				}
 
 				templ = templ.replace("{{BODY}}", body);
-
+				
 				out.write(templ);
-			} catch (Exception ex) {
-				ex.printStackTrace();
+			} catch (Exception x) {
+				x.printStackTrace();
 
-				templ = templ.replace("{{BODY}}", ex.getMessage());
+				templ = templ.replace("{{BODY}}", x.getMessage());
 				out.write(templ);
 			}
 
-		} catch (Exception x) {
-			out.write(x.getMessage());
+		} catch (Exception ex) {
+			out.write(ex.getMessage());
 		}
 	}
 

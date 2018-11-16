@@ -12,17 +12,15 @@ import org.apache.log4j.Logger;
 import org.hibernate.CacheMode;
 import org.hibernate.Query;
 import org.hibernate.Session;
-import org.hibernate.annotations.Synchronize;
+import org.hibernate.Transaction;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
 
+import ee.agri.alkor.model.ABaseBean;
 import ee.agri.alkor.model.IEntity;
-import ee.agri.alkor.model.Product;
-import ee.agri.alkor.model.RegistryApplication;
-import ee.agri.alkor.model.SearchViewPrimitive;
 import ee.agri.alkor.service.ConstraintViolationException;
 import ee.agri.alkor.service.IBaseService;
 import ee.agri.alkor.service.IClassificatorService;
@@ -46,32 +44,40 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 
 	@Transactional(rollbackFor = org.hibernate.exception.ConstraintViolationException.class)
 	public IEntity saveOrUpdate(IEntity obj) throws ConstraintViolationException {
-
-		// getHibernateTemplate().setEntityInterceptor(new AuditInterceptor());
-		Long id = null;
-
 		try {
-			if (obj.getId() == null)
-				id = (Long) getHibernateTemplate().save(obj);
-			else {
-				getHibernateTemplate().saveOrUpdate(obj);
-			}
+			getHibernateTemplate().execute(new HibernateCallback<Object>() {
+				public Object doInHibernate(Session session) {
+					if (obj.getId() == null)
+						session.save(obj);
+					else {
+						session.saveOrUpdate(obj);
+					}
+					
+					Transaction tx = session.beginTransaction();
+					session.flush();
+					
+					return null;
+				}
+			});
 		} catch (DataIntegrityViolationException cve) {
 			throw new ConstraintViolationException(obj.toString());
-		} catch (Throwable e) {
+		} catch (Exception e) {
 			e.printStackTrace();
 			throw new SystemException(e);
 		}
 		return obj;
 	}
-
+	
 	@Transactional
-	public void delete(final Class clazz, final Long id) {
+	public void delete(final Class<? extends ABaseBean> clazz, final Long id) {
 		try {
-			getHibernateTemplate().execute(new HibernateCallback() {
+			getHibernateTemplate().execute(new HibernateCallback<Object>() {
 				public Object doInHibernate(Session session) {
 					Object obj = session.load(clazz, id);
 					session.delete(obj);
+					Transaction tx = session.beginTransaction();
+					session.flush();
+					
 					return null;
 				}
 			});
@@ -83,7 +89,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 
 	public SearchFilter search(final SearchFilter filter) {
 		try {
-			return (SearchFilter) getHibernateTemplate().execute(new HibernateCallback() {
+			return (SearchFilter) getHibernateTemplate().execute(new HibernateCallback<Object>() {
 				public Object doInHibernate(Session session) {
 					return search(session, filter);
 				}
@@ -96,7 +102,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 
 	public SearchFilter searchApplications(final SearchFilter filter) {
 		try {
-			return (SearchFilter) getHibernateTemplate().execute(new HibernateCallback() {
+			return (SearchFilter) getHibernateTemplate().execute(new HibernateCallback<Object>() {
 				public Object doInHibernate(Session session) {
 					SpecialSearch sb = new SpecialSearch(filter.getObjectClass(), filter.getQueryParams(), filter.getSortMap(), filter.getSortMapOrder());
 					filter.setResultsList(sb.getResults(session, filter.getStartIndex(), filter.getPageSize()));
@@ -158,7 +164,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		int l = 0;
 		int index = 0;
 		if (filter.getSortMap() != null && filter.getSortMap().size() > 0) {
-			Map sortMap = filter.getSortMap();
+			Map<String, String> sortMap = filter.getSortMap();
 
 			for (Object key : sortMap.keySet()) {
 				String keyString = (String) key;
@@ -178,17 +184,6 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 			}
 		}
 
-		// hack to to include null relations between entities to result in
-		// SearchView default search
-		// FIX IT!
-		// NO!
-		if (filter.getObjectClass().equals("SearchViewPrimitive") && filter.getOrderBy() != null && filter.getOrderBy().equals("applicationDecisionDate desc, s.productTypeName asc, s.applicationNr desc")) {
-
-			/*
-			 * if (l == 0) joinedFrom.append(" "); joinedFrom.append("left join fetch "); joinedFrom.append("s.productTypeName "); l++;
-			 */
-		}
-
 		/**
 		 * if searching extended or not extended products add registry application to query and search by it
 		 */
@@ -202,11 +197,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				queryParams.put("decision.regEntryDecision.code", paramStringValue);
 				queryParams.put("productApplicationJoin", "t.product.id");
 				Object paramValue = null;
-				if (queryParams.containsKey("registryEntryApplication.nr")) {
-					// paramValue = queryParams.get("registryEntryApplication.nr");
-					// queryParams.remove("registryEntryApplication.nr");
-					// queryParams.put("nr", paramValue);
-				}
+				
 				if (queryParams.containsKey("registryEntryApplication.applicant.name")) {
 					paramValue = queryParams.get("registryEntryApplication.applicant.name");
 					queryParams.remove("registryEntryApplication.applicant.name");
@@ -218,27 +209,8 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 					queryParams.put("decision.date", paramValue);
 				}
 			}
-		} // else if (filter.getObjectClass().equals("ReportView")) {
-			// String reg_id = (String) queryParams.get("regId");
-			// joinedFrom
-			// .append("LEFT JOIN ( SELECT report.id, count(*) AS total FROM
-			// ProductMovementReportRecord " +
-			// "WHERE report.id in " +
-			// "(SELECT id FROM ProductMovementReport WHERE enterprise.id = (select
-			// id from Enterprise where registrationId = '"+reg_id+"' LIMIT 1)) " +
-			// "GROUP BY ProductMovementReportRecord.report.id) rec ON s.id =
-			// rec.id");
-			// queryParams.remove("ent_reg_nr");
-			// }
-
-		/*
-		 * if(filter.getObjectClass().equals("RegistryApplication")){ if (!hasWhere) { where.append(" where "); hasWhere = true; } else { where.append(" and "); } where.append(" date_part('year', arrived) > 2009 "); hasWhere = true; }
-		 */
-
-		/*
-		 * else if(filter.getObjectClass().equals("ReportListView") && queryParams.containsKey("ent_reg_nr")){ String reg_id = (String) queryParams.get("ent_reg_nr"); joinedFrom.append( " JOIN product_move_report mr ON report_id = mr.id JOIN enterprise e ON e.reg_id = '" +reg_id+
-		 * "' AND e.id = mr.report_ent_id "); queryParams.remove("ent_reg_nr"); }
-		 */
+		}
+		
 		int j = 0;
 		for (String paramName : queryParams.keySet()) { // for loop for 'where'
 			
@@ -354,9 +326,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				} else if (paramName.equals("repMonth") && (filter.getObjectClass().equals("ReportListView") || filter.getObjectClass().equals("ReportView"))) {
 					where.append("extract(month from s.reportDate) = ?" + j++ + " ");
 					continue;
-				} /*
-					 * else if (paramName.equals("reporting_ent_reg_id") && (filter.getObjectClass().equals("ReportListView")) ) { where.append(" s.reportingEntRegId = ?"); queryParams.remove("reporting_ent_reg_id"); continue; }
-					 */else if (paramName.equals("reportPeriodStart") && filter.getObjectClass().equals("ProductMovementReport")) {
+				} else if (paramName.equals("reportPeriodStart") && filter.getObjectClass().equals("ProductMovementReport")) {
 					where.append("s.repDate >= ?" + j++ + " ");
 					continue;
 				} else if (paramName.equals("reportPeriodEnd") && filter.getObjectClass().equals("ProductMovementReport")) {
@@ -523,12 +493,8 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		LOGGER.debug("TIMER where [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms");
 
 		String countQuery = "select count(*) " + from.toString();
-		// LOGGER.info("TIMER countquery [" + timerSessionId + "]: " +
-		// countQuery);
 
-		// create query
-
-		Query q = createQuery(session, queryParams, filter, countQuery);
+		Query<Object> q = createQuery(session, queryParams, filter, countQuery);
 
 		Long count = (Long) q.list().get(0);
 		filter.setTotal(count.intValue());
@@ -536,7 +502,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		from = joinedFrom; // use version using fetch join in order to add null
 							// relations in order by clause
 		if (filter.getSortMap() != null && filter.getSortMap().size() > 0) {
-			Map sortMap = filter.getSortMap();
+			Map<String, String> sortMap = filter.getSortMap();
 
 			from.append(" order by");
 			int k = 0;
@@ -544,31 +510,23 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				if (k > 0) {
 					from.append(",");
 				}
+				
 				from.append(" s.").append(key);
-
 				if (sortMap.get(key).equals(SearchFilter.ASCENDING)) {
 					from.append(" asc");
 				} else if (sortMap.get(key).equals(SearchFilter.DESCENDING)) {
 					from.append(" desc");
-				} else {
-					// System.out.println("BaseBO search(Session session,
-					// SearchFilter filter), "
-					// +
-					// "filter.getSortMap exceptional case!!");
 				}
 				k++;
 			}
 
 		} else if ((filter.getOrderBy()) != null && filter.getOrderBy().length() != 0) {
 			from.append(" order by s.").append(filter.getOrderBy());
-		} else {
 		}
 
-		// LOGGER.debug("TIMER query [" + timerSessionId + "]: "+from);
+		Query<Object> q2 = createQuery(session, queryParams, filter, from.toString());
 
-		Query q2 = createQuery(session, queryParams, filter, from.toString());
-
-		System.out.println(q2.getQueryString());
+		System.out.println(q2.getQueryString() + ": " + queryParams.toString());
 
 		q2.setFirstResult(filter.getStartIndex());
 		if (filter.getPageSize() > 0) {
@@ -578,21 +536,15 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		q2.setCacheable(false);
 		q2.setCacheMode(CacheMode.IGNORE);
 
-		List queryList = q2.list();
+		List<Object> queryList = q2.list();
 
-		List resultList = new ArrayList();
+		List<Object> resultList = new ArrayList<Object>();
 		boolean isExtNotExtProductSearch = isExtendedNotExtendedProductSearch(filter.getObjectClass(), queryParams);
 		if (isExtNotExtProductSearch || isEnterpriseSearchWithSpecifiedType(filter.getObjectClass(), queryParams)) {
-			for (Iterator it = queryList.iterator(); it.hasNext();) {
+			for (Iterator<Object> it = queryList.iterator(); it.hasNext();) {
 				Object row = it.next();
 				if (row instanceof Object[]) {
 					Object[] rowObject = (Object[]) row;
-					// in case of extended and not extended product search,
-					// replace original application with
-					// extension application
-					/*
-					 * if (isExtNotExtProductSearch && rowObject != null && rowObject.length > 1 && rowObject[0] instanceof Product && rowObject[1] instanceof RegistryApplication) { // ((Product)rowObject[0]).setRegistryEntryApplication(( RegistryApplication)rowObject[1]); }
-					 */
 					resultList.add(rowObject[0]);
 				} else {
 					resultList.add(row);
@@ -614,8 +566,8 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 	 * @author raido.kalbre
 	 */
 
-	private static Query createQuery(Session session, Map<String, Object> queryParams, SearchFilter filter, String queryString) {
-		Query q2 = session.createQuery(queryString); //
+	private static Query<Object> createQuery(Session session, Map<String, Object> queryParams, SearchFilter filter, String queryString) {
+		Query<Object> q2 = session.createQuery(queryString); //
 
 		int j = 0;
 		for (String paramName : queryParams.keySet()) { // for loop for q2
@@ -837,11 +789,8 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 					else
 						value = " is null";
 				}
-			} catch (Exception e) {
-
-			}
+			} catch (Exception e) {}
 		}
 		return value;
 	}
-
 }

@@ -71,10 +71,10 @@ public class DocumentServiceServlet2 extends HttpServlet {
 	// @SupressWarnings("unchecked")
 	private void upLoadFile(HttpServletRequest req, HttpServletResponse resp)
 				throws ServletException {
-
+		
 		DiskFileItemFactory factory = new DiskFileItemFactory();
 		factory.setSizeThreshold(10 * 1024 * 1024);
-
+		
 		ServletFileUpload upload = new ServletFileUpload(factory);
 
 		try {
@@ -154,15 +154,11 @@ public class DocumentServiceServlet2 extends HttpServlet {
 					onAvalik = "1";
 				}
 
-				Long docId = service.addDocument(upLoadFileItem.get(), docType,
-							docLang, applicationNr, applicationId, docName, fileName, upLoadFileItem
-										.getContentType(), false, onAvalik);
-
+				Long docId = service.addDocument(upLoadFileItem.get(), docType,	docLang, applicationNr,
+					applicationId, docName, fileName, upLoadFileItem.getContentType(), false, onAvalik);
+				
 				// Write back the document id.
-							
-				StringBuffer respBuf = new StringBuffer(docId.toString())
-							.append(";").append(ClientDataFactory
-										.getDefaultDateFormat().format(new Date()));
+				StringBuffer respBuf = new StringBuffer(docId.toString()).append(";").append(ClientDataFactory.getDefaultDateFormat().format(new Date()));
 				String response = respBuf.toString();
 
 				resp.setContentType("text/plain");

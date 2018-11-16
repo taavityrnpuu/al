@@ -18,8 +18,7 @@ import ee.agri.alkor.web.service.SystemException;
  *
  */
 public class ClassificatorServiceImpl implements ClassificatorService {
-   private static Logger LOGGER = Logger
-         .getLogger(ClassificatorServiceImpl.class);
+   private static Logger LOGGER = Logger.getLogger(ClassificatorServiceImpl.class);
 
    public ClassificatorServiceImpl() {
       super();
@@ -66,8 +65,7 @@ public class ClassificatorServiceImpl implements ClassificatorService {
 
    public ClassItemMap saveClass(ClassItemMap map) {
       try {
-         return ClientDataFactory.create((Classificator) ServiceFactory.getClassificatorService().saveOrUpdate(
-               ClientDataFactory.create(map)));
+         return ClientDataFactory.create((Classificator)ServiceFactory.getClassificatorService().saveOrUpdate(ClientDataFactory.create(map)));
       } catch (Exception cve) {
          cve.printStackTrace();
          throw new SystemException(cve.getMessage());
