@@ -51,31 +51,26 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 					if (user.getId() != null) {
 						PostgreUtils.delete("DELETE FROM user_group where user_id = " + user.getId());
 						session.saveOrUpdate(user);
+						
 						Transaction tx = session.beginTransaction();
 						session.flush();
+						tx.commit();
 					} else {
-						/**
-						 * SystemGroup defaultRole = new
-						 * SystemGroup(IClassificatorService.ROLE_ANONYMOUS);
-						 * UserGroup ug = new UserGroup(); ug.setUser(user);
-						 * ug.setGroupClass(defaultRole);
-						 */
 						/*
 						 * Kontroll kas kasutaja on olemas
 						 */
 						user.setPassword(getMD5(user.getPassword()));
-						boolean sent = false;
-
+						
+						
+						//XXX: eemaldatud kuna vale. kui saame vea siis saadame emaili????
+						/*boolean sent = false;
+						
 						try {
 							SystemUser old = findUser(user.getName());
-						}
-
-						catch (Exception ex) {
+						} catch (Exception ex) {
 							try {
 								SystemUser old = findUserByPerson(user.getPerson().getRegistrationId());
-							}
-
-							catch (Exception exa) {
+							} catch (Exception exa) {
 								if (sent == false) {
 									sendEmail(user);
 									sent = true;
@@ -85,26 +80,25 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 						
 						try {
 							SystemUser old = findUserByPerson(user.getPerson().getRegistrationId());
-						}
-
-						catch (Exception ex) {
+						} catch (Exception ex) {
 							try {
 								SystemUser old = findUser(user.getName());
-							}
-
-							catch (Exception exo) {
-								if (sent == false) {
+							} catch (Exception exo) {
+								if(sent == false) {
 									sendEmail(user);
 									sent = true;
 								}
 							}
-
-						}
+						}*/
+						
 						user.setActive(false);
 						
 						session.save(user);
 						Transaction tx = session.beginTransaction();
 						session.flush();
+						tx.commit();
+						
+						sendEmail(user);
 					}
 
 					return null;
@@ -124,28 +118,21 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 
 	@Transactional(rollbackFor = org.hibernate.exception.ConstraintViolationException.class)
 	public SystemUser saveUser2(final SystemUser user) throws ConstraintViolationException {
-		// getHibernateTemplate().setEntityInterceptor(new AuditInterceptor());
 		try {
-			getHibernateTemplate().execute(new HibernateCallback() {
+			getHibernateTemplate().execute(new HibernateCallback<Object>() {
 				public Object doInHibernate(Session session) {
 					// We have to merge with existing roles.
-					if (user.getId() != null) {
-						List<UserGroup> roles = (List<UserGroup>) session
-								.createQuery("from UserGroup r where r.user.id = ?0").setParameter(0, user.getId())
-								.list();
-
+					if(user.getId() != null) {
+						List<UserGroup> roles = (List<UserGroup>)session.createQuery("from UserGroup r where r.user.id = ?0").setParameter(0, user.getId()).list();
 						SystemUser old = findUser(user.getName());
-
-						user.setPassword(getMD5(user.getPassword()));
-
-						if ((old.getPassword() != user.getPassword())
-								&& (user.getPassword() != null || user.getPassword() != "")) {
-							sendEmail(user);
+						
+						if ((old.getPassword() != user.getPassword()) && (user.getPassword() != null || user.getPassword() != "")) {
+							sendEmail(old);
 							user.setActive(false);
 						}
-
-						Set newRoles = new HashSet();
-						for (UserGroup role : user.getGroups()) {
+						
+						Set<UserGroup> newRoles = new HashSet<UserGroup>();
+						for(UserGroup role : user.getGroups()) {
 							UserGroup foundRole = null;
 							for (UserGroup existingRole : roles) {
 								if (role.getGroupClass().getCode().equals(existingRole.getGroupClass().getCode()))
@@ -159,65 +146,18 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 							}
 						}
 						session.clear();
-						//
+						
 						for (UserGroup existingRole : roles) {
 							if (LOGGER.isDebugEnabled())
 								LOGGER.debug("deleting: " + existingRole.getGroupClass().getCode());
-
+							
 							session.delete(existingRole);
 						}
+						
 						user.setGroups(newRoles);
 						session.saveOrUpdate(user);
-					} else {
-						/**
-						 * SystemGroup defaultRole = new
-						 * SystemGroup(IClassificatorService.ROLE_ANONYMOUS);
-						 * UserGroup ug = new UserGroup(); ug.setUser(user);
-						 * ug.setGroupClass(defaultRole);
-						 */
-						/*
-						 * Kontroll kas kasutaja on olemas
-						 */
-						boolean sent = false;
-						try {
-							SystemUser old = findUser(user.getName());
-						}
-
-						catch (Exception ex) {
-							try {
-								SystemUser old = findUserByPerson(user.getPerson().getRegistrationId());
-							}
-
-							catch (Exception exa) {
-								if (sent == false) {
-									sendEmail(user);
-									sent = true;
-								}
-							}
-						}
-
-						try {
-							SystemUser old = findUserByPerson(user.getPerson().getRegistrationId());
-						}
-
-						catch (Exception ex) {
-							try {
-								SystemUser old = findUser(user.getName());
-							}
-
-							catch (Exception exo) {
-								if (sent == false) {
-									sendEmail(user);
-									sent = true;
-								}
-							}
-
-						}
-
-						user.setActive(false);
-						session.save(user);
 					}
-
+					
 					return null;
 				}
 			});
@@ -226,11 +166,7 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 		} catch (Throwable e) {
 			throw new SystemException(e);
 		}
-
-		// if (user.getId() == null) {
-
-		// }
-
+		
 		return user;
 	}
 
@@ -331,8 +267,7 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 
 	public SystemUser findUserByPerson(String registrationId) {
 		try {
-			return (SystemUser) getHibernateTemplate()
-					.find("from SystemUser u where u.person.registrationId = ?0", registrationId).get(0);
+			return (SystemUser) getHibernateTemplate().find("from SystemUser u where u.person.registrationId = ?0", registrationId).get(0);
 		} catch (IndexOutOfBoundsException ioe) {
 			throw new ObjectNotFoundException(SystemUser.class, registrationId);
 		}
@@ -340,7 +275,6 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 
 	public SystemUser findUserWithGroups(final String userName) {
 		return (SystemUser) getHibernateTemplate().execute(new HibernateCallback() {
-
 			public Object doInHibernate(Session session) throws HibernateException {
 				return findUserWithGroups(session, userName);
 			}
@@ -352,14 +286,13 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 		List<SystemGroup> withoutEIT = new ArrayList<SystemGroup>();
 
 		List<SystemGroup> list = (List<SystemGroup>) getHibernateTemplate().execute(new HibernateCallback() {
-
 			public Object doInHibernate(Session session) throws HibernateException {
 				return ClassificatorServiceImpl.findClassItems(session, "SystemGroup");
 			}
 		});
 
-		for (SystemGroup g : list) { // jätame EIT'i välja
-			if (!g.getCode().equals("EIT_GRP")) {
+		for(SystemGroup g : list) { // jätame EIT'i välja
+			if(!g.getCode().equals("EIT_GRP")) {
 				withoutEIT.add(g);
 			}
 		}
@@ -368,33 +301,30 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 	}
 
 	public static SystemUser findUserWithGroups(Session session, String userName) {
-		System.out.println(userName);
 		SystemUser user = findUser(session, userName);
-		System.out.println(user.getName());
 		Hibernate.initialize(user.getGroups());
+		
 		return user;
 	}
-
+	
 	public List<SystemUser> findUsersInGroup(final String groupCode) {
-		return (List<SystemUser>) getHibernateTemplate().execute(new HibernateCallback() {
-
-			public Object doInHibernate(Session session) throws HibernateException {
-				List results = session.createQuery("from SystemUser u join u.groups g where g.groupClass.code = ?0")
-						.setString(0, groupCode).list();
-				List usersList = new ArrayList();
-				for (Iterator it = results.iterator(); it.hasNext();) {
-					Object[] row = (Object[]) it.next();
-					SystemUser user = (SystemUser) row[0];
+		return getHibernateTemplate().execute(new HibernateCallback<List<SystemUser>>() {
+			public List<SystemUser> doInHibernate(Session session) {
+				List<?> results = session.createQuery("from SystemUser u join u.groups g where g.groupClass.code = ?0").setParameter(0, groupCode).list();
+				List<SystemUser> usersList = new ArrayList<SystemUser>();
+				for(Iterator<?> it = results.iterator(); it.hasNext();) {
+					Object[] row = (Object[])it.next();
+					SystemUser user = (SystemUser)row[0];
 					usersList.add(user);
 				}
+				
 				return usersList;
 			}
 		});
 	}
 
 	public static SystemUser findUser(Session session, String userName) {
-		SystemUser user = (SystemUser) session.createQuery("from SystemUser u where u.name = ?0").setString(0, userName)
-				.list().get(0);
+		SystemUser user = (SystemUser)session.createQuery("from SystemUser u where u.name = ?0").setParameter(0, userName).list().get(0);
 		return user;
 	}
 
@@ -419,5 +349,4 @@ public class UserManagerServiceImpl extends BaseBO implements IUserManagerServic
 			return input;
 		}
 	}
-
 }

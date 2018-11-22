@@ -16,9 +16,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import java.text.SimpleDateFormat;
 import java.util.Random;
@@ -44,7 +42,6 @@ import ee.agri.alkor.model.PaymentMatchingLog;
 import ee.agri.alkor.model.Person;
 import ee.agri.alkor.model.Product;
 import ee.agri.alkor.model.ProductEnterpriseRole;
-import ee.agri.alkor.model.ProductMoveReportView;
 import ee.agri.alkor.model.ProductMovementReportRecord;
 import ee.agri.alkor.model.RegistryApplication;
 import ee.agri.alkor.model.RegistryDocument;
@@ -62,9 +59,6 @@ import ee.agri.alkor.service.IClassificatorService;
 import ee.agri.alkor.service.IRegistryService;
 import ee.agri.alkor.service.SearchFilter;
 import ee.agri.alkor.service.SystemException;
-import ee.agri.alkor.xtee.Messages;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.Aruandeparing_vastuserida;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.Aruandeperiood;
 import ee.agri.alkor.model.classes.ApplicationType;
 
 public class RegistryServiceImpl extends BaseBO implements IRegistryService {
@@ -403,7 +397,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					toDateFormatted.setSeconds(59);
 					
 					if(toDateFormatted.before(new Date())) {
-						return -1; // ei luba minevikku lisada
+						return -1; //ei luba minevikku lisada
 					}
 					
 					sqlDate = "'" + sdf2.format(toDateFormatted) + "'";
@@ -629,7 +623,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			return (RegistryApplication) getHibernateTemplate().execute(new HibernateCallback<Object>() {
 				public Object doInHibernate(Session session) {
 					Decision decision = appl.getDecision();
-					Person signer = (Person) session.createQuery("from Person where id = ?0").setLong(0, decision.getSigner().getId().longValue()).list().get(0);
+					Person signer = (Person) session.createQuery("from Person where id = ?0").setParameter(0, decision.getSigner().getId()).list().get(0);
 					decision.setSigner(signer);
 					
 					session.saveOrUpdate(appl);
@@ -654,7 +648,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		try {
 			return (RegistryApplication) getHibernateTemplate().execute(new HibernateCallback<Object>() {
 				public Object doInHibernate(Session session) {
-					Enterprise taotleja = application.getApplicant();
 					Long applId = application.getId();
 					
 					LOGGER.info("REPROCESS");
@@ -734,12 +727,11 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						session.flush();
 					}
 					
-					List results = session
-							.createQuery(
-									"select s.id from RegistryDocument s where s.application.id = ?0 and (s.docType.code = ?1 or s.docType.code = ?2 or s.docType.code = ?3)")
-							.setParameter(0, application.getId()).setParameter(1, "DEC").setParameter(2, "COR")
-							.setParameter(3, "NDEC").list();
-					for (int i = 0; i < results.size(); i++) {
+					List<?> results = session.createQuery(
+						"select s.id from RegistryDocument s where s.application.id = ?0 and (s.docType.code = ?1 or s.docType.code = ?2 or s.docType.code = ?3)")
+						.setParameter(0, application.getId()).setParameter(1, "DEC").setParameter(2, "COR")
+						.setParameter(3, "NDEC").list();
+					for(int i = 0; i < results.size(); i++) {
 						deleteDocumentWithReason((Long) results.get(i), reasonToDelete);
 					}
 					
@@ -837,7 +829,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	 */
 	@Transactional
 	private void doUnbindPaymentToEnterpise(Session session, Enterprise enterprise, RegistryPayment payment) {
-
 		// to avoid double action called by double click
 		if (isPaymentBindedToEnterprise(enterprise, payment.getId())) {
 			BigDecimal balance = enterprise.getBalance() != null ? enterprise.getBalance() : new BigDecimal(0);
@@ -946,18 +937,17 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		return enterprise;
 	}
 
+	@SuppressWarnings("unchecked")
 	private void saveOrUpdate(Session session, Enterprise enterprise) {
 		if(enterprise == null)
 			return;
 		LOGGER.debug("saveOrUpdate enterprise start, version " + enterprise.getVersion());
 		
 		if(enterprise.getId() != null) {
-			@SuppressWarnings("unchecked")
-			List<ProductEnterpriseRole> roles = session
-					.createQuery("from ProductEnterpriseRole r where r.enterprise.id = ?0")
-					.setParameter(0, enterprise.getId()).list();
+			List<ProductEnterpriseRole> roles = session.createQuery("from ProductEnterpriseRole r where r.enterprise.id = ?0")
+				.setParameter(0, enterprise.getId()).list();
 			
-			Set newRoles = new HashSet();
+			Set<ProductEnterpriseRole> newRoles = new HashSet<ProductEnterpriseRole>();
 			for(ProductEnterpriseRole role : enterprise.getEnterpriseRoles()) {
 				ProductEnterpriseRole foundRole = null;
 				for(ProductEnterpriseRole existingRole : roles) {
@@ -1016,17 +1006,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		Person person = null;
 		try {
 			person = (Person) session.createQuery("from Person p where p.id = ?0").setParameter(0, id).list().get(0);
-		} catch (IndexOutOfBoundsException ie) {}
-		
-		return person;
-	}
-	
-	@SuppressWarnings("unused")
-	private Person findPerson(Session session, String firstName, String lastName) {
-		Person person = null;
-		try {
-			person = (Person) session.createQuery("from Person p where p.firstName = ?0 and p.lastName = ?1")
-					.setParameter(0, firstName).setParameter(1, lastName).list();
 		} catch (IndexOutOfBoundsException ie) {}
 		
 		return person;
@@ -1218,8 +1197,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 							&& application.getApplicant().getEnterpriseRepresentative().getRegistrationId() != null) {
 						LOGGER.debug("APPLENTREP FROM ENTERPRISE 2");
 						// kui on sisekasutaja ja kui taotlus pole EIT kasutaja poolt sisestatud
-						savedPerson = findPerson(session,
-								application.getApplicant().getEnterpriseRepresentative().getRegistrationId());
+						savedPerson = findPerson(session, application.getApplicant().getEnterpriseRepresentative().getRegistrationId());
 					} // muul juhul entrep jääb muutmata
 					
 					if(savedPerson != null) {
@@ -1811,16 +1789,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					}
 					
 					LOGGER.debug("product ID " + Long.toString(prod)+" , oldNumber: "+oldNumber+", appl_id: "+application.getId());
-					Iterator it = session.createQuery("select id from RegistryApplication where product_id = ?0").setParameter(0, prod).iterate();
-					int cnt = 0;
-					if(it.hasNext()) {
-						do {
-							cnt++;
-							it.next();
-						} while (it.hasNext());
-					}
+					List<?> productList = session.createQuery("select id from RegistryApplication where product_id = ?0").setParameter(0, prod).list();
 					
-					int nextNr = cnt;
+					int nextNr = productList.size() + 1;
 					String[] jupid = oldNumber.split("/");
 					application.setNr(jupid[0] + "/P" + Integer.toString(nextNr));
 					LOGGER.debug("PXL newNr firstExtension"+ oldNumber);
@@ -1940,6 +1911,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					
 					Transaction tx = session.beginTransaction();
 					session.flush();
+					tx.commit();
 					
 					return null;
 				}
@@ -1966,6 +1938,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					
 					Transaction tx = session.beginTransaction();
 					session.flush();
+					tx.commit();
 					
 					return null;
 				}
@@ -2001,6 +1974,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	
 	public boolean deleteProduct(final Long id) {
 		List<RegistryApplication> applications = getHibernateTemplate().execute(new HibernateCallback<List<RegistryApplication>>() {
+			@SuppressWarnings("unchecked")
 			public List<RegistryApplication> doInHibernate(Session session) {
 				return session.createQuery("from RegistryApplication a where a.product.id = ?0").setParameter(0, id).list();
 			}
@@ -2045,7 +2019,11 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	}
 	
 	public byte[] createApplicationDocument(String docTypeCode, String applicationNr, String signerUserName) {
-		RegistryApplication application = (RegistryApplication) getHibernateTemplate().find("from RegistryApplication a where a.nr = ?0", applicationNr).get(0);
+		RegistryApplication application = getHibernateTemplate().execute(new HibernateCallback<RegistryApplication>() {
+			public RegistryApplication doInHibernate(Session session) {
+				return (RegistryApplication)session.createQuery("from RegistryApplication a where a.nr = ?0").setParameter(0, applicationNr).list().get(0);
+			}
+		});
 		List<RegistryDocument> documents = findProductDocuments(application.getProduct().getId());
 		File file = getPdfCreator().create(docTypeCode, application, null, documents);
 		byte[] content = null;
@@ -2089,11 +2067,11 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					session.save(doc);
 					Transaction tx = session.beginTransaction();
 					session.flush();
+					tx.commit();
 					
 					return null;
 				}
 			});
-
 		} catch(Exception e) {
 			throw new SystemException(e);
 		}
@@ -2322,19 +2300,32 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	}
 	
 	public RegistryEntry findRegistryEntry(String entryNr) {
-		List<RegistryEntry> tulem = (List<RegistryEntry>)getHibernateTemplate().find("from RegistryEntry e where lower(e.nr) = ?0", entryNr);
-		if (tulem != null && !tulem.isEmpty())
+		List<RegistryEntry> tulem = getHibernateTemplate().execute(new HibernateCallback<List<RegistryEntry>>() {
+			@SuppressWarnings("unchecked")
+			public List<RegistryEntry> doInHibernate(Session session) {
+				return session.createQuery("from RegistryEntry e where lower(e.nr) = ?0").setParameter(0, entryNr).list();
+			}
+		});
+		if(!tulem.isEmpty())
 			return tulem.get(0);
 		
 		return null;
 	}
 	
 	public RegistryEntry findRegistryEntryByApplication(String applicationNr) {
-		return (RegistryEntry)getHibernateTemplate().find("from RegistryEntry e where e.application.nr = ?0", applicationNr).get(0);
+		return getHibernateTemplate().execute(new HibernateCallback<RegistryEntry>() {
+			public RegistryEntry doInHibernate(Session session) {
+				return (RegistryEntry)session.createQuery("from RegistryEntry e where e.application.nr = ?0").setParameter(0, applicationNr).list().get(0);
+			}
+		});
 	}
 	
 	public RegistryEntry findRegistryEntryByApplicationId(Long applicationId) {
-		return (RegistryEntry)getHibernateTemplate().find("from RegistryEntry e where e.application.id = ?0", applicationId).get(0);
+		return getHibernateTemplate().execute(new HibernateCallback<RegistryEntry>() {
+			public RegistryEntry doInHibernate(Session session) {
+				return (RegistryEntry)session.createQuery("from RegistryEntry e where e.application.id = ?0").setParameter(0, applicationId).list().get(0);
+			}
+		});
 	}
 	
 	public synchronized RegistryApplication findRegistryApplication(final String applicationNr) {
@@ -2374,12 +2365,11 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public List<RegistryApplication> findWaitingEnterpriseApplications(final String registrationNr) {
 		try {
 			return getHibernateTemplate().execute(new HibernateCallback<List<RegistryApplication>>() {
+				@SuppressWarnings("unchecked")
 				public List<RegistryApplication> doInHibernate(Session session) {
-					Query q = session.createQuery(
-									"from RegistryApplication as a where a.applicant.registrationId = ?0 and a.state.code in ('ADD','CTL','PRO', 'NMO', 'ARP') and a.type.code in ('ARE','ARP')  order by a.arrived")
-							.setParameter(0, registrationNr);
-					
-					return (List<RegistryApplication>)q.list();
+					return session.createQuery(
+						"from RegistryApplication as a where a.applicant.registrationId = ?0 and a.state.code in ('ADD','CTL','PRO', 'NMO', 'ARP') and a.type.code in ('ARE','ARP')  order by a.arrived")
+						.setParameter(0, registrationNr).list();
 				}
 			});
 		} catch(IndexOutOfBoundsException iof) {
@@ -2392,24 +2382,21 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public List<RegistryApplication> findEnterpriseExpiringEntryApplications(final String registrationNr) {
 		try {
 			return getHibernateTemplate().execute(new HibernateCallback<List<RegistryApplication>>() {
+				@SuppressWarnings("unchecked")
 				public List<RegistryApplication> doInHibernate(Session session) {
-					Query q1 = session.createQuery(
-						"from RegistryApplication as a where a.registryEntry.id is not null and a.applicant.registrationId = ?0 and a.state.code ='"
-						+ IClassificatorService.APPL_STATE_RGE
-						+ "' and a.registryEntry.validUntil between ?1 and ?2");
-					q1.setString(0, registrationNr);
 					Calendar cal = Calendar.getInstance();
 					cal.add(Calendar.DAY_OF_YEAR, 30);
 					Date date = cal.getTime();
-					q1.setDate(1, date);
 					cal.add(Calendar.DAY_OF_YEAR, 30);
-					date = cal.getTime();
-					q1.setDate(2, date);
-					LOGGER.debug("query:" + q1.getQueryString());
-					List<RegistryApplication> appsList = null;
-					try {
-						appsList = q1.list();
-					} catch (IndexOutOfBoundsException iof) {
+					Date date2 = cal.getTime();
+					
+					List<RegistryApplication> appsList = session.createQuery(
+						"from RegistryApplication as a where a.registryEntry.id is not null and a.applicant.registrationId = ?0 and a.state.code ='"
+						+ IClassificatorService.APPL_STATE_RGE
+						+ "' and a.registryEntry.validUntil between ?1 and ?2").setParameter(0, registrationNr).setParameter(1, date)
+						.setParameter(2, date2).list();
+					
+					if(appsList.isEmpty()) {
 						return new ArrayList<RegistryApplication>();
 					}
 					
@@ -2580,6 +2567,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public List<RegistryDocument> findPublicDocuments() {
 		try {
 			return getHibernateTemplate().execute(new HibernateCallback<List<RegistryDocument>>() {
+				@SuppressWarnings("unchecked")
 				public List<RegistryDocument> doInHibernate(Session session) {
 					List<RegistryDocument> l = session.createQuery("from RegistryDocument d where d.docType.code = ?0")
 						.setParameter(0, IClassificatorService.DOC_TYPE_PUB).list();
@@ -2597,6 +2585,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public List<RegistryDocument> findPublicDocuments(final String langCode) {	
 		try {
 			return getHibernateTemplate().execute(new HibernateCallback<List<RegistryDocument>>() {
+				@SuppressWarnings("unchecked")
 				public List<RegistryDocument> doInHibernate(Session session) {
 					List<RegistryDocument> l = session.createQuery("from RegistryDocument d where d.docType.code = ?0 and d.language.code = ?1")
 						.setParameter(0, IClassificatorService.DOC_TYPE_PUB)
@@ -2616,7 +2605,11 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public synchronized Enterprise findEnterpriseByName(String name) {
 		Enterprise ent = null;
 		try {
-			ent = (Enterprise)getHibernateTemplate().find("from Enterprise e where e.name = ?0", name).get(0);
+			ent = getHibernateTemplate().execute(new HibernateCallback<Enterprise>() {
+				public Enterprise doInHibernate(Session session) {
+					return (Enterprise)session.createQuery("from Enterprise e where e.name = ?0").setParameter(0, name).list().get(0);
+				}
+			});
 		} catch (IndexOutOfBoundsException e) {}
 
 		return ent;
@@ -2625,40 +2618,78 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public synchronized Enterprise findEnterpriseByRegNr(String regNr) {
 		Enterprise ent = null;
 		try {
-			ent = (Enterprise) getHibernateTemplate().find("from Enterprise e where e.registrationId = ?0 and active=true order by e.created desc", regNr).get(0);
+			ent = getHibernateTemplate().execute(new HibernateCallback<Enterprise>() {
+				public Enterprise doInHibernate(Session session) {
+					return (Enterprise)session.createQuery("from Enterprise e where e.registrationId = ?0 and active=true order by e.created desc").setParameter(0, regNr).list().get(0);
+				}
+			});
 		} catch (IndexOutOfBoundsException e) {}
 
 		return ent;
 	}
 	
 	public Enterprise findProductMovementReportingEnterprise(String enterpriseRegNr) {
-		return (Enterprise)getHibernateTemplate()
-			.find("select r.reportingEnterprise from ProductMovementReport r where r.reportingEnterprise.registrationId = ?0 order by r.created desc", enterpriseRegNr).get(0);
+		return getHibernateTemplate().execute(new HibernateCallback<Enterprise>() {
+			public Enterprise doInHibernate(Session session) {
+				return (Enterprise)session
+					.createQuery("select r.reportingEnterprise from ProductMovementReport r where r.reportingEnterprise.registrationId = ?0 order by r.created desc")
+					.setParameter(0, enterpriseRegNr).list().get(0);
+			}
+		});
 	}
 	
 	public Enterprise findProductMovementReportingEnterprise(long reportId) {
-		return (Enterprise)getHibernateTemplate().find("select r.reportingEnterprise from ProductMovementReport r where r.id = ?0", reportId).get(0);
+		return getHibernateTemplate().execute(new HibernateCallback<Enterprise>() {
+			public Enterprise doInHibernate(Session session) {
+				return (Enterprise)session
+					.createQuery("select r.reportingEnterprise from ProductMovementReport r where r.id = ?0")
+					.setParameter(0, reportId).list().get(0);
+			}
+		});
 	}
 	
 	public List<ProductMovementReportRecord> findProductMovementRecords(Long reportId) {
-		return (List<ProductMovementReportRecord>)getHibernateTemplate().find("from ProductMovementReportRecord r where r.report.id = ?0 order by r.id", reportId);
+		return getHibernateTemplate().execute(new HibernateCallback<List<ProductMovementReportRecord>>() {
+			@SuppressWarnings("unchecked")
+			public List<ProductMovementReportRecord> doInHibernate(Session session) {
+				return (List<ProductMovementReportRecord>)session
+					.createQuery("from ProductMovementReportRecord r where r.report.id = ?0 order by r.id")
+					.setParameter(0, reportId).list();
+			}
+		});
 	}
 	
 	public List<Faq> findFaqs() {
-		return (List<Faq>)getHibernateTemplate().find("from Faq f order by id");
+		return getHibernateTemplate().execute(new HibernateCallback<List<Faq>>() {
+			@SuppressWarnings("unchecked")
+			public List<Faq> doInHibernate(Session session) {
+				return (List<Faq>)session.createQuery("from Faq f order by id").list();
+			}
+		});
 	}
 	
 	public List<News> findNews() {
-		return (List<News>)getHibernateTemplate().find("from News n order by id");
+		return getHibernateTemplate().execute(new HibernateCallback<List<News>>() {
+			@SuppressWarnings("unchecked")
+			public List<News> doInHibernate(Session session) {
+				return (List<News>)session.createQuery("from News n order by id").list();
+			}
+		});
 	}
 	
 	public RegistryDocument getDocument(Long documentId) {
 		RegistryDocument doc = null;
 		try {
-			List results = getHibernateTemplate().find("from RegistryDocument d where d.id = ?0", documentId);
+			List<RegistryDocument> results = getHibernateTemplate().execute(new HibernateCallback<List<RegistryDocument>>() {
+				@SuppressWarnings("unchecked")
+				public List<RegistryDocument> doInHibernate(Session session) {
+					return (List<RegistryDocument>)session.createQuery("from RegistryDocument d where d.id = ?0")
+						.setParameter(0, documentId).list();
+				}
+			});
 			
 			if(!results.isEmpty())
-				doc = (RegistryDocument)results.get(0);
+				doc = results.get(0);
 			else
 				throw new SystemException("No application found!");
 			
@@ -2674,10 +2705,16 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		RegistryDocument doc = null;
 		try {
 			LOGGER.info("RRR --- getDocument --> from RegistryDocument d where d.id = " + documentId + " and d.application.applicant.registrationId=" + regCode);
-			List results = getHibernateTemplate().find("from RegistryDocument d where d.id = ?0 and d.application.applicant.registrationId=?1",	new Object[] { documentId, regCode });
+			List<RegistryDocument> results = getHibernateTemplate().execute(new HibernateCallback<List<RegistryDocument>>() {
+				@SuppressWarnings("unchecked")
+				public List<RegistryDocument> doInHibernate(Session session) {
+					return (List<RegistryDocument>)session.createQuery("from RegistryDocument d where d.id = ?0 and d.application.applicant.registrationId=?1")
+						.setParameter(0, documentId).setParameter(1, regCode).list();
+				}
+			});
 			LOGGER.info("RRR --- getDocument result size:" + results.size());
 			if(!results.isEmpty())
-				doc = (RegistryDocument)results.get(0);
+				doc = results.get(0);
 			else
 				throw new SystemException("User has no permission to open this application or it does not exist!");
 			
@@ -2694,7 +2731,13 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		StringBuffer arg = new StringBuffer("%").append(fileName).append("%");
 		
 		try {
-			result = (List<RegistryDocument>)getHibernateTemplate().find("from RegistryDocument d where d.path like ?0 order by id", arg.toString());
+			result = getHibernateTemplate().execute(new HibernateCallback<List<RegistryDocument>>() {
+				@SuppressWarnings("unchecked")
+				public List<RegistryDocument> doInHibernate(Session session) {
+					return (List<RegistryDocument>)session.createQuery("from RegistryDocument d where d.path like ?0 order by id")
+						.setParameter(0, arg.toString()).list();
+				}
+			});
 			for (RegistryDocument doc : result) {
 				doc.setContent(readFile(doc.getPath()));
 			}
@@ -2710,8 +2753,13 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		StringBuffer arg = new StringBuffer("%").append(fileName).append("%");
 		
 		try {
-			result = (List<RegistryDocument>) getHibernateTemplate().find("from RegistryDocument d where d.path like ?0 and d.application.id = ?1 order by id",
-				new Object[] { arg.toString(), applicationId });
+			result = getHibernateTemplate().execute(new HibernateCallback<List<RegistryDocument>>() {
+				@SuppressWarnings("unchecked")
+				public List<RegistryDocument> doInHibernate(Session session) {
+					return (List<RegistryDocument>)session.createQuery("from RegistryDocument d where d.path like ?0 and d.application.id = ?1 order by id")
+						.setParameter(0, arg.toString()).setParameter(1, applicationId).list();
+				}
+			});
 			for(RegistryDocument doc : result) {
 				doc.setContent(readFile(doc.getPath()));
 			}
@@ -2725,7 +2773,11 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public Enterprise getEnterprise(String registrationNr) {
 		Enterprise enter = null;
 		try {
-			enter = (Enterprise) getHibernateTemplate().find("from Enterprise e where e.registrationId = ?0", registrationNr).get(0);
+			enter = getHibernateTemplate().execute(new HibernateCallback<Enterprise>() {
+				public Enterprise doInHibernate(Session session) {
+					return (Enterprise)session.createQuery("from Enterprise e where e.registrationId = ?0").setParameter(0, registrationNr).list().get(0);
+				}
+			});
 		} catch (IndexOutOfBoundsException ioe) {}
 		
 		return enter;
@@ -2734,246 +2786,121 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	/**
 	 * Finds enterprise in order of active property by registration nr
 	 */
-	@SuppressWarnings({ "deprecation" })
 	public synchronized Enterprise getEnterpriseByActivity(String registrationNr) {
 		Enterprise enter = null;
 		try {
-			enter = (Enterprise) getHibernateTemplate()
-				.find("from Enterprise e where e.registrationId = ?0 and e.active is true order by e.active desc, e.modified desc",registrationNr).get(0);
+			enter = getHibernateTemplate().execute(new HibernateCallback<Enterprise>() {
+				public Enterprise doInHibernate(Session session) {
+					return (Enterprise)session.createQuery("from Enterprise e where e.registrationId = ?0 and e.active is true order by e.active desc, e.modified desc")
+						.setParameter(0, registrationNr).list().get(0);
+				}
+			});
 		} catch (IndexOutOfBoundsException ioe) {}
 		
 		return enter;
 	}
-	@SuppressWarnings({ "deprecation" })
+	
 	public Product findProduct(Long productId) {
-		return (Product)getHibernateTemplate().find("from Product p where p.id = ?0", productId).get(0);
+		return getHibernateTemplate().execute(new HibernateCallback<Product>() {
+			public Product doInHibernate(Session session) {
+				return (Product)session.createQuery("from Product p where p.id = ?0").setParameter(0, productId).list().get(0);
+			}
+		});
 	}
 	
-	@SuppressWarnings({ "unused", "unchecked", "rawtypes" })
-	private Product testReport() {
-		SearchFilter filter = new SearchFilter();
-		filter.setObjectClass("ProductMoveReportView");
-		Map searchParams = new HashMap();
-		
-		String reportingEntRegrNr = "70000094";
-		searchParams.put("regId", reportingEntRegrNr);
-		LOGGER.info("reportingEnterprise.registrationId:" + reportingEntRegrNr);
-		searchParams.put("loadEnterpriseId", reportingEntRegrNr);
-		Calendar cal = Calendar.getInstance();
-		cal.set(2011, 1, 1);
-		
-		if(true) {
-			if(true) {
-				cal = Calendar.getInstance();
-				cal.set(Calendar.DAY_OF_MONTH, 1);
-				cal.set(Calendar.MONTH, 0);
-				try {
-					Integer repYear = 2012;
-					cal.set(Calendar.YEAR, repYear);
-					if (true)
-						cal.set(Calendar.MONTH, 1);
-					searchParams.put("reportPeriodStart", cal.getTime());
-					LOGGER.info("reportPeriodStart:" + cal.getTime());
-				} catch (Exception e) {
-					LOGGER.error(e, e);
-				}
-			} else {
-				if(true) {
-					searchParams.put("reportPeriodMonthStart", 2);
-				}
-			}
-		}
-		
-		Map sort = new HashMap<String, String>();
-		sort.put("repDate", "desc");
-		filter.setSortMap(sort);
-		filter.setQueryParams(searchParams);
-		List resultList = new ArrayList();
-		String message = null;
-		try {
-			while(true) {
-				search(filter);
-				if (filter.getResultsList().size() == 0)
-					break;
-				
-				for(Iterator it = filter.getResultsList().iterator(); it.hasNext();) {
-					ProductMoveReportView report = (ProductMoveReportView) it.next();
-					Aruandeparing_vastuserida row = new Aruandeparing_vastuserida();
-					row.setLoad_date(report.getCreated());
-					row.setLoad_user(report.getLoadPersonId());
-					if (report.getLoadEnterpriseId() != null) {
-						row.setEnt_reg_nr(report.getRegId());
-						row.setEnt_name(report.getName());
-						row.setEnt_contact(report.getContacts());
-					}
-					
-					Aruandeperiood period = new Aruandeperiood();
-					if (report.getRepDate() != null) {
-						cal = Calendar.getInstance();
-						cal.setTime(report.getRepDate());
-						period.setRep_year(cal.get(Calendar.YEAR) + "");
-					}
-					
-					row.setPeriod(period);
-					row.setReport_id(report.getId().intValue());
-					row.setRcd_count(Long.toString(report.getTotal()));
-					resultList.add(row);
-				}
-				filter.setStartIndex(filter.getStartIndex() + filter.getResultsList().size());
-			}
-			message = Messages.getMessage("info.searchResults", new Integer(resultList.size()));
-		} catch (Exception e) {
-			LOGGER.error(e, e);
-			message = e.toString();
-		}
-		
-		Aruandeparing_vastuserida[] rows = null;
-		StringBuilder csvReport = new StringBuilder();
-		
-		if(false) {
-			rows = new Aruandeparing_vastuserida[0];
-			try {
-				/**
-				 * File f = File.createTempFile("alkor2" + header.getId(),
-				 * ".csv"); PrintWriter out = new PrintWriter(f);
-				 */
-				for (Iterator it = resultList.iterator(); it.hasNext();) {
-					Aruandeparing_vastuserida row = (Aruandeparing_vastuserida) it.next();
-					StringBuilder sb = new StringBuilder();
-					sb.append(row.getReport_id()).append(";").append(row.getEnt_name()).append(";")
-							.append(row.getEnt_reg_nr()).append(";").append(row.getLoad_date()).append(";");
-					if (row.getPeriod() != null) {
-						sb.append(row.getPeriod().getRep_year());
-						if (row.getPeriod().getRep_month() != null)
-							sb.append("-").append(row.getPeriod().getRep_month().getValue());
-					}
-					sb.append(";");
-					sb.append(row.getLoad_user());
-					sb.append(";");
-					sb.append(row.getRcd_count()).append("\n");
-					
-					csvReport.append(sb);
-				}
-			} catch (Exception e) {
-				LOGGER.info(e, e);
-				LOGGER.error(e, e);
-				message = e.toString();
-			}
-		} else {
-			rows = new Aruandeparing_vastuserida[resultList.size()];
-			int i = 0;
-			for(Iterator it = resultList.iterator(); it.hasNext(); i++) {
-				rows[i] = (Aruandeparing_vastuserida) it.next();
-			}
-		}
-		
-		return null;
-	}
-	@SuppressWarnings({ "deprecation" })
 	public Enterprise findEnterprise(Long enterpriseId) {
-		return (Enterprise)getHibernateTemplate().find("from Enterprise e where e.id = ?0", enterpriseId).get(0);
-	}
-	@SuppressWarnings({ "deprecation" })
-	public RegistryApplication findApplication(Long applicationId) {
-		return (RegistryApplication)getHibernateTemplate().find("from RegistryApplication r where r.id = ?0", applicationId).get(0);
-	}
-	@SuppressWarnings({ "deprecation" })
-	private RegistryApplication findApplication(Session session, String applicationNr) {
-		Query q = session.createQuery("from RegistryApplication where nr = ?0").setString(0, applicationNr);
-		return (RegistryApplication)q.list().get(0);
+		return getHibernateTemplate().execute(new HibernateCallback<Enterprise>() {
+			public Enterprise doInHibernate(Session session) {
+				return (Enterprise)session.createQuery("from Enterprise e where e.id = ?0").setParameter(0, enterpriseId).list().get(0);
+			}
+		});
 	}
 	
-	@SuppressWarnings({ "unused", "deprecation", "unchecked", "rawtypes" })
-	private List<RegistryApplication> findEnterpriseApplicationsInStateAndType(Session session, String registrationNr, String stateCode, String typeCode) {
-		Query q = session.createQuery("from RegistryApplication as a where a.applicant.registrationId = ?0 and a.state.code = ?1 and a.type.code = ?2")
-			.setString(0, registrationNr).setString(1, stateCode).setString(2, typeCode);
-		return q.list();
+	public RegistryApplication findApplication(Long applicationId) {
+		return getHibernateTemplate().execute(new HibernateCallback<RegistryApplication>() {
+			public RegistryApplication doInHibernate(Session session) {
+				return (RegistryApplication)session.createQuery("from RegistryApplication r where r.id = ?0").setParameter(0, applicationId).list().get(0);
+			}
+		});
 	}
-	@SuppressWarnings({ "deprecation" })
+	
+	private RegistryApplication findApplication(Session session, String applicationNr) {
+		return (RegistryApplication)session.createQuery("from RegistryApplication where nr = ?0").setParameter(0, applicationNr).list().get(0);
+	}
+	
 	public Product findApplicationProduct(Session session, String applicationNr) {
-		return (Product) session.createQuery("select a.product from RegistryApplication a where a.nr = ?0").setString(0, applicationNr).list().get(0);
+		return (Product)session.createQuery("select a.product from RegistryApplication a where a.nr = ?0").setParameter(0, applicationNr).list().get(0);
 	}
-	@SuppressWarnings({ "deprecation" })
+	
 	public Long findApplicationProductId(Session session, String applicationNr) {
-		return (Long) session.createQuery("select a.product.id from RegistryApplication a where a.nr = ?0").setString(0, applicationNr).list().get(0);
+		return (Long)session.createQuery("select a.product.id from RegistryApplication a where a.nr = ?0").setParameter(0, applicationNr).list().get(0);
 	}
-	@SuppressWarnings({"deprecation", "unchecked" })
+	
+	@SuppressWarnings("unchecked")
 	private List<RegistryDocument> findApplicationDocuments(Session session, String applicationId) {
-		return session.createQuery(
-			"from RegistryDocument d where d.application.id = ?0 AND (d.pub = 0 or d.pub is null) and (d.archived = 0 OR d.archived is null) order by d.id")
-			.setLong(0, new Long(applicationId)).list();
+		return session.createQuery("from RegistryDocument d where d.application.id = ?0 AND (d.pub = 0 or d.pub is null) and (d.archived = 0 OR d.archived is null) order by d.id")
+			.setParameter(0, new Long(applicationId)).list();
 	}
-	@SuppressWarnings({ "deprecation", "unchecked" })
+	
+	@SuppressWarnings("unchecked")
 	private synchronized List<RegistryDocument> findApplicationDocumentsPublic(Session session, String applicationId) {
 		return session.createQuery("from RegistryDocument d where d.application.id = ?0 AND d.pub = 1 AND (d.archived = 0 OR d.archived is null) order by d.id")
-			.setLong(0, new Long(applicationId)).list();
-	}
-	@SuppressWarnings({ "deprecation", "unchecked" })
-	private List<RegistryDocument> findApplicationDocumentsArchived(Session session, String applicationId) {
-		return session.createQuery("from RegistryDocument d where d.application.id = ?0 AND d.archived = 1 order by d.id").setLong(0, new Long(applicationId)).list();
+			.setParameter(0, new Long(applicationId)).list();
 	}
 	
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings("unchecked")
+	private List<RegistryDocument> findApplicationDocumentsArchived(Session session, String applicationId) {
+		return session.createQuery("from RegistryDocument d where d.application.id = ?0 AND d.archived = 1 order by d.id").setParameter(0, new Long(applicationId)).list();
+	}
+	
+	@SuppressWarnings("unchecked")
 	private List<RegistryDocument> findApplicationDocuments(Session session, Long applicationId) {
 		/*
 		 * Implementation of cache
 		 */
-		List<RegistryDocument> l = session.createQuery(
+		List<RegistryDocument> l = (List<RegistryDocument>)session.createQuery(
 			"from RegistryDocument d where d.application.id = ?0 AND (d.pub = 0 or d.pub is null) and (d.archived = 0 OR d.archived is null) order by d.id")
-			.setLong(0, applicationId).list();
+			.setParameter(0, applicationId).list();
 		session.clear();
 		
 		return l;
 	}
 	
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings("unchecked")
 	private synchronized List<RegistryDocument> findApplicationDocumentsPublic(Session session, Long applicationId) {
 		/*
 		 * Implementation of cache
 		 */
-		List<RegistryDocument> l = session.createQuery(
-			"from RegistryDocument d where d.application.id = ?0 AND d.pub = 1 AND (d.archived = 0 OR d.archived is null) order by d.id").setLong(0, applicationId).list();
+		List<RegistryDocument> l = (List<RegistryDocument>)session.createQuery("from RegistryDocument d where d.application.id = ?0 AND d.pub = 1 AND (d.archived = 0 OR d.archived is null) order by d.id")
+			.setParameter(0, applicationId).list();
 		session.clear();
 		
 		return l;
 	}
 	
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings("unchecked")
 	private List<RegistryDocument> findApplicationDocumentsArchived(Session session, Long applicationId) {
 		/*
 		 * Implementation of cache
 		 */
-		List<RegistryDocument> l = session.createQuery("from RegistryDocument d where d.application.id = ?0 AND d.archived = 1 order by d.id").setLong(0, applicationId).list();
+		List<RegistryDocument> l = (List<RegistryDocument>)session.createQuery("from RegistryDocument d where d.application.id = ?0 AND d.archived = 1 order by d.id")
+			.setParameter(0, applicationId).list();
 		session.clear();
 		
 		return l;
 	}
 	
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings("unchecked")
 	private List<RegistryDocument> findApplicationDocumentsFromUser(Session session, Long applicationId) {
 		/*
 		 * Implementation of cache
 		 */
-		List<RegistryDocument> l = session.createQuery("from RegistryDocument d where d.application.id = ?0 AND d.docType = null order by d.id")
-			.setLong(0, applicationId).list();
+		List<RegistryDocument> l = (List<RegistryDocument>)session.createQuery("from RegistryDocument d where d.application.id = ?0 AND d.docType = null order by d.id")
+			.setParameter(0, applicationId).list();
 		session.clear();
 		
 		return l;
 	}
-	
-	//----------------------------------------------------------
-	//----------------------------------------------------------
-	//----------------------------------------------------------
-	//----------------------------------------------------------
-	//----------------------------------------------------------
-	//----------------------------------------------------------
-	//----------------------------------------------------------
-	//----------------------------------------------------------
-	//----------------------------------------------------------
-	//----------------------------------------------------------
-	//----------------------------------------------------------
-	//----------------------------------------------------------
-	//----------------------------------------------------------
 	
 	private Long saveDocument(Session session, byte[] content, String contentType, String docType, String docLangCode,
 			String docName, String fileName, RegistryApplication application, boolean mayRepeat, String isPublic) throws DataIntegrityViolationException {
@@ -2982,7 +2909,12 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		doc.setName(docName);
 		if (docType != null) {
 			DocumentType documentType = null;
-			List<DocumentType> docTypeQuery = (List<DocumentType>)getHibernateTemplate().find("from DocumentType c where c.code = ?0", docType);
+			List<DocumentType> docTypeQuery = getHibernateTemplate().execute(new HibernateCallback<List<DocumentType>>() {
+				@SuppressWarnings("unchecked")
+				public List<DocumentType> doInHibernate(Session session) {
+					return (List<DocumentType>)session.createQuery("from DocumentType c where c.code = ?0").setParameter(0, docType).list();
+				}
+			});
 			if(!docTypeQuery.isEmpty()) {
 				documentType = docTypeQuery.get(0);
 			} else {
@@ -2996,7 +2928,12 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		
 		if(docLangCode != null) {
 			Language lang = null;
-			List<Language> langQuery = (List<Language>)getHibernateTemplate().find("from Language c where c.code = ?0", docLangCode);
+			List<Language> langQuery = getHibernateTemplate().execute(new HibernateCallback<List<Language>>() {
+				@SuppressWarnings("unchecked")
+				public List<Language> doInHibernate(Session session) {
+					return (List<Language>)session.createQuery("from Language c where c.code = ?0").setParameter(0, docLangCode).list();
+				}
+			});
 			if(!langQuery.isEmpty()) {
 				lang = langQuery.get(0);
 			} else {
@@ -3049,6 +2986,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		Long id = (Long) session.save(doc);
 		Transaction tx = session.beginTransaction();
 		session.flush();
+		tx.commit();
 		
 		return id;
 	}
@@ -3158,6 +3096,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		FileInputStream is = new FileInputStream(tmpDocFile);
 		is.read(bytes);
 		tmpDocFile.delete();
+		is.close();
 		saveDocument(session, bytes, "application/pdf", docTypeCode, null, docName, fileName, application, false, "0");
 	}
 	
@@ -3165,12 +3104,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		BigInteger next = (BigInteger) session.createSQLQuery("select nextval('decision_seq')").list().get(0);
 		
 		return Long.toString(next.longValue() + getDecisionNrBase());
-	}
-	
-	private String nextExtendDesicionNr(Session session) {
-		BigInteger next = (BigInteger) session.createSQLQuery("select nextval('extend_decision_seq')").list().get(0);
-		
-		return Long.toString(next.longValue());
 	}
 	
 	private String nextApplicationNr(Session session) {
@@ -3221,6 +3154,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		byte[] content = new byte[(int) file.length()];
 		FileInputStream fis = new FileInputStream(file);
 		fis.read(content);
+		fis.close();
 		
 		return content;
 	}
@@ -3646,12 +3580,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			balance = BigDecimal.valueOf(0);
 		
 		applicant.setBalance(balance.subtract(decimalTax));
-		int balanceInt = balance.intValue();
-		int decimalTaxInt = decimalTax.intValue();
-		int err = 0;
-		if(balanceInt - decimalTaxInt < 0) {
-			err = 1;
-		}
 		
 		//vale nimi? ei kasutata?
 		paymentMatchingLog.setEnterprisePreviousBalance(applicant.getBalance()); 
@@ -3751,7 +3679,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		return result;
 	}
 	
-	@SuppressWarnings({ "deprecation", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public byte[] createApplicationDocumentByIdAndRegCode(String docTypeCode, Long id, String regCode) {
 		RegistryApplication application = null;
 		
@@ -3760,8 +3688,12 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		}
 		
 		LOGGER.debug("createApplicationDocumentByIdAndRegCode :" + docTypeCode + " appId:" + id + " regCode:" + regCode);
-		List<RegistryApplication> results = (List<RegistryApplication>)getHibernateTemplate().find("from RegistryApplication a where a.id = ?0 and a.applicant.registrationId=?1",
-			new Object[] { id, regCode });
+		List<RegistryApplication> results = getHibernateTemplate().execute(new HibernateCallback<List<RegistryApplication>>() {
+			public List<RegistryApplication> doInHibernate(Session session) {
+				return (List<RegistryApplication>)session.createQuery("from RegistryApplication a where a.id = ?0 and a.applicant.registrationId = ?1")
+					.setParameter(0, id).setParameter(1, regCode).list();
+			}
+		});
 		if(!results.isEmpty())
 			application = results.get(0);
 		else
@@ -3770,7 +3702,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		return generateFile(docTypeCode, application);
 	}
 	
-	@SuppressWarnings({ "unchecked", "deprecation" })
+	@SuppressWarnings({ "unchecked" })
 	public byte[] createApplicationDocumentById(String docTypeCode, Long id) {
 		RegistryApplication application = null;
 		
@@ -3779,7 +3711,12 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		}
 		LOGGER.debug("createApplicationDocumentById :" + docTypeCode + " appId:" + id);
 		
-		List<RegistryApplication> results = (List<RegistryApplication>)getHibernateTemplate().find("from RegistryApplication a where a.id = ?0 ", id);
+		List<RegistryApplication> results = getHibernateTemplate().execute(new HibernateCallback<List<RegistryApplication>>() {
+			public List<RegistryApplication> doInHibernate(Session session) {
+				return (List<RegistryApplication>)session.createQuery("from RegistryApplication a where a.id = ?0")
+					.setParameter(0, id).list();
+			}
+		});
 		if(!results.isEmpty()) {
 			application = results.get(0);
 		} else {
@@ -3807,15 +3744,29 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		return content;
 	}
 	
-	@SuppressWarnings({ "deprecation", "unchecked" })
+	@SuppressWarnings({ "unchecked" })
 	public synchronized List<Enterprise> findEnterpriseByNameorRegNr(String name, String regNr) {
 		if (name != null && name.length() > 0 && regNr != null && regNr.length() > 0) {
-			return (List<Enterprise>)getHibernateTemplate().find("from Enterprise e where e.name like ?0 and e.registrationId like ?1",
-					new Object[] { "%" + name + "%", "%" + regNr + "%" });
+			return getHibernateTemplate().execute(new HibernateCallback<List<Enterprise>>() {
+				public List<Enterprise> doInHibernate(Session session) {
+					return (List<Enterprise>)session.createQuery("from Enterprise e where e.name like ?0 and e.registrationId like ?1")
+						.setParameter(0, "%" + name + "%").setParameter(1, "%" + regNr + "%").list();
+				}
+			});
 		} else if (name != null && name.length() > 0) {
-			return (List<Enterprise>)getHibernateTemplate().find("from Enterprise e where e.name like ?0 ", "%" + name + "%");
+			return (List<Enterprise>)getHibernateTemplate().execute(new HibernateCallback<List<Enterprise>>() {
+				public List<Enterprise> doInHibernate(Session session) {
+					return (List<Enterprise>)session.createQuery("from Enterprise e where e.name like ?0")
+						.setParameter(0, "%" + name + "%").list();
+				}
+			});
 		} else if (regNr != null && regNr.length() > 0) {
-			return (List<Enterprise>)getHibernateTemplate().find("from Enterprise e where e.registrationId like ?0", "%" + regNr + "%");
+			return (List<Enterprise>)getHibernateTemplate().execute(new HibernateCallback<List<Enterprise>>() {
+				public List<Enterprise> doInHibernate(Session session) {
+					return (List<Enterprise>)session.createQuery("from Enterprise e where e.registrationId like ?1")
+						.setParameter(0, "%" + regNr + "%").list();
+				}
+			});
 		} else {
 			return new ArrayList<Enterprise>();
 		}

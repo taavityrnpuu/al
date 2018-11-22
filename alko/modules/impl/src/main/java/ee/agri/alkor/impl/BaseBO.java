@@ -55,6 +55,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 					
 					Transaction tx = session.beginTransaction();
 					session.flush();
+					tx.commit();
 					
 					return null;
 				}
@@ -75,8 +76,10 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				public Object doInHibernate(Session session) {
 					Object obj = session.load(clazz, id);
 					session.delete(obj);
+					
 					Transaction tx = session.beginTransaction();
 					session.flush();
+					tx.commit();
 					
 					return null;
 				}

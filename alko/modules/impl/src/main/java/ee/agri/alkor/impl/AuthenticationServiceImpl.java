@@ -377,6 +377,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 					session.saveOrUpdate(authLogEntry);
 					Transaction tx = session.beginTransaction();
 					session.flush();
+					tx.commit();
 					
 					return null;
 				}
