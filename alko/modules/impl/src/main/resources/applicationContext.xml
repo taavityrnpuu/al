@@ -180,38 +180,43 @@
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="regEntryExpireNotificationJob" />
 		<!-- run every morning at 6 AM -->
-		<property name="cronExpression" value="0 0 6 * * ?" />
+		<!--<property name="cronExpression" value="0 0 6 * * ?" />-->
+		<property name="cronExpression" value="0 */5 * * * ?" />
 	</bean>
 	
 	<bean id="cronTrigger2"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="regEntryExpiredProcessJob" />
 		<!-- run every morning at 3 AM -->
-		<property name="cronExpression" value="0 0 3 * * ?" />
+		<!--<property name="cronExpression" value="0 0 3 * * ?" />-->
+		<property name="cronExpression" value="0 */5 * * * ?" />
 	</bean>
 	
 	<bean id="cronTrigger3"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="extendUntilApplicationExpiredProcessJob" />
 		<!-- run every morning at 5 AM -->
-		<property name="cronExpression" value="0 0 5 * * ?" /> 
+		<!--<property name="cronExpression" value="0 0 5 * * ?" />-->
+		<property name="cronExpression" value="0 */5 * * * ?" />
 	</bean>
 	
 	<bean id="cronTrigger4"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="notEnteredApplicationsJob" />
 		<!-- run every sunday at 4 AM -->
-		<property name="cronExpression" value="0 0 4 * * ?" />
+		<!--<property name="cronExpression" value="0 0 4 * * ?" />-->
+		<property name="cronExpression" value="0 */5 * * * ?" />
 	</bean>
 	
 	<bean id="cronTrigger5"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="decisionSequenceResetJob" />
 		<!-- run every january 1st 00:01 AM -->
-		<property name="cronExpression" value="0 1 0 1 1 ?" />
+		<!--<property name="cronExpression" value="0 1 0 1 1 ?" />-->
+		<property name="cronExpression" value="0 */5 * * * ?" />
 	</bean>
 
-	<bean
+	<bean id="schedulerFactoryController"
 		class="org.springframework.scheduling.quartz.SchedulerFactoryBean">
 		<property name="triggers">
 			<list>

@@ -1,5 +1,10 @@
 package ee.agri.alkor.util;
 
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.ListableBeanFactory;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 /**
@@ -10,8 +15,11 @@ import org.springframework.context.support.ClassPathXmlApplicationContext;
  *
  */
 public class AppContextHelper {
+	private static final Logger LOGGER = Logger.getLogger(AppContextHelper.class);
 	
 	private static final String APP_CONTEXT_CONFIG_LOCATION = "applicationContext.xml";
+	
+	private static Map<String, AppContextHelper> instances = new HashMap<String, AppContextHelper>();
 	
 	private final ListableBeanFactory beanFactory;
 	
@@ -21,6 +29,7 @@ public class AppContextHelper {
 	 * @param factory ListableBeanFactory
 	 */
 	private AppContextHelper(ListableBeanFactory factory) {
+		LOGGER.info(Arrays.toString(factory.getBeanDefinitionNames()));
 		this.beanFactory = factory;
 	}
 	/**
@@ -30,9 +39,8 @@ public class AppContextHelper {
 	 */
 	public static AppContextHelper getInstance() {
 		return getInstance(APP_CONTEXT_CONFIG_LOCATION);
-				
 	}
-
+	
 	/**
 	 * Factory method.
 	 * 
@@ -40,9 +48,13 @@ public class AppContextHelper {
 	 * @return AppContextHelper
 	 */
 	public static AppContextHelper getInstance(String contextResource) {
-		return new AppContextHelper(
-				new ClassPathXmlApplicationContext(contextResource));
-				
+		if(!instances.containsKey(contextResource)) {
+			instances.put(contextResource, new AppContextHelper(new ClassPathXmlApplicationContext(contextResource)));
+			LOGGER.info("instanciated: " + contextResource);
+		}
+		
+		LOGGER.info(instances.toString());
+		return instances.get(contextResource);
 	}
 
 	/**

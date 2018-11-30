@@ -56,7 +56,7 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 	 */
 	
 	public void sendRegistryEntryExpireNotifications() {
-		
+		System.out.println("läks töösse");
 		final Calendar expireDate = Calendar.getInstance();
 		expireDate.add(Calendar.DAY_OF_YEAR, getDaysBeforeRegistryEntryExpiry());
 		if(!LIVE_MODE.equals(getMode())){
@@ -64,13 +64,10 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 			return;
 		}
 		getHibernateTemplate().execute(new HibernateCallback() {
-			
 			public Object doInHibernate(Session session) {
-				
 				LOGGER.info("Executing sendRegistryEntryExpireNotifications");
 				Query q = session.createQuery("from RegistryEntry e where (e.expiryNotificationSent = false or e.expiryNotificationSent is null) and"
 						+ "  date_trunc('day',e.validUntil) >= (current_date + "+((int)Math.floor((getDaysBeforeRegistryEntryExpiry() / 2)))+") AND date_trunc('day',e.validUntil) <= (current_date + "+getDaysBeforeRegistryEntryExpiry()+")");
-
 				
 				Map<Enterprise, List<RegistryEntry>> entriesMap = new HashMap<Enterprise, List<RegistryEntry>>();
 				
@@ -152,9 +149,11 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 					        	
 					        	session.flush();
 					        } catch (Exception ex) {
+					        	LOGGER.info("Sending regentry expiry notification to enterprise '" +
+					        			applicant.getName()+","+applicant.getRegistrationId() + "' failed: ");
 					        	LOGGER.error("Sending regentry expiry notification to enterprise '" +
 					        			applicant.getName()+","+applicant.getRegistrationId() + "' failed: ", ex);
-					        	LOGGER.error("Mail error:"+ex.getMessage());
+					        	System.out.println("Mail error:"+ex.getMessage());
 					        	all = true;
 					        }
 						} else{
@@ -168,7 +167,7 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 				return null;
 			}
 		});
-
+		LOGGER.info("lõpetas");
 	}
 
 	public JavaMailSender getMailSender() {

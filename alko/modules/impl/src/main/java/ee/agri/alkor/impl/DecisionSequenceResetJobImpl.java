@@ -45,7 +45,5 @@ public class DecisionSequenceResetJobImpl extends HibernateDaoSupport {
 			LOGGER.info("sequence reset failed: " + x.getMessage());
 			x.printStackTrace();
 		}
-
 	}
-
 }
