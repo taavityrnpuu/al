@@ -88,23 +88,45 @@
 		<property name="sessionFactory" ref="mySessionFactory" />
 	</bean>
 
-	<!--<bean id="velocityEngine"
-		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+	<bean id="velocityEngine"
+		class="ee.agri.alkor.impl.util.spring.VelocityEngineFactoryBean">
 		<property name="velocityProperties">
 			<value>
 				resource.loader=class
 				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+				runtime.log.error.stacktrace=true
+				runtime.log.warn.stacktrace=true
+				runtime.log.info.stacktrace=true
+				runtime.log.invalid.reference=true
+				input.encoding=UTF-8
+				output.encoding=UTF-8
+				resource.loader=file
+				file.resource.loader.description=Velocity File Resource Loader
+				file.resource.loader.class=org.apache.velocity.runtime.resource.loader.FileResourceLoader
+				file.resource.loader.path=.
+				file.resource.loader.cache=false
+				file.resource.loader.modificationCheckInterval=2
+				velocimacro.library=
+				velocimacro.permissions.allow.inline=true
+				velocimacro.permissions.allow.inline.to.replace.global=false
+				velocimacro.permissions.allow.inline.local.scope=false
+				velocimacro.context.localscope=false
+				runtime.interpolate.string.literals = true
+				resource.manager.class=org.apache.velocity.runtime.resource.ResourceManagerImpl
+				resource.manager.cache.class=org.apache.velocity.runtime.resource.ResourceCacheImpl
+				runtime.introspector.uberspect=org.apache.velocity.util.introspection.UberspectImpl
 			</value>
 		</property>
-	</bean>-->
+	</bean>
 
 
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="relay.agri.ee" />
+		<property name="host" value="192.168.0.254"/>
+		<!--<property name="host" value="relay.agri.ee" />
 		<property name="port" value="25" />
 		<property name="username" value="alkoholi.register" />
-		<property name="password" value="ai03rr09" />
+		<property name="password" value="ai03rr09" />-->
 	</bean>
 	
 	<bean id="notEnteredApplicationsJobImpl"
@@ -180,40 +202,35 @@
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="regEntryExpireNotificationJob" />
 		<!-- run every morning at 6 AM -->
-		<!--<property name="cronExpression" value="0 0 6 * * ?" />-->
-		<property name="cronExpression" value="0 */5 * * * ?" />
+		<property name="cronExpression" value="0 0 6 * * ?" />
 	</bean>
 	
 	<bean id="cronTrigger2"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="regEntryExpiredProcessJob" />
 		<!-- run every morning at 3 AM -->
-		<!--<property name="cronExpression" value="0 0 3 * * ?" />-->
-		<property name="cronExpression" value="0 */5 * * * ?" />
+		<property name="cronExpression" value="0 0 3 * * ?" />
 	</bean>
 	
 	<bean id="cronTrigger3"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="extendUntilApplicationExpiredProcessJob" />
 		<!-- run every morning at 5 AM -->
-		<!--<property name="cronExpression" value="0 0 5 * * ?" />-->
-		<property name="cronExpression" value="0 */5 * * * ?" />
+		<property name="cronExpression" value="0 0 5 * * ?" />
 	</bean>
 	
 	<bean id="cronTrigger4"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="notEnteredApplicationsJob" />
 		<!-- run every sunday at 4 AM -->
-		<!--<property name="cronExpression" value="0 0 4 * * ?" />-->
-		<property name="cronExpression" value="0 */5 * * * ?" />
+		<property name="cronExpression" value="0 0 4 * * ?" />
 	</bean>
 	
 	<bean id="cronTrigger5"
 		class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">
 		<property name="jobDetail" ref="decisionSequenceResetJob" />
 		<!-- run every january 1st 00:01 AM -->
-		<!--<property name="cronExpression" value="0 1 0 1 1 ?" />-->
-		<property name="cronExpression" value="0 */5 * * * ?" />
+		<property name="cronExpression" value="0 1 0 1 1 ?" />
 	</bean>
 
 	<bean id="schedulerFactoryController"

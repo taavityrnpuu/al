@@ -1,0 +1,8 @@
+Menetleja: $!processor.firstName $!processor.lastName
+<br />
+$!current_date<br />
+<br />
+<br />
+#foreach( $processorApplication in $processorApplications )
+	$!processorApplication.nr <br />
+#end

@@ -168,4 +168,9 @@ public class RegistryEntry extends ABaseBean implements IHistorical {
 		
 		return "";
 	}
+	
+	public String toString() {
+		return "Nr: " + nr + ", ValidFrom: " + validFrom + ", ValidUntil: " + validUntil + ", ChangeReason: " + changeReason
+			+ ", ExpirySent: " + expiryNotificationSent + ", Application: [" + application.toString() + "]";
+	}
 }

@@ -1,8 +1,10 @@
 package ee.agri.alkor.impl;
 
+import java.io.IOException;
 import java.io.StringWriter;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,8 +16,10 @@ import javax.mail.internet.MimeMessage;
 import org.apache.log4j.Logger;
 import org.apache.velocity.VelocityContext;
 import org.apache.velocity.app.VelocityEngine;
+import org.apache.velocity.exception.VelocityException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
@@ -23,8 +27,11 @@ import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
 import ee.agri.alkor.model.RegistryApplication;
+import ee.agri.alkor.impl.util.spring.VelocityEngineFactoryBean;
+import ee.agri.alkor.impl.util.spring.VelocityEngineUtils;
 import ee.agri.alkor.model.Enterprise;
 import ee.agri.alkor.model.RegistryEntry;
+import ee.agri.alkor.util.AppContextHelper;
 
 /**
  * 
@@ -55,14 +62,17 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 	 * 
 	 */
 	
-	public void sendRegistryEntryExpireNotifications() {
-		System.out.println("läks töösse");
+	public void sendRegistryEntryExpireNotifications() throws IOException, VelocityException {
 		final Calendar expireDate = Calendar.getInstance();
 		expireDate.add(Calendar.DAY_OF_YEAR, getDaysBeforeRegistryEntryExpiry());
-		/*if(!LIVE_MODE.equals(getMode())){
+		if(!LIVE_MODE.equals(getMode())){
 			LOGGER.info("sendRegistryEntryExpireNotifications not live mode - execution halted");
 			return;
-		}*/
+		}
+		
+		VelocityEngine velocity = (VelocityEngine)AppContextHelper.getInstance().getBean("velocityEngine");
+		setVelocityEngine(velocity);
+		
 		getHibernateTemplate().execute(new HibernateCallback<Object>() {
 			public Object doInHibernate(Session session) {
 				LOGGER.info("Executing sendRegistryEntryExpireNotifications");
@@ -72,24 +82,20 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 				
 				Map<Enterprise, List<RegistryEntry>> entriesMap = new HashMap<Enterprise, List<RegistryEntry>>();
 				
-				System.out.println(entriesMap.toString());
-				if(1==1) {
-					return null;
-				}
-				
 				int count = 0;
 				boolean all = false;
 				while(!all) {
 					q.setFirstResult(count);
 					q.setMaxResults(1000);
 					List entries = q.list();
-					if(entries.size() == 0) {
+					if(entries.isEmpty()) {
 						break;
 					}
 					
-					LOGGER.info("Number of notifications to be sent:"+entries.size());
-					for(Iterator it = entries.iterator();it.hasNext();) {
-						final RegistryEntry entry = (RegistryEntry)it.next();
+					LOGGER.info("Number of notifications to be sent:" + entries.size());
+					for(Object entrant : entries) {
+						final RegistryEntry entry = (RegistryEntry)entrant;
+						
 						if(entry == null){
 							continue;
 						}
@@ -112,47 +118,48 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 							entriesMap.put(applicant, entriesList);
 						}
 					}
-					for (Iterator it = entriesMap.keySet().iterator(); it.hasNext();) {
-						final Enterprise applicant = (Enterprise)it.next();
+					
+					for(Enterprise entrant : entriesMap.keySet()) {
+						final Enterprise applicant = entrant;
 						final List<RegistryEntry> regentries = entriesMap.get(applicant);
 						if(applicant != null && applicant.getContactInfo() != null && applicant.getContactInfo().getEmail() != null) {
-							MimeMessagePreparator preparator = new MimeMessagePreparator() {
-						         public void prepare(MimeMessage mimeMessage) throws Exception {
-						            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
-						            message.setSubject("Riikliku alkoholiregistri registrikande kehtivuse kaotamisest teavitamine");
-						            message.setTo(applicant.getContactInfo().getEmail());
-						            String[] bccAddresses = { "olle@piksel.ee", "alkoreg@vet.agri.ee" };
-						            
-						            message.setBcc(bccAddresses);
-						            message.setFrom(EmailNotificationJobs.this.getMailFrom()); 
-						            Map<String, Object> model = new HashMap();
-						            
-						            Calendar cal = Calendar.getInstance();
-						            String DATE_FORMAT = "dd.MM.yyyy";
-						            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-						            
-						            model.put("current_date", sdf.format(cal.getTime()));
-						            model.put("applicant", applicant);
-						            model.put("regentries", regentries);
-						            
-						            VelocityContext velocityContext = new VelocityContext();
-						            for (Map.Entry<String, Object> entry : model.entrySet()) {
-						            	velocityContext.put(entry.getKey(), entry.getValue());
-						            }
-						            
-						            StringWriter text = new StringWriter();
-						            velocityEngine.mergeTemplate("regentryExpiry.vm", "UTF-8", velocityContext, text);
-						            message.setText(text.toString(), true);
-						        }
-					        };
-					        try {
+							try {
+								LOGGER.info("messagePreparator");
+								MimeMessagePreparator preparator = new MimeMessagePreparator() {
+							         public void prepare(MimeMessage mimeMessage) throws Exception {
+							            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
+							            message.setSubject("Riikliku alkoholiregistri registrikande kehtivuse kaotamisest teavitamine");
+							            message.setTo(applicant.getContactInfo().getEmail());
+							            //message.setTo("tiit@piksel.ee");
+							            String[] bccAddresses = { "olle@piksel.ee", "alkoreg@vet.agri.ee" };
+							            
+							            message.setBcc(bccAddresses);
+							            message.setFrom(EmailNotificationJobs.this.getMailFrom()); 
+							            Map<String, Object> model = new HashMap();
+							            
+							            Calendar cal = Calendar.getInstance();
+							            String DATE_FORMAT = "dd.MM.yyyy";
+							            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+							            
+							            model.put("current_date", sdf.format(cal.getTime()));
+							            model.put("applicant", applicant);
+							            model.put("regentries", regentries);
+							            String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, System.getProperty("catalina.base") + "/webapps/ROOT/regentryExpiry.vm", "UTF-8", model);
+							            
+							            message.setText(text, true);
+							        }
+						        };
+						        
+						        LOGGER.info(EmailNotificationJobs.this.getMailSender().toString());
 					        	EmailNotificationJobs.this.getMailSender().send(preparator);
-					        	for (RegistryEntry entry : regentries) {
-					        		entry.setExpiryNotificationSent(new Boolean(true));
+					        	for(RegistryEntry entry : regentries) {
+					        		entry.setExpiryNotificationSent(true);
 					        	}
 					        	LOGGER.info("Notification sent to " + applicant.getName() + "," + applicant.getRegistrationId()	+ "," + applicant.getContactInfo().getEmail());
 					        	
-					        	session.flush();
+					        	Transaction tx = session.beginTransaction();
+								session.flush();
+								tx.commit();
 					        } catch (Exception ex) {
 					        	LOGGER.info("Sending regentry expiry notification to enterprise '" + applicant.getName()+","+applicant.getRegistrationId() + "' failed: ");
 					        	LOGGER.error("Sending regentry expiry notification to enterprise '" + applicant.getName()+","+applicant.getRegistrationId() + "' failed: ", ex);

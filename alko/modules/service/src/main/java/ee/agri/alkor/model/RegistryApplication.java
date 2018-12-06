@@ -451,5 +451,9 @@ public class RegistryApplication extends ABaseBean implements IClassificatorAwar
 	public void setExamplReturnedBy(String examplReturnedBy) {
 		this.examplReturnedBy = examplReturnedBy;
 	}
-
+	
+	public String toString() {
+		return "ID: " + id + ", Nr: " + nr + ", Arrived: " + arrived + ", Notes: " + notes + ", LatestPayment: " + latestPayment 
+			+ ", CreatedBy: " + createdBy + ", FromXtee: " + fromXTee + ", RecievedBy: " + recievedBy + ", Submitter: " + submitterName;
+	}
 }

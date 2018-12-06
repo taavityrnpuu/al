@@ -67,4 +67,8 @@ public class AppContextHelper {
 	public Object getBean(String name) {
 		return this.beanFactory.getBean(name);
 	}
+	
+	public ListableBeanFactory getFactory() {
+		return this.beanFactory;
+	}
 }

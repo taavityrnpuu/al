@@ -51,22 +51,20 @@ public class ExendUntilApplicationExpiryNotificationJobs extends
 	 * Sends notification emails to processors whose extended until applications  expire after given days
 	 */
 	public void sendExendUntilApplicationExpiryNotifications() {
-		
 		final Calendar expireDate = Calendar.getInstance();
 		expireDate.add(Calendar.DAY_OF_YEAR, getDaysBeforeNotificationIsSent());
 		LOGGER.debug("sendExendUntilApplicationExpiryNotifications mode:"+getMode());
+		
 		if(!LIVE_MODE.equals(getMode())){
 			LOGGER.info("sendExendUntilApplicationExpiryNotifications not live mode - execution halted");
 			return;
 		}
-		getHibernateTemplate().execute(new HibernateCallback() {
-			
+		
+		getHibernateTemplate().execute(new HibernateCallback<Object>() {
 			public Object doInHibernate(Session session) {
-				
 				LOGGER.debug("Executing sendExendUntilApplicationExpiryNotifications");
-
+				
 				Query q = session.createQuery("from RegistryApplication e where e.decision.extendUntilDate is not null and date_trunc('day',e.decision.extendUntilDate) = (current_date + "+getDaysBeforeNotificationIsSent()+")");
-
 				
 				Map<Person, List<RegistryApplication>> entriesMap = new HashMap<Person, List<RegistryApplication>>();
 				
@@ -77,6 +75,7 @@ public class ExendUntilApplicationExpiryNotificationJobs extends
 					q.setMaxResults(100);
 					List entries = q.list();
 					if(entries.size() == 0) break;
+					
 					LOGGER.info("Number of notifications to be sent:"+entries.size());
 					for(Iterator it = entries.iterator();it.hasNext();) {
 						final RegistryApplication application = (RegistryApplication)it.next();
@@ -92,72 +91,71 @@ public class ExendUntilApplicationExpiryNotificationJobs extends
 						}
 						
 					}
-					for (Iterator it = entriesMap.keySet().iterator(); it.hasNext();) {
+					
+					for(Iterator it = entriesMap.keySet().iterator(); it.hasNext();) {
 						final Person applicationProcesor = (Person)it.next();
 						final List<RegistryApplication> processorApplications = (List<RegistryApplication>)entriesMap.get(applicationProcesor);
 						if(applicationProcesor != null && applicationProcesor.getContactInfo() != null && applicationProcesor.getContactInfo().getEmail() != null) {
 							MimeMessagePreparator preparator = new MimeMessagePreparator() {
 						         public void prepare(MimeMessage mimeMessage) throws Exception {
 						            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
-						            message.setSubject("Menetluses kuni taotluste kehtivuse l&otilde;ppemine");
-						            message.setTo(applicationProcesor.getContactInfo().getEmail());
-						            /*
-						             * 14-01-2014 parandus
-						             */
-						            String[] bccAddresses = {"tanja@piksel.ee", "alkoreg@vet.agri.ee"};
-						            
-						            message.setBcc(bccAddresses);
-						            
-						            //message.setBcc("nastja@piksel.ee");
-						            //message.setBcc("alkoreg@vet.agri.ee");
-						            
-						            
-						            message.setFrom(ExendUntilApplicationExpiryNotificationJobs.this.getMailFrom()); 
-						            Map<String, Object> model = new HashMap();
-						            
-						            Calendar cal = Calendar.getInstance();
-						            String DATE_FORMAT = "dd.MM.yyyy";
-						            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-						            
-						            
-						            model.put("current_date", sdf.format(cal.getTime()));
-						            model.put("processor", applicationProcesor);
-						            model.put("processorApplications", processorApplications);
-						            
-						            VelocityContext velocityContext = new VelocityContext();
-						            for (Map.Entry<String, Object> entry : model.entrySet()) {
-						            	velocityContext.put(entry.getKey(), entry.getValue());
-						            }
-						            StringWriter text = new StringWriter();
-						            velocityEngine.mergeTemplate("extendUntilExpiry.vm", "UTF-8", velocityContext, text);
-						            message.setText(text.toString(), true);
-						            
-						            }
-					        };
-					        try {
-					        	ExendUntilApplicationExpiryNotificationJobs.this.getMailSender().send(preparator);
-					        	
-					        	LOGGER.info("Notification sent to "+applicationProcesor.getFirstName()+" "+applicationProcesor.getLastName()
-				        					+","+applicationProcesor.getContactInfo().getEmail());
-					        	
-					        } catch (Exception ex) {
-					        	LOGGER.error("Sending extend until notification to processor '" +
-					        			applicationProcesor.getFirstName()+" "+applicationProcesor.getLastName()+ "' failed: ", ex);
-					        	LOGGER.info("Mail error:"+ex.getMessage());
-					        	all = true;
-					        }
-						} else{
-							LOGGER.info("Sending notification to "+applicationProcesor.getFirstName()+" "+applicationProcesor.getLastName()+" failed, e-mail missing!");
+									message.setSubject("Menetluses kuni taotluste kehtivuse l&otilde;ppemine");
+									//message.setTo("tiit@piksel.ee");
+									message.setTo(applicationProcesor.getContactInfo().getEmail());
+									/*
+									 * 14-01-2014 parandus
+									 */
+									String[] bccAddresses = {"tanja@piksel.ee", "alkoreg@vet.agri.ee"};
+									message.setBcc(bccAddresses);
+									
+									//message.setBcc("nastja@piksel.ee");
+									//message.setBcc("alkoreg@vet.agri.ee");
+									
+									
+									message.setFrom(ExendUntilApplicationExpiryNotificationJobs.this.getMailFrom()); 
+									Map<String, Object> model = new HashMap();
+									
+									Calendar cal = Calendar.getInstance();
+									String DATE_FORMAT = "dd.MM.yyyy";
+									SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+									
+									
+									model.put("current_date", sdf.format(cal.getTime()));
+									model.put("processor", applicationProcesor);
+									model.put("processorApplications", processorApplications);
+									
+									VelocityContext velocityContext = new VelocityContext();
+									for (Map.Entry<String, Object> entry : model.entrySet()) {
+										velocityContext.put(entry.getKey(), entry.getValue());
+									}
+									StringWriter text = new StringWriter();
+									velocityEngine.mergeTemplate(System.getProperty("catalina.base") + "/webapps/ROOT/extendUntilExpiry.vm", "UTF-8", velocityContext, text);
+							        message.setText(text.toString(), true);
+							   }
+							};
+							try {
+								ExendUntilApplicationExpiryNotificationJobs.this.getMailSender().send(preparator);
+								
+								LOGGER.info("Notification sent to " + applicationProcesor.getFirstName() + " " + applicationProcesor.getLastName()
+									+ "," + applicationProcesor.getContactInfo().getEmail());
+							} catch (Exception ex) {
+								LOGGER.error("Sending extend until notification to processor '" +
+								applicationProcesor.getFirstName() + " " + applicationProcesor.getLastName() + "' failed: ", ex);
+								LOGGER.info("Mail error:" + ex.getMessage());
+						    	all = true;
+						    }
+						} else {
+							LOGGER.info("Sending notification to " + applicationProcesor.getFirstName() + " " + applicationProcesor.getLastName() + " failed, e-mail missing!");
 						}
-						
 					}
+					
 					count += entries.size();
 				}
+				
 				LOGGER.info("Notification service complete");
 				return null;
 			}
 		});
-
 	}
 
 	public JavaMailSender getMailSender() {
