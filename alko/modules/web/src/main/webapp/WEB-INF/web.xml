@@ -51,9 +51,9 @@
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<param-value>https://192.168.0.37:8443/</param-value> 
+			<!--<param-value>https://192.168.0.37:8443/</param-value> -->
 			<!--<param-value>https://alkoreg.agri.ee/</param-value>  -->
-			<!--<param-value>https://alkoregtest.agri.ee/</param-value>  -->
+			<param-value>https://alkoregtest.agri.ee/</param-value>
 		</init-param>
 		<init-param>
 			<param-name>redirectAfterValidation</param-name>
@@ -76,9 +76,9 @@
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<param-value>https://192.168.0.37:8443/</param-value> 
+			<!--<param-value>https://192.168.0.37:8443/</param-value> -->
 			<!--<param-value>https://alkoreg.agri.ee/</param-value> -->
-			<!--<param-value>https://alkoregtest.agri.ee/</param-value>  -->
+			<param-value>https://alkoregtest.agri.ee/</param-value> 
 		</init-param>
 	</filter>
 	<filter-mapping>
