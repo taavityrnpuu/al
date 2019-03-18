@@ -271,6 +271,8 @@ public class RegistryDocument extends ABaseBean
 		return path.substring(1 + path.lastIndexOf((String)System.getProperty("file.separator")));
 	}
 
-
+	public String toString() {
+		return "RegistryDocumen[id: " + getId() + ", name: " + getName() + "]";
+	}
 
 }

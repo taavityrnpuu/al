@@ -183,7 +183,7 @@ public class PDFCreator implements InitializingBean {
 			} else if (IClassificatorService.DOC_TYPE_COR.equals(docType) || IClassificatorService.DOC_TYPE_EX_COR.equals(docType)) {
 				writer.setPageEvent(new CorrectionEventHelper());
 			}
-
+			
 			parser.go(document, new InputSource(new StringReader(docString)));
 			document.close();
 		} catch (Exception e) {

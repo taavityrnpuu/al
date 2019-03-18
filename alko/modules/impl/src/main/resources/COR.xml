@@ -36,7 +36,7 @@
 				<row>
 					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="top" leading="12.0" left="true" right="true" top="true" bottom="false">
 						<phrase leading="12.0" font="$font"  size="12">
-						<chunk fontstyle="bold">$application.product.type.name.replaceAll("&","&#38;")</chunk>
+						<chunk fontstyle="bold">$!application.product.type.name.replaceAll("&","&#38;")</chunk>
 						<newline/>
 						<chunk size="8">(toote liik)</chunk>
 						</phrase>

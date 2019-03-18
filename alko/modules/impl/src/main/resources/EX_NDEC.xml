@@ -117,7 +117,7 @@
 						<phrase leading="12.0" font="$font" fontstyle="normal" size="12">Toote liik</phrase>
 					</cell>
 					<cell borderwidth="0.5" horizontalalign="Left" verticalalign="Default" leading="12.0" left="false" right="false" top="false" bottom="true">
-						<phrase leading="12.0" font="$font" fontstyle="normal" size="12">$application.product.type.name.replaceAll("&","&#38;")</phrase>
+						<phrase leading="12.0" font="$font" fontstyle="normal" size="12">$!application.product.type.name.replaceAll("&","&#38;")</phrase>
 					</cell>
 				</row>
 				<row>

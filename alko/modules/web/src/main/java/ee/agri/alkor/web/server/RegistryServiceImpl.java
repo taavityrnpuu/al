@@ -16,6 +16,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 
 import ee.agri.alkor.model.PaymentMatchingLog;
 import ee.agri.alkor.model.RegistryApplication;
+import ee.agri.alkor.model.RegistryDocument;
 import ee.agri.alkor.model.RegistryPayment;
 import ee.agri.alkor.model.classes.ApplicationState;
 import ee.agri.alkor.model.classes.ApplicationType;
@@ -412,18 +413,14 @@ public class RegistryServiceImpl implements RegistryService {
 	}
 
 	public List findApplicationDocuments(Long applicationId) {
-		/*
-		 * Principal princ = getThreadLocalRequest().getUserPrincipal();
-		 * LOGGER.debug("principal: " + princ);
-		 */
 		if (LOGGER.isDebugEnabled())
-			LOGGER.debug("findApplicationDocuments: applicationId=" + applicationId);
+			LOGGER.info("findApplicationDocuments: applicationId=" + applicationId);
 
 		IRegistryService service = ServiceFactory.getRegistryService();
 		List docList = ClientDataFactory.create(service.findApplicationDocuments(applicationId));
 
 		if (LOGGER.isDebugEnabled())
-			LOGGER.debug("findPublicDocuments, docList: " + docList);
+			LOGGER.info("findPublicDocuments, docList: " + docList);
 
 		return docList;
 	}

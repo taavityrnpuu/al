@@ -319,8 +319,6 @@ public class ApplicationForm extends Form implements CacheListener {
 			}
 			// disable statefee button for anyone not from listed group(s)
 			if (!UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK })) {
-				// ((Button) ((FlexTable) main.getWidget(2, 0)).getWidget(4, 1))
-				// .setEnabled(false);
 				productForm.setEnabled(true);
 			}
 
@@ -1379,85 +1377,8 @@ public class ApplicationForm extends Form implements CacheListener {
 												}
 
 												public void onSuccess(final Object result) {
-													// ApplicationForm.this
-													// .setInfo("Taotlus
-													// salvestatud!");
 													updateApplication((ApplicationMap) result);
-													// kui
-													// taotluse
-													// tüüp
-													// on
-													// 'Taotlus
-													// registrikande
-													// pikendamiseks'
-													// ja
-													// staatus
-													// oli
-													// 'Kontrollimisel'
-													// tuleb
-													// maha
-													// võtta
-													// riigilõiv
-													/*
-													 * if ( ApplicationMap .
-													 * STATE_CODE_CHECKING .
-													 * equals (
-													 * applicationStatus ) &&
-													 * ApplicationMap .
-													 * TYPE_CODE_EXTEND . equals
-													 * ( getData ( ) .
-													 * getProperty (
-													 * ApplicationMap .
-													 * TYPE_CODE ) ) ) {
-													 * ServiceContext .
-													 * getInstance ( ) .
-													 * getRegistryService ( ) .
-													 * processPaymentMatching (
-													 * ( ( ApplicationMap )
-													 * getData ( ) ) ,
-													 * EXTEND_STATE_FEE_AMOUNT ,
-													 * new AsyncCallback ( ) {
-													 * 
-													 * public void onFailure (
-													 * Throwable caught ) {
-													 * ApplicationForm . this .
-													 * setInfo (
-													 * "Taotlus salvestatud!" )
-													 * ;
-													 * 
-													 * }
-													 * 
-													 * public void onSuccess (
-													 * Object result1 ) {
-													 * ApplicationForm . this .
-													 * setInfo (
-													 * "Taotlus salvestatud!" )
-													 * ; / / hack - / /
-													 * parameters / / are lost /
-													 * / in / /
-													 * processPaymentMatching (
-													 * ) - fix / / it ! ( (
-													 * ApplicationMap ) result1
-													 * ) . setProperty (
-													 * ApplicationMap .
-													 * PRODUCT_TYPE_NAME ,
-													 * getData ( ) . getProperty
-													 * ( ApplicationMap .
-													 * PRODUCT_TYPE_NAME ) ) ; (
-													 * ( ApplicationMap )
-													 * result1 ) . setProperty (
-													 * ApplicationMap .
-													 * PRODUCT_VOLUME_NAME ,
-													 * getData ( ) . getProperty
-													 * ( ApplicationMap .
-													 * PRODUCT_VOLUME_NAME ) ) ;
-													 * updateApplication ( (
-													 * ApplicationMap ) result1
-													 * ) ; ApplicationForm .
-													 * this . setInfo (
-													 * "Taotlus salvestatud!" )
-													 * ; } } ) ; }
-													 */
+													
 													setPrintLink();
 													ApplicationForm.this.setButtonsEnabled(true);
 													ApplicationForm.this.setInfo(getLabel("applicationSaved"));
@@ -1482,47 +1403,7 @@ public class ApplicationForm extends Form implements CacheListener {
 							}
 
 							public void onSuccess(final Object result) {
-								// ApplicationForm.this
-								// .setInfo("Taotlus salvestatud!");
 								updateApplication((ApplicationMap) result);
-								// kui taotluse tüüp on 'Taotlus
-								// registrikande pikendamiseks' ja
-								// staatus oli 'Kontrollimisel'
-								// tuleb maha võtta riigilõiv
-								/*
-								 * if (ApplicationMap.STATE_CODE_CHECKING
-								 * .equals(applicationStatus) &&
-								 * ApplicationMap.TYPE_CODE_EXTEND
-								 * .equals(getData() .getProperty(
-								 * ApplicationMap.TYPE_CODE))) { ServiceContext
-								 * .getInstance() .getRegistryService()
-								 * .processPaymentMatching( ((ApplicationMap)
-								 * getData()), EXTEND_STATE_FEE_AMOUNT, new
-								 * AsyncCallback() {
-								 * 
-								 * public void onFailure( Throwable caught) {
-								 * ApplicationForm.this .setInfo(
-								 * "Taotlus salvestatud!");
-								 * 
-								 * }
-								 * 
-								 * public void onSuccess( Object result1) {
-								 * ApplicationForm.this .setInfo(
-								 * "Taotlus salvestatud!"); // hack - //
-								 * parameters // are lost // in //
-								 * processPaymentMatching()-fix // it!
-								 * ((ApplicationMap) result1) .setProperty(
-								 * ApplicationMap.PRODUCT_TYPE_NAME, getData()
-								 * .getProperty(
-								 * ApplicationMap.PRODUCT_TYPE_NAME));
-								 * ((ApplicationMap) result1) .setProperty(
-								 * ApplicationMap.PRODUCT_VOLUME_NAME, getData()
-								 * .getProperty(
-								 * ApplicationMap.PRODUCT_VOLUME_NAME));
-								 * updateApplication((ApplicationMap) result1);
-								 * ApplicationForm.this .setInfo(
-								 * "Taotlus salvestatud!"); } }); }
-								 */
 								setPrintLink();
 								ApplicationForm.this.setButtonsEnabled(true);
 								ApplicationForm.this.setInfo(getLabel("applicationSaved"));
@@ -1535,8 +1416,6 @@ public class ApplicationForm extends Form implements CacheListener {
 			}
 			ApplicationForm.this.feeBtn.setEnabled(true);
 			ApplicationForm.this.documentsBtn.setEnabled(true);
-			// ApplicationForm.this
-			// .setInfo("Taotlus salvestatud!");
 		}
 	}
 
