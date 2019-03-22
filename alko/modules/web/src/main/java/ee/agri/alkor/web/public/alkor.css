@@ -521,4 +521,36 @@ HTML {
 	opacity: 0.5;
 	filter: alpha(opacity=50); /* For IE8 and earlier */
 }
+.login-cas {
+  display: block;
+  width: 100%;
+  height: 25px;
+  margin-bottom: 0;
+  padding: 8px 9px;
+  border: 1px solid transparent;
+  border: 0;
+  border-radius: 3px;
+  background-image: none;
+  box-shadow: inset 0 -2px 0 rgba(0, 0, 0, 0.15);
+  font-size: 15px;
+  font-weight: normal;
+  line-height: 1.42857;
+  text-align: center;
+  vertical-align: middle;
+  white-space: nowrap;
+  cursor: pointer;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  touch-action: manipulation; 
+  border-color: #007d32;
+  background-color: #006428;
+  color: #fff;
+  }
+.login-cas:hover,.login-cas:active,.login-cas:focus {
+    border-color: #00260f;
+    background-color: #004a1e;
+    color: #fff; }
+
 

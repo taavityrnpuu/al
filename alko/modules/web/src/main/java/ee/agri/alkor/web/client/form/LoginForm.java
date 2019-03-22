@@ -199,12 +199,7 @@ public class LoginForm extends Form {
 					String[] urls = (String[]) result;
 					String baseiframe = ""
 						+ "<div id='login-iframe'>"
-							+ "<iframe "
-								+ "ng-src='"+urls[0]+"&amp;service="+urls[1]+"' "
-								+ "frameborder='0' width='100%' height='180' title='Sisselogimise vorm' scrolling='no' "
-								+ "src='"+urls[0]+"&amp;service="+urls[1]+"' "
-								+ "id='iFrameResizer0' style='overflow: hidden; height: 180px;'>"
-							+ "</iframe>"
+                      		+ "<a href='"+urls[0]+"?service="+urls[1]+"&cancellation_uri="+urls[2]+"' class='login-cas'>Sisene Alkoholiregistrisse</a>"
 						+ "</div>";
 					
 					idForm.setHTML(0, 0, baseiframe);
