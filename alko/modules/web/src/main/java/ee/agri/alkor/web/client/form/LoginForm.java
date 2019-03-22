@@ -188,7 +188,7 @@ public class LoginForm extends Form {
 		loginFormPanel.setVisible(false);
 		
 		final FlexTable idForm = new FlexTable();
-		idForm.setHeight("180px");
+		idForm.setHeight("40px");
 		idForm.setStyleName("Form");
 		idLoginFormPanel.setWidget(idForm);
 		idForm.setHTML(0, 0, "");
