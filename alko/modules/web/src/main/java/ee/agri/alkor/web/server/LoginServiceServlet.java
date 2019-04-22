@@ -1,77 +1,43 @@
 package ee.agri.alkor.web.server;
 
-import static org.apache.commons.lang.StringEscapeUtils.escapeXml;
-
 import java.io.BufferedReader;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.io.OutputStream;
-import java.io.StringWriter;
-import java.io.UnsupportedEncodingException;
-import java.io.Writer;
 import java.math.BigDecimal;
-import java.net.SocketException;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
-import java.security.Principal;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Date;
-import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.List;
 import java.util.ArrayList;
 import java.util.Map;
-import java.util.Random;
 import java.io.PrintWriter;
-import java.text.DateFormat;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
-import java.util.concurrent.ExecutionException;
-import java.sql.Connection;
-import java.sql.DriverManager;
 import ee.agri.alkor.impl.ResultSet;
 import ee.agri.alkor.model.Enterprise;
-import ee.agri.alkor.model.classes.Country;
-
-import java.sql.SQLException;
-import java.sql.Statement;
 import java.util.UUID;
 
-import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
-import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
-import javax.xml.bind.DatatypeConverter;
-import javax.xml.rpc.Stub;
-
 import org.apache.commons.lang.StringEscapeUtils;
 import org.apache.xml.security.utils.Base64;
-import org.jasig.cas.client.authentication.AttributePrincipal;
 import org.jasig.cas.client.validation.Assertion;
-
-import com.google.gwt.core.client.GWT;
 
 import ee.agri.alkor.impl.PostgreUtils;
 
 import sun.security.provider.X509Factory;
 import ee.agri.alkor.service.ServiceFactory;
-import ee.agri.alkor.service.SystemException;
 import ee.agri.alkor.xtee.impl.EnterpriseRegisterQueryImpl;
 import eu.x_road.arireg.producer.*;
 import eu.x_road.arireg.producer.holders.*;
-import eu.x_road.xsd.identifiers.*;
 import org.apache.axis.message.*;
+
 import javax.xml.soap.SOAPElement;
 
 public class LoginServiceServlet extends HttpServlet {
@@ -114,38 +80,33 @@ public class LoginServiceServlet extends HttpServlet {
 		
 		try {
 			String templ = getTemplate(request, "login_template.html");
-
 			try {
-				
-				if (ik != null && !ik.equals("")) {
+				if(ik != null && !ik.equals("")) {
 					String sql = "select 1 from sys_user as sys join person as p on p.id = sys.person_id and (p.reg_id = '"
 							+ ik + "' or p.reg_id = 'EE" + ik + "') where sys.active = true";
 					ResultSet rs = PostgreUtils.query(sql);
 					
-					while (rs.next()) {
+					while(rs.next()) {
 						isVta = true;
 						hasRoles = true;
 					}
 					
-					if (isVta) {
+					if(isVta) {
 						tableBody += getTableRow("Riik (VTA, EMTA jt)", "", null, null);
 					}
 					
-					PostgreUtils
-							.update("UPDATE enterprise_person_ref SET valid = false where valid = true and id_code = '"
+					PostgreUtils.update("UPDATE enterprise_person_ref SET valid = false where valid = true and id_code = '"
 									+ ik + "' and valid_until < now() and valid_until is not null");
 					
 					sql = "select ent_name, reg_nr, null as valid_until from user_arireg where id_code = '" + ik
-							+ "' UNION "
-							+ "select e.name, e.reg_id, (SELECT valid_until FROM enterprise_person_ref WHERE valid = true and id_code = '"
-							+ ik + "' and enterprise_id = e.id) "
-							+ "from enterprise e where id in (SELECT enterprise_id FROM enterprise_person_ref WHERE valid = true and id_code = '"
-							+ ik + "')";
+						+ "' UNION "
+						+ "select e.name, e.reg_id, (SELECT valid_until FROM enterprise_person_ref WHERE valid = true and id_code = '"
+						+ ik + "' and enterprise_id = e.id) "
+						+ "from enterprise e where id in (SELECT enterprise_id FROM enterprise_person_ref WHERE valid = true and id_code = '"
+						+ ik + "')";
 					
 					rs = PostgreUtils.query(sql);
-					
-					if (rs != null && !rs.wasNull()) {
-
+					if(rs != null && !rs.wasNull()) {
 						while (rs.next()) {
 							tableBody += getTableRow(StringEscapeUtils.escapeHtml(rs.getString("ent_name")),
 									rs.getString("reg_nr"), rs.getString("reg_nr"), rs.getDate("valid_until"));
@@ -155,14 +116,12 @@ public class LoginServiceServlet extends HttpServlet {
 				}
 
 				String body = "";
-
 				if (hasRoles) {
 					body = getTemplate(request, "table_body.html");
 					body = body.replace("{{TABLE_BODY}}", tableBody);
 				} else {
 					body = getTemplate(request, "login_failure.html");
 				}
-
 				templ = templ.replace("{{BODY}}", body);
 				
 				out.write(templ);
@@ -296,19 +255,18 @@ public class LoginServiceServlet extends HttpServlet {
 	}
 
 	public String getTemplate(HttpServletRequest request, String tmpl) throws Exception {
-
-		URL url = this.getClass().getClassLoader().getResource(tmpl);
+		URL url = this.getServletContext().getResource(tmpl);
 		File file = new File(url.getPath());
 		FileInputStream fis = new FileInputStream(file);
-
 		BufferedReader in = new BufferedReader(new InputStreamReader(fis));
 		String inputLine;
+		
 		StringBuffer response = new StringBuffer();
-
 		while ((inputLine = in.readLine()) != null) {
+			System.out.println(inputLine);
 			response.append(inputLine + "\n");
 		}
-
+		
 		in.close();
 		return response.toString();
 	}
@@ -431,7 +389,6 @@ public class LoginServiceServlet extends HttpServlet {
 				}
 			}
 		}
-
 	}
 
 	public HashMap<String, String[]> getAriregData(String ik) {
