@@ -70,10 +70,8 @@ public class NotEnteredApplicationJobs extends HibernateDaoSupport {
 					List<Long> products = new ArrayList<Long>();
 					
 					if(product_id == null){
-						products.add(product_id);
-						
 						try{ // igaks juhuks kõik tooted
-							ResultSet rs2 = PostgreUtils.query("SELECT id FROM product WHERE id != "+product_id+" AND appl_id = "+appl_id);
+							ResultSet rs2 = PostgreUtils.query("SELECT id FROM product WHERE appl_id = "+appl_id);
 							
 							while(rs2.next()){
 								products.add(rs2.getLong("id"));
@@ -81,6 +79,9 @@ public class NotEnteredApplicationJobs extends HibernateDaoSupport {
 						}catch(Exception x){
 							x.printStackTrace();
 						}
+					}
+					else {
+						products.add(product_id);
 					}
 					
 					try{ // eemaldame seose
