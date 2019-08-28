@@ -66,25 +66,15 @@ import ee.agri.alkor.web.service.ServiceConstants;
  * @author viktorb
  */
 public class ProductsForm extends Form implements CacheListener {
-	
 	private static final String SEARCH_FORM = "searchForm";
-
 	public static final String MANAGE_FORM = "productManageForm";
-
 	private boolean isExtendProduct = false;
-
 	private ProductsTable searchResultsTable;
-
 	private boolean change = false;
-
 	private Label manageTitle = null;
-
 	private Button back;
-	
 	private Button saveBtn = new Button();
-
 	private boolean isSaved;
-
 	private int asked = 0;
 
 	public static final String getKey() {
@@ -165,10 +155,6 @@ public class ProductsForm extends Form implements CacheListener {
 			makeClassSelectionList(SEARCH_FORM, ProductSearchFilter.ORIGINCOUNTRY_CODE, (List) value);
 		} else if (key.equals(ServiceContext.PRODUCT_TYPE)) {
 			makeClassSelectionList(MANAGE_FORM, ProductMap.TYPE_CODE, (List) value);
-			// } else if (key.equals(ServiceContext.PRODUCT_TYPE_OTSING)) {
-			// makeClassSelectionList(SEARCH_FORM,
-			// ProductSearchFilter.TYPE_CODE,
-			// (List) value);
 		} else if (key.equals(ServiceContext.PACKING_MATERIAL)) {
 			makeClassSelectionList(MANAGE_FORM, ProductMap.PACKINGMATERIAL_CODE, (List) value);
 		} else if (key.equals(ServiceContext.CORK_SHAPE)) {
@@ -195,14 +181,6 @@ public class ProductsForm extends Form implements CacheListener {
 		List klassifikaatorid = (List) ServiceContext.getInstance().getSingle(ServiceContext.PRODUCT_TYPE);
 
 		makeClassSelectionList(SEARCH_FORM, ProductSearchFilter.TYPE_CODE, (List) klassifikaatorid);
-		/*
-		 * küpsib ühe korra klassifikaatorid �le ja cacheb need ära
-		 */
-		// if(this.asked < 20){
-		// askClassificators();
-		// this.asked++;
-		// }
-
 	}
 
 	/**
@@ -276,7 +254,6 @@ public class ProductsForm extends Form implements CacheListener {
 
 		saveBtn.setText(getLabel("buttonSave"));
 		saveBtn.addClickListener(new SaveListener());
-//		saveBtn = new Button(getLabel("buttonSave"), new SaveListener());// "Salvesta"
 		saveBtn.setTabIndex(32);
 		saveBtn.setWidth("9em");
 
@@ -296,13 +273,7 @@ public class ProductsForm extends Form implements CacheListener {
 		if (getSelectReturnCallback() != null) {
 			back = UIutils.createButton(new ClickListener() {
 				public void onClick(Widget sender) {
-					// Window.alert("Toote nimi: " +
-					// getData().getProperty(ProductMap.NAME));
-					// Window.alert("Toote id: " +
-					// getData().getProperty(ProductMap.ID));
-					// if(getData().getProperty(ProductMap.ID) != null){
 					getSelectReturnCallback().setDtoData(getData());
-					// }
 					getSelectReturnCallback().onReturn();
 					SimplePanel main = MainPanel.getBody();
 					main.clear();
@@ -321,9 +292,7 @@ public class ProductsForm extends Form implements CacheListener {
 			 */
 
 			if (!UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK })) {
-				// try{
 				String state = Cookies.getCookie("selectedStateCode");
-				// Window.alert(state);
 				if (state == null || ApplicationMap.STATE_CODE_ENTERED.equals(state)
 						|| ApplicationMap.STATE_CODE_PRESENTED.equals(state)
 						|| ApplicationMap.STATE_CODE_NEEDS_CLARIFICATION.equals(state)) {
@@ -331,9 +300,6 @@ public class ProductsForm extends Form implements CacheListener {
 					manageButtons.add(saveBtn);
 
 				}
-				// } catch (Exception ex){
-				//
-				// }
 			}
 		}
 		// -- Nupp "Tagasi" / "Taotluse juurde"
@@ -544,17 +510,6 @@ public class ProductsForm extends Form implements CacheListener {
 				makeClassSelectionList(SEARCH_FORM, ProductSearchFilter.TYPE_CODE, klassifikaatorid);
 			}
 
-			/*
-			 * List klassifikaatorid = (List)
-			 * ServiceContext.getInstance().getSingle(ServiceContext.
-			 * PRODUCT_TYPE);
-			 * 
-			 * if (klassifikaatorid != null) {
-			 * makeClassSelectionList(SEARCH_FORM,
-			 * ProductSearchFilter.TYPE_CODE, klassifikaatorid); }
-			 * 
-			 */
-
 			if (countries != null) {
 				makeClassSelectionList(SEARCH_FORM, ProductSearchFilter.ORIGINCOUNTRY_CODE, countries);
 				makeClassSelectionList(SEARCH_FORM, ProductSearchFilter.PRODUCER_COUNTRY_CODE, countries);
@@ -643,9 +598,7 @@ public class ProductsForm extends Form implements CacheListener {
 	 * Loob lisamise/muutmise elementide gruppi osa.
 	 */
 	private FlexTable createManageForm() {
-
 		String compulsoryHTML = "<span style='color:red'>*</span>";
-
 		boolean eitGrp = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_EIT_GRP });
 		FlexTable form = new FlexTable();
 		form.setStyleName("Form");
@@ -662,6 +615,7 @@ public class ProductsForm extends Form implements CacheListener {
 		if (change) {
 			form.setText(10, 0, getLabel(ProductMap.CHANGE_REASON));
 		}
+		
 		String volumeLabel = getLabel(ProductMap.VOLUME);
 		form.setHTML(1, 3, volumeLabel + " " + compulsoryHTML);
 		form.setText(1, 5, getLabel(ProductMap.VOLUME_UNIT));
@@ -680,7 +634,6 @@ public class ProductsForm extends Form implements CacheListener {
 		form.setText(3, 7, getLabel(ProductMap.HASREARLABEL));
 		form.setText(4, 7, getLabel(ProductMap.HASNECKLABEL));
 		form.setText(5, 8, getLabel(ProductMap.HASOTHERLABEL));
-
 		if (!eitGrp) {
 			form.setText(6, 7, getLabel(ProductMap.EXAMPLES));
 			form.setText(7, 8, getLabel(ProductMap.NOTESADD));
@@ -694,112 +647,107 @@ public class ProductsForm extends Form implements CacheListener {
 		form.setWidget(4, 1, new Image("images/t2rn.gif"));
 		form.setWidget(1, 6, UIutils.createSpacer(15, 1));
 		form.setWidget(1, 9, UIutils.createSpacer(15, 1));
-
+		
 		NAME = new TextBox();
 		NAME.setTabIndex(1);
 		form.setWidget(0, 2, addFormField(MANAGE_FORM, ProductMap.NAME, NAME, "100%", null, "required"));
+		
 		GRADE = new TextBox();
 		GRADE.setTabIndex(2);
 		form.setWidget(1, 2, addFormField(MANAGE_FORM, ProductMap.GRADE, GRADE, "4em", null, "required, number"));
+		
 		VOLUME_CODE = new ListBox();
 		VOLUME_CODE.setTabIndex(3);
 		form.setWidget(1, 4, addFormField(MANAGE_FORM, ProductMap.VOLUME_CODE, VOLUME_CODE, "15em", null, "required"));
-
+		
 		TYPE_CODE = new TextListBox("3.5em", "100%");
 		TYPE_CODE.setListTabIndex(5);
 		TYPE_CODE.setTextTabIndex(4);
 		form.setWidget(2, 2, addFormField(MANAGE_FORM, ProductMap.TYPE_CODE, TYPE_CODE, "100%", null, "required"));
+		
 		CODE = new TextBox();
 		CODE.setTabIndex(6);
-		form.setWidget(3, 2,
-				addFormField(MANAGE_FORM, ProductMap.CODE, CODE, "100%", null, "required, number, length[8,12]"));
-
+		form.setWidget(3, 2, addFormField(MANAGE_FORM, ProductMap.CODE, CODE, "100%", null, "required, number, length[8,12]"));
+		
 		originCountryCodeListBox = new ListBox();
 		originCountryCodeListBox.setWidth("5");
 		originCountryCodeListBox.setTabIndex(7);
-		form.setWidget(4, 2, addFormField(MANAGE_FORM, ProductMap.ORIGINCOUNTRY_CODE, originCountryCodeListBox, "100%",
-				null, "required"));
-
-		form.setWidget(5, 2,
-				addFormField(MANAGE_FORM, ProductMap.PRODUCER_NAME, new TextBox(), "100%", "DisabledTextBox"));
-		form.setWidget(6, 2,
-				addFormField(MANAGE_FORM, ProductMap.PRODUCER_COUNTRY_NAME, new TextBox(), "100%", "DisabledTextBox"));
-		form.setWidget(7, 2,
-				addFormField(MANAGE_FORM, ProductMap.IMPORTER_NAME, new TextBox(), "100%", "DisabledTextBox"));
-		form.setWidget(8, 2,
-				addFormField(MANAGE_FORM, ProductMap.MARKETER_NAME, new TextBox(), "100%", "DisabledTextBox"));
-		form.setWidget(9, 2,
-				addFormField(MANAGE_FORM, ProductMap.PACKAGER_NAME, new TextBox(), "100%", "DisabledTextBox"));
+		form.setWidget(4, 2, addFormField(MANAGE_FORM, ProductMap.ORIGINCOUNTRY_CODE, originCountryCodeListBox, "100%",	null, "required"));
+		form.setWidget(5, 2,	addFormField(MANAGE_FORM, ProductMap.PRODUCER_NAME, new TextBox(), "100%", "DisabledTextBox"));
+		form.setWidget(6, 2, addFormField(MANAGE_FORM, ProductMap.PRODUCER_COUNTRY_NAME, new TextBox(), "100%", "DisabledTextBox"));
+		form.setWidget(7, 2, addFormField(MANAGE_FORM, ProductMap.IMPORTER_NAME, new TextBox(), "100%", "DisabledTextBox"));
+		form.setWidget(8, 2, addFormField(MANAGE_FORM, ProductMap.MARKETER_NAME, new TextBox(), "100%", "DisabledTextBox"));
+		form.setWidget(9, 2, addFormField(MANAGE_FORM, ProductMap.PACKAGER_NAME, new TextBox(), "100%", "DisabledTextBox"));
 
 		if (change) {
 			ta = new TextArea();
 			form.setWidget(10, 2, addFormField(MANAGE_FORM, ProductMap.CHANGE_REASON, ta, "100%"));
 		}
-
 		PACKINGMATERIAL_CODE = new ListBox();
 		PACKINGMATERIAL_CODE.setTabIndex(14);
-		form.setWidget(1, 8, addFormField(MANAGE_FORM, ProductMap.PACKINGMATERIAL_CODE, PACKINGMATERIAL_CODE, "100%",
-				null, "required"));
+		form.setWidget(1, 8, addFormField(MANAGE_FORM, ProductMap.PACKINGMATERIAL_CODE, PACKINGMATERIAL_CODE, "100%", null, "required"));
+		
 		NUMBEROFLABELS = new TextBox();
 		NUMBEROFLABELS.setTabIndex(15);
-		form.setWidget(2, 5,
-				addFormField(MANAGE_FORM, ProductMap.NUMBEROFLABELS, NUMBEROFLABELS, "10em", null, Validators.INTEGER));
+		form.setWidget(2, 5, addFormField(MANAGE_FORM, ProductMap.NUMBEROFLABELS, NUMBEROFLABELS, "10em", null, Validators.INTEGER));
+		
 		BOTTLECOLOR_CODE = new ListBox();
 		BOTTLECOLOR_CODE.setTabIndex(16);
 		form.setWidget(3, 5, addFormField(MANAGE_FORM, ProductMap.BOTTLECOLOR_CODE, BOTTLECOLOR_CODE, "100%"));
+		
 		BOTTLESHAPE_CODE = new ListBox();
 		BOTTLESHAPE_CODE.setTabIndex(17);
 		form.setWidget(4, 5, addFormField(MANAGE_FORM, ProductMap.BOTTLESHAPE_CODE, BOTTLESHAPE_CODE, "100%"));
+		
 		CORKCOLOR_CODE = new ListBox();
 		CORKCOLOR_CODE.setTabIndex(18);
 		form.setWidget(5, 6, addFormField(MANAGE_FORM, ProductMap.CORKCOLOR_CODE, CORKCOLOR_CODE, "100%"));
+		
 		CORKMATERIAL_CODE = new ListBox();
 		CORKMATERIAL_CODE.setTabIndex(19);
 		form.setWidget(6, 5, addFormField(MANAGE_FORM, ProductMap.CORKMATERIAL_CODE, CORKMATERIAL_CODE, "100%"));
+		
 		CORKSHAPE_CODE = new ListBox();
 		CORKSHAPE_CODE.setTabIndex(20);
 		form.setWidget(7, 6, addFormField(MANAGE_FORM, ProductMap.CORKSHAPE_CODE, CORKSHAPE_CODE, "100%"));
+		
 		STOCKINGCOLOR_CODE = new ListBox();
 		STOCKINGCOLOR_CODE.setTabIndex(21);
 		form.setWidget(8, 6, addFormField(MANAGE_FORM, ProductMap.STOCKINGCOLOR_CODE, STOCKINGCOLOR_CODE, "100%"));
+		
 		HASSTOCKING = new CheckBox();
 		HASSTOCKING.setTabIndex(22);
 		form.setWidget(1, 11, addFormField(MANAGE_FORM, ProductMap.HASSTOCKING, HASSTOCKING));
+		
 		HASFRONTLABEL = new CheckBox();
 		HASFRONTLABEL.setTabIndex(23);
 		form.setWidget(2, 8, addFormField(MANAGE_FORM, ProductMap.HASFRONTLABEL, HASFRONTLABEL));
+		
 		HASREARLABEL = new CheckBox();
 		HASREARLABEL.setTabIndex(24);
-		form.setWidget(3, 8, addFormField(MANAGE_FORM, ProductMap.HASREARLABEL, HASREARLABEL)); // TODO
-																								// 2
+		form.setWidget(3, 8, addFormField(MANAGE_FORM, ProductMap.HASREARLABEL, HASREARLABEL));
+		
 		HASNECKLABEL = new CheckBox();
 		HASNECKLABEL.setTabIndex(25);
-		// HASNECKLABEL
 		form.setWidget(4, 8, addFormField(MANAGE_FORM, ProductMap.HASNECKLABEL, HASNECKLABEL));
+		
 		HASOTHERLABEL = new CheckBox();
 		HASOTHERLABEL.setTabIndex(26);
 		form.setWidget(5, 9, addFormField(MANAGE_FORM, ProductMap.HASOTHERLABEL, HASOTHERLABEL));
 
-		addProducer = UIutils
-				.createOFButton(new EnterpriseList(new SelectReturnCallback(this, MANAGE_FORM, ProductMap.PRODUCER),
-						(EnterpriseMap) getData().getProperty(ProductMap.PRODUCER), EnterpriseMap.PRO));
+		addProducer = UIutils.createOFButton(new EnterpriseList(new SelectReturnCallback(this, MANAGE_FORM, ProductMap.PRODUCER), (EnterpriseMap) getData().getProperty(ProductMap.PRODUCER), EnterpriseMap.PRO));
 		addProducer.setTabIndex(8);
 		form.setWidget(5, 3, addProducer);
 
-		addImporter = UIutils
-				.createOFButton(new EnterpriseList(new SelectReturnCallback(this, MANAGE_FORM, ProductMap.IMPORTER),
-						(EnterpriseMap) getData().getProperty(ProductMap.IMPORTER), EnterpriseMap.IMP));
+		addImporter = UIutils.createOFButton(new EnterpriseList(new SelectReturnCallback(this, MANAGE_FORM, ProductMap.IMPORTER), (EnterpriseMap) getData().getProperty(ProductMap.IMPORTER), EnterpriseMap.IMP));
 		addImporter.setTabIndex(10);
 		form.setWidget(7, 3, addImporter);
 
-		addMarketer = UIutils
-				.createOFButton(new EnterpriseList(new SelectReturnCallback(this, MANAGE_FORM, ProductMap.MARKETER),
-						(EnterpriseMap) getData().getProperty(ProductMap.MARKETER), EnterpriseMap.MAR));
+		addMarketer = UIutils.createOFButton(new EnterpriseList(new SelectReturnCallback(this, MANAGE_FORM, ProductMap.MARKETER), (EnterpriseMap) getData().getProperty(ProductMap.MARKETER), EnterpriseMap.MAR));
 		addMarketer.setTabIndex(12);
 		form.setWidget(8, 3, addMarketer);
-		addPackager = UIutils
-				.createOFButton(new EnterpriseList(new SelectReturnCallback(this, MANAGE_FORM, ProductMap.PACKAGER),
-						(EnterpriseMap) getData().getProperty(ProductMap.PACKAGER), EnterpriseMap.PAC));
+		
+		addPackager = UIutils.createOFButton(new EnterpriseList(new SelectReturnCallback(this, MANAGE_FORM, ProductMap.PACKAGER), (EnterpriseMap) getData().getProperty(ProductMap.PACKAGER), EnterpriseMap.PAC));
 		form.setWidget(9, 3, addPackager);
 
 		// Reset buttons
@@ -814,6 +762,7 @@ public class ProductsForm extends Form implements CacheListener {
 		removeMarketer = new FieldResetButton("X", this, MANAGE_FORM, ProductMap.MARKETER);
 		removeMarketer.setTabIndex(13);
 		form.setWidget(8, 4, removeMarketer);
+		
 		removePackager = new FieldResetButton("X", this, MANAGE_FORM, ProductMap.PACKAGER);
 		form.setWidget(9, 4, removePackager);
 		Button butFiles = null;
@@ -863,7 +812,6 @@ public class ProductsForm extends Form implements CacheListener {
 			but.setEnabled(true); // märkuste nupp peab ikkagi olema lubatud..
 			butFiles.setVisible(true);
 			butFiles.setEnabled(true);
-//			saveBtn.setVisible(false);
 		}
 
 		return form;
@@ -872,18 +820,11 @@ public class ProductsForm extends Form implements CacheListener {
 	private boolean getEditPermission() {
 		Form parent = getSelectReturnCallback() == null ? null : getSelectReturnCallback().getReturnForm();
 		return UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK })
-				|| (UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_EIT_GRP })
-						&& !(parent != null && parent instanceof XTeeForm && // järgnevate
-																				// olekutega
-																				// toote
-																				// andmete
-																				// muutmine
-																				// pole
-																				// lubatud
+			|| (UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_EIT_GRP }) && !(parent instanceof XTeeForm && // järgnevate olekutega toote andmete muutmine pole lubatud
 		(((XTeeForm) parent).getButtonState().equals(XTeeForm.FormButtonState.MENETLUSES)
-				|| ((XTeeForm) parent).getButtonState().equals(XTeeForm.FormButtonState.TAGASI)
-				|| ((XTeeForm) parent).getIsPik()
-				|| ((XTeeForm) parent).getButtonState().equals(XTeeForm.FormButtonState.KANTUD))));
+			|| ((XTeeForm) parent).getButtonState().equals(XTeeForm.FormButtonState.TAGASI)
+			|| ((XTeeForm) parent).getIsPik()
+			|| ((XTeeForm) parent).getButtonState().equals(XTeeForm.FormButtonState.KANTUD))));
 	}
 
 	public void updateProduct(ABaseDTOMap data) {
@@ -893,21 +834,17 @@ public class ProductsForm extends Form implements CacheListener {
 	}
 
 	private class ProductsTable extends ResultTable {
-
 		public ProductsTable() {
 			super(new ProductSearchFilter(), new ClickListener()  {
-
 				public void onClick(Widget sender) {
 					Map map = getFormFieldValues(SEARCH_FORM);
 					String value = (String) map.get(ProductSearchFilter.INVALID_PRODUCT);
 					if (value != "") {
 						if (value == "expired") {
-							map.put(ProductSearchFilter.REGISTRY_ENTRY_VALID_UNTIL,
-									ProductSearchFilter.LESS_OR_EQUAL_THAN_CURRENT_DATE);
+							map.put(ProductSearchFilter.REGISTRY_ENTRY_VALID_UNTIL,	ProductSearchFilter.LESS_OR_EQUAL_THAN_CURRENT_DATE);
 							map.put(ProductSearchFilter.REGISTRY_ENTRY_CHANGE_REASON, ServiceConstants.EXPIRED_REASON);
 						} else if (value == "excluded") {
-							map.put(ProductSearchFilter.REGISTRY_ENTRY_VALID_UNTIL,
-									ProductSearchFilter.LESS_OR_EQUAL_THAN_CURRENT_DATE);
+							map.put(ProductSearchFilter.REGISTRY_ENTRY_VALID_UNTIL,	ProductSearchFilter.LESS_OR_EQUAL_THAN_CURRENT_DATE);
 							map.put(ProductSearchFilter.REGISTRY_ENTRY_CHANGE_REASON_NOT_LIKE, ServiceConstants.EXPIRED_REASON);
 						}
 						map.remove(ProductSearchFilter.INVALID_PRODUCT);
@@ -918,23 +855,18 @@ public class ProductsForm extends Form implements CacheListener {
 					searchResultsTable.getFilter().setQueryTextValues(getFormFieldValueTexts(SEARCH_FORM));
 					searchResultsTable.getExcelFormPanel().doExcelSubmit();
 				}
-
 			}, true);
 			
 			boolean hasPriviledge = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK });
-
-			addColumn(new Column(getLabel("tableApplicatntName"), ProductMap.APPLICANT_NAME, null, Column.styleUrl,
-					ResultTable.VIEW_DATA));
+			addColumn(new Column(getLabel("tableApplicatntName"), ProductMap.APPLICANT_NAME, null, Column.styleUrl,	ResultTable.VIEW_DATA));
 			addColumn(new Column(getLabel("tableRegistryNr"), ProductMap.REGISTRY_ENTRY_NR, Column.styleNormal));
 			addColumn(new Column(getLabel("tableDecisionDate"), ProductMap.DECISION_DATE, Column.styleNormal));
-			addColumn(new Column(getLabel("registryEntryApplication_registryEntry_validUntil_result"),
-					ProductMap.REGISTRY_ENTRY_VALID_UNTIL, Column.styleNormal));
+			addColumn(new Column(getLabel("registryEntryApplication_registryEntry_validUntil_result"), ProductMap.REGISTRY_ENTRY_VALID_UNTIL, Column.styleNormal));
 			addColumn(new Column(getLabel("tableProductName"), ProductMap.NAME, Column.styleNormal));
 			addColumn(new Column(getLabel("tableProductGrade"), ProductMap.GRADE, Column.styleNormal));
 			addColumn(new Column(getLabel("tableProductVolume"), ProductMap.VOLUME_NAME, Column.styleNormal));
 			addColumn(new Column(getLabel("tableProducerName"), ProductMap.PRODUCER_NAME, Column.styleNormal));
-			addColumn(
-					new Column(getLabel("tableProducerCountry"), ProductMap.PRODUCER_COUNTRY_NAME, Column.styleNormal));
+			addColumn(new Column(getLabel("tableProducerCountry"), ProductMap.PRODUCER_COUNTRY_NAME, Column.styleNormal));
 			addColumn(new Column(getLabel("tableProductType"), ProductMap.TYPE_NAME, Column.styleNormal));
 			addColumn(new Column(getLabel(ProductMap.NOTES), ProductMap.NOTES, Column.styleNormal));
 
@@ -946,7 +878,6 @@ public class ProductsForm extends Form implements CacheListener {
 			} else {
 				addColumn(Column.getViewInstance()); // "vaata"
 			}
-			
 		}
 
 		@Override
@@ -980,13 +911,11 @@ public class ProductsForm extends Form implements CacheListener {
 					}
 				}
 			}
-
 			return null;
 		}
 
 		@Override
 		protected String getSpecialColumnText(Column col, ABaseDTOMap row) {
-
 			if (col.getText().equals(Column.SELECT)) {
 				if (row.getProperty(ProductMap.APPLICATION) == null
 						|| (isExtendProduct && row.getProperty(ProductMap.APPLICATION) != null)) {
@@ -997,102 +926,46 @@ public class ProductsForm extends Form implements CacheListener {
 			} else {
 				return col.getText();
 			}
-
 		}
-
+		
 		@Override
 		protected void renderRow(int row, ABaseDTOMap resultRow) {
 			super.renderRow(row, resultRow);
-			if (resultRow.getProperty(ProductMap.APPLICATION) != null) {
-
-			}
-
-			//
-			// if(resultRow == null){
-			// return;
-			// }
-			// String rowStyle = getRowStyleName(row, resultRow);
-			// if(rowStyle == null)
-			// rowStyle = getDefaultRowStyleName(row);
-			//
-			// resultTable.getRowFormatter().setStyleName(row, rowStyle);
-			//
-			// resultTable.setText(row, 0, Integer.toString(row
-			// + searchFilter.getStartIndex()));
-			// // Iterator set = resultRow.keySet().iterator();
-			// // while(set.hasNext()){
-			// // Object o = set.next();
-			// // Window.alert("key on:"+o);
-			// // Window.alert("objektid on:"+resultRow.get(o));
-			// // }
-			// for (int i = 1; i < columnList.size(); i++) {
-			// Column col = (Column) columnList.get(i);
-			// Label text = null;
-			// if (col.getProperty() != null) {
-			// //Window.alert("kĆ¼sime:"+col.getProperty());
-			// String value = (String) resultRow.getText(col.getProperty());
-			// text = new Label((value == null) ? "" : value);
-			// } else {
-			// text = new Label(getSpecialColumnText(col, resultRow));
-			// }
-			// text.addStyleName(getStyle(col, resultRow));
-			//
-			// if (col.getRowListenerType() != null) {
-			// text.addClickListener(getRowListenerFactory().create(
-			// col.getRowListenerType(), resultRow));
-			// }
-			// resultTable.setWidget(row, i, text);// esimene rida/veerg on
-			// alati
-			// // tĆ¤idetud
-			// }
 		}
-
 	}
 
 	private class RowListenterFactory implements IRowListenerFactory {
 
 		public ClickListener create(String listenerType, final Object row) {
-
 			if (ResultTable.SELECT.equals(listenerType)) {
 				ProductsForm.this.change = true;
 				return new SelectReturnListener(ProductsForm.this, (ProductMap) row);
-
 			} else if (ResultTable.CHANGE.equals(listenerType)) {
 				return new ClickListener() {
-
 					public void onClick(Widget sender) {
 						setData((ProductMap) row);
 						isSaved = true;
-						// checkGrade();
 						setFormFieldsFromData(MANAGE_FORM);
 						setButtonsEnabled(true);
 						jumpToTop();
-
 					}
-
 				};
 			} else if (ResultTable.DELETE.equals(listenerType)) {
 				return new ClickListener() {
-
 					public void onClick(Widget sender) {
 						new ConfirmDialog(getLabel("deleteProductConfirmMsg"), new DeleteListener(row));
 					}
-
 				};
 			} else if (ResultTable.VIEW.equals(listenerType)) {
 				return new ClickListener() {
-
 					public void onClick(Widget sender) {
 						setData((ProductMap) row);
-						// checkGrade();
 						setFormFieldsFromData(MANAGE_FORM);
 						setButtonsEnabled(true);
 					}
-
 				};
 			} else if (listenerType.equals(ResultTable.COPY)) {
 				return new ClickListener() {
-
 					public void onClick(Widget sender) {
 						setData((ProductMap) row);
 						getData().setProperty(ProductMap.ID, null);
@@ -1103,14 +976,11 @@ public class ProductsForm extends Form implements CacheListener {
 						setFormFieldsFromData(MANAGE_FORM);
 						jumpToTop();
 						setButtonsEnabled(false);
-
 					}
-
 				};
 			} else if (listenerType.equals(ResultTable.VIEW_DATA)) {
 				// click listener tahat enebles the user to view an application
 				return new ClickListener() {
-
 					public void onClick(Widget sender) {
 						ABaseDTOMap appMap = (ABaseDTOMap) ((ProductMap) row).getProperty(ProductMap.APPLICATION);
 						if (appMap != null) {
@@ -1169,39 +1039,7 @@ public class ProductsForm extends Form implements CacheListener {
 			// Change any commas into dots
 			TextBox tb = (TextBox) getFormField(MANAGE_FORM, ProductMap.GRADE);
 			tb.setText(comaToDot(tb.getText()));
-
-			/*
-			 * System.out.println("producer code in form:"+getFormFieldValue(
-			 * MANAGE_FORM, ProductMap.PRODUCER_COUNTRY_CODE));
-			 * System.out.println ("producer code in data:"
-			 * +getData().getProperty( ProductMap.PRODUCER_COUNTRY_CODE));
-			 * 
-			 * System.out.println(" before - origin:"+( getData() != null ? (
-			 * getData ().getProperty(ProductMap.ORIGINCOUNTRY_CODE)+" name:"
-			 * +getData ().getProperty(ProductMap.ORIGINCOUNTRY_NAME) +
-			 * " producer:"+getData
-			 * ().getProperty(ProductMap.PRODUCER_COUNTRY_CODE )+" name:"
-			 * +getData( ).getProperty(ProductMap.PRODUCER_COUNTRY_NAME) ) :
-			 * "getData() is null" ));
-			 */
-
-			// Object oldProducerCountryValue =
-			// getData().getProperty(ProductMap.PRODUCER_COUNTRY_CODE);
-
 			setDataFromFormFields(MANAGE_FORM);
-
-			// Object newOriginCountryValue =
-			// getData().getProperty(ProductMap.ORIGINCOUNTRY_CODE);
-
-			/*
-			 * System.out.println(" getData().setProperty- origin:"+( getData()
-			 * != null ? ( getData().getProperty(ProductMap.ORIGINCOUNTRY_CODE)+
-			 * " name:" +getData().getProperty(ProductMap.ORIGINCOUNTRY_NAME) +
-			 * " producer:"
-			 * +getData().getProperty(ProductMap.PRODUCER_COUNTRY_CODE )+
-			 * " name:"+ getData().getProperty(ProductMap.PRODUCER_COUNTRY_NAME)
-			 * ) : "getData() is null" ));
-			 */
 
 			if (hasErrors()) {
 				showErrors();
@@ -1221,17 +1059,10 @@ public class ProductsForm extends Form implements CacheListener {
 								ProductsForm.this.setInfo(getLabel("productSavedMsg"));
 								isSaved = true;
 								searchResultsTable.updateDataRow((ProductMap) result);
-								back.setEnabled(true); // tekib NPE kui
-														// kasutada
-														// menüüpunkti
-														// "Tooted"
-								// searchResultsTable.getData();
+								back.setEnabled(true); // tekib NPE kui kasutada menüüpunkti "Tooted"
 								if (getSelectReturnCallback() != null
 										&& !(getSelectReturnCallback().getReturnForm() instanceof XTeeForm)) {
-									getSelectReturnCallback().returnToParentWithData((ProductMap) result,
-											ProductsForm.this);
-								} else {
-
+									getSelectReturnCallback().returnToParentWithData((ProductMap) result, ProductsForm.this);
 								}
 								saveBtn.setEnabled(true);
 							}
@@ -1298,7 +1129,6 @@ public class ProductsForm extends Form implements CacheListener {
 			ProductsForm.this.setButtonsEnabled(true);
 			ProductsForm.this.setInfo(getLabel("productSavedMsg"));
 			searchResultsTable.updateDataRow((ProductMap) result);
-			// searchResultsTable.getData();
 			if (getSelectReturnCallback() != null) {
 				returnToParentWithData();
 			}
@@ -1308,10 +1138,7 @@ public class ProductsForm extends Form implements CacheListener {
 		 * Toode salvestamine.
 		 */
 		private void saveProduct() {
-			// System.out
-			// .println(getFormFieldValue(MANAGE_FORM, ProductMap.VOLUME));
 			setDataFromFormFields(MANAGE_FORM);
-			// System.out.println((getData().getProperty(ProductMap.VOLUME)));
 			ProductMap product = (ProductMap) cleanDataBeforeSave(getData());
 			if (ProductsForm.this.getErrors() != null && !ProductsForm.this.getErrors().isEmpty()) {
 				for (int i = 0; i < getErrors().size(); i++) {
@@ -1380,7 +1207,6 @@ public class ProductsForm extends Form implements CacheListener {
 			searchResultsTable.getFilter().reset();
 			resetFormFields(SEARCH_FORM);
 		}
-
 	}
 
 	public void checkGrade() {
@@ -1390,7 +1216,6 @@ public class ProductsForm extends Form implements CacheListener {
 				int endPoint = valueString.indexOf(".");
 				String newValue = valueString.substring(0, endPoint);
 				data.setProperty(ProductMap.GRADE, newValue);
-
 			}
 			return;
 		}

@@ -1302,7 +1302,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 									 * tuleb tagastada ex sisuga 666
 									 */
 									
-									LOGGER.info("Teeme päringu ja vaatame mis toimub");
+									LOGGER.info("Teeme päringu ja vaatame mis toimub: " + taotlejaId);
 									ResultSet rsRaha = PostgreUtils.query("select balance from enterprise where id ='" + taotlejaId + "'");
 									while(rsRaha.next()) {
 										Float raha = rsRaha.getFloat("balance");
@@ -3562,7 +3562,14 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				public Object doInHibernate(Session session) {
 					session.saveOrUpdate(applicant);
 					session.saveOrUpdate(paymentMatchingLog);
+					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
 					session.flush();
+					tx.commit();
 					
 					return null;
 				}

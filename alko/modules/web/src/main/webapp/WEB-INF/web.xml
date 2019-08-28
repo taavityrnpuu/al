@@ -19,27 +19,6 @@
 		<filter-name>filterChainProxy</filter-name>
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
-	
-	<!-- <filter> <filter-name>RequestDumpFilter</filter-name> <filter-class>ee.agri.alkor.web.server.RequestDumpFilter</filter-class> 
-		</filter> -->
-
-	<!--<filter>
-		<filter-name>Acegi Filter Chain Proxy</filter-name>
-		<filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
-		<init-param>
-			<param-name>targetClass</param-name>
-			<param-value>org.acegisecurity.util.FilterChainProxy</param-value>
-		</init-param>
-	</filter>-->
-
-	<!-- <filter-mapping> <filter-name>RequestDumpFilter</filter-name> <url-pattern>/*</url-pattern> 
-		</filter-mapping> -->
-
-
-	<!--<filter-mapping>
-		<filter-name>Acegi Filter Chain Proxy</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>-->
 
 	<filter>
 		<filter-name>CAS Validation Filter</filter-name>
@@ -47,14 +26,9 @@
 		<init-param>
 			<param-name>casServerUrlPrefix</param-name>
 			<param-value>https://sso-prelive.agri.ee/cas/</param-value>
-			<!--<param-value>https://cas.agri.ee/epm-cas/</param-value>-->
-			<!--<param-value>https://cas-test.agri.ee/epm-cas/login</param-value>-->
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<!--<param-value>https://192.168.0.37:8443/</param-value>-->
-			<!--<param-value>https://alkoreg.agri.ee/</param-value>-->
-			<!--<param-value>https://alkoregtest.agri.ee/</param-value>-->
 			<param-value>https://alkoregtest-piksel.agri.ee/</param-value>
 		</init-param>
 		<init-param>
@@ -74,14 +48,9 @@
 		<init-param>
 			<param-name>casServerLoginUrl</param-name>
 			<param-value>https://sso-prelive.agri.ee/cas/login/tara</param-value>
-			<!--<param-value>https://cas.agri.ee/epm-cas/login</param-value>-->
-			<!--<param-value>https://cas-test.agri.ee/epm-cas/login</param-value>-->
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<!--<param-value>https://192.168.0.37:8443/</param-value>-->
-			<!--<param-value>https://alkoreg.agri.ee/</param-value>-->
-			<!--<param-value>https://alkoregtest.agri.ee/</param-value>-->
 			<param-value>https://alkoregtest-piksel.agri.ee/</param-value>
 		</init-param>
 	</filter>
@@ -98,9 +67,6 @@
 		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
 		<url-pattern>/caslogin</url-pattern>
 	</filter-mapping>
-
-
-
 
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
@@ -160,7 +126,6 @@
 	<servlet>
 		<servlet-name>Paroolivahetus</servlet-name>
 		<display-name>Alkoholiregistri paroolivahetus</display-name>
-		<!--<jsp-file>/modules/web/src/main/webapp/WEB-INF/pwd.jsp</jsp-file>-->
 		<servlet-class>
 			ee.agri.alkor.web.server.ChangePasswordServiceServlet
 		</servlet-class>
@@ -204,10 +169,7 @@
 			ee.agri.alkor.web.server.DownloadServiceServlet
 		</servlet-class>
 	</servlet>
-	<!-- <servlet> <servlet-name>SOAPMonitorService</servlet-name> <display-name>SOAPMonitorService</display-name> 
-		<servlet-class> org.apache.axis.monitor.SOAPMonitorService </servlet-class> 
-		<init-param> <param-name>SOAPMonitorPort</param-name> <param-value>8787</param-value> 
-		</init-param> <load-on-startup>12</load-on-startup> </servlet> -->
+	
 	<servlet-mapping>
 		<servlet-name>GWTSpring</servlet-name>
 		<url-pattern>*.rpc</url-pattern>
@@ -222,7 +184,6 @@
 		<servlet-name>DocumentServiceServlet2</servlet-name>
 		<url-pattern>/app/docc</url-pattern>
 	</servlet-mapping>
-
 
 	<servlet-mapping>
 		<servlet-name>AxisServlet</servlet-name>
@@ -245,10 +206,9 @@
 	</servlet-mapping>
 
 	<servlet-mapping>
-
-	<servlet-name>Paroolivahetus</servlet-name>
-	<url-pattern>/changepass</url-pattern>
-	</servlet-mapping>
+		<servlet-name>Paroolivahetus</servlet-name>
+		<url-pattern>/changepass</url-pattern>
+		</servlet-mapping>
 	<servlet-mapping>
 
 		<servlet-name>Showproduct</servlet-name>
@@ -269,9 +229,7 @@
 		<servlet-name>LoginService</servlet-name>
 		<url-pattern>/loginservice</url-pattern>
 	</servlet-mapping>
-
-
-
+	
 	<servlet-mapping>
 		<servlet-name>Signing</servlet-name>
 		<url-pattern>/generateHash</url-pattern>
@@ -286,45 +244,42 @@
 		<servlet-name>Down</servlet-name>
 		<url-pattern>/down</url-pattern>
 	</servlet-mapping>
-	<!-- <servlet-mapping> <servlet-name>SOAPMonitorService</servlet-name> <url-pattern>/SOAPMonitor</url-pattern> 
-		</servlet-mapping> -->
-	<!-- uncomment this if you want the admin servlet -->
-	<!-- <servlet-mapping> <servlet-name>AdminServlet</servlet-name> <url-pattern>/servlet/AdminServlet</url-pattern> 
-		</servlet-mapping> -->
 
 	<session-config>
 		<session-timeout>120</session-timeout>
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
-
-	<!-- currently the W3C havent settled on a media type for WSDL; http://www.w3.org/TR/2003/WD-wsdl12-20030303/#ietf-draft 
-		for now we go with the basic 'it's XML' response -->
+	
 	<mime-mapping>
 		<extension>wsdl</extension>
 		<mime-type>text/xml</mime-type>
 	</mime-mapping>
-
 
 	<mime-mapping>
 		<extension>xsd</extension>
 		<mime-type>text/xml</mime-type>
 	</mime-mapping>
+	
 	<mime-mapping>
 		<extension>wsdl</extension>
 		<mime-type>text/xml</mime-type>
 	</mime-mapping>
+	
 	<mime-mapping>
 		<extension>gif</extension>
 		<mime-type>image/gif</mime-type>
 	</mime-mapping>
+	
 	<mime-mapping>
 		<extension>png</extension>
 		<mime-type>image/png</mime-type>
 	</mime-mapping>
+	
 	<mime-mapping>
 		<extension>pdf</extension>
 		<mime-type>application/pdf</mime-type>
 	</mime-mapping>
+	
 	<mime-mapping>
 		<extension>xls</extension>
 		<mime-type>application/vnd.ms-excel</mime-type>
@@ -333,5 +288,4 @@
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
 	</welcome-file-list>
-
 </web-app>
