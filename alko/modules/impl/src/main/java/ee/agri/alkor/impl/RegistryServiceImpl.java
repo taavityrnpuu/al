@@ -1888,7 +1888,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					if(!tx.isActive()) {
 						tx.begin();
 					}
-					
+					System.out.println(tx.isActive());
 					session.flush();
 					tx.commit();
 					
