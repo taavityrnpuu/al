@@ -176,7 +176,7 @@ public class Product  extends ABaseBean
 	@javax.persistence.SequenceGenerator(
     name="PRODUCT_SEQ",
     sequenceName="PRODUCT_SEQ",
-    allocationSize=50
+    allocationSize=1
 	)
     public Long getId() {
         return id;

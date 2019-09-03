@@ -26,10 +26,14 @@ import org.hibernate.Hibernate;
 import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
+import org.springframework.stereotype.Service;
 
 import ee.agri.alkor.impl.PostgreUtils;
 import ee.agri.alkor.model.AlkoUserDetails;
@@ -59,12 +63,17 @@ import ee.agri.alkor.service.IClassificatorService;
 import ee.agri.alkor.service.IRegistryService;
 import ee.agri.alkor.service.SearchFilter;
 import ee.agri.alkor.service.SystemException;
+import ee.agri.alkor.util.AppContextHelper;
 import ee.agri.alkor.model.classes.ApplicationType;
 
+@Service
 public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	private static Logger LOGGER = Logger.getLogger(RegistryServiceImpl.class);
 	private String docRoot;
 	private String baseURI;
+	
+	@Autowired
+    private SessionFactory sessionFactory;
 	
 	private long applicationNrBase;
 	private long decisionNrBase;
