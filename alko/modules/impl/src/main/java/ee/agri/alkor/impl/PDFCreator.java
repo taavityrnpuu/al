@@ -89,7 +89,7 @@ public class PDFCreator implements InitializingBean {
 		File tmpFile = null;
 		// change /n to <newline />
 		insertNewLinesToExplanation(application, 0);
-
+		
 		try {
 			InputStream is = getClass().getClassLoader().getResourceAsStream(
 						docType + ".xml");

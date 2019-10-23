@@ -479,7 +479,8 @@ public class Product  extends ABaseBean
 	public void setInvalidProduct(String invalidProduct) {
 		this.invalidProduct = invalidProduct;
 	}*/
-
-
-
+	
+	public String toString() {
+		return "ID: " + id + ", Code: " + code + ", Name: " + name + ", Volume: " + packingVolume + ", EthanolRate: " + ethanolRate;
+	}
 }

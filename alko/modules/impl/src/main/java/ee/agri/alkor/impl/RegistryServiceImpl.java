@@ -184,7 +184,14 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					type.setCode(IClassificatorService.APPL_TYPE_ARP);
 					registryApplication.setType(type);
 					session.saveOrUpdate(registryApplication);
+					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
 					session.flush();
+					tx.commit();
 					
 					try {
 						if(!IClassificatorService.EXTENDED_UNTIL.equals(decision.getExtendRegEntryDecision())) {
@@ -566,17 +573,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						newEntry.setNr(generateEntryNr(appl));
 						appl.setRegistryEntry(newEntry);
 					}
-					//session.saveOrUpdate(appl);
 					
 					try {
-						createApplicationDocument(session, IClassificatorService.DOC_TYPE_DEC, appl, appl.getProcessor());
-						if (appl.getDecision().getRegEntryDecision().getCode() != null && appl.getDecision()
-								.getRegEntryDecision().getCode().equals(IClassificatorService.APPL_STATE_RGE)) {
-							createApplicationDocument(session, IClassificatorService.DOC_TYPE_COR, appl, appl.getProcessor());
-						} else {
-							createApplicationDocument(session, IClassificatorService.DOC_TYPE_NDEC, appl, appl.getProcessor());
-						}
-						
 						/*
 						 * Kahtlane häkk, lõpus garanteeritakse et andmed oleks
 						 * õiged. Tuleb millalgi õige probleemikoht üles leida.
@@ -584,6 +582,14 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						Product product = appl.getProduct();
 						product.setRegistryEntryApplication(appl);
 						session.saveOrUpdate(product);
+
+						createApplicationDocument(session, IClassificatorService.DOC_TYPE_DEC, appl, appl.getProcessor());
+						if (appl.getDecision().getRegEntryDecision().getCode() != null && appl.getDecision()
+								.getRegEntryDecision().getCode().equals(IClassificatorService.APPL_STATE_RGE)) {
+							createApplicationDocument(session, IClassificatorService.DOC_TYPE_COR, appl, appl.getProcessor());
+						} else {
+							createApplicationDocument(session, IClassificatorService.DOC_TYPE_NDEC, appl, appl.getProcessor());
+						}
 						
 						Transaction tx = session.getTransaction();
 						if(!tx.isActive()) {
@@ -643,7 +649,14 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					
 					session.saveOrUpdate(appl);
 					session.saveOrUpdate(appl.getProduct());
+					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
 					session.flush();
+					tx.commit();
 					
 					return appl;
 				}
@@ -740,6 +753,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						session.delete(application.getRegistryEntry());
 						application.setRegistryEntry(null);
 						session.saveOrUpdate(application);
+						
 						tx = session.getTransaction();
 						if(!tx.isActive()) {
 							tx.begin();
@@ -767,6 +781,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					
 					/* Saves the application with the changed state */
 					session.saveOrUpdate(application);
+					
 					tx = session.getTransaction();
 					if(!tx.isActive()) {
 						tx.begin();
@@ -867,7 +882,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			session.saveOrUpdate(payment);
 			session.saveOrUpdate(registryPaymentLog);
 		} else {
-			LOGGER.debug("Payment is not binded to enterprise");
+			LOGGER.info("Payment is not binded to enterprise");
 		}
 	}
 	
@@ -1027,6 +1042,14 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		}
 		
 		session.saveOrUpdate(enterprise);
+		
+		Transaction tx = session.getTransaction();
+		if(!tx.isActive()) {
+			tx.begin();
+		}
+		
+		session.flush();
+		tx.commit();
 		LOGGER.info("saveOrUpdate enterprise end, version " + enterprise.getVersion());
 	}
 	
@@ -1055,7 +1078,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		try {
 			getHibernateTemplate().execute(new HibernateCallback<Object>() {
 				public Object doInHibernate(Session session) {
-					LOGGER.debug("XXXXXXXXXXXXXXXXXXXXXXXXXX KAS SEE JUHTUSKI!?");
+					LOGGER.info("XXXXXXXXXXXXXXXXXXXXXXXXXX KAS SEE JUHTUSKI!?");
 					if(application.getId() == null) {
 						RegistryApplication savedAppl = null;
 						if(application.getNr() != null) {
@@ -1070,7 +1093,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 							&& application.getType().getCode().equals(IClassificatorService.APPL_TYPE_ARE)
 							&& (product.getRegistryEntryApplication() == null)) {
 						product.setRegistryEntryApplication(application);
-						LOGGER.debug("KOOD kopeeriti, toode:" + product.getId() + ", taotlus:" + application.getId());
+						LOGGER.info("KOOD kopeeriti, toode:" + product.getId() + ", taotlus:" + application.getId());
 					}
 					
 					if(application.getNr() != null) {
@@ -1088,7 +1111,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						application.setProcessor(savedPerson);
 					
 					// kirjuta salvestatud kirjega üle, muidu hibernate hakkab karjuma
-					LOGGER.debug("APPLENTREP FROM ENTERPRISE 1");
+					LOGGER.info("APPLENTREP FROM ENTERPRISE 1");
 
 					application.setEnterpriseRepresentative(null);
 					session.saveOrUpdate(application);
@@ -1096,6 +1119,14 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					if((application.getNr() == null) && (application.getState() != null)
 							&& (IClassificatorService.APPL_STATE_PRO.equals(application.getState().getCode())))
 						application.setNr(nextApplicationNr(session));
+					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
+					session.flush();
+					tx.commit();
 					
 					return null;
 				}
@@ -1105,15 +1136,13 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			throw new SystemException(e);
 		}
 		
-		LOGGER.debug("RegistryApplication-saveOrUpdate id:" + application.getId() + ", nr:" + application.getNr());
 		return application;
 	}
 	
 	/**
 	 * Save application
 	 */
-	public RegistryApplication saveOrUpdateJustApplication( // XXX EIT kasutaja otsusta
-			final RegistryApplication application) {
+	public RegistryApplication saveOrUpdateJustApplication(final RegistryApplication application) {
 		try {
 			getHibernateTemplate().execute(new HibernateCallback<Object>() {
 				public Object doInHibernate(Session session) {
@@ -1132,9 +1161,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					
 					Person representative = getCurrentUser(session, false);
 					if(representative != null) {
-						LOGGER.debug("APPLENTREP FROM USERDETAILS 1.3 v" + representative.getVersion());
+						LOGGER.info("APPLENTREP FROM USERDETAILS 1.3 v" + representative.getVersion());
 						applicant.setEnterpriseRepresentative(null);
-						LOGGER.debug("APPLENTREP FROM USERDETAILS 1.4 v" + representative.getVersion());
+						LOGGER.info("APPLENTREP FROM USERDETAILS 1.4 v" + representative.getVersion());
 					}
 					
 					application.setArrived(new Date());
@@ -1158,6 +1187,14 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 							&& (IClassificatorService.APPL_STATE_PRO.equals(application.getState().getCode())))
 						application.setNr(nextApplicationNr(session));
 					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
+					session.flush();
+					tx.commit();
+					
 					return null;
 				}
 			});
@@ -1166,7 +1203,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			throw new SystemException(e);
 		}
 		
-		LOGGER.debug("RegistryApplication-saveOrUpdateJustApplication id:" + application.getId() + ", nr:"
+		LOGGER.info("RegistryApplication-saveOrUpdateJustApplication id:" + application.getId() + ", nr:"
 				+ application.getNr() != null ? application.getNr() : null);
 		return application;
 	}
@@ -1227,12 +1264,12 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					if(isEIT) {
 						// kui on EIT kasutaja
 						savedPerson = findPerson(session, ((AlkoUserDetails) currentUser).getIdCode());
-						LOGGER.debug("APPLENTREP FROM USERDETAILS 2");
+						LOGGER.info("APPLENTREP FROM USERDETAILS 2");
 					} else if(application.getFromXTee() != null && application.getFromXTee()
 							&& application.getApplicant() != null
 							&& application.getApplicant().getEnterpriseRepresentative() != null
 							&& application.getApplicant().getEnterpriseRepresentative().getRegistrationId() != null) {
-						LOGGER.debug("APPLENTREP FROM ENTERPRISE 2");
+						LOGGER.info("APPLENTREP FROM ENTERPRISE 2");
 						// kui on sisekasutaja ja kui taotlus pole EIT kasutaja poolt sisestatud
 						savedPerson = findPerson(session, application.getApplicant().getEnterpriseRepresentative().getRegistrationId());
 					} // muul juhul entrep jääb muutmata
@@ -1245,7 +1282,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					Product product = application.getProduct(); // võetakse taotluse küljest toode
 					LOGGER.info("PPRODUCT got, " + (product == null ? "is null" : ("appl_id: " + product.getRegistryEntryApplication())));
 					if(application.getType() != null && application.getType().getCode() != null) {
-						LOGGER.debug("PPRODUCT olemas? " + (product != null));
+						LOGGER.info("PPRODUCT olemas? " + (product != null));
 						if(application.getType().getCode().equals(IClassificatorService.APPL_TYPE_ARE)
 								&& product != null && product.getRegistryEntryApplication() == null) {
 							product.setRegistryEntryApplication(application); // mingil tingimusel pannakse tootele taotlus külge
@@ -1370,7 +1407,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 								: ("appl_id: " + product.getRegistryEntryApplication())));
 						
 						if(application.getType() != null && application.getType().getCode() != null) {
-							LOGGER.debug("PPRODUCT evicted olemas? " + (product != null));
+							LOGGER.info("PPRODUCT evicted olemas? " + (product != null));
 							if(application.getType().getCode().equals(IClassificatorService.APPL_TYPE_ARE)
 									&& product != null && product.getRegistryEntryApplication() == null) {
 								//mingil tingimusel pannakse tootele taotlus külge
@@ -1465,12 +1502,12 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					if(isEIT) {
 						// kui on EIT kasutaja
 						savedPerson = findPerson(session, ((AlkoUserDetails) currentUser).getIdCode());
-						LOGGER.debug("APPLENTREP FROM USERDETAILS 2");
+						LOGGER.info("APPLENTREP FROM USERDETAILS 2");
 					} else if(application.getFromXTee() != null && application.getFromXTee()
 							&& application.getApplicant() != null
 							&& application.getApplicant().getEnterpriseRepresentative() != null
 							&& application.getApplicant().getEnterpriseRepresentative().getRegistrationId() != null) {
-						LOGGER.debug("APPLENTREP FROM ENTERPRISE 2");
+						LOGGER.info("APPLENTREP FROM ENTERPRISE 2");
 						// kui on sisekasutaja ja kui taotlus pole EIT kasutaja poolt sisestatud
 						savedPerson = findPerson(session, application.getApplicant().getEnterpriseRepresentative().getRegistrationId());
 					} // muul juhul entrep jääb muutmata
@@ -1485,7 +1522,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					LOGGER.info("PPRODUCT got, "
 							+ (product == null ? "is null" : ("appl_id: " + product.getRegistryEntryApplication())));
 					if(application.getType() != null && application.getType().getCode() != null) {
-						LOGGER.debug("PPRODUCT olemas? " + (product != null));
+						LOGGER.info("PPRODUCT olemas? " + (product != null));
 						if(application.getType().getCode().equals(IClassificatorService.APPL_TYPE_ARE)
 								&& product != null && product.getRegistryEntryApplication() == null) {
 							//mingil tingimusel pannakse tootele taotlus külge
@@ -1589,7 +1626,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 								: ("appl_id: " + product.getRegistryEntryApplication())));
 						
 						if(application.getType() != null && application.getType().getCode() != null) {
-							LOGGER.debug("PPRODUCT evicted olemas? " + (product != null));
+							LOGGER.info("PPRODUCT evicted olemas? " + (product != null));
 							if(application.getType().getCode().equals(IClassificatorService.APPL_TYPE_ARE)
 									&& product != null && product.getRegistryEntryApplication() == null) {
 								//mingil tingimusel pannakse tootele taotlus külge
@@ -1628,6 +1665,13 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					}
 					session.saveOrUpdate(application);
 					// if the application status was processing then we add a nr to the application
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
+					session.flush();
+					tx.commit();
 					
 					return null;
 				}
@@ -1662,6 +1706,15 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						application.setProcessor(savedPerson);
 					
 					session.saveOrUpdate(application);
+					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
+					session.flush();
+					tx.commit();
+					
 					return null;
 				}
 			});
@@ -1789,7 +1842,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					if(currentUser instanceof AlkoUserDetails) {
 						AlkoUserDetails userDetails = (AlkoUserDetails) currentUser;
 						if("EIT".equals(userDetails.getUsername())) {
-							LOGGER.debug("APPLENTREP FROM USERDETAILS 4");
+							LOGGER.info("APPLENTREP FROM USERDETAILS 4");
 							application.setEnterpriseRepresentative(null);
 							isEIT = true;
 						}
@@ -1808,7 +1861,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					}
 					
 					long prod = (application.getProduct().getId() != null ? application.getProduct().getId() : 0l);
-					LOGGER.debug("--- application.getProduct().getId(): "+prod);
+					LOGGER.info("--- application.getProduct().getId(): "+prod);
 					if(prod == 0l) {
 						try {
 							ResultSet rs = PostgreUtils.query("SELECT product_id FROM reg_application WHERE nr = '"+oldNumber+"'");
@@ -1818,7 +1871,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						} catch(Exception e) {
 							e.printStackTrace();
 						}
-						LOGGER.debug("--- product_id FROM reg_application: "+prod);
+						LOGGER.info("--- product_id FROM reg_application: "+prod);
 					}
 					
 					if(prod == 0l) {
@@ -1830,20 +1883,27 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						} catch (Exception e) {
 							e.printStackTrace();
 						}
-						LOGGER.debug("--- id FROM product: "+prod);
+						LOGGER.info("--- id FROM product: "+prod);
 					}
 					
-					LOGGER.debug("product ID " + Long.toString(prod)+" , oldNumber: "+oldNumber+", appl_id: "+application.getId());
+					LOGGER.info("product ID " + Long.toString(prod)+" , oldNumber: "+oldNumber+", appl_id: "+application.getId());
 					List<?> productList = session.createQuery("select id from RegistryApplication where product_id = ?0").setParameter(0, prod).list();
 					
 					int nextNr = productList.size() + 1;
 					String[] jupid = oldNumber.split("/");
 					application.setNr(jupid[0] + "/P" + Integer.toString(nextNr));
-					LOGGER.debug("PXL newNr firstExtension"+ oldNumber);
+					LOGGER.info("PXL newNr firstExtension"+ oldNumber);
 					
 					session.saveOrUpdate(application.getProduct());
 					session.saveOrUpdate(application);
+					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
 					session.flush();
+					tx.commit();
 					
 					return null;
 				}
@@ -1852,8 +1912,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			e.printStackTrace();
 			throw new SystemException(e);
 		}
-		LOGGER.debug("RegistryApplication-saveNewExtendApplication id:" + application.getId() + ", nr:"	+ application.getNr());
-		LOGGER.debug("RegisrtyApplication save successful");
+		LOGGER.info("RegistryApplication-saveNewExtendApplication id:" + application.getId() + ", nr:"	+ application.getNr());
+		LOGGER.info("RegisrtyApplication save successful");
 		
 		return application;
 	}
@@ -1925,7 +1985,14 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				public Object doInHibernate(Session session) {
 					session.saveOrUpdate(application);
 					session.saveOrUpdate(entry);
+					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
 					session.flush();
+					tx.commit();
 					
 					return null;
 				}
@@ -2054,7 +2121,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			final String applicationNr, final Long applId, final String docName, final String fileName,
 			final String contentType, final boolean mayRepeat, final String isPublic) throws ConstraintViolationException {
 		if(LOGGER.isDebugEnabled())
-			LOGGER.debug("addDocument: docType=" + docType + " docLangCode=" + docLangCode + " applicationNr="
+			LOGGER.info("addDocument: docType=" + docType + " docLangCode=" + docLangCode + " applicationNr="
 					+ applicationNr + " applId=" + applId + " docName=" + docName + " fileName=" + fileName);
 		
 		try {
@@ -2500,7 +2567,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					cal.add(Calendar.DAY_OF_YEAR, 60);
 					Date latestExpiryDate = cal.getTime();
 					q1.setDate(3, latestExpiryDate);
-					LOGGER.debug("query parameters:" + registrationNr + "," + currentDate + "," + latestExpiryDate + ","
+					LOGGER.info("query parameters:" + registrationNr + "," + currentDate + "," + latestExpiryDate + ","
 							+ q1.getQueryString());
 					List<RegistryApplication> appsList = null;
 					try {
@@ -3062,7 +3129,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	
 	private File createDocFile(Long docId, String docType, String docName, String fileName,	RegistryApplication application, boolean mayRepeat) {
 		if (LOGGER.isDebugEnabled())
-			LOGGER.debug("docName: " + docName);
+			LOGGER.info("docName: " + docName);
 		
 		String applicationId = null;
 		Long productId = null;
@@ -3124,7 +3191,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		}
 		
 		if (LOGGER.isDebugEnabled())
-			LOGGER.debug("file path: " + path);
+			LOGGER.info("file path: " + path);
 		
 		return file;
 	}
@@ -3356,7 +3423,15 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					appl.getDecision().setSigner(getCurrentUser(session, false));
 					
 					session.saveOrUpdate(appl);
+					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
 					session.flush();
+					tx.commit();
+					
 					createApplicationDocument(session, docType, appl, appl.getDecision().getSigner());
 					
 					return true;
@@ -3429,7 +3504,15 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					appl.getDecision().setSigner(getCurrentUser(session, false));
 					
 					session.saveOrUpdate(appl);
+					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
 					session.flush();
+					tx.commit();
+					
 					createApplicationDocument(session, IClassificatorService.DOC_TYPE_COR, appl, appl.getDecision().getSigner());
 					
 					return true;
@@ -3460,7 +3543,15 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					appl.getDecision().setSigner(getCurrentUser(session, false));
 					
 					session.saveOrUpdate(appl);
+					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
 					session.flush();
+					tx.commit();
+					
 					createApplicationDocument(session, IClassificatorService.DOC_TYPE_DEC, appl, appl.getDecision().getSigner());
 					
 					return true;
@@ -3491,7 +3582,15 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					appl.getDecision().setSigner(getCurrentUser(session, false));
 					
 					session.saveOrUpdate(appl);
+					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
 					session.flush();
+					tx.commit();
+					
 					createApplicationDocument(session, IClassificatorService.DOC_TYPE_NDEC, appl, appl.getDecision().getSigner());
 					
 					return true;
@@ -3750,8 +3849,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				result = getHibernateTemplate().execute(new HibernateCallback<List<PaymentMatchingLog>>() {
 					@SuppressWarnings("unchecked")
 					public List<PaymentMatchingLog> doInHibernate(Session session) {
-						return (List<PaymentMatchingLog>)session.createQuery("from PaymentMatchingLog d where d.paymentApplication = ?0 order by created desc")
-							.setParameter(0, applicationId).list();
+						return (List<PaymentMatchingLog>)session.createQuery("from PaymentMatchingLog d where d.paymentApplication = ?1 order by created desc").setLong(1, applicationId).list();
 					}
 				});
 			} catch(Exception e) {
@@ -3771,7 +3869,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			throw new SystemException("Invalid parameters!");
 		}
 		
-		LOGGER.debug("createApplicationDocumentByIdAndRegCode :" + docTypeCode + " appId:" + id + " regCode:" + regCode);
+		LOGGER.info("createApplicationDocumentByIdAndRegCode :" + docTypeCode + " appId:" + id + " regCode:" + regCode);
 		List<RegistryApplication> results = getHibernateTemplate().execute(new HibernateCallback<List<RegistryApplication>>() {
 			public List<RegistryApplication> doInHibernate(Session session) {
 				return (List<RegistryApplication>)session.createQuery("from RegistryApplication a where a.id = ?0 and a.applicant.registrationId = ?1")
@@ -3793,7 +3891,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		if(id == null) {
 			throw new SystemException("Invalid parameters!");
 		}
-		LOGGER.debug("createApplicationDocumentById :" + docTypeCode + " appId:" + id);
+		LOGGER.info("createApplicationDocumentById :" + docTypeCode + " appId:" + id);
 		
 		List<RegistryApplication> results = getHibernateTemplate().execute(new HibernateCallback<List<RegistryApplication>>() {
 			public List<RegistryApplication> doInHibernate(Session session) {

@@ -263,13 +263,9 @@ public class SigningServiceServlet extends HttpServlet {
 					+ "\"}");
 		} else if (uri.equals("/createContainer")) {
 			try {
+				String signatureInHex = (String) request.getParameter("signatureInHex");
 
-				String signatureInHex = (String) request
-						.getParameter("signatureInHex");
-			
-
-				SigningObject obj = (SigningObject) sess
-						.getAttribute("signingObject");
+				SigningObject obj = (SigningObject) sess.getAttribute("signingObject");
 
 				String file = ddoc.finalizeSignature(obj, signatureInHex);
 				

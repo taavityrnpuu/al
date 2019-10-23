@@ -78,7 +78,7 @@ public class RegistryEntry extends ABaseBean implements IHistorical {
 	@javax.persistence.SequenceGenerator(
     name="REG_ENTRY_SEQ",
     sequenceName="REG_ENTRY_SEQ",
-    allocationSize=50
+    allocationSize=1
 	)
     public Long getId() {
         return id;
