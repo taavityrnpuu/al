@@ -119,9 +119,7 @@ public class RegistryApplication extends ABaseBean implements IClassificatorAwar
 	/**
 	 * Taotlusega seotud riigilõivud
 	 */
-	private List<PaymentMatchingLog> paymentLogs = new ArrayList<PaymentMatchingLog>(); // väga
-																						// paha
-																						// asi
+	private List<PaymentMatchingLog> paymentLogs = new ArrayList<PaymentMatchingLog>(); // väga paha asi
 
 	private String latestPayment;
 

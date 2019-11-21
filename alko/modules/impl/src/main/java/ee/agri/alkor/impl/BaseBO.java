@@ -1,5 +1,7 @@
 package ee.agri.alkor.impl;
 
+import java.beans.Transient;
+import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -9,8 +11,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.Logger;
+import org.apache.velocity.util.StringUtils;
 import org.hibernate.CacheMode;
-import org.hibernate.Query;
+import org.hibernate.query.Query;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -21,6 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import ee.agri.alkor.model.ABaseBean;
 import ee.agri.alkor.model.IEntity;
+import ee.agri.alkor.model.RegistryApplication;
 import ee.agri.alkor.service.ConstraintViolationException;
 import ee.agri.alkor.service.IBaseService;
 import ee.agri.alkor.service.IClassificatorService;
@@ -150,7 +154,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 
 		int timerSessionId = (int) (Math.random() * 100) + 1;
 		long startTime = System.currentTimeMillis();
-		LOGGER.debug("TIMER start [" + timerSessionId + "]: " + filter.getObjectClass());
+		LOGGER.info("TIMER start [" + timerSessionId + "]: " + filter.getObjectClass());
 		StringBuffer from = new StringBuffer("from ").append(filter.getObjectClass()).append(" s ");
 		StringBuffer joinedFrom = new StringBuffer("from ").append(filter.getObjectClass()).append(" s ");
 		Map<String, Object> queryParams = filter.getQueryParams();
@@ -493,7 +497,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		from.append(namedParameters.toString());
 		joinedFrom.append(namedParameters.toString());
 
-		LOGGER.debug("TIMER where [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms");
+		LOGGER.info("TIMER where [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms");
 
 		String countQuery = "select count(*) " + from.toString();
 
@@ -502,31 +506,48 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		Long count = (Long) q.list().get(0);
 		filter.setTotal(count.intValue());
 
-		from = joinedFrom; // use version using fetch join in order to add null
-							// relations in order by clause
-		if (filter.getSortMap() != null && filter.getSortMap().size() > 0) {
+		from = joinedFrom; // use version using fetch join in order to add null relations in order by clause
+		if(filter.getSortMap() != null && filter.getSortMap().size() > 0) {
 			Map<String, String> sortMap = filter.getSortMap();
-
-			from.append(" order by");
+			
+			String order = "";
 			int k = 0;
-			for (Object key : sortMap.keySet()) {
-				if (k > 0) {
-					from.append(",");
+			for(Object key : sortMap.keySet()) {
+				boolean trans = false;
+				try {
+					Class<?> c = Class.forName("ee.agri.alkor.model." + filter.getObjectClass());
+					Method[] methods = c.getMethods(); 
+		            for (Method m : methods) { 
+		            	if(m.getName().equals("get" + StringUtils.capitalizeFirstLetter(key.toString())) && m.getAnnotation(javax.persistence.Transient.class) != null) {
+			                trans = true;
+		            	}
+		            }
+				} catch(Exception e) {
+					e.printStackTrace();
 				}
 				
-				from.append(" s.").append(key);
-				if (sortMap.get(key).equals(SearchFilter.ASCENDING)) {
-					from.append(" asc");
-				} else if (sortMap.get(key).equals(SearchFilter.DESCENDING)) {
-					from.append(" desc");
+				if(!trans) {
+					if (k > 0) {
+						order += ",";
+					}
+					
+					order += " s." + key;
+					if (sortMap.get(key).equals(SearchFilter.ASCENDING)) {
+						order += " asc";
+					} else if (sortMap.get(key).equals(SearchFilter.DESCENDING)) {
+						order += " desc";
+					}
+					k++;
 				}
-				k++;
 			}
-
+			if(order.length() > 0) {
+				from.append(" order by").append(order);
+			}
+			
 		} else if ((filter.getOrderBy()) != null && filter.getOrderBy().length() != 0) {
 			from.append(" order by s.").append(filter.getOrderBy());
 		}
-
+		
 		Query<Object> q2 = createQuery(session, queryParams, filter, from.toString());
 
 		System.out.println(q2.getQueryString() + ": " + queryParams.toString());
@@ -554,10 +575,10 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				}
 			}
 			filter.setResultsList(resultList);
-			LOGGER.debug("TIMER stop2 [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms (results:" + resultList.size() + ")");
+			LOGGER.info("TIMER stop2 [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms (results:" + resultList.size() + ")");
 		} else {
 			filter.setResultsList(queryList);
-			LOGGER.debug("TIMER stop  [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms (results:" + queryList.size() + ")");
+			LOGGER.info("TIMER stop  [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms (results:" + queryList.size() + ")");
 		}
 
 		return filter;
