@@ -481,6 +481,6 @@ public class Product  extends ABaseBean
 	}*/
 	
 	public String toString() {
-		return "ID: " + id + ", Code: " + code + ", Name: " + name + ", Volume: " + packingVolume + ", EthanolRate: " + ethanolRate;
+		return "ID: " + id + ", Code: " + code + ", Name: " + name + ", Volume: " + packingVolume + ", EthanolRate: " + ethanolRate + ", notes: " + notes;
 	}
 }

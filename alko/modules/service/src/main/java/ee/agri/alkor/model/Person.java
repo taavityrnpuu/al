@@ -67,7 +67,7 @@ public class Person extends ABaseBean implements IHistorical  {
 	@SequenceGenerator(
     name="PERSON_SEQ",
     sequenceName="PERSON_SEQ",
-    allocationSize=50
+    allocationSize=1
 	)
      public Long getId() {
         return id;

@@ -29,7 +29,7 @@
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<param-value>https://alkoregtest-piksel.agri.ee/</param-value>
+			<param-value>https://alkoreg.agri.ee/</param-value>
 		</init-param>
 		<init-param>
 			<param-name>redirectAfterValidation</param-name>
@@ -51,7 +51,7 @@
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<param-value>https://alkoregtest-piksel.agri.ee/</param-value>
+			<param-value>https://alkoreg.agri.ee/</param-value>
 		</init-param>
 	</filter>
 	<filter-mapping>

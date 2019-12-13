@@ -1395,7 +1395,15 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						LOGGER.info("PPRODUCT savedProductId=" + savedProductId.toString());
 					}
 					
-					session.saveOrUpdate(product); // salvestatakse toode
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
+					session.saveOrUpdate(product);
+					session.saveOrUpdate(application);
+					tx.commit();
+					
 					LOGGER.info("PPRODUCT saved, " + (product == null ? "is null" : ("appl_id: " + product.getRegistryEntryApplication())));
 					if(product != null) {
 						Long id = product.getId(); // talletatakse toote id
@@ -1449,7 +1457,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					
 					session.saveOrUpdate(application);
 					
-					Transaction tx = session.getTransaction();
+					tx = session.getTransaction();
 					if(!tx.isActive()) {
 						tx.begin();
 					}
@@ -1973,6 +1981,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		}
 		
 		LOGGER.info("PRODUCT WAS updated");
+		LOGGER.info(product.toString());
 		return product;
 	}
 	

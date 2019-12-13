@@ -68,7 +68,7 @@ public class ProductMovementReport
     @javax.persistence.SequenceGenerator(
     name="PRODUCT_MOVE_REPORT_SEQ",
     sequenceName="PRODUCT_MOVE_REPORT_SEQ",
-    allocationSize=50
+    allocationSize=1
     )
     public Long getId() {
         return id;

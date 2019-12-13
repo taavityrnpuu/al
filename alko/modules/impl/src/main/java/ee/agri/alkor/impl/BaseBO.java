@@ -154,7 +154,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 
 		int timerSessionId = (int) (Math.random() * 100) + 1;
 		long startTime = System.currentTimeMillis();
-		LOGGER.info("TIMER start [" + timerSessionId + "]: " + filter.getObjectClass());
+		LOGGER.debug("TIMER start [" + timerSessionId + "]: " + filter.getObjectClass());
 		StringBuffer from = new StringBuffer("from ").append(filter.getObjectClass()).append(" s ");
 		StringBuffer joinedFrom = new StringBuffer("from ").append(filter.getObjectClass()).append(" s ");
 		Map<String, Object> queryParams = filter.getQueryParams();
@@ -220,9 +220,8 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		
 		int j = 0;
 		for (String paramName : queryParams.keySet()) { // for loop for 'where'
-			
 			Object paramValue = queryParams.get(paramName);
-
+			//LOGGER.debug("paramName: " + paramName + ", paramValue: " + paramValue.toString());
 			// If the parameter is a certain type then the value is converted to
 			// numeric
 			paramValue = makeSpecialValue(paramName, paramValue, filter.getObjectClass());
@@ -400,9 +399,15 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				} else if (paramName.equals("IsEnterpriseAdded")) {
 					where.append("(s.fromXTee = true OR s.submitterRegId IS NOT NULL)");
 					continue;
+				} else if(paramName.equals("type_code")) {
+					where.append("s.type_code = ?" + j++ + " ");
+					continue;
+				} else if(paramName.equals("ethanolrate")) {
+					where.append("s.ethanolrate = ?" + j++ + " ");
+					continue;
 				}
-
-				if (paramValue instanceof List) {
+				
+				if(paramValue instanceof List) {
 					if (namedParameters.length() != 0) {
 						namedParameters.append("and ");
 					}
@@ -497,7 +502,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		from.append(namedParameters.toString());
 		joinedFrom.append(namedParameters.toString());
 
-		LOGGER.info("TIMER where [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms");
+		LOGGER.debug("TIMER where [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms");
 
 		String countQuery = "select count(*) " + from.toString();
 
@@ -551,7 +556,6 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		Query<Object> q2 = createQuery(session, queryParams, filter, from.toString());
 
 		System.out.println(q2.getQueryString() + ": " + queryParams.toString());
-
 		q2.setFirstResult(filter.getStartIndex());
 		if (filter.getPageSize() > 0) {
 			q2.setMaxResults(filter.getPageSize());
@@ -575,10 +579,10 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				}
 			}
 			filter.setResultsList(resultList);
-			LOGGER.info("TIMER stop2 [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms (results:" + resultList.size() + ")");
+			LOGGER.debug("TIMER stop2 [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms (results:" + resultList.size() + ")");
 		} else {
 			filter.setResultsList(queryList);
-			LOGGER.info("TIMER stop  [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms (results:" + queryList.size() + ")");
+			LOGGER.debug("TIMER stop  [" + timerSessionId + "]: " + (System.currentTimeMillis() - startTime) + " ms (results:" + queryList.size() + ")");
 		}
 
 		return filter;
@@ -596,7 +600,7 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 		int j = 0;
 		for (String paramName : queryParams.keySet()) { // for loop for q2
 			Object paramValue = queryParams.get(paramName);
-
+			//LOGGER.debug("paramName: " + paramName + ", paramValue: " + paramValue.toString());
 			// If the parameter is a certain type then the value is converted to
 			// numeric
 			paramValue = makeSpecialValue(paramName, paramValue, filter.getObjectClass());
@@ -683,12 +687,12 @@ public abstract class BaseBO extends HibernateDaoSupport implements IBaseService
 				String stringValue = "";
 				if ("state.code".equals(paramName) && ("ADDCTLNMOPRO".equals(paramValue) || "RGE2".equals(paramValue) || "VOID2".equals(paramValue))) {
 					continue;
-				} else if (paramName.endsWith(".code")) { // cannot have % signs
+				} else if (paramName.endsWith(".code") || paramName.endsWith("_code")) { // cannot have % signs
 					stringValue = (String) paramValue;
 					// value is set in makeSpecialValue(...)
 				} else if (paramName.equals("productExamplesCount")) {
 					continue;
-				} else if (paramName.equals("product.ethanolRateFrom") || paramName.equals("product.ethanolRateTo")) {
+				} else if (paramName.equals("product.ethanolRateFrom") || paramName.equals("product.ethanolRateTo") || paramName.equals("ethanolrate")) {
 					q2.setParameter(j++, new BigDecimal((String) paramValue));
 					continue;
 				} else {

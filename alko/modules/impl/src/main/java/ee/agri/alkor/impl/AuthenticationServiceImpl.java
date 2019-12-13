@@ -38,7 +38,6 @@ import ee.agri.alkor.service.IClassificatorService;
  * 
  */
 public class AuthenticationServiceImpl extends BaseBO implements IAuthenticationService {
-
 	private static Logger LOGGER = Logger.getLogger(AuthenticationServiceImpl.class);
 
 	public SystemUser loadUserByName(String userName) throws UsernameNotFoundException, DataAccessException {
@@ -254,7 +253,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (!(event instanceof AbstractAuthenticationEvent))
 			return;
-
+		
 		final AbstractAuthenticationEvent authEvent = (AbstractAuthenticationEvent) event;
 		final String userName = authEvent.getAuthentication().getName();
 		Object details = authEvent.getAuthentication().getDetails();
@@ -263,7 +262,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		if(!(principal instanceof AlkoUserDetails) || userName == null || userName.replaceAll(" ", "").length() == 0){
 			return;
 		}
-
+		
 		// autentimise ajaaken +/- 2 sekundit
 		final Calendar authTimeStart = Calendar.getInstance();
 		authTimeStart.add(Calendar.SECOND, -2);
@@ -297,8 +296,10 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		 * Fallback, et ip kogu aeg olemas oleks (tekitab logides probleeme)
 		 */
 		String remoteAddress = "127.0.0.1";
+		
 		if (details instanceof WebAuthenticationDetails) {
 			WebAuthenticationDetails webAuthDetails = (WebAuthenticationDetails) details;
+			
 			remoteAddress = webAuthDetails.getRemoteAddress();
 			LOGGER.debug("remoteAddress: " + remoteAddress);
 		}

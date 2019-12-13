@@ -225,14 +225,10 @@ public class SigningServiceServlet extends HttpServlet {
 		String docMime = (String) sess.getAttribute("docMime");
 		String applId = (String) sess.getAttribute("applId");
 		String docName = (String) sess.getAttribute("docName");
-
+		docName = docName + ".pdf";
+		
 		if (uri.equals("/generateHash")) {
-//			Container container = session.getContainer();
-//			Digest digest = new Digest();
 			String certInHex = (String) request.getParameter("certInHex");
-//			DataToSign dataToSign = signer.getDataToSign(container, certInHex);
-//			String dataToSignInHex = DatatypeConverter
-//					.printHexBinary(dataToSign.getDigestToSign());
 
 			DataFileData datafile = new DataFileData();
 			datafile.setContentType("EMBEDDED_BASE64");
@@ -243,14 +239,15 @@ public class SigningServiceServlet extends HttpServlet {
 
 			FileInputStream fis = new FileInputStream(file);
 			fis.read(bytesArray); //read file into bytes[]
-			fis.close();	
-
+			fis.close();
+			
 			datafile.setDfData(new BASE64Encoder().encode(bytesArray));
 			datafile.setFilename(docName);
 			datafile.setId("1");
 			datafile.setMimeType(docMime);
 			datafile.setSize(3);
-
+			
+			
 			SigningObject obj = ddoc.signDoc(datafile, certInHex);
 
 			sess.setAttribute("signingObject", obj);

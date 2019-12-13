@@ -51,9 +51,7 @@ public class LoginServiceServlet extends HttpServlet {
 	}
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
-
 		PrintWriter out = response.getWriter();
-
 		Assertion a = (Assertion) request.getSession().getAttribute("_const_cas_assertion_");
 
 		String tableBody = "";
@@ -139,7 +137,7 @@ public class LoginServiceServlet extends HttpServlet {
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		String fromCasLogin = request.getParameter("fromcaslogin");
-
+		
 		if (fromCasLogin != null && fromCasLogin.equals("1")) {
 			try {
 				byte[] decoded = Base64.decode(request.getParameter("input_cert").replaceAll(X509Factory.BEGIN_CERT, "")
