@@ -1444,7 +1444,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 							application.setExamplReturned(application.getProductExamples().getReturnDate());
 						}
 					}
-					
 					if(application.getId() == null && application.getRecievedBy() == null) {
 						application.setRecievedBy(AuthenticationServiceDelegate.getCurrentUserName());
 					}
@@ -1662,7 +1661,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 							application.setExamplReturned(application.getProductExamples().getReturnDate());
 						}
 					}
-					
 					if(application.getId() == null && application.getRecievedBy() == null) {
 						application.setRecievedBy(AuthenticationServiceDelegate.getCurrentUserName());
 					}
@@ -1845,7 +1843,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 				public Object doInHibernate(Session session) {
 					boolean isEIT = false;
 					Object currentUser = AuthenticationServiceDelegate.getCurrentUser();
-					
 					//väliskasutaja puhul pannakse taotlusele tema andmed külge
 					if(currentUser instanceof AlkoUserDetails) {
 						AlkoUserDetails userDetails = (AlkoUserDetails) currentUser;
@@ -1901,6 +1898,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					String[] jupid = oldNumber.split("/");
 					application.setNr(jupid[0] + "/P" + Integer.toString(nextNr));
 					LOGGER.info("PXL newNr firstExtension"+ oldNumber);
+					if(application.getRecievedBy() == null) {
+						application.setRecievedBy(AuthenticationServiceDelegate.getCurrentUserName());
+					}
 					
 					session.saveOrUpdate(application.getProduct());
 					session.saveOrUpdate(application);

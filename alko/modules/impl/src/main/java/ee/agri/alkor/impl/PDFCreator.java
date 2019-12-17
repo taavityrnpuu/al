@@ -131,6 +131,7 @@ public class PDFCreator implements InitializingBean {
 			args.put("yearShortFormat", yearShortFormat);
 			args.put("this", this);
 			args.put("application", application);
+			System.out.println(application);
 			args.put("signer", signer);
 			args.put("nr", nr);
 			args.put("arrived", arrived);
