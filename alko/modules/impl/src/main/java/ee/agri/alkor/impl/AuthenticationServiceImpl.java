@@ -7,17 +7,24 @@ import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.authentication.InsufficientAuthenticationException;
 import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.dao.DataAccessException;
 import org.springframework.orm.hibernate5.HibernateCallback;
@@ -39,7 +46,7 @@ import ee.agri.alkor.service.IClassificatorService;
  */
 public class AuthenticationServiceImpl extends BaseBO implements IAuthenticationService {
 	private static Logger LOGGER = Logger.getLogger(AuthenticationServiceImpl.class);
-
+    
 	public SystemUser loadUserByName(String userName) throws UsernameNotFoundException, DataAccessException {
 		SystemUser user = null;
 		try {
@@ -258,7 +265,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		final String userName = authEvent.getAuthentication().getName();
 		Object details = authEvent.getAuthentication().getDetails();
 		Object principal = authEvent.getAuthentication().getPrincipal();
-
+		
 		if(!(principal instanceof AlkoUserDetails) || userName == null || userName.replaceAll(" ", "").length() == 0){
 			return;
 		}
@@ -295,16 +302,30 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		/*
 		 * Fallback, et ip kogu aeg olemas oleks (tekitab logides probleeme)
 		 */
-		String remoteAddress = "127.0.0.1";
+		String remoteAddress = "";
+	    RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+	    if(RequestContextHolder.getRequestAttributes() != null) {
+	        HttpServletRequest req = ((ServletRequestAttributes) attributes).getRequest();
+	        if(req != null) {
+	        	remoteAddress = req.getHeader("X-Forwarded-For");
+	    		if (remoteAddress == null || "".equals(remoteAddress)) {
+	    			remoteAddress = req.getRemoteAddr();
+	    		}
+	    	}
+	    }
 		
-		if (details instanceof WebAuthenticationDetails) {
+		remoteAddress = remoteAddress != null && remoteAddress.contains(",") ? remoteAddress.split(",")[0] : remoteAddress;
+		if(remoteAddress == null && details instanceof WebAuthenticationDetails) {
 			WebAuthenticationDetails webAuthDetails = (WebAuthenticationDetails) details;
-			
 			remoteAddress = webAuthDetails.getRemoteAddress();
-			LOGGER.debug("remoteAddress: " + remoteAddress);
 		}
+		if(remoteAddress == null || "".equals(remoteAddress)) {
+			remoteAddress = "127.0.0.1";
+		}
+		
+		LOGGER.info("remoteAddress: " + remoteAddress);
 		final String clientAddress = remoteAddress;
-
+		
 		// kasutajaandmete objekt
 		AlkoUserDetails userObject = null;
 		if (principal instanceof AlkoUserDetails) {

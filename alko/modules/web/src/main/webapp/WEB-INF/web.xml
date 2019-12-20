@@ -67,7 +67,10 @@
 		<filter-name>CAS HttpServletRequest Wrapper Filter</filter-name>
 		<url-pattern>/caslogin</url-pattern>
 	</filter-mapping>
-
+	
+	<listener>
+		<listener-class>org.springframework.web.context.request.RequestContextListener</listener-class>
+	</listener>
 	<listener>
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
