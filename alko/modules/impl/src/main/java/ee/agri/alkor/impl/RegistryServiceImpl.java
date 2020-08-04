@@ -141,6 +141,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					if (IClassificatorService.EXTENDED_UNTIL.equals(decision.getExtendRegEntryDecision())) {
 						registryEntry.setValidUntil(addYears(registryEntry.getValidUntil() != null
 								? registryEntry.getValidUntil() : new Date(System.currentTimeMillis()), 5));
+						
+						// määrame aegumise mitte teavitatuks
+						registryEntry.setExpiryNotificationSent(new Boolean(false));
 					} else if (IClassificatorService.EXTEND_DECISION.equals(decision.getExtendRegEntryDecision())
 							|| IClassificatorService.NOTEXTENDED_DECISION
 									.equals(decision.getExtendRegEntryDecision())) {
@@ -160,9 +163,13 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 							decision.setNr(oldRegistryApplication.getDecision().getNr());
 						}
 						if (IClassificatorService.EXTEND_DECISION.equals(decision.getExtendRegEntryDecision())) {
-							if (decision.getExtendUntilDate() == null)
+							if (decision.getExtendUntilDate() == null){
 								registryEntry.setValidUntil(addYears(registryEntry.getValidUntil() != null
 										? registryEntry.getValidUntil() : new Date(System.currentTimeMillis()), 5));
+
+								// määrame aegumise mitte teavitatuks
+								registryEntry.setExpiryNotificationSent(new Boolean(false));
+							}
 							ApplicationState applicationState = new ApplicationState();
 							applicationState.setCode(IClassificatorService.APPL_STATE_REXT);
 							registryApplication.setState(applicationState);
@@ -186,6 +193,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						// unknown decision type
 						throw new SystemException();
 					}
+					
 					/*
 					 * Keerame staatuse õigeks
 					 */
@@ -222,6 +230,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	}
 
 	public boolean isSigned(int applId, String docName) {
+		if(docName != null){
+			docName = docName.replaceAll("/", "_");
+		}
 		String sql = "select 1 from reg_doc where doc_appl_id = " + applId + " and name = '" + docName
 				+ "' and name not like '%ustutatu%';";
 		try {
@@ -1086,7 +1097,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			for (ProductEnterpriseRole role : enterprise.getEnterpriseRoles()) {
 				ProductEnterpriseRole foundRole = null;
 				for (ProductEnterpriseRole existingRole : roles) {
-					if (role.getEnterpriseRoleClass().getCode().equals(existingRole.getEnterpriseRoleClass().getCode()))
+					if (role != null && role.getEnterpriseRoleClass() != null && 
+							role.getEnterpriseRoleClass().getCode() != null && 
+							role.getEnterpriseRoleClass().getCode().equals(existingRole.getEnterpriseRoleClass().getCode()))
 						foundRole = existingRole;
 				}
 				if (foundRole != null) {
