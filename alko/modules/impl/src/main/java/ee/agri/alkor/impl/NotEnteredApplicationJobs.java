@@ -69,7 +69,7 @@ public class NotEnteredApplicationJobs extends HibernateDaoSupport {
 				else{
 					List<Long> products = new ArrayList<Long>();
 					
-					if(product_id == null){
+					if(product_id == null || product_id == 0L){
 						try{ // igaks juhuks kõik tooted
 							ResultSet rs2 = PostgreUtils.query("SELECT id FROM product WHERE appl_id = "+appl_id);
 							

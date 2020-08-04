@@ -255,6 +255,18 @@ public class SubmittedReportsForm extends Form implements ClickListener, CacheLi
 				
 				if(event.getResults().length() < 10){
 					setInfo("Aruanne laaditud! Andmete uuendamiseks vajutage nupule 'Otsi'");
+					
+					form2.reset();
+					
+					String aasta = DateTimeFormat.getFormat("yyyy").format(kuupaev);
+					int kuu = Integer.parseInt(DateTimeFormat.getFormat("MM").format(kuupaev))-1;
+					
+					for(int i = 0; i < periodYear.getItemCount(); i++){
+						if(periodYear.getItemText(i).equals(aasta)){
+							periodYear.setItemSelected(i, true);
+						}
+					}
+					periodMonth.setItemSelected(kuu, true);
 					//searchResultsTable.getData(getFormFieldValues(SEARCH_FORM));
 				} else {
 					setErrorHtml(event.getResults(), true);

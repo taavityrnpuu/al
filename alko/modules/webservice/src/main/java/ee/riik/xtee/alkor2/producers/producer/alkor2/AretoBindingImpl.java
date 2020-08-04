@@ -981,8 +981,9 @@ ee.riik.xtee.alkor2.producers.producer.alkor2.AretoPortType {
             }
             if (p.getProducer() != null) {
                item.setMan_actor_name(p.getProducer().getName()); // selgub, et kõigil toodetel siiski pole tootjat ja tekib NPE, seega wrapime nullchecki sisse
-               if (p.getProducer().getAddress()!=null)
+               if (p.getProducer().getAddress()!=null && p.getProducer().getAddress().getCountry() != null){
                   item.setCountry(p.getProducer().getAddress().getCountry().getName());
+               }
             } else {
                LOGGER.warn("Producer is null!");
             }
