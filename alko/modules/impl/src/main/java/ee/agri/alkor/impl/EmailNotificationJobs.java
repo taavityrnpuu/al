@@ -41,6 +41,10 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 	 * Mitu päeva enne kande kehtivus lakkamist sonum saata.
 	 */
 	private int daysBeforeRegistryEntryExpiry;
+	/**
+	 * Mitu päeva pärast kande kehtivus lakkamist sonum saata.
+	 */
+	private int daysAfterRegistryEntryExpiry;
 	
 	private String mode;
 	
@@ -56,8 +60,6 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 	
 	public void sendRegistryEntryExpireNotifications() {
 		
-		final Calendar expireDate = Calendar.getInstance();
-		expireDate.add(Calendar.DAY_OF_YEAR, getDaysBeforeRegistryEntryExpiry());
 		if(!LIVE_MODE.equals(getMode())){
 			LOGGER.info("sendRegistryEntryExpireNotifications not live mode - execution halted");
 			return;
@@ -68,7 +70,7 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 				
 				LOGGER.info("Executing sendRegistryEntryExpireNotifications");
 				Query q = session.createQuery("from RegistryEntry e where (e.expiryNotificationSent = false or e.expiryNotificationSent is null) and"
-						+ "  date_trunc('day',e.validUntil) >= (current_date + "+((int)Math.floor((getDaysBeforeRegistryEntryExpiry() / 2)))+") AND date_trunc('day',e.validUntil) <= (current_date + "+getDaysBeforeRegistryEntryExpiry()+")");
+						+ "  date_trunc('day',e.validUntil) >= (current_date + "+((int)Math.floor((getDaysAfterRegistryEntryExpiry())))+") AND date_trunc('day',e.validUntil) <= (current_date + "+getDaysBeforeRegistryEntryExpiry()+")");
 
 				
 				Map<Enterprise, List<RegistryEntry>> entriesMap = new HashMap<Enterprise, List<RegistryEntry>>();
@@ -196,6 +198,14 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 
 	public void setDaysBeforeRegistryEntryExpiry(int daysBeforeRegistryEntryExpiry) {
 		this.daysBeforeRegistryEntryExpiry = daysBeforeRegistryEntryExpiry;
+	}
+	
+	public int getDaysAfterRegistryEntryExpiry() {
+		return daysAfterRegistryEntryExpiry;
+	}
+
+	public void setDaysAfterRegistryEntryExpiry(int daysAfterRegistryEntryExpiry) {
+		this.daysAfterRegistryEntryExpiry = daysAfterRegistryEntryExpiry;
 	}
 
 	public String getMode() {

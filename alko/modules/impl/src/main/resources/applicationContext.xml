@@ -122,6 +122,7 @@
 		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
 		<property name="mode" value="@mode@" />
 		<property name="daysBeforeRegistryEntryExpiry" value="60" />
+		<property name="daysAfterRegistryEntryExpiry" value="0" />
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 		<property name="mailSender" ref="mailSender" />
 		<property name="velocityEngine" ref="velocityEngine" />
