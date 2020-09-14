@@ -19,10 +19,9 @@
 	<property name="jar.dir" location="${build.dir}/lib" />
 	<property name="classes.dir" location="${build.dir}/modules/web" /> <!-- <<<<<<<< -->
 	<property name="war.dir" location="${build.dir}/war" />
-	<property name="ear.dir" location="${build.dir}/ear" />
 
 	<!-- väljundpaki asukoht koos nimega -->
-	<property name="package.file" location="${ear.dir}/alkor-web.war" />
+	<property name="package.file" location="${build.dir}/ROOT.war" />
 
 	
 	<target name="help" description="Kuvab abiinfot kasutamise kohta.">
@@ -111,7 +110,6 @@
 	</target>
 		
 	<target name="jar_only" depends="">
-		<mkdir dir="${ear.dir}" />
 		<mkdir dir="${build.dir}/generated/ee.agri.alkor.web.Alkor" />
 		<copy todir="${war.dir}/WEB-INF/lib">
     		<fileset dir="${jar.dir}" includes="*.jar" />

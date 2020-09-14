@@ -63,6 +63,7 @@ import ee.agri.alkor.service.IClassificatorService;
 import ee.agri.alkor.service.IRegistryService;
 import ee.agri.alkor.service.SearchFilter;
 import ee.agri.alkor.service.SystemException;
+import ee.agri.alkor.siga.SigaServiceImpl;
 import ee.agri.alkor.util.AppContextHelper;
 import ee.agri.alkor.model.classes.ApplicationType;
 
@@ -81,6 +82,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	
 	private PDFCreator pdfCreator;
 	
+	private String trustStore;
+	private String trustStorePassword;
+
 	public RegistryServiceImpl() {
 		super();
 	}
@@ -3329,6 +3333,22 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		this.applicationNrBase = applicationNrBase;
 	}
 	
+	public String getTrustStore() {
+		return trustStore;
+	}
+
+	public void setTrustStore(String trustStore) {
+		this.trustStore = trustStore;
+	}
+
+	public String getTrustStorePassword() {
+		return trustStorePassword;
+	}
+
+	public void setTrustStorePassword(String trustStorePassword) {
+		this.trustStorePassword = trustStorePassword;
+	}
+	
 	public long getDecisionNrBase() {
 		return decisionNrBase;
 	}
@@ -3352,7 +3372,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	public void setPdfCreator(PDFCreator pdfCreator) {
 		this.pdfCreator = pdfCreator;
 	}
-	
+
+
 	/**
 	 * 
 	 * Use this to update registry entry values

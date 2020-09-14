@@ -18,7 +18,7 @@ import ee.agri.alkor.model.RegistryEntry;
 import ee.agri.alkor.model.RegistryPayment;
 import ee.agri.alkor.model.XTeeId;
 import ee.agri.alkor.model.classes.ApplicationState;
-import java.sql.ResultSet;
+
 import java.util.HashMap;
 
 public interface IRegistryService extends IBaseService {
@@ -624,5 +624,8 @@ public interface IRegistryService extends IBaseService {
          String idCode, String occupation);
 
    boolean isExtendingAllowed(String applicationNr);
+   
+   String getTrustStore();
+   String getTrustStorePassword();
 
 }

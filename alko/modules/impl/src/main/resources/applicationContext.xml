@@ -43,6 +43,8 @@
 		<property name="baseURI" value="@baseURI@" />
 		<property name="applicationNrBase" value="0" />
 		<property name="pdfCreator" ref="pdfCreator" />
+		<property name="trustStore" value="@trustStore@" />
+		<property name="trustStorePassword" value="@trustStorePassword@" />
 	</bean>
 
 	<bean id="pdfCreator" class="ee.agri.alkor.impl.PDFCreator">

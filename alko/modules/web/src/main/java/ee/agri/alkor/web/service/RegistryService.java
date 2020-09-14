@@ -297,5 +297,5 @@ public interface RegistryService extends BaseService {
    EnterpriseMap getEnterpriseByActivity(String registrationNr) throws ConstraintViolationException;
 
    boolean isExtendingAllowed(String applicationNr);
-
+   
 }

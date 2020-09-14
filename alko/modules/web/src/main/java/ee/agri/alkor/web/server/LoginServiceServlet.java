@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.math.BigDecimal;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
 import java.util.Date;
@@ -77,7 +78,7 @@ public class LoginServiceServlet extends HttpServlet {
 		}
 		
 		try {
-			String templ = getTemplate(request, "login_template.html");
+			String templ = getTemplate("login_template.html");
 			try {
 				if(ik != null && !ik.equals("")) {
 					String sql = "select 1 from sys_user as sys join person as p on p.id = sys.person_id and (p.reg_id = '"
@@ -115,10 +116,10 @@ public class LoginServiceServlet extends HttpServlet {
 
 				String body = "";
 				if (hasRoles) {
-					body = getTemplate(request, "table_body.html");
+					body = getTemplate("table_body.html");
 					body = body.replace("{{TABLE_BODY}}", tableBody);
 				} else {
-					body = getTemplate(request, "login_failure.html");
+					body = getTemplate("login_failure.html");
 				}
 				templ = templ.replace("{{BODY}}", body);
 				
@@ -252,9 +253,9 @@ public class LoginServiceServlet extends HttpServlet {
 		}
 	}
 
-	public String getTemplate(HttpServletRequest request, String tmpl) throws Exception {
+	public String getTemplate(String tmpl) throws Exception {
 		URL url = this.getServletContext().getResource(tmpl);
-		File file = new File(url.getPath());
+		File file = new File(URLDecoder.decode(url.getPath(), "UTF-8")); // decode, et ka tühikutega teede peal töötaks
 		FileInputStream fis = new FileInputStream(file);
 		BufferedReader in = new BufferedReader(new InputStreamReader(fis));
 		String inputLine;

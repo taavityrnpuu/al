@@ -52,17 +52,11 @@
 		<ant dir="${basedir}/modules/web" target="gwtshell"/>
 	</target>
 
-	<target name="install-dev" depends="install_webservice, install_web-dev">
-		<ant dir="${basedir}/modules/app" target="jar"/>
-	</target>
+	<target name="install-dev" depends="install_webservice, install_web-dev" />
 
-	<target name="install-production" depends="install_webservice, install_web-production">
-		<ant dir="${basedir}/modules/app" target="jar"/>
-	</target>
+	<target name="install-production" depends="install_webservice, install_web-production"/>
 
-	<target name="deploy-dev" depends="install-dev">
-		<ant dir="${basedir}/modules/app" target="deploy"/>
-	</target>
+	<target name="deploy-dev" depends="install-dev" />
 
 	<target name="schemaexport" depends="install_service">
 		<ant dir="${basedir}/modules/impl" target="schemaexport"/>

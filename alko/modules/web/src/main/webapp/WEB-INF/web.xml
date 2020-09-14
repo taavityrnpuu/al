@@ -25,11 +25,13 @@
 		<filter-class>org.jasig.cas.client.validation.Cas30ProxyReceivingTicketValidationFilter</filter-class>
 		<init-param>
 			<param-name>casServerUrlPrefix</param-name>
-			<param-value>https://sso-prelive.agri.ee/cas/</param-value>
+			<param-value>https://sso-prelive.agri.ee/cas/</param-value> <!-- TEST -->
+			<!-- <param-value>https://sso-prelive.agri.ee/cas/</param-value>--> <!-- LIVE -->
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<param-value>https://alkoreg.agri.ee/</param-value>
+			<param-value>https://alkoregtest-piksel.agri.ee/</param-value> <!-- TEST -->
+			<!-- <param-value>https://alkoreg.agri.ee/</param-value>--> <!-- LIVE -->
 		</init-param>
 		<init-param>
 			<param-name>redirectAfterValidation</param-name>
@@ -47,11 +49,13 @@
 		<filter-class>org.jasig.cas.client.authentication.AuthenticationFilter</filter-class>
 		<init-param>
 			<param-name>casServerLoginUrl</param-name>
-			<param-value>https://sso-prelive.agri.ee/cas/login/tara</param-value>
+			<param-value>https://sso-prelive.agri.ee/cas/login/tara</param-value> <!-- TEST -->
+			<!-- <param-value>https://sso-prelive.agri.ee/cas/login/tara</param-value>--> <!-- LIVE -->
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
-			<param-value>https://alkoreg.agri.ee/</param-value>
+			<param-value>https://alkoregtest-piksel.agri.ee/</param-value> <!-- TEST -->
+			<!-- <param-value>https://alkoreg.agri.ee/</param-value>--> <!-- LIVE -->
 		</init-param>
 	</filter>
 	<filter-mapping>
@@ -235,12 +239,12 @@
 	
 	<servlet-mapping>
 		<servlet-name>Signing</servlet-name>
-		<url-pattern>/generateHash</url-pattern>
+		<url-pattern>/generateContainer</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>
 		<servlet-name>Signing</servlet-name>
-		<url-pattern>/createContainer</url-pattern>
+		<url-pattern>/finalizeSigning</url-pattern>
 	</servlet-mapping>
 
 	<servlet-mapping>

@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<meta http-equiv="X-UA-Compatible" content="IE=edge">
+	<meta charset="UTF-8">
+	<title>Faili digiallkirjastamine</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<script src="hwcrypto.js"></script>
+	<script src="hwcrypto-legacy.js"></script>
+	<script src="hex2base.js"></script>
+	<script src="base64js.min.js"></script>
+	<script src="app.js"></script>
+	
+	<style>
+		.loader {
+			border: 16px solid #333333;
+			border-radius: 50%;
+			border-top: 16px solid #4AA02C;
+			border-bottom: 16px solid #4AA02C;
+			width: 120px;
+			height: 120px;
+			-webkit-animation: spin 2s linear infinite;
+			animation: spin 2s linear infinite;
+		}
+		
+		@-webkit-keyframes spin { 
+			0% {
+				-webkit-transform: rotate(0deg);
+			}
+			100% { 
+				-webkit-transform: rotate(360deg);
+			}
+		}
+		@keyframes spin { 
+			0% {
+				transform: rotate(0deg);
+			}
+			100% {
+				transform: rotate(360deg);
+			}
+		}
+		.center-div {
+			position: absolute;
+			margin: auto;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+			width: 100px;
+			height: 100px;
+		}
+	</style>
+	
+	<script>
+		function showError(errorCode, ex) {
+			console.log(ex);
+			
+			$("#message").removeClass("alert-info");
+			$("#message").addClass("alert-danger");
+			$("#message")
+				.find("center")
+				.html("Allkirjastamisel tekkis viga, palun sulgege veebilehitseja aken ja proovige uuesti. (Viga " + errorCode + ")");
+			$("#loader").hide();
+		}
+		function showSuccess() {
+			$("#message").removeClass("alert-info");
+			$("#message").addClass("alert-success");
+			$("#message").find("center").html("Fail on allkirjastatud! Aken sulgub automaatselt!");
+			$("#loader").hide();
+			setTimeout(function() {
+				window.top.close();
+			}, 3000);
+		}
+	</script>
+
+	</head>
+	
+	<body bgcolor="#333333" onload="sign();">
+		<div style="color:#000; height:80px;">
+			<div style="float:left; margin-left:20px;">
+				<img src="images/0_veterinaar_vapp_est_85px.png">
+			</div>
+			<div style="float:right; color:#000; margin:33px 20px; font-size:1.0em; font-family:Arial;">RIIKLIK ALKOHOLIREGISTER</div>
+		</div>
+		<div id="message" class="alert {{KLASS}}">
+			<center>{{TEADE}}</center>
+		</div>
+		<div class="center-div">
+			<div id="loader" class="loader"></div>
+		</div>
+	</body>
+</html>

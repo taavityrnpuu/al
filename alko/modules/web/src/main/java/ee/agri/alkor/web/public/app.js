@@ -1,93 +1,3 @@
-/**
- * DigiDoc4j Hwcrypto Demo
- *
- * The MIT License (MIT)
- *
- * Permission is hereby granted, free of charge, to any person obtaining a copy
- * of this software and associated documentation files (the "Software"), to deal
- * in the Software without restriction, including without limitation the rights
- * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
- * copies of the Software, and to permit persons to whom the Software is
- * furnished to do so, subject to the following conditions:
- *
- * The above copyright notice and this permission notice shall be included in all
- * copies or substantial portions of the Software.
- *
- * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
- * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
- * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
- * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
- * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
- * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
- * SOFTWARE.
- */
-$(document).on('change', '.btn-file :file', function() {
-    var input = $(this),
-        label = input.val().replace(/\\/g, '/').replace(/.*\//, '');
-    disableSign();
-    hideDownloadSection();
-    $("#fileName").val(label);
-    $('#fileUpload').submit();
-});
-
-$(document).on("click", "#signButton", function(event) {
-    event.preventDefault();
-    console.log("sign button pressed");
-    sign();
-});
-
-$(document).ready(function() {
-    $('#fileUpload').submit(function(e) {
-        if($('#file').val()) {
-            e.preventDefault();
-            var progressBar = $("#progress-bar");
-            $(this).ajaxSubmit({
-                beforeSubmit: function() {
-                    progressBar.width('0%');
-                    progressBar.removeClass("progress-bar-success");
-                },
-                uploadProgress: function (event, position, total, percentComplete){
-                    console.log("percent complete: "+ percentComplete);
-                    progressBar.width(percentComplete + '%');
-                    progressBar.html('<span>' + percentComplete +' %</span>');
-                },
-                success: function (){
-                    console.log("successfully uploaded file");
-                    progressBar.addClass("progress-bar-success");
-                    enableSign();
-                },
-                error: function(xhr, textStatus, error){
-                    console.log("error uploading file: " + error)
-                },
-                resetForm: false
-            });
-            return false;
-        }
-    });
-});
-
-enableSign = function() {
-    $("#signButton").addClass("btn-success").prop('disabled', false);;
-};
-
-disableSign = function() {
-    $("#signButton").removeClass("btn-success").prop('disabled', true);;
-};
-
-showDownloadSection = function() {
-    var downloadSection = $("#downloadSection");
-    if(downloadSection.hasClass("hidden")) {
-        downloadSection.toggleClass("show hidden");
-    }
-};
-
-hideDownloadSection = function() {
-    var downloadSection = $("#downloadSection");
-    if(downloadSection.hasClass("show")) {
-        downloadSection.toggleClass("show hidden");
-    }
-};
-
 post = function(url, data) {
     return new Promise(function(resolve, reject) {
         $.ajax({
@@ -107,83 +17,68 @@ post = function(url, data) {
     });
 };
 
-fetchHash = function(certInHex) {
-    return post("generateHash", {certInHex:certInHex})
+generateContainer = function(certInHex) {
+    return post("generateContainer", {certInHex: certInHex})
 };
 
-createContainer = function(signatureInHex, docId) {
-    return post("createContainer", {signatureInHex:signatureInHex, docId:docId});
+finalizeSigning = function(signatureInHex, docId, signatureId, containerId) {
+    return post("finalizeSigning", {signatureInHex: signatureInHex, docId: docId, signatureId: signatureId, containerId: containerId});
 };
 
 sign = function(docId) {
-    var cert;
+    var hwcCertificate; 
+    var signatureId;
+    var containerId;
     var isError = false;
     
-    try {    	
-	    window.hwcrypto.getCertificate({lang: 'en'}).then(
-	    	function(certificate) {
-	    		cert = certificate;     
-	    		return fetchHash(certificate.hex);
-	    	}, 
-	    	function(r) {showError(1); isError = true;}
+    try {    	  
+	    window.hwcrypto.getCertificate({lang: 'en'})
+	    	.then(
+		    	function(certificate) {
+		    		console.log("----- 1 -----");
+		    		console.log(certificate);
+		    		
+		    		hwcCertificate = certificate;     
+		    		return generateContainer(certificate.hex);
+		    	}, 
+		    	function(r) {showError(1, r); isError = true;}
 	    	).then(
-	    		function(digest) {  
+	    		function(response) {
 	    			if(!isError){
-	    				return window.hwcrypto.sign(cert, {type: 'SHA-256', hex: digest.hex}, {lang: 'en'});
+			    		console.log("----- 2 -----");
+			    		console.log(response);
+			    		
+	    				signatureId = response.generatedSignatureId;
+	    				containerId = response.containerId;
+	    				
+	    	            var dataToSignHash = new Uint8Array(base64js.toByteArray(response.dataToSignHash));
+	    				return window.hwcrypto.sign(hwcCertificate, {type: response.digestAlgorithm, value: dataToSignHash}, {lang: 'en'});
 	    			}
 	    		},
-	    		function(r) {showError(2); isError = true;}
-	    		).then(
-	    			function(signature) {   
-	    				if(!isError){
-	    					return createContainer(signature.hex, docId);
-	    				}
-	    			}, 
-	    			function(r) {showError(3); isError = true;}
-	    			).then(
-	    				function(result) {
-	    					if(!isError){
-	    						showSuccess();
-	    					}
-	    				},
-	    				function(r) {showError(4);});
+	    		function(r) {showError(2, r); isError = true;}
+	    	).then(
+    			function(signature) {
+    				if(!isError){
+    		    		console.log("----- 3 -----");
+    		    		console.log(signature);
+    		    		
+    					return finalizeSigning(signature.hex, docId, signatureId, containerId);
+    				}
+    			}, 
+    			function(r) {showError(3, r); isError = true;}
+			).then(
+				function(result) {
+					if(!isError){
+			    		console.log("----- 4 -----");
+			    		console.log(result);
+			    		
+						showSuccess();
+					}
+				},
+				function(r) {showError(4, r); isError = true;}
+			);
     } catch (x) {
-    	showError(5);
+    	showError(5,x);
     }
-    
-//    var samm1 = window.hwcrypto.getCertificate({lang: 'en'}).then(
-//	    	function(certificate) {
-//	    		cert = certificate;     	    		
-//	    		return fetchHash(certificate.hex);
-//	    	}, 
-//	    	function(r) {showError(1);});
-//        
-//    
-//    if(samm1){
-//    	var samm2 = samm1.then(function(digest) {    	
-//			return window.hwcrypto.sign(cert, {type: 'SHA-256', hex: digest.hex}, {lang: 'en'});
-//		},
-//		function(r) {showError(2);}
-//		);
-//    	if(samm2){
-//    		var samm3 = samm2.then(
-//	    			function(signature) {      
-//	    				return createContainer(signature.hex, docId);
-//	    			}, 
-//	    			function(r) {showError(3);}
-//	    			); 
-//    		if(samm3){
-//    			var samm4 = samm3.then(
-//	    				function(result) {
-//	    					console.log(samm1, samm2, samm3, samm4);
-//	    					//showSuccess();	    
-//	    				},
-//	    				function(r) {showError(4);});
-//    		}
-//    	}    	
-//    }
-//    
-    
-    
 };
 
