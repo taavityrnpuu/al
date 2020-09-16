@@ -5,13 +5,22 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.PrintWriter;
 import java.io.StringWriter;
 import java.net.URL;
 import java.net.URLDecoder;
+import java.nio.file.Files;
 import java.security.MessageDigest;
 import java.util.Base64;
+import java.util.Enumeration;
+import java.util.zip.CRC32;
+import java.util.zip.ZipEntry;
+import java.util.zip.ZipFile;
+import java.util.zip.ZipInputStream;
+import java.util.zip.ZipOutputStream;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -20,17 +29,14 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
-import org.springframework.beans.factory.InitializingBean;
 
-import ee.agri.alkor.impl.Config;
 import ee.agri.alkor.impl.PostgreUtils;
 import ee.agri.alkor.impl.ResultSet;
 import ee.agri.alkor.model.SigningSessionData;
 import ee.agri.alkor.service.ServiceFactory;
 import ee.agri.alkor.siga.CreateHashcodeContainerRemoteSigningResponse;
-import ee.agri.alkor.web.client.ServiceContext;
-import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 import ee.agri.alkor.siga.SigaServiceImpl;
+import eu.europa.esig.dss.enumerations.DigestAlgorithm;
 
 @SuppressWarnings("serial")
 public class SigningServiceServlet extends HttpServlet{
@@ -215,20 +221,23 @@ public class SigningServiceServlet extends HttpServlet{
 				
 				byte[] decodeResult = siga.finalizeSignature(containerId, signatureId, signatureInHex);
 
-				docPath = docPath.replace(".pdf", "(allkirjastatud).asice");
+				String asicePath = docPath.replace(".pdf", "(allkirjastatud).asice");
 
-				FileOutputStream stream = new FileOutputStream(docPath);
+				// salvestame containeri
+				FileOutputStream tmp_stream = new FileOutputStream(asicePath);
+				tmp_stream.write(decodeResult);
+				tmp_stream.close();
+				
+				// lisame containerisse ka algse faili
+				appendFilesToAsice(new File(asicePath), new File[] {new File(docPath)});
+				
 				try {
-					stream.write(decodeResult);
-				} finally {
-					stream.close();
-				}
-
-				try {
+					File asice = new File(asicePath);
+					
 					PostgreUtils.insert(
 							"insert into reg_doc (id, version, modified, created, created_by, modified_by, deleted, deleted_by, name, path, mime, doc_appl_id, doc_class_id) "
 							+ "select nextval('reg_doc_seq') as id, version, NOW(), NOW(), created_by, modified_by, deleted, "
-							+ "		deleted_by, '"+ docName + " (asice)' as name, '" + docPath+ "' as path, 'application/vnd.etsi.asic-e+zip' as mime, doc_appl_id, doc_class_id "
+							+ "		deleted_by, '"+ asice.getName() + "' as name, '" + asicePath+ "' as path, 'application/vnd.etsi.asic-e+zip' as mime, doc_appl_id, doc_class_id "
 							+ "from reg_doc where id = " + docId + ";");
 				} catch (Exception e) {
 					out.write(e.toString());
@@ -258,6 +267,53 @@ public class SigningServiceServlet extends HttpServlet{
 
 			out.write(sb.toString());
 		}
+	}
+	
+	public static void appendFilesToAsice(File zipFile, File[] files) throws IOException {
+	    File tempFile = File.createTempFile(zipFile.getName(), null);
+	    tempFile.delete();
+
+	    zipFile.renameTo(tempFile);
+	    byte[] buf = new byte[1024];
+
+	    ZipInputStream zin = new ZipInputStream(new FileInputStream(tempFile));
+	    ZipOutputStream out = new ZipOutputStream(new FileOutputStream(zipFile));
+
+	    // kopeerime olemasolevad
+	    ZipEntry entry = zin.getNextEntry();
+	    while (entry != null) {
+	        String name = entry.getName();
+	        boolean notInFiles = true;
+	        for (File f : files) {
+	            if (f.getName().equals(name)) {
+	                notInFiles = false;
+	                break;
+	            }
+	        }
+	        if (notInFiles) {
+	            out.putNextEntry(new ZipEntry(name));
+	            int len;
+	            while ((len = zin.read(buf)) > 0) {
+	                out.write(buf, 0, len);
+	            }
+	        }
+	        entry = zin.getNextEntry();
+	    }
+	    zin.close();
+	    
+	    // lisame uued failid
+	    for (int i = 0; i < files.length; i++) {
+	        InputStream in = new FileInputStream(files[i]);
+	        out.putNextEntry(new ZipEntry(files[i].getName()));
+	        int len;
+	        while ((len = in.read(buf)) > 0) {
+	            out.write(buf, 0, len);
+	        }
+	        out.closeEntry();
+	        in.close();
+	    }
+	    out.close();
+	    tempFile.delete();
 	}
 
 	public String getTemplate(String tmpl) throws Exception {

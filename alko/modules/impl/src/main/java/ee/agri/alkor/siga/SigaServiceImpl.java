@@ -4,9 +4,11 @@ import static org.springframework.http.HttpMethod.DELETE;
 import static org.springframework.http.HttpMethod.PUT;
 import static org.springframework.http.HttpStatus.Series.SUCCESSFUL;
 
+import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.file.Files;
 import java.security.KeyStore;
 import java.security.MessageDigest;
@@ -15,6 +17,7 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.zip.ZipEntry;
 
 import javax.net.ssl.SSLContext;
 
@@ -26,6 +29,8 @@ import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.conn.ssl.SSLContextBuilder;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.log4j.Logger;
+import org.digidoc4j.Container;
+import org.digidoc4j.DataFile;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.client.ClientHttpRequestInterceptor;
@@ -96,7 +101,7 @@ public class SigaServiceImpl implements InitializingBean {
 	public byte[] finalizeSignature(String containerId, String signatureId, String signatureInHex) throws Exception {
 
 		RestTemplate rt = getRestTemplate();
-
+		
 		UpdateHashcodeContainerRemoteSigningRequest remoteSigningRequest = new UpdateHashcodeContainerRemoteSigningRequest();
 		remoteSigningRequest.setSignatureValue(signatureInHex);
 
@@ -105,10 +110,10 @@ public class SigaServiceImpl implements InitializingBean {
 		UpdateHashcodeContainerRemoteSigningResponse response = rt.exchange(url + "/hashcodecontainers/" + containerId + "/remotesigning/" + signatureId, PUT, request, UpdateHashcodeContainerRemoteSigningResponse.class).getBody();
 
 		if ("OK".equals(response.getResult())) {
-			GetHashcodeContainerResponse getContainerResponse = rt .getForObject(url + "/hashcodecontainers/" + containerId, GetHashcodeContainerResponse.class);
+			GetHashcodeContainerResponse getContainerResponse = rt.getForObject(url + "/hashcodecontainers/" + containerId, GetHashcodeContainerResponse.class);
 
 			byte[] container = Base64.getDecoder().decode(getContainerResponse.getContainer());
-
+		    
 			/*
 			 * ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
 			 * HashcodeContainerWriter cw = new HashcodeContainerWriter(outputStream);

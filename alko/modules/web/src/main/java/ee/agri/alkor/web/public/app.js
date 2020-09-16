@@ -62,7 +62,7 @@ sign = function(docId) {
     		    		console.log("----- 3 -----");
     		    		console.log(signature);
     		    		
-    					return finalizeSigning(signature.hex, docId, signatureId, containerId);
+    					return finalizeSigning(base64js.fromByteArray(signature.value), docId, signatureId, containerId);
     				}
     			}, 
     			function(r) {showError(3, r); isError = true;}
