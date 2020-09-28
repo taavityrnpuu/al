@@ -228,7 +228,7 @@ public class SpecialSearch {
 					}
 					
 					
-					order.append("created"+arrow+", registryEntry.nr"+arrow);
+					order.append("s.created"+arrow+", registryEntry.nr"+arrow);
 
 					addArrow = false; // selle customiga ei lisa pärast sordi poolt
 				} else {
@@ -420,38 +420,39 @@ public class SpecialSearch {
 		if (paramValue instanceof RangeFilter) {
 			RangeFilter rf = (RangeFilter) paramValue;
 			boolean hasMin = false;
+			int i = 0;
 			if (rf.getMin() != null) {
 				hasMin = true;
-				where.append("s." + paramName + " >= ? ");
+				where.append("s." + paramName + " >= :" + paramName.replace(".", "_") + "0 ");
 			}
 			if (rf.getMax() != null) {
 				if (hasMin) {
 					where.append("AND ");
 				}
-				where.append("s." + paramName + " <= ? ");
+				where.append("s." + paramName + " <= :" + paramName.replace(".", "_") + "1 ");
 			}
 			return;
 		} else if ("registryEntryApplication.needsRenewening".equals(paramName)) {
 			if (aliasSet.contains("registryEntry")) {
-				where.append("registryEntry.validUntil BETWEEN ? AND ? ");
+				where.append("registryEntry.validUntil BETWEEN :registryEntryApplication_needsRenewening0 AND :registryEntryApplication_needsRenewening1 ");
 			} else {
-				where.append("s.registryEntry.validUntil BETWEEN ? AND ? ");
+				where.append("s.registryEntry.validUntil BETWEEN :registryEntryApplication_needsRenewening0 AND :registryEntryApplication_needsRenewening1 ");
 			}
 			return;
 
 		} else if (paramName.equals("IsXTeeForm")) {
-			where.append("s.applicant.registrationId = ? ");
+			where.append("s.applicant.registrationId = :IsXTeeForm ");
 			return;
 
 		} else if (paramName.startsWith("product.ethanolRate")) {
 			String product = aliasSet.contains("product") ? "product" : "s.product";
 			if ("product.ethanolRateFrom".equals(paramName)) {
 				where.append(product);
-				where.append(".ethanolRate >= ? ");
+				where.append(".ethanolRate >= :product_ethanolRateFrom ");
 				return;
 			} else if (paramName.equals("product.ethanolRateTo")) {
 				where.append(product);
-				where.append(".ethanolRate <= ? ");
+				where.append(".ethanolRate <= :product_ethanolRateTo ");
 				return;
 			}
 		}
@@ -477,23 +478,19 @@ public class SpecialSearch {
 				}
 			}
 
-			if (!paramName.endsWith(".code")) { // kui pole kood, siis lower
-												// ette ja sulud lahti
+			if (!paramName.endsWith(".code")) { // kui pole kood, siis lower ette ja sulud lahti
 				where.append("lower(");
 			}
-
-			if (paramName.startsWith("registryEntry.") && !aliasSet.contains("registryEntry")
-					|| paramName.startsWith("product.") && !aliasSet.contains("product")) {
+			
+			if (paramName.startsWith("registryEntry.") && !aliasSet.contains("registryEntry") || paramName.startsWith("product.") && !aliasSet.contains("product")) {
 				where.append("s.");
 			}
-
+			
 			where.append(paramName);
-
-			if (paramName.endsWith(".code")) { // kui oli kood, siis sulud kinni
-												// ja LIKE, muidu lihtsalt LIKE
-				where.append(" LIKE ? ");
+			if (paramName.endsWith(".code")) { // kui oli kood, siis sulud kinni ja LIKE, muidu lihtsalt LIKE
+				where.append(" LIKE :" + paramName.replace(".", "_") + " ");
 			} else {
-				where.append(") LIKE ? ");
+				where.append(") LIKE :" + paramName.replace(".", "_") + " ");
 			}
 		}
 	}
@@ -529,7 +526,7 @@ public class SpecialSearch {
 					cal.set(Calendar.YEAR, Integer.parseInt(min.substring(6)));
 					cal.set(Calendar.MONTH, Integer.parseInt(min.substring(3, 5)) - 1);
 					cal.set(Calendar.DAY_OF_MONTH, Integer.parseInt(min.substring(0, 2)));
-					q.setParameter(i++, cal.getTime());
+					q.setParameter(paramName.replace(".", "_") + "0", cal.getTime());
 				}
 
 				if (max != null) {
@@ -540,17 +537,17 @@ public class SpecialSearch {
 					cal.set(Calendar.HOUR_OF_DAY, 23);
 					cal.set(Calendar.MINUTE, 59);
 					cal.set(Calendar.SECOND, 59);
-					q.setParameter(i++, cal.getTime());
+					q.setParameter(paramName.replace(".", "_") + "1", cal.getTime());
 				}
 
 			} else if (rf.getType().equals(RangeFilter.NUMERIC)) {
 				if (min != null && min != "")
-					q.setParameter(i++, new BigDecimal(min));
+					q.setParameter(paramName.replace(".", "_") + "0", new BigDecimal(min));
 				if (max != null && max != "")
-					q.setParameter(i++, new BigDecimal(max));
+					q.setParameter(paramName.replace(".", "_") + "1", new BigDecimal(max));
 			} else {
-				q.setParameter(i++, min);
-				q.setParameter(i++, max);
+				q.setParameter(paramName.replace(".", "_") + "0", min);
+				q.setParameter(paramName.replace(".", "_") + "1", max);
 			}
 		} else if (paramName.equals("registryEntryApplication.needsRenewening")) {
 
@@ -563,14 +560,14 @@ public class SpecialSearch {
 				cal.set(Calendar.HOUR_OF_DAY, 0);
 				cal.set(Calendar.MINUTE, 0);
 				cal.set(Calendar.SECOND, 0);
-				q.setTimestamp(i++, new java.sql.Timestamp(cal.getTimeInMillis()));
+				q.setTimestamp(paramName.replace(".", "_") + "0", new java.sql.Timestamp(cal.getTimeInMillis()));
 
 				cal.setTime(today);
 				cal.add(Calendar.DATE, 60);
 				cal.set(Calendar.HOUR_OF_DAY, 23);
 				cal.set(Calendar.MINUTE, 59);
 				cal.set(Calendar.SECOND, 59);
-				q.setTimestamp(i++, new java.sql.Timestamp(cal.getTimeInMillis()));
+				q.setTimestamp(paramName.replace(".", "_") + "1", new java.sql.Timestamp(cal.getTimeInMillis()));
 			}
 
 		} else if (paramValue instanceof String) {
@@ -579,23 +576,15 @@ public class SpecialSearch {
 			if ("state.code".equals(paramName)) { // nendega on juba korras
 				return i;
 			} else if (paramName.equals("product.ethanolRateFrom") || paramName.equals("product.ethanolRateTo")) {
-				q.setParameter(i++, new BigDecimal(stringValue));
+				q.setParameter(paramName.replace(".", "_"), new BigDecimal(stringValue));
 				return i;
-			} else if (!(paramName.endsWith(".code") || paramName.equals("IsXTeeForm"))) { // Values
-																							// that
-																							// cannot
-																							// have
-																							// %
-																							// signs
-				if (stringValue.indexOf("%") == -1) { // kui kasutaja pole
-														// protsendimärke
-														// kuskile pannud,
-														// paneme ise
+			} else if (!(paramName.endsWith(".code") || paramName.equals("IsXTeeForm"))) { // Values that cannot have % signs
+				if (stringValue.indexOf("%") == -1) { // kui kasutaja pole protsendimärke kuskile pannud, paneme ise
 					stringValue = '%' + stringValue + '%';
 				}
 				stringValue = stringValue.toLowerCase();
 			}
-			q.setString(i++, stringValue);
+			q.setString(paramName.replace(".", "_"), stringValue);
 		}
 		return i;
 	}

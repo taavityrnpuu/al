@@ -40,7 +40,7 @@ public class UserManagerServiceImpl implements UserManagerService {
    }
    
    public UserManageMap saveUser2(UserManageMap user) throws ConstraintViolationException {
-	      try{
+      try{
 	    	  return ClientDataFactory.create(
 	      ServiceFactory.getUserManagerService().saveUser2(ClientDataFactory.create(user)));
 	   } catch(Exception cve) {

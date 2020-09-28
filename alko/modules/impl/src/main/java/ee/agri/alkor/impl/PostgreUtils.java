@@ -13,7 +13,7 @@ import org.apache.commons.dbcp2.BasicDataSource;
 import org.hibernate.Session;
 import org.hibernate.query.NativeQuery;
 import org.jboss.resource.adapter.jdbc.WrapperDataSource;
-import org.springframework.orm.hibernate3.HibernateTransactionManager;
+import org.springframework.orm.hibernate5.HibernateTransactionManager;
 
 public class PostgreUtils {
 	static DbBean dbBean = (DbBean) AppContextHelper.getInstance().getBean("pgDataSource");

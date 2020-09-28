@@ -1145,7 +1145,7 @@ public class DecisionForm extends Form implements CacheListener {
 		 */
 		DecisionSignButton() {
 			this.setSize("18", "18");
-			this.setStyleName("DecisionPrintButton");
+			this.setStyleName("DecisionPrintButton signButtonOtsus");
 			this.addClickListener(new ClickListener() {
 
 				/*
@@ -1159,8 +1159,7 @@ public class DecisionForm extends Form implements CacheListener {
 					String converted = GWT.getHostPageBaseURL();
 					Window.open(converted + "signing" + "?" + "appid=" + getData().getText(ApplicationMap.ID) + "&"
 							+ "docname" + "="
-							+ URL.encode(
-									ServiceConstants.DECISION_DOC_NAME + getData().getText(ApplicationMap.DECISION_NR))
+							+ URL.encode(ServiceConstants.DECISION_DOC_NAME + getData().getText(ApplicationMap.DECISION_NR))
 							+ ".pdf", "Otsus", "");
 
 				}
@@ -1177,7 +1176,7 @@ public class DecisionForm extends Form implements CacheListener {
 		 */
 		CorrectionSignButton() {
 			this.setSize("18", "18");
-			this.setStyleName("DecisionPrintButton");
+			this.setStyleName("DecisionPrintButton signButtonOiend");
 			this.addClickListener(new ClickListener() {
 
 				/*

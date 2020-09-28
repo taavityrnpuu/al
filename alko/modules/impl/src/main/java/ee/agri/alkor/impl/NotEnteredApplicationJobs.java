@@ -1,31 +1,22 @@
 package ee.agri.alkor.impl;
 
-import java.sql.SQLException;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.text.SimpleDateFormat;
 
 import org.apache.log4j.Logger;
-import org.hibernate.HibernateException;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.orm.hibernate3.support.HibernateDaoSupport;
-import org.springframework.transaction.annotation.Transactional;
+import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 
-import ee.agri.alkor.model.Product;
-import ee.agri.alkor.model.RegistryApplication;
 import ee.agri.alkor.service.IClassificatorService;
 
 public class NotEnteredApplicationJobs extends HibernateDaoSupport {
 
 	private static final Logger LOGGER = Logger.getLogger(NotEnteredApplicationJobs.class);
-
+	
 	@SuppressWarnings("unused")
 	public void deleteNotEnteredApplications() {
-		LOGGER.info("Ececuting deleteNotEnteredApplications() " + new Date().toString());
+		LOGGER.info("Executing deleteNotEnteredApplications() " + new Date().toString());
 
 		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm");
 		Date now_m7days = new Date();
@@ -86,7 +77,7 @@ public class NotEnteredApplicationJobs extends HibernateDaoSupport {
 					
 					try{ // eemaldame seose
 						PostgreUtils.update("UPDATE reg_application SET product_id = null WHERE id = "+appl_id);
-						LOGGER.info("updated reg_application "+appl_id+" set product_id = null");
+						LOGGER.info("seos updated reg_application "+appl_id+" set product_id = null");
 					}catch(Exception x){
 						x.printStackTrace();
 					}

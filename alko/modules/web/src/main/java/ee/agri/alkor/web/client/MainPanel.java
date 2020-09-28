@@ -454,7 +454,7 @@ public class MainPanel extends Form implements ValueChangeHandler<String> {
 			loginBtn.setText(getLabel2("formLogout"));
 		}
 		// logoutRequestBuilder = new RequestBuilder(RequestBuilder.POST,
-		// GWT.getModuleBaseURL() + "j_acegi_logout");
+		// GWT.getModuleBaseURL() + "j_spring_logout");
 		upper.add(loginBtn);
 		upper.setStyleName("RightLine");
 		upper.setCellWidth(logo2, "100%");

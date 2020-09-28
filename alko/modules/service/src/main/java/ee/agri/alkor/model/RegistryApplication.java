@@ -119,9 +119,7 @@ public class RegistryApplication extends ABaseBean implements IClassificatorAwar
 	/**
 	 * Taotlusega seotud riigilõivud
 	 */
-	private List<PaymentMatchingLog> paymentLogs = new ArrayList<PaymentMatchingLog>(); // väga
-																						// paha
-																						// asi
+	private List<PaymentMatchingLog> paymentLogs = new ArrayList<PaymentMatchingLog>(); // väga paha asi
 
 	private String latestPayment;
 
@@ -451,5 +449,10 @@ public class RegistryApplication extends ABaseBean implements IClassificatorAwar
 	public void setExamplReturnedBy(String examplReturnedBy) {
 		this.examplReturnedBy = examplReturnedBy;
 	}
-
+	
+	public String toString() {
+		return "ID: " + id + ", Nr: " + nr + ", Arrived: " + arrived + ", Notes: " + notes + ", LatestPayment: " + latestPayment 
+			+ ", CreatedBy: " + createdBy + ", FromXtee: " + fromXTee + ", RecievedBy: " + recievedBy + ", Submitter: " + submitterName + ", Product: " + product
+			+ ", enterpriseRep: " + enterpriseRepresentative + ", processor: " + processor;
+	}
 }

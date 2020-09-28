@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:security="http://www.springframework.org/schema/security"
+	
+	xsi:schemaLocation="
+       http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.3.xsd
+       http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-4.3.xsd
+       http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-4.3.xsd
+       http://www.springframework.org/schema/security
+       http://www.springframework.org/schema/security/spring-security-4.2.xsd">
+	
+	<security:http pattern="/index.html*" security="none"/>
+	<security:http pattern="/pub/**" security="none"/>
+	<security:http use-expressions="false">
+		<!--<security:intercept-url pattern="/index.html*" access="IS_AUTHENTICATED_ANONYMOUSLY"/>-->
+		<security:intercept-url pattern="/pub/**" access="ROLE_USER"/>
+		<security:intercept-url pattern="/app/**" access="ROLE_USER"/>
+		<security:intercept-url pattern="/images/**" access="ROLE_ANONYMOUS"/>
+		<security:intercept-url pattern="/**" access="ROLE_ANONYMOUS"/>
+		<security:form-login login-page="/index.html#LoginPage"/>
+	</security:http>
+	
+	<!--<bean id="accessDecisionManager" class="org.springframework.security.access.vote.AffirmativeBased">
+		<property name="allowIfAllAbstainDecisions" value="false"/>
+		<constructor-arg>
+			<list>
+				<bean class="org.springframework.security.access.vote.RoleVoter"/>
+				<bean class="org.springframework.security.access.vote.AuthenticatedVoter"/>
+			</list>
+		</constructor-arg>
+	</bean>  -->
+	
+	<!--<bean id="filterInvocationInterceptor" class="org.springframework.security.web.access.intercept.FilterSecurityInterceptor">-->
+		<!--<property name="authenticationManager" ref="authenticationManager"/>-->
+		<!--<property name="accessDecisionManager" ref="accessDecisionManager"/>-->
+		<!--<property name="objectDefinitionSource" ref="secureResourceFilter" />-->
+	<!--</bean>-->
+	
+	<!--<bean id="secureResourceFilter" class="org.security.SecureFilter.MySecureResourceFilter" />-->
+	<!--<security:http auto-config="true" >
+		<security:access-denied-handler error-page="/accessDenied.jsp"/>
+		<security:form-login login-page="/index.html#test" authentication-failure-url="/index.html#test" default-target-url="/index.html" />
+		<security:logout logout-success-url="/index.html"/>
+	</security:http>
+	
+	<bean id="loggerListener" class="org.springframework.security.authentication.event.LoggerListener"/>-->
+	
+	<!--<security:authentication-manager alias="authenticationManager">
+		<security:authentication-provider>
+			<jdbc-user-service data-source-ref="dataSource" users-by-username-query="SELECT U.username, U.password, U.accountEnabled AS 'enabled' FROM User U where U.username=?" authorities-by-username-query="SELECT U.username, R.name as 'authority' FROM User U JOIN Authority A ON u.id = A.userId JOIN Role R ON R.id = A.roleId WHERE U.username=?" />
+		</security:authentication-provider>
+	</security:authentication-manager>-->
+	
+	<security:user-service>
+		<security:user name="rod" password="password" authorities="ROLE_SUPERVISOR, ROLE_USER" />
+		<security:user name="dianne" password="password" authorities="ROLE_USER,ROLE_TELLER" />
+		<security:user name="scott" password="password" authorities="ROLE_USER" />
+		<security:user name="peter" password="password" authorities="ROLE_USER" />
+	</security:user-service>
+</beans>

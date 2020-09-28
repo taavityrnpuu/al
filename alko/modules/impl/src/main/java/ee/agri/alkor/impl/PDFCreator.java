@@ -12,7 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 
-import org.acegisecurity.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.InitializingBean;
 import org.xml.sax.InputSource;
@@ -89,7 +89,7 @@ public class PDFCreator implements InitializingBean {
 		File tmpFile = null;
 		// change /n to <newline />
 		insertNewLinesToExplanation(application, 0);
-
+		
 		try {
 			InputStream is = getClass().getClassLoader().getResourceAsStream(
 						docType + ".xml");
@@ -131,6 +131,7 @@ public class PDFCreator implements InitializingBean {
 			args.put("yearShortFormat", yearShortFormat);
 			args.put("this", this);
 			args.put("application", application);
+			System.out.println(application);
 			args.put("signer", signer);
 			args.put("nr", nr);
 			args.put("arrived", arrived);
@@ -183,7 +184,7 @@ public class PDFCreator implements InitializingBean {
 			} else if (IClassificatorService.DOC_TYPE_COR.equals(docType) || IClassificatorService.DOC_TYPE_EX_COR.equals(docType)) {
 				writer.setPageEvent(new CorrectionEventHelper());
 			}
-
+			
 			parser.go(document, new InputSource(new StringReader(docString)));
 			document.close();
 		} catch (Exception e) {

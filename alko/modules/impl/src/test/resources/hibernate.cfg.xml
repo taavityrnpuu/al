@@ -64,12 +64,12 @@
 			<mapping class="ee.agri.alkor.model.classes.Capacity"/>
          <event type="save-update">
             <listener class="ee.agri.alkor.impl.ClassificatorSaveListener"/>
-            <listener class="org.hibernate.event.def.DefaultSaveOrUpdateEventListener"/>
+            <!--<listener class="org.hibernate.event.internal.DefaultSaveOrUpdateEventListener"/>-->
         </event>
            
          <event type="flush-entity">
             <listener class="ee.agri.alkor.impl.ClassificatorFlushListener"/>
-            <listener class="org.hibernate.event.def.DefaultFlushEntityEventListener"/>
+            <!--<listener class="org.hibernate.event.internal.DefaultFlushEntityEventListener"/>-->
         </event>
 	</session-factory>
 

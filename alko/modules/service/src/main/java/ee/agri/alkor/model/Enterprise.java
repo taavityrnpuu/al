@@ -22,7 +22,7 @@ import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.ForeignKey;
 import org.hibernate.annotations.OptimisticLockType;
-import org.hibernate.validator.Length;
+import org.hibernate.validator.constraints.Length;
 
 import ee.agri.alkor.model.history.IHistorical;
 

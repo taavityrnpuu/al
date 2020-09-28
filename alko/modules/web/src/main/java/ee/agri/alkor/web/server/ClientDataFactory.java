@@ -826,11 +826,11 @@ public class ClientDataFactory {
 		List newList = new ArrayList();
 		if (list.size() != 0) {
 			for (Object o : list) {
+				LOGGER.info("List: " + o);
 				if (o instanceof ee.agri.alkor.xtee.MTRLicense) {
 					newList.add(create((ee.agri.alkor.xtee.MTRLicense) o));
 				} else if (o instanceof ee.agri.alkor.model.RegistryDocument) {
-					newList
-							.add(create((ee.agri.alkor.model.RegistryDocument) o));
+					newList.add(create((ee.agri.alkor.model.RegistryDocument) o));
 				} else if(o instanceof ee.agri.alkor.model.PaymentMatchingLog){
 					newList.add(create((ee.agri.alkor.model.PaymentMatchingLog) o));
 				}
@@ -862,10 +862,8 @@ public class ClientDataFactory {
      * newDoc.setId(doc.getId()); newDoc.setName(doc.getName());
      * newDoc.setCreated(doc.getCreated()); return newDoc; }
      */
-	public static int asd = 0;
 	
-	public static ee.agri.alkor.web.client.dto.RegistryDocumentMap create(
-			ee.agri.alkor.model.RegistryDocument doc) {
+	public static ee.agri.alkor.web.client.dto.RegistryDocumentMap create(ee.agri.alkor.model.RegistryDocument doc) {
 		ee.agri.alkor.web.client.dto.RegistryDocumentMap newDoc = new ee.agri.alkor.web.client.dto.RegistryDocumentMap();
 		newDoc.put(RegistryDocumentMap.ID, doc.getId());
 		newDoc.put(RegistryDocumentMap.TYPE, create(doc.getDocType()));
@@ -874,32 +872,19 @@ public class ClientDataFactory {
 		newDoc.put(RegistryDocumentMap.DELETED, doc.getDeletedBy());
 		newDoc.put(RegistryDocumentMap.ARCHIVED, doc.getArchived());
 		newDoc.put(RegistryDocumentMap.REASON,  doc.getReason());
-		
-		/*
-		 * 
-		 */
-		
+
 		try {
-			asd++;
-			if(asd == 1){
-				ResultSet rs1 = PostgreUtils.query("SELECT pg_sleep(60)");
-			}
 			ResultSet rs = PostgreUtils.query("select * from reg_doc where id="+doc.getId());
 			while (rs.next()) {
 				String publ = rs.getString("public");
 				newDoc.put(RegistryDocumentMap.PUBLIC, publ);
-				
-				
 			}
-			
 		} catch (Exception e) {
-			
-
 		}
-//		
+		
 		if (doc.getCreated() != null)
-			newDoc.put(RegistryDocumentMap.CREATED, defaultDateTimeFormat
-					.format(doc.getCreated()));
+			newDoc.put(RegistryDocumentMap.CREATED, defaultDateTimeFormat.format(doc.getCreated()));
+		
 		return newDoc;
 	}
 

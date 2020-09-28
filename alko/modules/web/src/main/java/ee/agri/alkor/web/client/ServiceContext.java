@@ -329,11 +329,6 @@ public class ServiceContext {
 		} else if (key.equals(PRODUCT_TYPE)) {
 			getClassificatorService().findClassItems(PRODUCT_TYPE,
 					new CacheAsyncCallback(key));
-		//	getClassificatorService().findClassItems2(PRODUCT_TYPE,
-		//			new NewCacheAsyncCallback(key));
-		//} else if (key.equals(PRODUCT_TYPE_OTSING)) {
-		//	getClassificatorService().findClassItems2(PRODUCT_TYPE_OTSING,
-		//			new CacheAsyncCallback(key));
 		} else if (key.equals(PACKING_MATERIAL)) {
 			getClassificatorService().findClassItems(PACKING_MATERIAL,
 					new CacheAsyncCallback(key));

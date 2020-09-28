@@ -30,18 +30,13 @@ import ee.agri.alkor.web.client.common.UIutils;
 import ee.agri.alkor.web.client.dto.ABaseDTOMap;
 import ee.agri.alkor.web.client.dto.ApplicationMap;
 import ee.agri.alkor.web.client.dto.EnterpriseMap;
-import ee.agri.alkor.web.client.dto.ProductMap;
-import ee.agri.alkor.web.client.dto.RegistryPaymentMap;
 import ee.agri.alkor.web.client.dto.SearchFilter;
 import ee.agri.alkor.web.client.dto.StateFeeFilter;
 import ee.agri.alkor.web.client.dto.StateFeeMap;
 import ee.agri.alkor.web.client.form.EnterpriseDetails;
-import ee.agri.alkor.web.client.form.SearchForm;
 import ee.agri.alkor.web.client.form.appl.ApplicationForm;
-import ee.agri.alkor.web.client.form.appl.ProductsForm;
 
 public class StateFeeForm extends Form {
-	
 	private static final String VIEW_ENTERPRISE = "view_enterprise";
 	private static final String VIEW_APPLICATION = "view_application";
 	private static final String SEARCH_FORM = "searchForm";

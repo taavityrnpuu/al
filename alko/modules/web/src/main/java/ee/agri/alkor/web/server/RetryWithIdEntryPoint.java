@@ -8,7 +8,7 @@ import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.acegisecurity.securechannel.RetryWithHttpsEntryPoint;
+import org.springframework.security.web.access.channel.RetryWithHttpsEntryPoint;
 import org.apache.log4j.Logger;
 
 public class RetryWithIdEntryPoint extends RetryWithHttpsEntryPoint {
@@ -40,7 +40,7 @@ public class RetryWithIdEntryPoint extends RetryWithHttpsEntryPoint {
             includePort = false;
         }
 
-        redirectUrl = "https://" + req.getServerName() + ((includePort) ? (":" + httpsPort) : "") + contextPath + "/j_acegi_security_check?type=id";
+        redirectUrl = "https://" + req.getServerName() + ((includePort) ? (":" + httpsPort) : "") + contextPath + "/login?type=id";
     }
 
     if (logger.isDebugEnabled()) {

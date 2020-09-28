@@ -1,51 +1,52 @@
 package ee.agri.alkor.impl;
 
-import java.awt.image.renderable.RenderableImage;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
 import java.util.Date;
 import java.util.Iterator;
+import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
 
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.GrantedAuthorityImpl;
-import org.acegisecurity.InsufficientAuthenticationException;
-import org.acegisecurity.event.authentication.AbstractAuthenticationEvent;
-import org.acegisecurity.event.authentication.AbstractAuthenticationFailureEvent;
-import org.acegisecurity.ui.WebAuthenticationDetails;
-import org.acegisecurity.userdetails.User;
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UsernameNotFoundException;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.authentication.InsufficientAuthenticationException;
+import org.springframework.security.authentication.event.AbstractAuthenticationEvent;
+import org.springframework.security.web.authentication.WebAuthenticationDetails;
+import org.springframework.web.context.request.NativeWebRequest;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.security.core.userdetails.User;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.apache.log4j.Logger;
 import org.hibernate.Session;
+import org.hibernate.Transaction;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEvent;
 import org.springframework.dao.DataAccessException;
-import org.springframework.orm.hibernate3.HibernateCallback;
-import org.springframework.util.ClassUtils;
+import org.springframework.orm.hibernate5.HibernateCallback;
 
 import ee.agri.alkor.model.AlkoUserDetails;
 import ee.agri.alkor.model.AuthenticationLog;
-import ee.agri.alkor.model.Enterprise;
 import ee.agri.alkor.model.SystemUser;
 import ee.agri.alkor.model.UserGroup;
-import ee.agri.alkor.model.XTeeId;
 import ee.agri.alkor.model.classes.AuthenticationType;
 import ee.agri.alkor.service.IAuthenticationService;
 import ee.agri.alkor.service.IClassificatorService;
-import ee.agri.alkor.service.SessionFilter;
 
 
 /**
- * Implements necessary methods for Acegi security framework.
+ * Implements necessary methods for Spring security framework.
  * 
  * @author ivar
  * 
  */
 public class AuthenticationServiceImpl extends BaseBO implements IAuthenticationService {
-
 	private static Logger LOGGER = Logger.getLogger(AuthenticationServiceImpl.class);
-
+    
 	public SystemUser loadUserByName(String userName) throws UsernameNotFoundException, DataAccessException {
 		SystemUser user = null;
 		try {
@@ -98,9 +99,12 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 				}
 				
 				user = findUser(userName);
+				
 				details = new AlkoUserDetails(userName, user.getPassword(), user.getPerson().getFirstName(), user.getPerson().getLastName(),
 						idCode, makeAuthorities(user), user);
 				((AlkoUserDetails)details).setFromCas(fromCas);
+				
+				LOGGER.info("USER: " + details.getUsername() + ", " + details.getPassword() + ", " + details.getAuthorities().toString());
 				return details;
 			//}
 		} catch (Exception e) {
@@ -112,7 +116,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 
 	private SystemUser findUser(String username) throws UsernameNotFoundException {
 		try {
-			SystemUser user = (SystemUser) getHibernateTemplate().find("from SystemUser u where u.name = ? and u.active = true", username).get(0);
+			SystemUser user = (SystemUser) getHibernateTemplate().find("from SystemUser u where u.name = ?0 and u.active = true", username).get(0);
 			return user;
 		} catch (IndexOutOfBoundsException e) {
 			e.printStackTrace();
@@ -163,7 +167,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 				sql = "DELETE FROM user_session where id = " + id;
 				PostgreUtils.delete(sql);
 
-				user = (SystemUser) getHibernateTemplate().find("from SystemUser u where u.person.registrationId = ? and u.active = true", idCode).get(0);
+				user = (SystemUser) getHibernateTemplate().find("from SystemUser u where u.person.registrationId = ?0 and u.active = true", idCode).get(0);
 
 				details = new AlkoUserDetails(user.getName(), user.getPassword(), user.getPerson().getFirstName(), user.getPerson().getLastName(),
 						idCode, makeAuthorities(user), user);			
@@ -256,32 +260,16 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 	public void onApplicationEvent(ApplicationEvent event) {
 		if (!(event instanceof AbstractAuthenticationEvent))
 			return;
-
+		
 		final AbstractAuthenticationEvent authEvent = (AbstractAuthenticationEvent) event;
 		final String userName = authEvent.getAuthentication().getName();
 		Object details = authEvent.getAuthentication().getDetails();
 		Object principal = authEvent.getAuthentication().getPrincipal();
-
+		
 		if(!(principal instanceof AlkoUserDetails) || userName == null || userName.replaceAll(" ", "").length() == 0){
 			return;
 		}
 		
-		
-		String message = null;
-		if (LOGGER.isDebugEnabled()) {
-			message = "Authentication event:[" + ClassUtils.getShortName(authEvent.getClass()) + "] " + userName + " details:[" + details + "] principal: ["
-					+ principal + "]";
-		}
-		
-		//System.out.println(message);
-		
-//		if (event instanceof AbstractAuthenticationFailureEvent) {
-//			message = message + " exception:[" + ((AbstractAuthenticationFailureEvent) event).getException().getMessage() + "]";
-//			LOGGER.info(message);
-//			return;
-//		} else if (LOGGER.isDebugEnabled())
-//			LOGGER.debug(message);
-
 		// autentimise ajaaken +/- 2 sekundit
 		final Calendar authTimeStart = Calendar.getInstance();
 		authTimeStart.add(Calendar.SECOND, -2);
@@ -289,57 +277,70 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		authTimeEnd.add(Calendar.SECOND, 2);
 
 		// autentimise tüüp
-		final AuthenticationType auhtType = new AuthenticationType();
-		Object authenticationSrc = authEvent.getSource();
-//		if ("EIT".equals(userName)) { // EIT-kasutaja
-//			auhtType.setCode(IClassificatorService.AUTH_TYPE_EIT);
-//		} else 
+		AuthenticationType authObject;
 		
-		//System.out.println("Authentication event:[" + ClassUtils.getShortName(authEvent.getClass()) + "] " + userName + " details:[" + details + "] principal: ["+ principal + "]");
-		
-		/*
-		if (authenticationSrc.getClass().getName().indexOf("Username") >= 0) { // vormi kaudu sisenemine
-			auhtType.setCode(IClassificatorService.AUTH_TYPE_FORM);
-		} else { // id-kaardiga
-			auhtType.setCode(IClassificatorService.AUTH_TYPE_CERT);
-		}
-		*/
-
+		String code;
 		if (!((AlkoUserDetails)principal).isFromCas()) { // vormi kaudu sisenemine
-			auhtType.setCode(IClassificatorService.AUTH_TYPE_FORM);
+			code = IClassificatorService.AUTH_TYPE_FORM;
 		} else { // id-kaardiga
-			auhtType.setCode(IClassificatorService.AUTH_TYPE_CERT);
+			code = IClassificatorService.AUTH_TYPE_CERT;
 		}
 		
-		LOGGER.debug("authType: " + auhtType.getCode());
+		@SuppressWarnings("unchecked")
+		List<AuthenticationType> authTypeQuery = (List<AuthenticationType>)getHibernateTemplate().find("from AuthenticationType c where c.code = ?0", code);
+		if(!authTypeQuery.isEmpty()) {
+			authObject = authTypeQuery.get(0);
+			System.out.println(authObject.toString());
+		} else {
+			authObject = new AuthenticationType();
+			authObject.setCode(code);
+		}
+		
+		LOGGER.debug("authType: " + authObject.toString());
 
 		// IP-aadress
 		/*
 		 * Fallback, et ip kogu aeg olemas oleks (tekitab logides probleeme)
 		 */
-		String remoteAddress = "127.0.0.1";
-		if (details instanceof WebAuthenticationDetails) {
+		String remoteAddress = "";
+	    RequestAttributes attributes = RequestContextHolder.getRequestAttributes();
+	    if(RequestContextHolder.getRequestAttributes() != null) {
+	        HttpServletRequest req = ((ServletRequestAttributes) attributes).getRequest();
+	        if(req != null) {
+	        	remoteAddress = req.getHeader("X-Forwarded-For");
+	    		if (remoteAddress == null || "".equals(remoteAddress)) {
+	    			remoteAddress = req.getRemoteAddr();
+	    		}
+	    	}
+	    }
+		
+		remoteAddress = remoteAddress != null && remoteAddress.contains(",") ? remoteAddress.split(",")[0] : remoteAddress;
+		if(remoteAddress == null && details instanceof WebAuthenticationDetails) {
 			WebAuthenticationDetails webAuthDetails = (WebAuthenticationDetails) details;
 			remoteAddress = webAuthDetails.getRemoteAddress();
-			LOGGER.debug("remoteAddress: " + remoteAddress);
 		}
+		if(remoteAddress == null || "".equals(remoteAddress)) {
+			remoteAddress = "127.0.0.1";
+		}
+		
+		LOGGER.info("remoteAddress: " + remoteAddress);
 		final String clientAddress = remoteAddress;
-
+		
 		// kasutajaandmete objekt
 		AlkoUserDetails userObject = null;
 		if (principal instanceof AlkoUserDetails) {
 			userObject = (AlkoUserDetails) principal;
 		}
+		
+		final AuthenticationType auhtType = authObject;
 		final AlkoUserDetails userDetails = userObject;
 
 		try {
-			// getHibernateTemplate().setEntityInterceptor(new
-			// AuditInterceptor());
-			getHibernateTemplate().execute(new HibernateCallback() {
+			getHibernateTemplate().execute(new HibernateCallback<Object>() {
 				public Object doInHibernate(Session session) {
 
 					AuthenticationLog authLogEntry = new AuthenticationLog();
-
+					
 					if ("EIT".equals(userName) && userDetails != null) { // kui kasutaja tuleb läbi EITi
 						LOGGER.debug("EIT kasutaja!");
 						authLogEntry.setUserFullName(getEnterpriseName(userDetails.getRegCode(), // registrikoodi järgi ettevõtte nimi
@@ -348,7 +349,7 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 
 					} else {
 						Iterator it = session
-								.createQuery("select u.person.firstName, u.person.lastName, u.person.registrationId from SystemUser u where u.name = ?")
+								.createQuery("select u.person.firstName, u.person.lastName, u.person.registrationId from SystemUser u where u.name = ?0")
 								.setString(0, userName).iterate();
 
 						if (it.hasNext()) {
@@ -359,13 +360,13 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 							} while (it.hasNext());
 						}
 					}
-
-//					LOGGER.debug("authLogEntry fullName:[" + authLogEntry.getUserFullName() + "] registrationId:[" + userDetails.getIdCode() + "]");
+					
 					// Check for existing log entry.
 					Iterator matchList = session
-							.createQuery("select count(*) from AuthenticationLog l where l.userFullName like ? and l.time > ? and l.time < ?")
+							.createQuery("select count(*) from AuthenticationLog l where l.userFullName like ?0 and l.time > ?1 and l.time < ?2")
 							.setString(0, authLogEntry.getUserFullName()).setTimestamp(1, authTimeStart.getTime()).setTimestamp(2, authTimeEnd.getTime())
 							.list().iterator();
+					
 					// AuthEvent already saved.
 					if (matchList.hasNext()) {
 						Long count = (Long) matchList.next();
@@ -378,25 +379,10 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 							if (LOGGER.isDebugEnabled())
 								LOGGER.debug("AuthlogEntry for " + userName + " already saved");
 						}
-					} else
+					} else {
+						System.out.println("return out");
 						return null;
-					// AuthenticationLog authLogPre = new AuthenticationLog();
-					//
-					// authLogPre.setClientIP("127.0.0.1");
-					// authLogPre.setRegistrationId("PSEUDO");
-					// authLogPre.setTime(new Date());
-					// authLogPre.setType(auhtType);
-					// authLogPre.setUserFullName("PSEUDO LOGIMINE ALGUS");
-					// session.save(authLogPre);
-					//
-					// AuthenticationLog authLogPre2 = new AuthenticationLog();
-					//
-					// // authLogPre2.setClientIP("127.0.0.1");
-					// authLogPre2.setRegistrationId("PSEUDO");
-					// authLogPre2.setTime(new Date());
-					// authLogPre2.setType(auhtType);
-					// authLogPre2.setUserFullName("PSEUDO LOGIMINE tyhi");
-					// session.save(authLogPre2);
+					}
 
 					if(authLogEntry.getUserFullName() == null || authLogEntry.getUserFullName().replaceAll(" ", "").length() == 0){
 						return null;
@@ -404,20 +390,17 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 					
 					authLogEntry.setClientIP(clientAddress);
 					authLogEntry.setTime(new Date());
-					if (auhtType.getCode() != null)
+					if (auhtType.getCode() != null) {
 						authLogEntry.setType(auhtType);
-					LOGGER.debug("Saving authlog entry for " + authLogEntry.getUserFullName());
-					session.save(authLogEntry);
-					// AuthenticationLog authLogPre3 = new AuthenticationLog();
-					//
-					// authLogPre3.setClientIP("127.0.0.1");
-					// authLogPre3.setRegistrationId("PSEUDO");
-					// authLogPre3.setTime(new Date());
-					// authLogPre3.setType(auhtType);
-					// authLogPre3.setUserFullName("PSEUDO LOGIMINE LOPP");
-					// session.save(authLogPre3);
-
+						session.saveOrUpdate(auhtType);
+					}
+					
+					System.out.println("Saving authlog entry for " + authLogEntry.getUserFullName());
+					session.saveOrUpdate(authLogEntry);
+					Transaction tx = session.beginTransaction();
 					session.flush();
+					tx.commit();
+					
 					return null;
 				}
 			});
@@ -445,21 +428,21 @@ public class AuthenticationServiceImpl extends BaseBO implements IAuthentication
 		return nullValue;
 	}
 
-	private GrantedAuthority[] makeAuthorities(SystemUser user) {
-		GrantedAuthority[] roles = null;
+	private Collection<GrantedAuthority> makeAuthorities(SystemUser user) {
+		ArrayList<GrantedAuthority> roles = null;
 		if (user.getName().equals(IClassificatorService.EIT_USERNAME)) {
-			roles = new GrantedAuthority[1];
-			roles[0] = new GrantedAuthorityImpl("ROLE_EIT_GRP");
+			roles = new ArrayList<GrantedAuthority>();
+			roles.add(new SimpleGrantedAuthority("ROLE_EIT_GRP"));
 		} else if (user.getGroups().size() == 0) {
 			// throw new InsufficientAuthenticationException("");
-			// Lisame ANONYMOUS rolli et acegi oleks happy
-			roles = new GrantedAuthority[1];
-			roles[0] = new GrantedAuthorityImpl("ROLE_ANONYMOUS");
+			// Lisame ANONYMOUS rolli et spring oleks happy
+			roles = new ArrayList<GrantedAuthority>();
+			roles.add(new SimpleGrantedAuthority("ROLE_ANONYMOUS"));
 		} else {
-			roles = new GrantedAuthority[user.getGroups().size()];
+			roles = new ArrayList<GrantedAuthority>();
 			int i = 0;
 			for (UserGroup group : user.getGroups()) {
-				roles[i++] = new GrantedAuthorityImpl("ROLE_" + group.getGroupClass().getCode());
+				roles.add(new SimpleGrantedAuthority("ROLE_" + group.getGroupClass().getCode()));
 			}
 		}
 		return roles;

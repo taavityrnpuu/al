@@ -6,6 +6,7 @@ import java.sql.Timestamp;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Objects;
 
 public class ResultSet {
 
@@ -72,8 +73,9 @@ public class ResultSet {
 	}
 
 	public Float getFloat(String key) {
-		if (objects.get(index) != null && !objects.get(index).equals("null")) {
+		if(objects.get(index) != null && !Objects.isNull(objects.get(index).get(key))) {
 			try {
+				System.out.println(objects.get(index).get(key).toString());
 				if (objects.get(index).get(key) instanceof Float) {
 					return (Float) objects.get(index).get(key);
 				}
@@ -86,7 +88,7 @@ public class ResultSet {
 	}
 
 	public Long getLong(String key) {
-		if (objects.get(index) != null && !objects.get(index).equals("null")) {
+		if (objects.get(index) != null && !Objects.isNull(objects.get(index).get(key))) {
 			try {
 				if (objects.get(index).get(key) instanceof Long) {
 					return (Long) objects.get(index).get(key);
@@ -103,7 +105,7 @@ public class ResultSet {
 	}
 
 	public Integer getInteger(String key) {
-		if (objects.get(index) != null && !objects.get(index).equals("null")) {
+		if (objects.get(index) != null && !Objects.isNull(objects.get(index).get(key))) {
 			try {
 				if (objects.get(index).get(key) instanceof Integer) {
 					return (Integer) objects.get(index).get(key);
@@ -117,7 +119,7 @@ public class ResultSet {
 	}
 
 	public Double getDouble(String key) {
-		if (objects.get(index) != null && !objects.get(index).equals("null")) {
+		if (objects.get(index) != null && !Objects.isNull(objects.get(index).get(key))) {
 			if (objects.get(index).get(key) instanceof Double) {
 				return (Double) objects.get(index).get(key);
 			}
@@ -161,5 +163,9 @@ public class ResultSet {
 			return objects.get(index).get(key);
 		}
 		return null;
+	}
+	
+	public Map<Integer, Map<String, Object>> getFullSet() {
+		return objects;
 	}
 }

@@ -2259,8 +2259,8 @@ ee.riik.xtee.alkor2.producers.producer.alkor2.AretoPortType {
             xId.setCreated(new Date());
             registryService.saveXid(xId);
             LOGGER.debug(xId);
-            result.setUrl(new URI(baseURI + "/j_acegi_security_check?nonce="+header.getId()));
-            LOGGER.debug("URI XTEELE:" + baseURI + "/j_acegi_security_check?nonce="+header.getId());
+            result.setUrl(new URI(baseURI + "/login?nonce="+header.getId()));
+            LOGGER.debug("URI XTEELE:" + baseURI + "/login?nonce="+header.getId());
          }
          putHeader(header);
       } catch (Exception e) {

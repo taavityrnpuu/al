@@ -14,7 +14,7 @@ import org.hibernate.FlushMode;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.springframework.orm.hibernate3.HibernateCallback;
+import org.springframework.orm.hibernate5.HibernateCallback;
 
 import ee.agri.alkor.impl.BaseBO;
 import ee.agri.alkor.impl.ClassificatorServiceImpl;
@@ -171,7 +171,7 @@ public class HistoryUtil {
 					if(o != null) {
 						if (Classificator.class.isAssignableFrom(clazz)) {
 							o = ((Classificator)o).getName() != null ? ((Classificator)o).getName() : ClassificatorServiceImpl.findClassItem(session
-									.getSession(EntityMode.POJO), clazz,
+									.getSession(), clazz,
 									((Classificator) o).getCode()).getName();
 							invokeMethod(methodName, history, o, String.class);
 						} else if (classes.get(clazz) != null) {

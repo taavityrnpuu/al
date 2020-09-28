@@ -10,7 +10,7 @@
 		<property name="queringPersonRegNr" value="@xtee.queringPersonRegNr@"/>
 	  </bean>
 	
-	<bean id="velocityEngine"
+	<!--<bean id="velocityEngine"
 		class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
 		<property name="velocityProperties">
 			<value>
@@ -18,5 +18,5 @@
 				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
 			</value>
 		</property>
-	</bean>
+	</bean>-->
 </beans>

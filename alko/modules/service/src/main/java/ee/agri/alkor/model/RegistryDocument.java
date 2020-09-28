@@ -204,7 +204,7 @@ public class RegistryDocument extends ABaseBean
 		this.contentType = contentType;
 	}
 	@ManyToOne (cascade = CascadeType.REFRESH)
-	@JoinColumn(name="DOC_APPL_ID")
+	@JoinColumn(name="DOC_APPL_ID", nullable=true)
 	@ForeignKey(name="FK_DOC_APPL")
 	public RegistryApplication getApplication() {
 		return application;
@@ -271,6 +271,8 @@ public class RegistryDocument extends ABaseBean
 		return path.substring(1 + path.lastIndexOf((String)System.getProperty("file.separator")));
 	}
 
-
+	public String toString() {
+		return "RegistryDocumen[id: " + getId() + ", name: " + getName() + "]";
+	}
 
 }

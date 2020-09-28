@@ -197,8 +197,8 @@ public class Classificator extends ABaseBean implements IHistorical{
 	
 	@Override
 	public String toString() {
-		return "Classificator - code: "+ getCode() +
-			" ,category: "+ getCategoryName() +
-			" ,id: " + getId();
+		return "Classificator[id: " + getId() + ", categoryName: " + getCategoryName() + ", code: " + getCode() + ", name: " + getName() + 
+			", validFrom:" + getValidFrom() +  ", validUntil: " + getValidUntil() + ", systemClass: " + getSystemClass() +
+			", active: " + getActive() + ", orderNr: " + getOrderNr() + ", orderNrVta: " + getOrderNrVta() + "]";
 	}
 }

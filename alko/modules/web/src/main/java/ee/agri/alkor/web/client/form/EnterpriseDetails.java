@@ -284,8 +284,7 @@ public class EnterpriseDetails extends Form implements CacheListener{
 		details.setCellPadding(0);
 		details.setWidth("400px");
 
-		Label detailsTitleLabel = new Label(
-				getLabel("enterpriseDetailsTableTitle"));//"Ettevõtte andmed");
+		Label detailsTitleLabel = new Label(getLabel("enterpriseDetailsTableTitle"));
 		detailsTitleLabel.setStyleName("Title");
 		details.setWidget(0, 0, detailsTitleLabel);
 		details.setWidget(1, 0, UIutils.createSpacer(400, 1));
@@ -297,22 +296,12 @@ public class EnterpriseDetails extends Form implements CacheListener{
 		representative.setCellSpacing(0);
 		representative.setCellPadding(0);
 
-		/*Label representativeTitleLabel = new Label(
-				getLabel("enterpriseRepresentativeTableTitle"));//"Ettevõtte esindaja");
-		representativeTitleLabel.setStyleName("Title");
-		representative.setWidget(0, 0, representativeTitleLabel);
-		representative.setWidget(1, 0, UIutils.createSpacer(400, 1));
-		representative.setWidget(2, 0, representativeTable);
-		representative.getFlexCellFormatter().setHorizontalAlignment(2, 0,
-				HasHorizontalAlignment.ALIGN_RIGHT);*/
-
 		FlexTable address = new FlexTable();
 		address.setCellSpacing(0);
 		address.setCellPadding(0);
 		address.setWidth("400px");
 
-		Label addressTitleLabel = new Label(
-				getLabel("enterpriseAddressTableTitle"));//"Ettevõtte konktaktaadress");
+		Label addressTitleLabel = new Label(getLabel("enterpriseAddressTableTitle"));
 		addressTitleLabel.setStyleName("Title");
 		address.setWidget(0, 0, addressTitleLabel);
 		address.setWidget(1, 0, UIutils.createSpacer(400, 1));
@@ -572,6 +561,7 @@ public class EnterpriseDetails extends Form implements CacheListener{
         	 } else {
         		 text = getLabel("enterpriseDataInserted");
         	 }
+        	 
         	 ServiceContext.getInstance().getRegistryService().saveOrUpdate(
         			 (EnterpriseMap) cleanDataBeforeSave(getData()), this);
          }

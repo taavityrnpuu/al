@@ -12,12 +12,10 @@
 		<property name="dialect">@db.dialect@</property>
 		<property name="show_sql">false</property>
         <property name="max_fetch_depth">3</property>
-			<property name="hibernate.session_factory_name">java:alkorHS</property>
-			<property name="hibernate.transaction.factory_class">org.hibernate.transaction.JTATransactionFactory</property>
-			<property name="hibernate.transaction.manager_lookup_class">org.hibernate.transaction.JBossTransactionManagerLookup</property>
-			<property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
+		<property name="hibernate.transaction.coordinator_class">jdbc</property>
+		<property name="hibernate.transaction.jta.platform">ee.agri.alkor.impl.AtomikosJtaPlatform</property>
+		<property name="cache.provider_class">org.hibernate.cache.EhCacheProvider</property>
         <property name="hibernate.bytecode.use_reflection_optimizer">true</property>
-
 
         <property name="hibernate.c3p0.min_size">5</property>
   		<property name="hibernate.c3p0.max_size">300</property>
@@ -109,11 +107,11 @@
 
         <event type="save-update">
             <listener class="ee.agri.alkor.impl.ClassificatorSaveListener"/>
-            <listener class="org.hibernate.event.def.DefaultSaveOrUpdateEventListener"/>
+            <!--<listener class="org.hibernate.event.internal.DefaultSaveOrUpdateEventListener"/>-->
         </event>
         <event type="flush-entity">
             <listener class="ee.agri.alkor.impl.ClassificatorFlushListener"/>
-            <listener class="org.hibernate.event.def.DefaultFlushEntityEventListener"/>
+            <!--<listener class="org.hibernate.event.internal.DefaultFlushEntityEventListener"/>-->
         </event>
 
         <!-- Add delete event handlers -->

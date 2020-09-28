@@ -1,6 +1,6 @@
 package ee.agri.alkor.web.server;
 
-import org.acegisecurity.AuthenticationException;
+import org.springframework.security.core.AuthenticationException;
 
 public class NoCertificateException extends AuthenticationException {
 

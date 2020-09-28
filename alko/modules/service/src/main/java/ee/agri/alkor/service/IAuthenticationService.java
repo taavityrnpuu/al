@@ -1,7 +1,7 @@
 package ee.agri.alkor.service;
 
-import org.acegisecurity.userdetails.UserDetails;
-import org.acegisecurity.userdetails.UserDetailsService;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.context.ApplicationListener;
 
 import ee.agri.alkor.model.SystemUser;

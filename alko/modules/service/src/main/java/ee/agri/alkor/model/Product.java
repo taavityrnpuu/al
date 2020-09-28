@@ -176,7 +176,7 @@ public class Product  extends ABaseBean
 	@javax.persistence.SequenceGenerator(
     name="PRODUCT_SEQ",
     sequenceName="PRODUCT_SEQ",
-    allocationSize=50
+    allocationSize=1
 	)
     public Long getId() {
         return id;
@@ -479,7 +479,8 @@ public class Product  extends ABaseBean
 	public void setInvalidProduct(String invalidProduct) {
 		this.invalidProduct = invalidProduct;
 	}*/
-
-
-
+	
+	public String toString() {
+		return "ID: " + id + ", Code: " + code + ", Name: " + name + ", Volume: " + packingVolume + ", EthanolRate: " + ethanolRate + ", notes: " + notes;
+	}
 }

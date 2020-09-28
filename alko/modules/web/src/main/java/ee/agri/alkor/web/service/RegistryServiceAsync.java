@@ -2,17 +2,14 @@ package ee.agri.alkor.web.service;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 
-import ee.agri.alkor.model.RegistryApplication;
 import ee.agri.alkor.web.client.dto.ApplicationMap;
 import ee.agri.alkor.web.client.dto.EnterpriseMap;
 import ee.agri.alkor.web.client.dto.FAQMap;
 import ee.agri.alkor.web.client.dto.NewsMap;
 import ee.agri.alkor.web.client.dto.ProductMap;
-import ee.agri.alkor.web.client.dto.ReasonMap;
 import ee.agri.alkor.web.client.dto.RegistryEntryMap;
 import ee.agri.alkor.web.client.dto.RegistryPaymentMap;
 import ee.agri.alkor.web.client.dto.SearchFilter;
-import java.util.HashMap;
 
 /**
  *
@@ -165,4 +162,5 @@ public interface RegistryServiceAsync {
    void enterpriseChanged(Long taotlejaId, Long applId, AsyncCallback asyncCallback);
 
    void isExtendingAllowed(String applicationNr, AsyncCallback<Boolean> asyncCallback);
+   
 }

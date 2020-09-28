@@ -1,6 +1,7 @@
 package ee.agri.alkor.model;
 
 import java.io.Serializable;
+import java.util.Arrays;
 import java.util.Date;
 
 import javax.persistence.CascadeType;
@@ -110,5 +111,11 @@ public class AuthenticationLog
 
 	public void setUserFullName(String userFullName) {
 		this.userFullName = userFullName;
+	}
+	
+	public String toString() {
+		return "Person [id=" + id + ", name=" + userFullName + ", regId="
+			+ registrationId + ", time=" + time + ", ip=" + clientIP
+			+ ", type=" + type.toString() + "]";
 	}
 }

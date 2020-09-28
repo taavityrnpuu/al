@@ -20,6 +20,7 @@ public class VelocityTemplateProcessor {
 	{
 		Properties props = new Properties();
 		props.put(RuntimeConstants.ENCODING_DEFAULT, "UTF-8");
+		props.put("runtime.log", System.getProperty("catalina.base") + "/logs/velocity.log");
 		props.put("resource.loader", "class");
 		props.put("class.resource.loader.class", "org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader");
 		try {

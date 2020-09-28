@@ -1,13 +1,14 @@
 package ee.agri.alkor.web.server;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.Set;
 
 import ee.agri.alkor.impl.ResultSet;
 import javax.servlet.http.HttpSession;
 
-import org.acegisecurity.GrantedAuthority;
-import org.acegisecurity.context.SecurityContextHolder;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.apache.log4j.Logger;
 import org.gwtwidgets.server.spring.GWTSpringController;
 
@@ -25,6 +26,7 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 
 	public UserInfo getUserInfo() {
 		Object curUser = AuthenticationServiceDelegate.getCurrentUser();
+		
 		try{
 			if (curUser == null){
 				LOGGER.debug("curUser is NULL");
@@ -82,17 +84,17 @@ public class AuthInfoServiceImpl implements AuthInfoService {
 				
 				Set roles = new HashSet();
 				try{
-					GrantedAuthority[] authRoles = userDetails.getAuthorities();
+					Collection<GrantedAuthority> authRoles = userDetails.getAuthorities();
 					if(authRoles != null){
-						for (int i = 0; i < authRoles.length; i++) {
-							roles.add(authRoles[i].getAuthority());
+						for(GrantedAuthority auth : authRoles) {
+							roles.add(auth.getAuthority());
 						}
 					}
 				}catch(Exception x){
 					x.printStackTrace();
 				}
 				user.setRoles(roles);
-
+				LOGGER.debug(user.getFirstName() + " " + user.getLastName());
 				// PersonMap p =(PersonMap) user.getUserManageMap().get("person");
 				//
 				// System.out.println("UM: " + p.get("registrationId"));

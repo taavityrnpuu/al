@@ -2,6 +2,7 @@ package ee.agri.alkor.web.server;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
@@ -10,9 +11,7 @@ import java.net.SocketException;
 import java.net.URLDecoder;
 import java.security.Principal;
 import java.sql.Connection;
-import java.sql.DriverManager;
 import ee.agri.alkor.impl.ResultSet;
-import java.sql.Statement;
 import java.util.Date;
 import java.util.Iterator;
 import java.util.List;
@@ -23,9 +22,9 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
-import org.acegisecurity.context.SecurityContextHolder;
-import org.acegisecurity.providers.UsernamePasswordAuthenticationToken;
-import org.acegisecurity.providers.x509.X509AuthenticationToken;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+//import org.acegisecurity.providers.x509.X509AuthenticationToken;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -33,103 +32,23 @@ import org.apache.log4j.Logger;
 
 import ee.agri.alkor.model.AlkoUserDetails;
 import ee.agri.alkor.model.RegistryDocument;
-import ee.agri.alkor.service.IClassificatorService;
 import ee.agri.alkor.service.IRegistryService;
 import ee.agri.alkor.service.SearchFilter;
 import ee.agri.alkor.service.ServiceFactory;
-import ee.agri.alkor.web.service.RegistryService;
 import ee.agri.alkor.web.service.ServiceConstants;
 import ee.agri.alkor.web.service.SystemException;
 
 import java.io.BufferedReader;
-import java.io.ByteArrayOutputStream;
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.InputStream;
 import java.io.StringReader;
-import java.math.BigDecimal;
-import java.math.BigInteger;
-import java.rmi.RemoteException;
-import java.security.MessageDigest;
-import java.text.DecimalFormat;
-import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.Date;
 import java.util.HashMap;
-import java.util.Iterator;
-import java.util.List;
 import java.util.Map;
 
-import javax.activation.DataHandler;
-import javax.xml.rpc.holders.StringHolder;
-
-import org.apache.axis.AxisFault;
-import org.apache.axis.Message;
-import org.apache.axis.MessageContext;
-import org.apache.axis.attachments.AttachmentPart;
-import org.apache.axis.attachments.Attachments;
-import org.apache.axis.message.SOAPEnvelope;
-import org.apache.axis.message.SOAPHeaderElement;
-import org.apache.axis.types.URI;
-import org.apache.log4j.Logger;
-
-import com.lowagie.text.pdf.codec.Base64;
-
-import ee.agri.alkor.model.Address;
-import ee.agri.alkor.model.ContactInfo;
-import ee.agri.alkor.model.Enterprise;
-import ee.agri.alkor.model.Person;
-import ee.agri.alkor.model.Product;
-import ee.agri.alkor.model.ProductMoveReportView;
-import ee.agri.alkor.model.ProductMovementReport;
-import ee.agri.alkor.model.ProductMovementReportRecord;
-import ee.agri.alkor.model.RegistryApplication;
-import ee.agri.alkor.model.RegistryDocument;
-import ee.agri.alkor.model.RegistryEntry;
-import ee.agri.alkor.model.RegistryPayment;
-import ee.agri.alkor.model.XTeeId;
-import ee.agri.alkor.model.classes.ApplicationState;
-import ee.agri.alkor.model.classes.ApplicationType;
-import ee.agri.alkor.model.classes.BottleColor;
-import ee.agri.alkor.model.classes.BottleShape;
-import ee.agri.alkor.model.classes.Capacity;
-import ee.agri.alkor.model.classes.Classificator;
-import ee.agri.alkor.model.classes.CorkColor;
-import ee.agri.alkor.model.classes.CorkMaterial;
-import ee.agri.alkor.model.classes.CorkShape;
-import ee.agri.alkor.model.classes.Country;
-import ee.agri.alkor.model.classes.PackingMaterial;
-import ee.agri.alkor.model.classes.ProductType;
-import ee.agri.alkor.model.classes.StockingColor;
-import ee.agri.alkor.service.IClassificatorService;
-import ee.agri.alkor.service.IRegistryService;
-import ee.agri.alkor.service.IUserManagerService;
-import ee.agri.alkor.service.SearchFilter;
-import ee.agri.alkor.service.ServiceFactory;
-
-import ee.agri.alkor.xtee.Messages;
-import ee.agri.alkor.xtee.impl.XteeHeaderMap;
-import ee.riik.x_tee.xsd.xtee_xsd.holders.ArrayOfStringHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.AddEnterpriseResponseHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.AppFollowResponseHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.ApplicationQueryHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.ApplicationResponseHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.ApplicationsResponseHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.Eitlaadib_vastusHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.EnterpriseHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.EnterpriseQueryHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.EnterpriseResponseHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.ExtendResponseHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.UpdateApplicationDocumentsResponseHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.UpdateApplicationQueryHolder;
-import ee.riik.xtee.alkor2.producers.producer.alkor2.holders.UpdateApplicationResponseHolder;
-
-import java.util.Enumeration;
 import java.io.PrintWriter;
+
+import org.springframework.http.HttpHeaders;
 
 import ee.agri.alkor.impl.PostgreUtils;
 /**
@@ -163,7 +82,7 @@ public class DocumentServiceServlet extends HttpServlet {
 					String regNr = null;
 					String periodYear = null;
 					String periodMonth = null;
-		
+					
 					FileItem upLoadFileItem = null;
 					List items = upload.parseRequest(req);
 					Iterator iter = items.iterator();
@@ -232,11 +151,10 @@ public class DocumentServiceServlet extends HttpServlet {
 		}
 	}
 
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, java.io.IOException {
+	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		downLoadFile(req, resp);
 	}
-
-	// @SupressWarnings("unchecked")
+	
 	private void upLoadFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
 
 		DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -247,10 +165,6 @@ public class DocumentServiceServlet extends HttpServlet {
 		String aval = req.getParameter("pub");
 
 		try {
-			/*
-			 * Pole ehk vaja if (!ServletFileUpload.isMultipartContent(req))
-			 * throw new SystemException("Not an multipart upload request");
-			 */
 			String docType = null;
 			String docLang = null;
 
@@ -318,56 +232,44 @@ public class DocumentServiceServlet extends HttpServlet {
 				Writer writer = resp.getWriter();
 				writer.write(response);
 				resp.flushBuffer();
-			} else
+			} else {
+				System.out.println("Fail puudu või vigane fail");
 				throw new SystemException("Fail puudu või vigane fail");
+			}
 
 		} catch (Exception e) {
 			throw new ServletException(e);
 		}
 	}
-
-	private void downLoadFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-
+	
+	private void downLoadFile(HttpServletRequest req, HttpServletResponse resp) throws IOException {
 		Principal user = req.getUserPrincipal();
 		String action = req.getParameter(ServiceConstants.DOC_ACTION_PARM);
-
+		
 		try {
-			if (action == null) {
-				LOGGER.info("downLoadFile action parameter is null");
-			}
-			if (user == null) {
-				LOGGER.info("downLoadFile user is null");
-
+			if(user == null) {
 				try { // RK: äkki siit kaudu saab andmed alati kätte?
 					user = (UsernamePasswordAuthenticationToken) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-					LOGGER.debug("Katsetuse tulemus = " + user); // null või
-																	// mitte-null
-																	// ?
 				} catch (Exception e) {
-					LOGGER.debug("Katsetus ebaõnnestus!", e);
+					System.out.println(e.getMessage());
+					e.printStackTrace();
 				}
-
 			}
+			
 			String docId = req.getParameter(ServiceConstants.DOCUMENT_ID);
 			String appNrTmp = req.getParameter(ServiceConstants.DOC_APPNR_PARM);
 			String appId = req.getParameter(ServiceConstants.DOC_APPID_PARM);
 			String appNr = appNrTmp != null ? appNrTmp : null;
-			appNrTmp = null;
+			
 			IRegistryService service = ServiceFactory.getRegistryService();
 			RegistryDocument doc = null;
 			String contentType = null;
 			byte[] content = null;
-			if (ServiceConstants.DOC_ACTION_SAVE.equals(action) && (docId != null)) {
+			
+			if(ServiceConstants.DOC_ACTION_SAVE.equals(action) && (docId != null)) {
 				try {
 					if (user == null) {
-						// if (!publicDoc(new Long(docId),
-						// service.findPublicDocuments()))
-						// throw new
-						// RuntimeException("User has no permission to download this file!");
-						// else
-						// {
 						doc = service.getDocument(new Long(docId));
-						// }
 					} else {
 						AlkoUserDetails det = geUserDetails(user);
 						if (ServiceConstants.EIT_USERNAME.equals(det.getUsername())) {
@@ -376,12 +278,17 @@ public class DocumentServiceServlet extends HttpServlet {
 							doc = service.getDocument(new Long(docId));
 						}
 					}
-				} catch (ClassCastException e) {
-					LOGGER.error(e.getMessage(), e);
+				} catch(RuntimeException e) {
+					if(e.getCause().getClass() == FileNotFoundException.class) {
+						resp.sendError(HttpServletResponse.SC_NOT_FOUND);
+					}
+					
+					System.out.println(e.getMessage());
+					e.printStackTrace();
 				}
+				
 				content = doc.getContent();
 				contentType = doc.getContentType();
-
 			} else if (ServiceConstants.DOC_ACTION_GENERATE.equals(action) && (appNr != null || appId != null)) {
 				String type = ServiceConstants.DOC_TYPE_APP;
 				if (appNr == null) {
@@ -392,8 +299,9 @@ public class DocumentServiceServlet extends HttpServlet {
 					
 					try {
 						if (user == null) {
-							throw new RuntimeException("User has no permission to generate this file!");
+							resp.sendError(HttpServletResponse.SC_FORBIDDEN, "User has no permission to generate this file!");
 						}
+						
 						AlkoUserDetails det = geUserDetails(user);
 						if (ServiceConstants.EIT_USERNAME.equals(det.getUsername())) {
 							content = service.createApplicationDocumentByIdAndRegCode(type, new Long(appId), det.getRegCode());
@@ -401,7 +309,8 @@ public class DocumentServiceServlet extends HttpServlet {
 							content = service.createApplicationDocumentById(type, new Long(appId));
 						}
 					} catch (ClassCastException e) {
-						LOGGER.error(e.getMessage(), e);
+						System.out.println(e.getMessage());
+						e.printStackTrace();
 					}
 				} else {
 					if(appNr.contains("P")){
@@ -410,39 +319,45 @@ public class DocumentServiceServlet extends HttpServlet {
 					
 					content = service.createApplicationDocument(type, appNr, null);
 				}
+				
 				contentType = "application/pdf";
 			} else {
 				String fileName = req.getParameter(ServiceConstants.DOC_FILE_PARM);
 				if (fileName != null) {
-
 					String requ = req.getQueryString();
 					String tmp = null;
+					
 					try {
 						tmp = URLDecoder.decode(requ, "UTF-8");
 					} catch (UnsupportedEncodingException e) {
+						System.out.println(e.getMessage());
+						e.printStackTrace();
 					}
-					String fileN = tmp.substring(tmp.lastIndexOf("=") + 1);
+					
+					String fileN = tmp.substring(tmp.lastIndexOf('=') + 1);
 					if (appId == null || appId == "")
 						doc = (RegistryDocument) service.getApplicationDocuments(fileN).get(0);
 					else {
 						doc = (RegistryDocument) service.getApplicationDocumentsByNameAndApplicationId(fileN, new Long(appId)).get(0);
 					}
 				}
+				
 				content = doc.getContent();
 				contentType = doc.getContentType();
 			}
+			
 			resp.setContentType(contentType);
 			resp.setContentLength(content.length);
 			if (ServiceConstants.DOC_ACTION_SAVE.equals(action)) {
 				int idx = doc.getPath().lastIndexOf(File.separator);
 
 				String fileName = (idx > 0) ? doc.getPath().substring(idx + 1) : doc.getPath();
-				resp.setHeader("Content-disposition", "attachment; filename=\"" + fileName + "\"");
+				resp.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"" + fileName + "\"");
 			} else if (ServiceConstants.DOC_ACTION_OPEN.equals(action)) {
 				int idx = doc.getPath().lastIndexOf(File.separator);
 
 				String fileName = (idx > 0) ? doc.getPath().substring(idx + 1) : doc.getPath();
-				resp.setHeader("Content-disposition", "inline; filename=\"" + fileName + "\"");
+				resp.setHeader(HttpHeaders.CONTENT_DISPOSITION, "inline; filename=\"" + fileName + "\"");
 			}
 			if ((doc != null && doc.getDocType() != null && doc.getDocType().getCode() != null && doc.getDocType().getCode().equals("PUB")) || (user != null)
 					|| (ServiceConstants.DOC_ACTION_GENERATE.equals(action) && (appNr != null))) {
@@ -455,39 +370,29 @@ public class DocumentServiceServlet extends HttpServlet {
 						outStream.write(c);
 					}
 				} catch (Exception e) {
-					LOGGER.error(e.getMessage(), e);
+					System.out.println(e.getMessage());
+					e.printStackTrace();
 				}
 			} else {
 				try {
-					resp.sendError(401);
+					resp.sendError(HttpServletResponse.SC_UNAUTHORIZED, "Document is not public");
 				} catch (IOException e) {
-					LOGGER.error(e.getMessage(), e);
+					System.out.println(e.getMessage());
+					e.printStackTrace();
 				}
 			}
 		} catch (Exception e) {
-			LOGGER.error(e.getMessage(), e);
+			System.out.println(e.getMessage());
+			e.printStackTrace();
 		}
 
 	}
 
 	private AlkoUserDetails geUserDetails(Principal user) {
-		if (user instanceof X509AuthenticationToken) {
-			return (AlkoUserDetails) ((X509AuthenticationToken) user).getPrincipal();
-		} else {
-			return (AlkoUserDetails) ((UsernamePasswordAuthenticationToken) user).getPrincipal();
-		}
-	}
-
-	private boolean publicDoc(Long docId, List<RegistryDocument> list) {
-		for (RegistryDocument doc : list) {
-			if (doc.getId().equals(docId))
-				return true;
-		}
-		return false;
+		return (AlkoUserDetails) ((UsernamePasswordAuthenticationToken) user).getPrincipal();
 	}
 
 	private void generateExcelFile(HttpServletRequest req, HttpServletResponse resp) throws ServletException {
-
 		String objectClass = null;
 		String queryParams = null;
 		String columnList = null;
@@ -532,7 +437,7 @@ public class DocumentServiceServlet extends HttpServlet {
 		searchFilter.setOrderBy(orderByString, isExcelPrimitive);
 		searchFilter.setLimited(limited);
 		resp.setContentType(ServiceConstants.CONTENT_TYPE_EXCEL);
-		resp.setHeader("Content-disposition", "attachment; filename=\"Tulemused.xls\"");
+		resp.setHeader(HttpHeaders.CONTENT_DISPOSITION, "attachment; filename=\"Tulemused.xls\"");
 
 		OutputStream output;
 		try {
@@ -554,13 +459,6 @@ public class DocumentServiceServlet extends HttpServlet {
 
 		file.write(f);
 		
-
-		/*ProductMovementReport report = new ProductMovementReport();
-		report.setCreated(new Date());
-		report.setLoadingEnterpriseRegNr(regCode);
-		report.setLoadingUserId(ik);
-		report.setReportingEnterprise(registryService.getEnterpriseByActivity(regCode));
-		 */
 		Calendar cal = Calendar.getInstance();
 
 		cal.set(Calendar.YEAR, Integer.parseInt(periodYear));
@@ -568,7 +466,6 @@ public class DocumentServiceServlet extends HttpServlet {
 		cal.set(Calendar.MONTH, Integer.parseInt(periodMonth) - 1);
 
 		cal.set(Calendar.DAY_OF_MONTH, 1);
-		//report.setRepDate(cal.getTime());
 
 		SimpleDateFormat format1 = new SimpleDateFormat("yyyy-MM-dd");
 		String created = format1.format(cal.getTime());
@@ -591,7 +488,6 @@ public class DocumentServiceServlet extends HttpServlet {
 			String lineFirst = null;
 			List<String> lines = new ArrayList<String>();
 			Map<String, Long> entries = new HashMap<String, Long>();
-			//HashMap<String, RegistryEntry> entrys = new HashMap<String, RegistryEntry>();
 			String vead = "";
 			String regentries = "";
 			
@@ -669,41 +565,6 @@ public class DocumentServiceServlet extends HttpServlet {
 					cols[i] = cols[i].replaceAll("'", "''");
 				}
 				
-				/*String registryEntryNr = cols[0].trim().toLowerCase();
-				if (registryEntryNr.indexOf(' ') > 0) {
-					String[] regNrParts = registryEntryNr.split(" ");
-					registryEntryNr = regNrParts[0];
-				}
-				RegistryEntry entry = null;
-				if (entrys.containsKey(registryEntryNr)) {
-					entry = entrys.get(registryEntryNr);
-				} else {
-					try {
-
-						entry = registryService.findRegistryEntry(registryEntryNr);
-						entrys.put(registryEntryNr, entry);
-
-					} catch (Exception e) {
-
-						continue;
-					}
-				}*/
-				
-				/*
-				String entryID = "";
-				ResultSet rst = PostgreUtils.query("SELECT id FROM reg_entry WHERE nr = '"+registryEntryNr.replaceAll("'","''")+"' LIMIT 1", con);
-				
-				if(rst.next()){
-					entryID = rst.getString("id");
-				}
-				else{
-					vead += "ei leitud rea "+rowNr+" registrikande numbrit: "+registryEntryNr+"<br>";
-					vigane = true;
-					//throw new Exception("Vigane sisend, ei leitud rea "+rowNr+" registrikande numbrit");
-				}
-				
-				*/
-				
 				String registryEntryNr = cols[0].replaceAll(" ","");
 				
 				Long entryID = entries.get(registryEntryNr);
@@ -712,26 +573,14 @@ public class DocumentServiceServlet extends HttpServlet {
 					vead += "ei leitud rea "+rowNr+" registrikande numbrit: "+registryEntryNr+"<br>";
 					vigane = true;
 				}
-
-				// LOGGER.debug("5");
-				/*ProductMovementReportRecord record = new ProductMovementReportRecord();
-				record.setCreated(new Date());
-				record.setRegistryEntry(entry);
-				record.setReceiverName(cols[1]);
-				record.setMarketingPlaceName(cols[2]);
-				record.setMarketingPlaceDistrict(cols[3]);
-				record.setMarketingPlaceOrgUnit(cols[4]);
-				record.setMarketingPlaceAddress(cols[5]);
-				record.setPartyNr(cols[6]);*/
+				
 				Integer amount = null;
 				try {
 					amount = new Integer(cols[7]);
 				} catch (Exception e) {
 					vead += "rea "+rowNr+" kogus pole numbriline väärtus või täisarv: "+cols[7]+"<br>";
 					vigane = true;
-					//throw new Exception("Vigane sisend, rea "+rowNr+" kogus pole numbriline väärtus");
 				}
-				//record.setAmount(amount);
 				
 				if(!vigane){
 					try{
@@ -739,12 +588,9 @@ public class DocumentServiceServlet extends HttpServlet {
 								""+amount+",NOW(),'"+cols[1]+"','"+cols[6]+"','"+cols[2]+"','"+cols[5]+"','"+cols[3]+"','"+cols[4]+"',"+entryID+","+reportId+")";		
 
 						added.add(PostgreUtils.insert(sql, "id", con));
-						
-						//report.addRecord(record);	
 					}catch(Exception xx){
 						vead += "ei suutnud lisada rida "+rowNr+": "+xx.getMessage()+"<br>";
 						vigane = true;
-						//throw xx;
 					}
 				}
 				
@@ -773,13 +619,5 @@ public class DocumentServiceServlet extends HttpServlet {
 		    System.out.println("----- processUploadedReport "+reportId+" time taken ("+rowNr+" rows): "+((float)(stopTime - startTime) / 1000.0)+" seconds");
 		    PostgreUtils.closeConnection(con);
 		}
-
-		try {
-			//registryService.saveOrUpdate(report);
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
-
 	}
 }
