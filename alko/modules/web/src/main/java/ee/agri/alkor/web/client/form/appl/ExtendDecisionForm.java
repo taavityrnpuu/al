@@ -384,7 +384,7 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 		 */
 		DecisionSignButton() {
 			this.setSize("18", "18");
-			this.setStyleName("DecisionPrintButton");
+			this.setStyleName("DecisionPrintButton signButtonOtsus");
 			this.addClickListener(new ClickListener() {
 
 				/*
@@ -418,7 +418,7 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 		 */
 		CorrectionSignButton() {
 			this.setSize("18", "18");
-			this.setStyleName("DecisionPrintButton");
+			this.setStyleName("DecisionPrintButton signButtonOiend");
 			this.addClickListener(new ClickListener() {
 
 				/*
@@ -436,7 +436,7 @@ public class ExtendDecisionForm extends Form implements CacheListener {
 									+ URL.encode(ServiceConstants.EX_COR_DOC_NAME
 											+ getData().getText(ApplicationMap.DECISION_NR)).replace('/', '_')
 									+ ".pdf",
-							"Otsus", "");
+							"Õiend", "");
 
 				}
 			});

@@ -146,6 +146,7 @@ public class SigningServiceServlet extends HttpServlet{
 			template = getTemplate("template_signing.html");
 			template = template.replace("{{TEADE}}", teade);
 			template = template.replace("{{KLASS}}", klass);
+			template = template.replace("{{TYPE}}", (docName.contains("tsus") ? "Otsus" : "Oiend"));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -156,14 +157,6 @@ public class SigningServiceServlet extends HttpServlet{
 
 	public void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		PrintWriter out = response.getWriter();
-
-		// Enumeration enAttr = request.getAttributeNames();
-		// while(enAttr.hasMoreElements()){
-		// String attributeName = (String)enAttr.nextElement();
-		// out.write("Attribute Name - "+attributeName+", Value -
-		// "+(request.getAttribute(attributeName)).toString());
-		// }
-
 		HttpSession sess = request.getSession();
 
 		session = (SigningSessionData) sess.getAttribute("fileSigner");
@@ -178,7 +171,6 @@ public class SigningServiceServlet extends HttpServlet{
 		String docId = (String) sess.getAttribute("docId");
 		String docPath = (String) sess.getAttribute("docPath");
 		String docName = (String) sess.getAttribute("docName");
-		docName = docName + ".pdf";
 		
 		LOGGER.debug("URI: " + uri);
 		
@@ -221,6 +213,7 @@ public class SigningServiceServlet extends HttpServlet{
 				
 				byte[] decodeResult = siga.finalizeSignature(containerId, signatureId, signatureInHex);
 
+				String asiceName = docName + " (asice)";
 				String asicePath = docPath.replace(".pdf", "(allkirjastatud).asice");
 
 				// salvestame containeri
@@ -237,7 +230,7 @@ public class SigningServiceServlet extends HttpServlet{
 					PostgreUtils.insert(
 							"insert into reg_doc (id, version, modified, created, created_by, modified_by, deleted, deleted_by, name, path, mime, doc_appl_id, doc_class_id) "
 							+ "select nextval('reg_doc_seq') as id, version, NOW(), NOW(), created_by, modified_by, deleted, "
-							+ "		deleted_by, '"+ asice.getName() + "' as name, '" + asicePath+ "' as path, 'application/vnd.etsi.asic-e+zip' as mime, doc_appl_id, doc_class_id "
+							+ "		deleted_by, '"+ asiceName + "' as name, '" + asicePath+ "' as path, 'application/vnd.etsi.asic-e+zip' as mime, doc_appl_id, doc_class_id "
 							+ "from reg_doc where id = " + docId + ";");
 				} catch (Exception e) {
 					out.write(e.toString());

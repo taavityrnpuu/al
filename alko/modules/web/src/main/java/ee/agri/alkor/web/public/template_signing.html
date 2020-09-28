@@ -70,6 +70,12 @@
 			$("#message").addClass("alert-success");
 			$("#message").find("center").html("Fail on allkirjastatud! Aken sulgub automaatselt!");
 			$("#loader").hide();
+			try{
+				$(window.opener.document).find(".signButton{{TYPE}}").hide();
+			}
+			catch(e){
+				
+			}
 			setTimeout(function() {
 				window.top.close();
 			}, 3000);

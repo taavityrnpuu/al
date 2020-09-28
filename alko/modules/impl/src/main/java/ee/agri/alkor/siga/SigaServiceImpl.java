@@ -113,20 +113,6 @@ public class SigaServiceImpl implements InitializingBean {
 			GetHashcodeContainerResponse getContainerResponse = rt.getForObject(url + "/hashcodecontainers/" + containerId, GetHashcodeContainerResponse.class);
 
 			byte[] container = Base64.getDecoder().decode(getContainerResponse.getContainer());
-		    
-			/*
-			 * ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-			 * HashcodeContainerWriter cw = new HashcodeContainerWriter(outputStream);
-			 * cw.writeMimeType(); cw.writeManifest(hashcodeDataFiles);
-			 * cw.writeHashcodeFiles(hashcodeDataFiles); cw.writeSignatures(signatures);
-			 * cw.finalizeZipFile(); return outputStream.toByteArray();
-			 * 
-			 * HashcodeContainerWrapper container =
-			 * containerService.getHashcodeContainer(containerId);
-			 * containerService.cacheHashcodeContainer(containerId, container.getFileName(),
-			 * Base64.getDecoder().decode(getContainerResponse.getContainer()),
-			 * container.getOriginalDataFiles());
-			 */
 
 			rt.exchange(url + "/hashcodecontainers/" + containerId, DELETE, null, DeleteHashcodeContainerResponse.class);
 

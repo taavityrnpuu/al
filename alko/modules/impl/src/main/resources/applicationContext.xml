@@ -24,13 +24,6 @@
 
 	<bean id="myAuditInterceptor" class="ee.agri.alkor.impl.AuditInterceptor" />
 
-	<!--<bean id="jndiSessionFactory"
-		class="org.springframework.jndi.JndiObjectFactoryBean"
-		depends-on="mySessionFactory">
-		<property name="jndiName" value="java:comp/env/alkorHS" />
-	</bean>-->
-
-
 	<bean id="registryServiceDelegate"
 		class="ee.agri.alkor.service.RegistryServiceDelegate">
 		<property name="service" ref="myRegistryServiceDao" />
