@@ -64,6 +64,9 @@ public class SigaServiceImpl implements InitializingBean {
 		initConf(Config.SIGA_URL, Config.SIGA_ALGORITHM, Config.SIGA_UUID, Config.SIGA_SIGNING_KEY);
 		
 		LOGGER.debug("SIGA_URL: " + Config.SIGA_URL);
+		//LOGGER.debug("SIGA_ALGORITHM: " + Config.SIGA_ALGORITHM);
+		//LOGGER.debug("SIGA_UUID: " + Config.SIGA_UUID);
+		//LOGGER.debug("SIGA_SIGNING_KEY: " + Config.SIGA_SIGNING_KEY);
 	}
 
 	private void initConf(String url, String algorithm, String uuid, String signing_key) {
@@ -158,6 +161,7 @@ public class SigaServiceImpl implements InitializingBean {
 
 		@Override
 		public boolean hasError(ClientHttpResponse httpResponse) throws IOException {
+			LOGGER.info("Siga teenus sai vastuse: " + httpResponse.getStatusCode().value() + " " + httpResponse.getStatusCode().name());
 			return (httpResponse.getStatusCode().series() != SUCCESSFUL);
 		}
 
