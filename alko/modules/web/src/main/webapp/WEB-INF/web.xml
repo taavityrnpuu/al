@@ -28,15 +28,15 @@
 		<init-param>
 			<param-name>casServerUrlPrefix</param-name>
 			<param-value>https://cas.agri.ee/epm-cas/</param-value>
-			<!-- <param-value>https://cas-helmes-test2.agri.ee/epm-cas/</param-value> --> <!-- vana cas testiks -->
-			<!-- <param-value>https://sso-prelive.agri.ee/cas/</param-value> --> <!-- TEST -->
-			<!-- <param-value>https://cas.agri.ee/epm-cas/</param-value> --> <!-- LIVE -->
+			<!-- https://cas-helmes-test2.agri.ee/epm-cas/ --> <!-- vana cas testiks -->
+			<!-- https://sso-prelive.agri.ee/cas/ --> <!-- TEST -->
+			<!-- https://cas.agri.ee/epm-cas/ --> <!-- LIVE -->
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
 			<param-value>https://alkoreg.agri.ee/</param-value>
-			<!-- <param-value>https://alkoregtest-piksel.agri.ee/</param-value> --> <!-- TEST -->
-			<!-- <param-value>https://alkoreg.agri.ee/</param-value> --> <!-- LIVE -->
+			<!-- https://alkoregtest-piksel.agri.ee/ --> <!-- TEST -->
+			<!-- https://alkoreg.agri.ee/ --> <!-- LIVE -->
 		</init-param>
 		<init-param>
 			<param-name>redirectAfterValidation</param-name>
@@ -55,15 +55,15 @@
 		<init-param>
 			<param-name>casServerLoginUrl</param-name>
  			<param-value>https://cas.agri.ee/epm-cas/login</param-value>
- 			<!-- <param-value>https://cas-helmes-test2.agri.ee/epm-cas/login</param-value> --> <!-- vana cas testiks -->
-			<!-- <param-value>https://sso-prelive.agri.ee/cas/login/tara</param-value> --> <!-- TEST -->
-			<!-- <param-value>https://cas.agri.ee/epm-cas/login</param-value> --> <!-- LIVE -->
+ 			<!-- https://cas-helmes-test2.agri.ee/epm-cas/login --> <!-- vana cas testiks -->
+			<!-- https://sso-prelive.agri.ee/cas/login/tara --> <!-- TEST -->
+			<!-- https://cas.agri.ee/epm-cas/login --> <!-- LIVE -->
 		</init-param>
 		<init-param>
 			<param-name>serverName</param-name>
 			<param-value>https://alkoreg.agri.ee/</param-value>
-			<!-- <param-value>https://alkoregtest-piksel.agri.ee/</param-value> --> <!-- TEST -->
-			<!-- <param-value>https://alkoreg.agri.ee/</param-value> --> <!-- LIVE -->
+			<!-- https://alkoregtest-piksel.agri.ee/ --> <!-- TEST -->
+			<!-- https://alkoreg.agri.ee/ --> <!-- LIVE -->
 		</init-param>
 	</filter>
 	<filter-mapping>

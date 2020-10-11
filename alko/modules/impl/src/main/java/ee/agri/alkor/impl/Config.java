@@ -16,12 +16,16 @@ public abstract class Config {
 			switch(key) {
 				case "SIGA_URL":
 					Config.SIGA_URL = value;
+					break;
 				case "SIGA_ALGORITHM":
 					Config.SIGA_ALGORITHM = value;
+					break;
 				case "SIGA_UUID":
 					Config.SIGA_UUID = value;
+					break;
 				case "SIGA_SIGNING_KEY":
 					Config.SIGA_SIGNING_KEY = value;
+					break;
 				default:
 					continue;
 			}
