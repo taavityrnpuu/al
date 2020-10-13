@@ -1,7 +1,5 @@
 package ee.agri.alkor.siga;
 
-import org.apache.commons.codec.binary.Hex;
-
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
 import java.security.InvalidKeyException;
@@ -55,13 +53,13 @@ public class HmacSignature {
 
     public void validateSignature(byte[] signingSecret) throws Exception {
         final byte[] calculatedSignature = getSignature(signingSecret);
-        if(!MessageDigest.isEqual(calculatedSignature, Hex.decodeHex(signature.toCharArray()))) {
+        if(!MessageDigest.isEqual(calculatedSignature, HexCoder.decodeHex(signature.toCharArray()))) {
            throw new Exception("HMAC token provided signature and calculated signature do not match. Invalid signed token claims or invalid signature.");
         }
     }
 
     public String getSignature(String signingSecret) throws NoSuchAlgorithmException, InvalidKeyException {
-        return Hex.encodeHexString(getSignature(signingSecret.getBytes()));
+        return HexCoder.encodeHexString(getSignature(signingSecret.getBytes()));
     }
 
     private byte[] getSignature(byte[] signingSecret) throws NoSuchAlgorithmException, InvalidKeyException {
