@@ -4057,7 +4057,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		try {
 			return getHibernateTemplate().execute(new HibernateCallback<Boolean>() {
 				public Boolean doInHibernate(Session session) {
-					return !session.createQuery("from RegistryPayment r " + "where r.orderNumber = ?0 ").setParameter(0, orderNumber).list().isEmpty();
+					return session.createQuery("from RegistryPayment r " + "where r.orderNumber = ?0 ").setParameter(0, orderNumber).list().isEmpty();
 				}
 			});
 		} catch (Exception e) {
