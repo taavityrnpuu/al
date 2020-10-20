@@ -190,8 +190,8 @@ public class TreasuryCustomerBindingImpl implements eu.x_road.rm_v6.treasury.cus
 							// proovime siduda automaatselt, see võib ka ebaõnnestuda
 							if(enterprise != null){
 								try{
-									payment2.setBoundEnterprise(enterprise);
 									registryService.bindPaymentToEnterpise(payment2);
+									payment2.setBoundEnterprise(enterprise);
 								}catch(Exception x){
 									x.printStackTrace();
 								}
