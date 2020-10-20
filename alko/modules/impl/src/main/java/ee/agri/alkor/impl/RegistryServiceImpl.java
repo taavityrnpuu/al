@@ -965,12 +965,22 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	
 	@Transactional
 	private void createPaymentForEnterpise(Session session, Enterprise enterprise, RegistryPayment payment) {
+
+		Transaction tx = session.getTransaction();
+		if(!tx.isActive()) {
+			tx.begin();
+		}
+		
 		BigDecimal balance = enterprise.getBalance() != null ? enterprise.getBalance() : new BigDecimal(0);
 		enterprise.setBalance(balance.add(payment.getAmount()));
 		RegistryPaymentLog registryPaymentLog = createLogInstance(enterprise, payment.getAmount());
+		
 		session.saveOrUpdate(enterprise);
 		session.saveOrUpdate(registryPaymentLog);
 		session.saveOrUpdate(payment);
+		
+		session.flush();
+		tx.commit();
 	}
 
 
@@ -983,6 +993,11 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	 */
 	@Transactional
 	private void doBindPaymentToEnterpise(Session session, Enterprise enterprise, RegistryPayment payment) {
+		Transaction tx = session.getTransaction();
+		if(!tx.isActive()) {
+			tx.begin();
+		}
+		
 		BigDecimal balance = enterprise.getBalance() != null ? enterprise.getBalance() : new BigDecimal(0);
 		enterprise.setBalance(balance.add(payment.getAmount()));
 		RegistryPaymentLog registryPaymentLog = createLogInstance(enterprise, payment.getAmount());
@@ -990,6 +1005,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		payment.setBoundEnterprise(enterprise);
 		session.saveOrUpdate(payment);
 		session.saveOrUpdate(registryPaymentLog);
+		
+		session.flush();
+		tx.commit();
 	}
 
 	public RegistryPaymentLog createLogInstance(Enterprise enterprise, BigDecimal amount) {
