@@ -33,7 +33,10 @@
    <handler name="logger" type="java:org.apache.axis.handlers.LogHandler">
    	<parameter name="LogHandler.fileName" value="/data/axis.log" />
    </handler>
- 
+   <handler name="logger_treasury" type="java:org.apache.axis.handlers.LogHandler">
+   	<parameter name="LogHandler.fileName" value="/data/axis_treasury.log" />
+   </handler>
+   
   <service name="AdminService" provider="java:MSG">
   <parameter name="allowedMethods" value="AdminService"/>
   <parameter name="enableRemoteAdmin" value="false"/>
@@ -893,6 +896,13 @@
  </service>
  
   <service name="TreasuryXrdCustomerWS" provider="java:RPC" style="document" use="literal">
+   	 <requestFlow> 
+       <handler type="logger_treasury"/> 
+     </requestFlow> 
+     <responseFlow> 
+        <handler type="logger_treasury"/> 
+     </responseFlow> 
+     
       <parameter name="wsdlTargetNamespace" value="http://rm-v6.x-road.eu/treasury/customer"/>
       <parameter name="wsdlServiceElement" value="TreasuryMessagingServiceCustomer"/>
       <parameter name="schemaQualified" value="http://x-road.eu/xsd/identifiers,http://x-road.eu/xsd/xroad.xsd"/>
