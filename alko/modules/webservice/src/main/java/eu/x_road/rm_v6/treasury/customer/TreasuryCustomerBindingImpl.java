@@ -62,7 +62,7 @@ public class TreasuryCustomerBindingImpl implements eu.x_road.rm_v6.treasury.cus
 		final String PAYMENT_REF_NUMBER_2 = "2900082249";
 		final String CREDIT_MESSAGE = "c";
 		final String DEBIT_MESSAGE = "d";
-
+		
 		String resultText = "";
 		int rc = 0;
 
@@ -182,16 +182,17 @@ public class TreasuryCustomerBindingImpl implements eu.x_road.rm_v6.treasury.cus
 								// + payment.getReferenceNr() + ") ADDING ANYWAY
 								// !!!");
 							}
-							
+
 							Enterprise enterprise = registryService.getEnterpriseByActivity(payment.getPayerRegistrationNr());
-						
+							
 							RegistryPayment payment2 = (RegistryPayment) registryService.saveOrUpdate(payment);
 
 							// proovime siduda automaatselt, see võib ka ebaõnnestuda
 							if(enterprise != null){
 								try{
-									registryService.bindPaymentToEnterpise(payment2);
 									payment2.setBoundEnterprise(enterprise);
+									registryService.bindPaymentToEnterpise(payment2);
+									registryService.saveOrUpdate(payment2);
 								}catch(Exception x){
 									x.printStackTrace();
 								}
