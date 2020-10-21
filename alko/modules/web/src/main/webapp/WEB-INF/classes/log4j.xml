@@ -22,12 +22,12 @@
 	</appender>
   
 	<category name="ee">
-		<priority value="WARN"/>
+		<priority value="DEBUG"/>
 		<appender-ref ref="CONSOLE"/>
 		<appender-ref ref="FILE"/>
 	</category>
  	<category name="org.springframework">
-		<priority value="WARN"/>
+		<priority value="DEBUG"/>
 		<appender-ref ref="CONSOLE"/>
 		<appender-ref ref="FILE"/>
 	</category>
@@ -39,7 +39,7 @@
 	
 	<!-- Root Logger -->
 	<root>
-		<priority value="WARN" />
+		<priority value="DEBUG" />
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE" />
 	</root>
