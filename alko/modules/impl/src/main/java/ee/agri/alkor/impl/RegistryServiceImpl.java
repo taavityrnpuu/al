@@ -2257,20 +2257,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					RegistryDocument doc = (RegistryDocument) session
 						.createQuery("from RegistryDocument d where d.id = ?0").setParameter(0, documentId.longValue())
 							.list().get(0);
-					doc.setArchived((short) 1);
-					doc.setPub((short) 0);
-					doc.setPath(rename(doc.getPath()));
-					doc.setName(doc.getName() + " - Kustutatud");
-					doc.setCreated(new java.util.Date());
-					doc.setDocType(null);
-					session.save(doc);
-					Transaction tx = session.getTransaction();
-					if(!tx.isActive()) {
-						tx.begin();
-					}
-					
-					session.flush();
-					tx.commit();
+
+					finalDeleteDocument(doc.getId(), null);
 					
 					return null;
 				}
@@ -2314,18 +2302,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						ResultSet res = PostgreUtils.query(qry);
 
 						while (res.next()) {
-							RegistryDocument doc = (RegistryDocument) session
-								.createQuery("from RegistryDocument d where d.id = ?0").setParameter(0, res.getLong("id"))
-									.list().get(0);
-
-							doc.setArchived((short) 1);
-							doc.setPub((short) 0);
-							doc.setPath(rename(doc.getPath()));
-							doc.setName(doc.getName() + " - Kustutatud");
-							doc.setCreated(new java.util.Date());
-							doc.setDocType(null);
-							doc.setReason(text);
-							session.save(doc);
+							finalDeleteDocument(res.getLong("id"), text);
 						}
 					} catch (Exception ex) {
 						throw new SystemException(ex);
@@ -2359,6 +2336,48 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 		return newPath.substring(1);
 	}
+	
+	private void finalDeleteDocument(Long documentId, String reason) {
+		try {
+			getHibernateTemplate().execute(new HibernateCallback<Object>() {
+				public Object doInHibernate(Session session) {
+					RegistryDocument doc = (RegistryDocument) session
+							.createQuery("from RegistryDocument d where d.id = ?0")
+							.setParameter(0, documentId).list().get(0);
+					
+					if(doc == null || doc.getId() == null) {
+						return null;
+					}
+					
+					doc.setArchived((short) 1);
+					doc.setPub((short) 0);
+					doc.setPath(rename(doc.getPath()));
+					doc.setName(doc.getName() + " Kustutatud");
+					doc.setCreated(new java.util.Date());
+					doc.setDocType(null);
+					if(reason != null) {
+						doc.setReason(reason);
+					}
+					
+					session.save(doc);
+					
+					Transaction tx = session.getTransaction();
+					if(!tx.isActive()) {
+						tx.begin();
+					}
+					
+					session.flush();
+					tx.commit();
+					
+					return null;
+				}
+			});
+
+		} catch (Exception e) {
+			throw new SystemException(e);
+		}
+
+	}
 
 	public void deleteDocument(final String applicationNr, final String name) {
 		try {
@@ -2367,13 +2386,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					RegistryDocument doc = (RegistryDocument) session
 							.createQuery("from RegistryDocument d where d.application.nr = ?0 and d.name = ?1")
 							.setParameter(0, applicationNr).setParameter(1, name).list().get(0);
-					doc.setArchived((short) 1);
-					doc.setPub((short) 0);
-					doc.setPath(rename(doc.getPath()));
-					doc.setName(doc.getName() + " Kustutatud");
-					doc.setCreated(new java.util.Date());
-					doc.setDocType(null);
-					session.save(doc);
+					
+					finalDeleteDocument(doc.getId(), null);
 					
 					return null;
 				}
@@ -2392,13 +2406,8 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 					RegistryDocument doc = (RegistryDocument) session
 							.createQuery("from RegistryDocument d where d.application.id = ?0 and d.name = ?1")
 							.setParameter(0, applicationId.longValue()).setParameter(1, name).list().get(0);
-					doc.setArchived((short) 1);
-					doc.setPub((short) 0);
-					doc.setPath(rename(doc.getPath()));
-					doc.setName(doc.getName() + " - Kustutatud");
-					doc.setCreated(new java.util.Date());
-					doc.setDocType(null);
-					session.save(doc);
+					
+					finalDeleteDocument(doc.getId(), null);
 					
 					return null;
 				}
