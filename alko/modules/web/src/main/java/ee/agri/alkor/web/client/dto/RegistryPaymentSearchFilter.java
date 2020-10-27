@@ -7,6 +7,7 @@ public class RegistryPaymentSearchFilter extends SearchFilter implements IsSeria
 	public static final String AMOUNT = RegistryPaymentMap.AMOUNT;
 	public static final String CODE = RegistryPaymentMap.CODE;
 	public static final String ENTERPRISE = RegistryPaymentMap.ENTERPRISE;
+	public static final String HAS_ENTERPRISE = RegistryPaymentMap.HAS_ENTERPRISE;
 	public static final String ID = RegistryPaymentMap.ID;
 	public static final String PAYER_ACCOUNT_NR = RegistryPaymentMap.PAYER_ACCOUNT_NR;
 	public static final String PAYER_NAME = RegistryPaymentMap.PAYER_NAME;
@@ -22,7 +23,7 @@ public class RegistryPaymentSearchFilter extends SearchFilter implements IsSeria
 		super();
 		// The name of the class we are querying.
 		setObjectClass("RegistryPayment");
-		this.addSortItem(ENTERPRISE, DESCENDING);
+		this.addSortItem(HAS_ENTERPRISE, ASCENDING);
 		this.addSortItem(PAYMENT_DATE, DESCENDING);
 	}
 

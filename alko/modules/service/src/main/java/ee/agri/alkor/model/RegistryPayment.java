@@ -3,9 +3,11 @@ package ee.agri.alkor.model;
 import java.math.BigDecimal;
 import java.util.Date;
 
+import javax.persistence.Basic;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -17,6 +19,7 @@ import javax.persistence.Transient;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.ForeignKey;
+import org.hibernate.annotations.Formula;
 
 import ee.agri.alkor.model.history.IHistorical;
 
@@ -61,7 +64,12 @@ public class RegistryPayment extends ABaseBean implements IHistorical {
    private String orderNumber;
 
    private String paymentDesc;
-
+   
+   /**
+    * arvutuslikud
+    */
+   
+   private Boolean has_enterprise = false;
 
 
    @Id
@@ -156,20 +164,16 @@ public class RegistryPayment extends ABaseBean implements IHistorical {
    public void setBoundEnterprise(Enterprise boundEnterprise) {
       this.boundEnterprise = boundEnterprise;
    }
-   
-   /**
-    * Returns 'true' if payment is bound with enterprise,
-    * otherwise 'false'
-    * @return
-    */
-   @Transient
-   public Boolean  getHas_enterprise() {
-      if(this.boundEnterprise != null)
-         return new Boolean("true");
-      else
-         return new Boolean("false");
-   }
 
+   @Formula(value="(CASE WHEN payer_enterprise_id IS NOT NULL THEN true ELSE false END)")
+   @Basic(fetch=FetchType.LAZY)
+   public Boolean getHas_enterprise() {
+	   return has_enterprise;
+   }
+   
+   public void setHas_enterprise(Boolean has_enterprise) {
+	   this.has_enterprise = has_enterprise;
+   }
 
    @Column(name = "DESCRIPTION", length = 1000)
    public String getPaymentDesc() {
