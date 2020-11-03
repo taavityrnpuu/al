@@ -3741,7 +3741,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	 */
 	@Transactional
 	public RegistryApplication processPaymentMatching(RegistryApplication registryApplication, final String tax,
-			final PaymentMatchingLog paymentMatchingLog) throws ConstraintViolationException {
+			final PaymentMatchingLog paymentMatchingLog) throws ConstraintViolationException, IllegalArgumentException, SystemException {
 		final Enterprise applicant;
 
 		// refresh applicant
