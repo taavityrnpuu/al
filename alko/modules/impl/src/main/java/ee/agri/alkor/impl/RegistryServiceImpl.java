@@ -915,6 +915,11 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 		// to avoid double action called by double click
 		if (isPaymentBindedToEnterprise(enterprise, payment.getId())) {
+			Transaction tx = session.getTransaction();
+			if (!tx.isActive()) {
+				tx.begin();
+			}
+			
 			BigDecimal balance = enterprise.getBalance() != null ? enterprise.getBalance() : new BigDecimal(0);
 			enterprise.setBalance(balance.subtract(payment.getAmount()));
 			RegistryPaymentLog registryPaymentLog = createLogInstance(enterprise, payment.getAmount().negate());
@@ -922,6 +927,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 			payment.setBoundEnterprise(null);
 			session.saveOrUpdate(payment);
 			session.saveOrUpdate(registryPaymentLog);
+			
+			session.flush();
+			tx.commit();
 		} else {
 			LOGGER.info("Payment is not binded to enterprise");
 		}
@@ -3733,7 +3741,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	 */
 	@Transactional
 	public RegistryApplication processPaymentMatching(RegistryApplication registryApplication, final String tax,
-			final PaymentMatchingLog paymentMatchingLog) throws ConstraintViolationException {
+			final PaymentMatchingLog paymentMatchingLog) throws ConstraintViolationException, IllegalArgumentException, SystemException {
 		final Enterprise applicant;
 
 		// refresh applicant

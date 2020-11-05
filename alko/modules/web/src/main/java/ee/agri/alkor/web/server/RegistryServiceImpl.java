@@ -689,7 +689,7 @@ public class RegistryServiceImpl implements RegistryService {
 		return ServiceFactory.getRegistryService().unbindPaymentFromEnterprise(enterpriseId, paymentId);
 	}
 
-	public ApplicationMap processPaymentMatching(ApplicationMap registryApplication, String tax) throws ConstraintViolationException, SessionExpiredException {
+	public ApplicationMap processPaymentMatching(ApplicationMap registryApplication, String tax) throws ConstraintViolationException, SessionExpiredException, SystemException {
 		try {
 
 			if (!isSessionValid())
@@ -698,6 +698,9 @@ public class RegistryServiceImpl implements RegistryService {
 			return ClientDataFactory.create(ServiceFactory.getRegistryService().processPaymentMatching(ClientDataFactory.create(registryApplication), tax,
 					new PaymentMatchingLog()));
 
+		} catch (IllegalArgumentException cve) {
+			LOGGER.info("processPaymentMatching: " + cve.getMessage());
+			throw new SystemException(cve.getMessage());
 		} catch (Exception cve) {
 			cve.printStackTrace();
 			throw new SystemException(cve.getMessage());
