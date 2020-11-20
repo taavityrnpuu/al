@@ -13,9 +13,9 @@
 					</cell>
 					<cell borderwidth="0.0" left="false" right="false" top="false" bottom="false" horizontalalign="Right" verticalalign="top" leading="0.0">
 						<phrase font="$font" size="10">
-							Veterinaar- ja Toiduamet<newline/>
+							Põllumajandus- ja Toiduamet<newline/>
 							$this.contactInfo.getProperty('streetAdr'), $this.contactInfo.getProperty('cityAdr')<newline/>
-							KINNITAN Veterinaar- ja Toiduameti<newline/>
+							KINNITAN Põllumajandus- ja Toiduameti<newline/>
 							#if($application.decision.nr)
 								#if($application.decision.nr.indexOf('/') != -1)
 									$dateFormat.format($application.decision.date) a otsuse nr $yearFormat.format($application.product.registryEntryApplication.decision.date)$application.decision.nr.substring($application.decision.nr.indexOf('/'),$application.decision.nr.length()).replaceAll("&","&#38;")/$yearShortFormat.format($application.decision.date)<newline/>
@@ -219,7 +219,7 @@ O T S U S<newline />
 				<newline />
 				<newline />
 				Otsusega mitten&#245;ustumise korral on taotlejal &#245;igus 30 p&#228;eva jooksul arvates registrikande
-				pikendamisest keeldumise otsuse k&#228;ttesaamisest esitada vaie Veterinaar- ja Toiduameti peadirektorile v&#245;i kaebus halduskohtusse halduskohtumenetluse seadustikus s&#245;testatud korras.
+				pikendamisest keeldumise otsuse k&#228;ttesaamisest esitada vaie Põllumajandus- ja Toiduameti peadirektorile v&#245;i kaebus halduskohtusse halduskohtumenetluse seadustikus s&#245;testatud korras.
 			</paragraph>
 			<paragraph leading="12.0">
 			<newline />

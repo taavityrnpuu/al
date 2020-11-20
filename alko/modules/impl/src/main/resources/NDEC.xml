@@ -13,9 +13,9 @@
 					</cell>
 					<cell borderwidth="0.0" left="false" right="false" top="false" bottom="false" horizontalalign="Right" verticalalign="top" leading="0.0">
 						<phrase font="$font" size="10">
-							Veterinaar- ja Toiduamet<newline/>
+							Põllumajandus- ja Toiduamet<newline/>
 							$this.contactInfo.getProperty('streetAdr'), $this.contactInfo.getProperty('cityAdr')<newline/>
-							KINNITAN Veterinaar- ja Toiduameti<newline/>
+							KINNITAN Põllumajandus- ja Toiduameti<newline/>
 							$dateFormat.format($application.decision.date) a otsuse nr $application.decision.nr.replaceAll("&","&#38;")<newline/>
 							&#196;RAKIRI<newline/>
 							on samane originaaliga<newline/>
@@ -201,7 +201,7 @@
 			</table>
 			<phrase font="$titleFont" size="14" fontstyle="bold">O T S U S</phrase><newline />
 			<paragraph leading="12.0" font="$font" size="12" align="Justify">
-			    Veterinaar ja Toiduamet, juhindudes...
+			    Põllumajandus- ja Toiduamet, juhindudes...
 				<newline />
 				<newline />
 				ja arvestades asjaolusid:
@@ -216,7 +216,7 @@
 			#if($application.decision.prodExamplesDecision.code == "PEN")
 			<paragraph leading="12.0" font="$font" size="12" align="Justify" >
 				Otsusega mitten&#245;ustumise korral on taotlejal &#245;igus 30 p&#228;eva jooksul arvates registrikande
-				 tegemisest keeldumise p&#228;evast arvates esitada vaie Veterinaar- ja Toiduametile (alus: haldusmenetluse seaduse § 75).
+				 tegemisest keeldumise p&#228;evast arvates esitada vaie Põllumajandus- ja Toiduametile (alus: haldusmenetluse seaduse § 75).
 			</paragraph>
 			<newline />
 			<newline />
@@ -239,7 +239,7 @@
 				<newline/>
 				<newline/>
 				Otsusega mitten&#245;ustumise korral on taotlejal &#245;igus 30 p&#228;eva jooksul arvates registrikande
-				 tegemisest keeldumise otsuse kättesaamisest esitada vaie Veterinaar- ja Toiduameti peadirektorile või kaebus halduskohtusse halduskohtumenetluse seadustikus sätestatud korras
+				 tegemisest keeldumise otsuse kättesaamisest esitada vaie Põllumajandus- ja Toiduameti peadirektorile või kaebus halduskohtusse halduskohtumenetluse seadustikus sätestatud korras
 			</paragraph>
 			#end
 			<paragraph leading="12.0">
