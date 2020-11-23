@@ -95,7 +95,7 @@
 
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="relay.agri.ee" />
+		<property name="host" value="mailcatcher.agri.ee" />
 		<property name="port" value="25" />
 		<property name="username" value="alkoholi.register" />
 		<property name="password" value="ai03rr09" />
@@ -103,7 +103,7 @@
 
 	<bean id="notificationJobs"
 		class="ee.agri.alkor.impl.EmailNotificationJobs">
-		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
+		<property name="mailFrom" value="alkoreg@pta.agri.ee" />
 		<property name="mode" value="@mode@" />
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 		<property name="mailSender" ref="mailSender" />

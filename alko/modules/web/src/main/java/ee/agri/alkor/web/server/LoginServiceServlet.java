@@ -91,7 +91,7 @@ public class LoginServiceServlet extends HttpServlet {
 					}
 					
 					if(isVta) {
-						tableBody += getTableRow("Riik (VTA, EMTA jt)", "", null, null);
+						tableBody += getTableRow("Riik (PTA, EMTA jt)", "", null, null);
 					}
 					
 					PostgreUtils.update("UPDATE enterprise_person_ref SET valid = false where valid = true and id_code = '"
