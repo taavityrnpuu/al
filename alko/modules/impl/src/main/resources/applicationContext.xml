@@ -51,10 +51,9 @@
 			<props>
 				<prop key="regnr">70000094</prop>
 				<prop key="phone">605 1710</prop>
-				<prop key="fax">621 1441</prop>
-				<prop key="email">vet@pta.agri.ee</prop>
+				<prop key="email">info@pta.agri.ee</prop>
 				<prop key="address">Väike-Paala 3, 11415 Tallinn</prop>
-				<prop key="url">http://www.pta.agri.ee</prop>
+				<prop key="url">https://www.pta.agri.ee</prop>
 				<prop key="streetAdr">Väike-Paala 3</prop>
 				<prop key="cityAdr">11415 Tallinn</prop>
 			</props>
