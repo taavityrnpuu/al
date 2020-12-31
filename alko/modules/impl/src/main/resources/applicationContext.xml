@@ -51,10 +51,9 @@
 			<props>
 				<prop key="regnr">70000094</prop>
 				<prop key="phone">605 1710</prop>
-				<prop key="fax">621 1441</prop>
-				<prop key="email">vet@vet.agri.ee</prop>
+				<prop key="email">info@pta.agri.ee</prop>
 				<prop key="address">Väike-Paala 3, 11415 Tallinn</prop>
-				<prop key="url">http://www.vet.agri.ee</prop>
+				<prop key="url">https://www.pta.agri.ee</prop>
 				<prop key="streetAdr">Väike-Paala 3</prop>
 				<prop key="cityAdr">11415 Tallinn</prop>
 			</props>
@@ -120,7 +119,7 @@
 
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="relay.agri.ee" />
+		<property name="host" value="mailcatcher.agri.ee" />
 		<property name="port" value="25" />
 		<property name="username" value="alkoholi.register" />
 		<property name="password" value="ai03rr09" />
@@ -138,7 +137,7 @@
 
 	<bean id="notificationJobs"
 		class="ee.agri.alkor.impl.EmailNotificationJobs">
-		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
+		<property name="mailFrom" value="alkoreg@pta.agri.ee" />
 		<property name="mode" value="@mode@" />
 		<property name="daysBeforeRegistryEntryExpiry" value="60" />
 		<property name="daysAfterRegistryEntryExpiry" value="0" />
@@ -155,7 +154,7 @@
 	
 	<bean id="ExpiredExendUntilApplicationJobs"
 		class="ee.agri.alkor.impl.ExendUntilApplicationExpiryNotificationJobs">
-		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
+		<property name="mailFrom" value="alkoreg@pta.agri.ee" />
 		<property name="mode" value="@mode@" />
 		<property name="daysBeforeNotificationIsSent" value="1" />
 		<property name="sessionFactory" ref="mySessionFactory" />
