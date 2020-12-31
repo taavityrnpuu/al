@@ -115,8 +115,8 @@ public class PDFCreator implements InitializingBean {
 				nr = application.getNr();
 				if (application.getArrived() != null)
 					arrived = dateFormat.format(application.getArrived());
-				if (application.getRecievedBy() != null)
-					receiver=getName(application.getRecievedBy());
+				if (application.getProcessor() != null)
+					receiver=application.getProcessor().getFirstName() + " " + application.getProcessor().getLastName();
 				if (application.getExamplRecievedBy() != null)
 					exReceiver=getName(application.getExamplRecievedBy());
 				if (application.getExamplReturned() != null)
