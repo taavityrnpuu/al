@@ -137,7 +137,7 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 						            message.setSubject("Riikliku alkoholiregistri registrikande kehtivuse kaotamisest teavitamine");
 						            message.setTo(applicant.getContactInfo().getEmail());
 							            //message.setTo("tiit@piksel.ee");
-						            String[] bccAddresses = {"olle@piksel.ee", "alkoreg@vet.agri.ee"};
+						            String[] bccAddresses = {"olle@piksel.ee", "alkoreg@pta.agri.ee"};
 						            
 						            message.setBcc(bccAddresses);
 						            message.setFrom(EmailNotificationJobs.this.getMailFrom()); 
