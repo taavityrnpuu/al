@@ -49,7 +49,7 @@
 		<!--<property name="logoUrl" value="http://10.2.0.200:8080/pub/lovid.gif" />-->
 		<property name="contactInfo">
 			<props>
-				<prop key="regnr">77001458</prop>
+				<prop key="regnr">70000094</prop>
 				<prop key="phone">605 1710</prop>
 				<prop key="email">pta@pta.agri.ee</prop>
 				<prop key="address">Väike-Paala 3, 11415 Tallinn</prop>
