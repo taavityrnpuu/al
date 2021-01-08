@@ -105,7 +105,7 @@ public class ExendUntilApplicationExpiryNotificationJobs extends
 									/*
 									 * 14-01-2014 parandus
 									 */
-									String[] bccAddresses = {"tanja@piksel.ee", "alkoreg@vet.agri.ee"};
+									String[] bccAddresses = {"tanja@piksel.ee", "alkoreg@pta.agri.ee"};
 									message.setBcc(bccAddresses);
 									
 									//message.setBcc("nastja@piksel.ee");

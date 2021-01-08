@@ -51,7 +51,7 @@
 			<props>
 				<prop key="regnr">70000094</prop>
 				<prop key="phone">605 1710</prop>
-				<prop key="email">info@pta.agri.ee</prop>
+				<prop key="email">pta@pta.agri.ee</prop>
 				<prop key="address">Väike-Paala 3, 11415 Tallinn</prop>
 				<prop key="url">https://www.pta.agri.ee</prop>
 				<prop key="streetAdr">Väike-Paala 3</prop>
@@ -119,7 +119,7 @@
 
 	<bean id="mailSender"
 		class="org.springframework.mail.javamail.JavaMailSenderImpl">
-		<property name="host" value="mailcatcher.agri.ee" />
+		<property name="host" value="relay.agri.ee" />
 		<property name="port" value="25" />
 		<property name="username" value="alkoholi.register" />
 		<property name="password" value="ai03rr09" />
