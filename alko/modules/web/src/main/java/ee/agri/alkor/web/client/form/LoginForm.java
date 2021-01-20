@@ -199,7 +199,7 @@ public class LoginForm extends Form {
 					String[] urls = (String[]) result;
 					String baseiframe = ""
 						+ "<div id='login-iframe'>"
-                      		+ "<a href='"+urls[0]+"?service="+urls[1]+"&cancellation_uri="+urls[2]+"' class='login-cas'>Sisene Alkoholiregistrisse</a>"
+                      		+ "<a href='"+urls[0]+"?service="+urls[1]+"&cancellationUri="+urls[3]+"' class='login-cas'>Sisene Alkoholiregistrisse</a>"
 						+ "</div>";
 					
 					idForm.setHTML(0, 0, baseiframe);
