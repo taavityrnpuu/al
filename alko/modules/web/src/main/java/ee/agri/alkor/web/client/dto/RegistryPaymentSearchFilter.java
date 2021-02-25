@@ -23,7 +23,10 @@ public class RegistryPaymentSearchFilter extends SearchFilter implements IsSeria
 		super();
 		// The name of the class we are querying.
 		setObjectClass("RegistryPayment");
-		this.addSortItem(HAS_ENTERPRISE, ASCENDING);
+		
+		// seda ei soovi enam vaikimisi sortida
+		//this.addSortItem(HAS_ENTERPRISE, ASCENDING);
+		
 		this.addSortItem(PAYMENT_DATE, DESCENDING);
 	}
 
