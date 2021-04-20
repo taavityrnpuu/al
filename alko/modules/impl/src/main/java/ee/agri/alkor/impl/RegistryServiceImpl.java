@@ -1970,15 +1970,18 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 					int nextNr = 1; // vaikimisi kohe esimene pikendamine
 					LOGGER.info("product ID " + Long.toString(prod)+" , oldNumber: "+oldNumber+", appl_id: "+application.getId());
-					ResultSet rs = PostgreUtils.query("SELECT CAST(REPLACE(nr, '" + oldNumber + "/P', '') AS INT) AS nr FROM reg_application WHERE nr LIKE '" + oldNumber + "/P%' ORDER BY CAST(REPLACE(nr, '" + oldNumber + "/P', '') AS INT) DESC LIMIT 1");
+					
+					String[] jupid = oldNumber.split("/");
+					String initialNr = jupid[0];
+					
+					ResultSet rs = PostgreUtils.query("SELECT CAST(REPLACE(nr, '" + initialNr + "/P', '') AS INT) AS nr FROM reg_application WHERE nr LIKE '" + initialNr + "/P%' ORDER BY CAST(REPLACE(nr, '" + initialNr + "/P', '') AS INT) DESC LIMIT 1");
 					if(rs.next()){ // kui leidus pikendamisi, siis võtame kõige hiliseima pikendamise numbri ja liidame +1
 						nextNr = rs.getInteger("nr");
 						LOGGER.info("leitud suurim pikendamise nr " + nextNr + ", liidame +1");
 						nextNr = nextNr + 1;
 					}
 					
-					String[] jupid = oldNumber.split("/");
-					application.setNr(jupid[0] + "/P" + Integer.toString(nextNr));
+					application.setNr(initialNr + "/P" + Integer.toString(nextNr));
 					LOGGER.info("PXL newNr firstExtension"+ oldNumber);
 					if(application.getRecievedBy() == null) {
 						application.setRecievedBy(AuthenticationServiceDelegate.getCurrentUserName());
