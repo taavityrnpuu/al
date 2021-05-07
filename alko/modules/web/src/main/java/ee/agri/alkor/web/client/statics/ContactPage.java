@@ -56,7 +56,10 @@ public class ContactPage extends Form {
 			"					<td>Ingrid Hamburg</td>"+
 			"				</tr>"+
 			"				<tr>"+
-			"					<td>Tel: 372 605 1738</td>"+
+			"					<td>E-post: ingrid.hamburg@pta.agri.ee</td>"+
+			"				</tr>"+
+			"				<tr>"+
+			"					<td>Tel: 372 605 1738, 372 5193 7145</td>"+
 			"				</tr>"+
 			"				<tr>"+
 			"					<td></td>"+
@@ -66,6 +69,9 @@ public class ContactPage extends Form {
 			"				</tr>"+
 			"				<tr>"+
 			"					<td>Astrid Aulik</td>"+
+			"				</tr>"+
+			"				<tr>"+
+			"					<td>E-post: astrid.aulik@pta.agri.ee</td>"+
 			"				</tr>"+
 			"				<tr>"+
 			"					<td>Tel: 372 605 6878, 372 5860 9110</td>"+
