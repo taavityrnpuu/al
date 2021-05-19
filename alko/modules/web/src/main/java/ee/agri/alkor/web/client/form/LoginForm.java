@@ -160,7 +160,7 @@ public class LoginForm extends Form {
 		} else if (error != null && NO_ENTERPRISE.equals(error)) {
 			HTML errorHtml = new HTML("<div style='color:red;margin-top:20px;margin-left:40px;font-size:12px'>"
 					+ loginFailed + "<br/><br/>" + reason6
-					+ "<br/><br/><a href='http://www.pta.agri.ee'>" + linkTitle
+					+ "<br/><br/><a href='http://pta.agri.ee'>" + linkTitle
 					+ "</a></div>");
 			main.setWidget(1, 0, errorHtml);
 		}
