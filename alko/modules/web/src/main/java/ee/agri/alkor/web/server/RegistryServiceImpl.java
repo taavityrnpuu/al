@@ -10,6 +10,8 @@ import javax.servlet.http.HttpSession;
 
 import org.apache.log4j.Logger;
 import org.gwtwidgets.server.spring.GWTSpringController;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -39,6 +41,7 @@ import ee.agri.alkor.web.service.ServiceConstants;
 import ee.agri.alkor.web.service.SessionExpiredException;
 import ee.agri.alkor.web.service.SystemException;
 
+@Service
 public class RegistryServiceImpl implements RegistryService {
 	private static Logger LOGGER = Logger.getLogger(RegistryServiceImpl.class);
 
