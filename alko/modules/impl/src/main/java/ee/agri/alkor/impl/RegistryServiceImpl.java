@@ -33,7 +33,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.orm.hibernate5.LocalSessionFactoryBean;
-import org.springframework.stereotype.Service;
+import org.springframework.stereotype.Repository;
 
 import ee.agri.alkor.impl.PostgreUtils;
 import ee.agri.alkor.model.AlkoUserDetails;
@@ -67,7 +67,8 @@ import ee.agri.alkor.siga.SigaServiceImpl;
 import ee.agri.alkor.util.AppContextHelper;
 import ee.agri.alkor.model.classes.ApplicationType;
 
-@Service
+@Repository
+@Transactional
 public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 
 	private static Logger LOGGER = Logger.getLogger(RegistryServiceImpl.class);
@@ -913,7 +914,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	 * @param registryPayment
 	 * @return
 	 */
-	@Transactional
 	private void doUnbindPaymentToEnterpise(Session session, Enterprise enterprise, RegistryPayment payment) {
 
 		// to avoid double action called by double click
@@ -974,7 +974,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		return false;
 	}
 	
-	@Transactional
 	private void createPaymentForEnterpise(Session session, Enterprise enterprise, RegistryPayment payment) {
 
 		Transaction tx = session.getTransaction();
@@ -1002,7 +1001,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	 * @param enterprise
 	 * @param payment
 	 */
-	@Transactional
 	private void doBindPaymentToEnterpise(Session session, Enterprise enterprise, RegistryPayment payment) {
 		Transaction tx = session.getTransaction();
 		if(!tx.isActive()) {
@@ -1765,7 +1763,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		return application;
 	}
 
-	@Transactional
 	public RegistryApplication saveOrUpdateEITApplication(final RegistryApplication application) // XXX EIT kasutaja SAVE
 	{
 		try {
@@ -2071,7 +2068,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		return product;
 	}
 
-	@Transactional
 	public Product excludeProductFromregistry(final Product product) throws ConstraintViolationException {
 
 		final RegistryApplication application = product.getRegistryEntryApplication();
@@ -3750,7 +3746,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	/**
 	 * Updates applicant's balance and inserts new record to log table
 	 */
-	@Transactional
 	public RegistryApplication processPaymentMatching(RegistryApplication registryApplication, final String tax,
 			final PaymentMatchingLog paymentMatchingLog) throws ConstraintViolationException, IllegalArgumentException, SystemException {
 		final Enterprise applicant;
@@ -3861,7 +3856,6 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	/**
 	 * Updates applicant's balance and inserts new record to log table
 	 */
-	@Transactional
 	public RegistryApplication processPaymentMatching2(RegistryApplication registryApplication, final String tax,
 			final PaymentMatchingLog paymentMatchingLog) throws ConstraintViolationException {
 		final Enterprise applicant;
