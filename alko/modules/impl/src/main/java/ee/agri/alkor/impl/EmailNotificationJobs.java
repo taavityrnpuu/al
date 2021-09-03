@@ -57,9 +57,14 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 	
 	private String mode;
 	
+	private String testNotificationMail;
+	private int testNotificationAmount;
+
 	private JavaMailSender mailSender;
 	
 	private VelocityEngine velocityEngine;
+	
+	private boolean isTest = false;
 	
 	/*
 	 * 
@@ -70,7 +75,12 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 	public void sendRegistryEntryExpireNotifications() throws IOException, VelocityException {
 		final Calendar expireDate = Calendar.getInstance();
 		expireDate.add(Calendar.DAY_OF_YEAR, getDaysBeforeRegistryEntryExpiry());
-		if(!LIVE_MODE.equals(getMode())){
+		
+		if(getTestNotificationMail() != null && !getTestNotificationMail().equals("")) {
+			LOGGER.info("sendRegistryEntryExpireNotifications testing with set email: " + getTestNotificationMail());
+			setTest(true);
+		}
+		else if(!LIVE_MODE.equals(getMode())){
 			LOGGER.info("sendRegistryEntryExpireNotifications not live mode - execution halted");
 			return;
 		}
@@ -88,7 +98,7 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 				
 				Map<Enterprise, List<RegistryEntry>> entriesMap = new HashMap<Enterprise, List<RegistryEntry>>();
 				
-				int count = 0;
+				int count = 0; int mitmes = 0;
 				boolean all = false;
 				while(!all) {
 					q.setFirstResult(count);
@@ -126,43 +136,64 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 					}
 						
 					for(Enterprise entrant : entriesMap.keySet()) {
+						mitmes++;
+						
+						if(isTest() && mitmes >= getTestNotificationAmount()) {
+							all = true;
+							break;
+						}
+						
 						final Enterprise applicant = entrant;
 						final List<RegistryEntry> regentries = entriesMap.get(applicant);
-						if(applicant != null && applicant.getContactInfo() != null && applicant.getContactInfo().getEmail() != null) {
+						
+						String to = "";
+						if(isTest()) {
+							to = getTestNotificationMail();
+						}
+						else if(applicant != null && applicant.getContactInfo() != null && applicant.getContactInfo().getEmail() != null) {
+							to = applicant.getContactInfo().getEmail();
+						}
+						final String to_mail = to.trim();
+						
+						if(to_mail.length() != 0) {
 							try {
 								LOGGER.info("messagePreparator");
-							MimeMessagePreparator preparator = new MimeMessagePreparator() {
-						         public void prepare(MimeMessage mimeMessage) throws Exception {
-						            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
-						            message.setSubject("Riikliku alkoholiregistri registrikande kehtivuse kaotamisest teavitamine");
-						            message.setTo(applicant.getContactInfo().getEmail());
-							            //message.setTo("tiit@piksel.ee");
-						            String[] bccAddresses = {"olle@piksel.ee", "alkoreg@vet.agri.ee"};
-						            
-						            message.setBcc(bccAddresses);
-						            message.setFrom(EmailNotificationJobs.this.getMailFrom()); 
-							            Map<String, Object> model = new HashMap();
-						            
-						            Calendar cal = Calendar.getInstance();
-						            String DATE_FORMAT = "dd.MM.yyyy";
-						            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
-						            
-						            model.put("current_date", sdf.format(cal.getTime()));
-						            model.put("applicant", applicant);
-						            model.put("regentries", regentries);
-							            String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, System.getProperty("catalina.base") + "/webapps/ROOT/regentryExpiry.vm", "UTF-8", model);
+								MimeMessagePreparator preparator = new MimeMessagePreparator() {
+							         public void prepare(MimeMessage mimeMessage) throws Exception {
+							        	 
+							            MimeMessageHelper message = new MimeMessageHelper(mimeMessage, "UTF-8");
 							            
-						            message.setText(text, true);
-						            
-						            }
-					        };
+							            message.setSubject("Riikliku alkoholiregistri registrikande kehtivuse kaotamisest teavitamine");
+							            message.setTo(to_mail);
+							            
+							            if(!isTest()) {
+								            String[] bccAddresses = {"olle@piksel.ee", "alkoreg@vet.agri.ee"};
+								            message.setBcc(bccAddresses);
+							            }
+							            
+							            message.setFrom(EmailNotificationJobs.this.getMailFrom()); 
+								        Map<String, Object> model = new HashMap();
+							            
+							            Calendar cal = Calendar.getInstance();
+							            String DATE_FORMAT = "dd.MM.yyyy";
+							            SimpleDateFormat sdf = new SimpleDateFormat(DATE_FORMAT);
+							            
+							            model.put("current_date", sdf.format(cal.getTime()));
+							            model.put("applicant", applicant);
+							            model.put("regentries", regentries);
+								        String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, System.getProperty("catalina.base") + "/webapps/ROOT/regentryExpiry.vm", "UTF-8", model);
+								            
+							            message.setText(text, true);
+							           
+							         }
+						        };
 						        
 						        LOGGER.info(EmailNotificationJobs.this.getMailSender().toString());
 					        	EmailNotificationJobs.this.getMailSender().send(preparator);
 					        	for (RegistryEntry entry : regentries) {
 					        		entry.setExpiryNotificationSent(true);
 					        	}
-					        	LOGGER.info("Notification sent to " + applicant.getName() + "," + applicant.getRegistrationId()	+ "," + applicant.getContactInfo().getEmail());
+					        	LOGGER.info("Notification sent to " + applicant.getName() + "," + applicant.getRegistrationId()	+ "," + to_mail);
 					        	
 					        	Transaction tx = session.beginTransaction();
 					        	session.flush();
@@ -234,6 +265,30 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 
 	public void setMode(String mode) {
 		this.mode = mode;
+	}
+	
+	public String getTestNotificationMail() {
+		return testNotificationMail;
+	}
+
+	public void setTestNotificationMail(String testNotificationMail) {
+		this.testNotificationMail = testNotificationMail;
+	}
+
+	public int getTestNotificationAmount() {
+		return testNotificationAmount;
+	}
+
+	public void setTestNotificationAmount(int testNotificationAmount) {
+		this.testNotificationAmount = testNotificationAmount;
+	}
+
+	public boolean isTest() {
+		return isTest;
+	}
+
+	public void setTest(boolean isTest) {
+		this.isTest = isTest;
 	}
 
 }

@@ -11,9 +11,12 @@ Alkoholiregistri volitatud töötleja Veterinaar- ja Toiduamet tuletab meelde, e
 <br />
 Järgmised Teie poolt Riiklikusse alkoholiregistrisse kantud alkohoolsete jookide registrikanded kaotavad kehtivuse 60 või vähema päeva pärast:<br />
 <br />
+<ul>
 #foreach( $regentry in $regentries )
-	$!regentry.nr : aegub $!regentry.getValidUntilFormatted() <br />
+	<li>$!regentry.nr : aegub $!regentry.getValidUntilFormatted()</li>
+	$!regentry.getEmailInfo()
 #end
+</ul>
 <br />
 <br />
 ----------------------------------------------------------------------------------<br />

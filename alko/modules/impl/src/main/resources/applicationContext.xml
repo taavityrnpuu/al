@@ -140,6 +140,8 @@
 		class="ee.agri.alkor.impl.EmailNotificationJobs">
 		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
 		<property name="mode" value="@mode@" />
+		<property name="testNotificationMail" value="@testNotificationMail@" />
+		<property name="testNotificationAmount" value="@testNotificationAmount@" />
 		<property name="daysBeforeRegistryEntryExpiry" value="60" />
 		<property name="daysAfterRegistryEntryExpiry" value="0" />
 		<property name="sessionFactory" ref="mySessionFactory" />
@@ -201,6 +203,8 @@
 		<property name="jobDetail" ref="regEntryExpireNotificationJob" />
 		<!-- run every morning at 6 AM -->
 		<property name="cronExpression" value="0 0 6 * * ?" />
+		<!-- for testing purposes - send notifications every 10 minutes -->
+		<!-- <property name="cronExpression" value="0 */1 * ? * *" /> --> 
 	</bean>
 	
 	<bean id="cronTrigger2"

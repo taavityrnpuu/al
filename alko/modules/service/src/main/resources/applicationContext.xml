@@ -105,6 +105,8 @@
 		class="ee.agri.alkor.impl.EmailNotificationJobs">
 		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
 		<property name="mode" value="@mode@" />
+		<property name="testNotificationMail" value="@testNotificationMail@" />
+		<property name="testNotificationAmount" value="@testNotificationAmount@" />
 		<property name="sessionFactory" ref="jndiSessionFactory" />
 		<property name="mailSender" ref="mailSender" />
 		<!--<property name="velocityEngine" ref="velocityEngine" />-->

@@ -173,4 +173,44 @@ public class RegistryEntry extends ABaseBean implements IHistorical {
 		return "Nr: " + nr + ", ValidFrom: " + validFrom + ", ValidUntil: " + validUntil + ", ChangeReason: " + changeReason
 			+ ", ExpirySent: " + expiryNotificationSent + ", Application: [" + (this.application != null ? this.application.toString() : "null") + "]";
 	}
+	
+	@Transient
+	public String getEmailInfo() {
+		String info = "";
+		
+		if(this.getApplication() != null) {
+
+			if(this.getApplication().getProduct() != null) {
+				
+				info += "<li>Toode nimi: <b>" + this.getApplication().getProduct().getName() + "</b></li>";
+				
+				// tüüp
+				if(this.getApplication().getProduct().getType() != null) {
+					info += "<li>Toote liik: <b>" + this.getApplication().getProduct().getType().getName() + "</b></li>";
+				}
+				
+				// maht
+				if(this.getApplication().getProduct().getPackingVolume() != null) {
+					info += "<li>Maht: <b>" + this.getApplication().getProduct().getPackingVolume().getName() + "</b></li>";;
+				}
+				
+				// alkoholi %
+				if(this.getApplication().getProduct().getEthanolRate() != null) {
+					info += "<li>Etanoolisisaldus %vol: <b>" + this.getApplication().getProduct().getEthanolRate() + "%</b></li>";
+				}
+				
+				// pudeldaja
+				if(this.getApplication().getProduct().getPackager() != null) {
+					info += "<li>Pakendaja: <b>" + this.getApplication().getProduct().getPackager().getName() + "</b></li>";
+				}
+				
+				// päritolumaa
+				if(this.getApplication().getProduct().getOriginCountry() != null) {
+					info += "<li>Päritoluriik / lähtekoht: <b>" + this.getApplication().getProduct().getOriginCountry().getName() + "</b></li>";
+				}
+			}
+		}
+		
+		return (info.length() > 0 ? "<ul>" + info + "</ul>": null);
+	}
 }
