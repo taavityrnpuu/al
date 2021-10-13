@@ -3,6 +3,7 @@ package ee.agri.alkor.impl;
 
 import java.io.IOException;
 import java.io.StringWriter;
+import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -181,9 +182,12 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 							            model.put("current_date", sdf.format(cal.getTime()));
 							            model.put("applicant", applicant);
 							            model.put("regentries", regentries);
-								        String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, System.getProperty("catalina.base") + "/webapps/ROOT/regentryExpiry.vm", "UTF-8", model);
-								            
-							            message.setText(text, true);
+							            
+								        String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, Paths.get(System.getProperty("catalina.base") + "/webapps/ROOT/regentryExpiry.vm").toString(), "UTF-8", model);
+							            // testimisel olenevalt confist on vaja ainult ette anda template nimi
+								        //String text = VelocityEngineUtils.mergeTemplateIntoString(velocityEngine, "regentryExpiry.vm", "UTF-8", model);
+							            
+								        message.setText(text, true);
 							           
 							         }
 						        };

@@ -1,5 +1,6 @@
 package ee.agri.alkor.model;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -13,6 +14,7 @@ import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.OptimisticLockType;
@@ -176,41 +178,77 @@ public class RegistryEntry extends ABaseBean implements IHistorical {
 	
 	@Transient
 	public String getEmailInfo() {
-		String info = "";
+		
+		String number = this.getNr();
+		String kehtivus = this.getValidUntilFormatted();
+		String liik = "";
+		String maht = "";
+		String vol = "";
+		String pakendaja = "";
+		String toode = "";
+		String riik = "";
+		String tootja = "";
+		String tootja_riik = "";
+		
+		DecimalFormat df = new DecimalFormat();
+		df.setMaximumFractionDigits(2);
+		df.setMinimumFractionDigits(0);
+		df.setGroupingUsed(false);
 		
 		if(this.getApplication() != null) {
 
 			if(this.getApplication().getProduct() != null) {
 				
-				info += "<li>Toode nimi: <b>" + this.getApplication().getProduct().getName() + "</b></li>";
+				toode = this.getApplication().getProduct().getName();
 				
 				// tüüp
 				if(this.getApplication().getProduct().getType() != null) {
-					info += "<li>Toote liik: <b>" + this.getApplication().getProduct().getType().getName() + "</b></li>";
+					liik = this.getApplication().getProduct().getType().getName();
 				}
 				
 				// maht
 				if(this.getApplication().getProduct().getPackingVolume() != null) {
-					info += "<li>Maht: <b>" + this.getApplication().getProduct().getPackingVolume().getName() + "</b></li>";;
+					maht = this.getApplication().getProduct().getPackingVolume().getName();
 				}
 				
 				// alkoholi %
 				if(this.getApplication().getProduct().getEthanolRate() != null) {
-					info += "<li>Etanoolisisaldus %vol: <b>" + this.getApplication().getProduct().getEthanolRate() + "%</b></li>";
+					vol = df.format(this.getApplication().getProduct().getEthanolRate());
 				}
 				
 				// pudeldaja
 				if(this.getApplication().getProduct().getPackager() != null) {
-					info += "<li>Pakendaja: <b>" + this.getApplication().getProduct().getPackager().getName() + "</b></li>";
+					pakendaja = this.getApplication().getProduct().getPackager().getName();
 				}
 				
 				// päritolumaa
 				if(this.getApplication().getProduct().getOriginCountry() != null) {
-					info += "<li>Päritoluriik / lähtekoht: <b>" + this.getApplication().getProduct().getOriginCountry().getName() + "</b></li>";
+					riik = this.getApplication().getProduct().getOriginCountry().getName();
+				}
+				
+				// tootja
+				if(this.getApplication().getProduct().getProducer() != null) {
+					tootja = this.getApplication().getProduct().getProducer().getName();
+					
+					// tootjariik
+					if(this.getApplication().getProduct().getProducer().getAddress() != null) {
+						if(this.getApplication().getProduct().getProducer().getAddress().getCountry() != null) {
+							tootja_riik = this.getApplication().getProduct().getProducer().getAddress().getCountry().getName();
+						}
+					}
 				}
 			}
 		}
 		
-		return (info.length() > 0 ? "<ul>" + info + "</ul>": null);
+		return "<td>" + StringEscapeUtils.escapeHtml4(number) + "</td>" +
+			"<td>" + StringEscapeUtils.escapeHtml4(kehtivus) + "</td>" +
+			"<td>" + StringEscapeUtils.escapeHtml4(toode) + "</td>" +
+			"<td>" + StringEscapeUtils.escapeHtml4(liik) + "</td>" +
+			"<td>" + StringEscapeUtils.escapeHtml4(maht) + "</td>" +
+			"<td>" + StringEscapeUtils.escapeHtml4(vol) + "</td>" +
+			"<td>" + StringEscapeUtils.escapeHtml4(riik) + "</td>" +
+			"<td>" + StringEscapeUtils.escapeHtml4(tootja) + "</td>" +
+			"<td>" + StringEscapeUtils.escapeHtml4(tootja_riik) + "</td>" +
+			"<td>" + StringEscapeUtils.escapeHtml4(pakendaja) + "</td>";
 	}
 }

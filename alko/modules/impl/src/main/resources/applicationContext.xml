@@ -203,8 +203,8 @@
 		<property name="jobDetail" ref="regEntryExpireNotificationJob" />
 		<!-- run every morning at 6 AM -->
 		<property name="cronExpression" value="0 0 6 * * ?" />
-		<!-- for testing purposes - send notifications every 10 minutes -->
-		<!-- <property name="cronExpression" value="0 */1 * ? * *" /> --> 
+		<!-- for testing purposes - send notifications every minute -->
+		<!-- <property name="cronExpression" value="0 * * * * ?" /> -->
 	</bean>
 	
 	<bean id="cronTrigger2"
