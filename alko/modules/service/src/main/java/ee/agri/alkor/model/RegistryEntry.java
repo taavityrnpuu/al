@@ -1,8 +1,10 @@
 package ee.agri.alkor.model;
 
 import java.text.DecimalFormat;
+import java.text.DecimalFormatSymbols;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -190,7 +192,7 @@ public class RegistryEntry extends ABaseBean implements IHistorical {
 		String tootja = "";
 		String tootja_riik = "";
 		
-		DecimalFormat df = new DecimalFormat();
+		DecimalFormat df = new DecimalFormat("#.##", new DecimalFormatSymbols(Locale.GERMANY));
 		df.setMaximumFractionDigits(2);
 		df.setMinimumFractionDigits(0);
 		df.setGroupingUsed(false);
