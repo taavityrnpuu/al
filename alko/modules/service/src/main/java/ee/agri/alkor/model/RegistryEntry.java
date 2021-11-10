@@ -242,7 +242,7 @@ public class RegistryEntry extends ABaseBean implements IHistorical {
 			}
 		}
 		
-		return "<td>" + StringEscapeUtils.escapeHtml4(number) + "</td>" +
+		return "<td style=\"padding: 0px 5px;\">" + StringEscapeUtils.escapeHtml4(number) + "</td>" +
 			"<td>" + StringEscapeUtils.escapeHtml4(kehtivus) + "</td>" +
 			"<td>" + StringEscapeUtils.escapeHtml4(toode) + "</td>" +
 			"<td>" + StringEscapeUtils.escapeHtml4(liik) + "</td>" +
