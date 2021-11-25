@@ -178,7 +178,7 @@ public class LoginServiceServlet extends HttpServlet {
 
 				if (saadaEdasi) {
 					String sql = "SELECT ent_name FROM user_arireg WHERE reg_nr = '" + regNr
-							+ "' ORDER BY created DESC LIMIT 1";
+							+ "' ORDER BY last_checked DESC, created DESC LIMIT 1";
 					String entName = null;
 					boolean enterpriseExists = false;
 
