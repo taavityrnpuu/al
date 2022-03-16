@@ -13,7 +13,7 @@ public interface IXteeServices {
 	 * @param regNr
 	 * @return
 	 */
-	Enterprise queryEnterprise(String regNr) ;
+	Enterprise queryEnterprise(String name, String regNr) ;
 	
 	/**
 	 * MTR and customs query.

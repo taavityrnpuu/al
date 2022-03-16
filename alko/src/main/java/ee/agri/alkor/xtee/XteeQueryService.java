@@ -44,8 +44,8 @@ public class XteeQueryService implements IXteeServices, InitializingBean {
 		esImpl.setQueryingEnterpriseRegNr(queryingEnterpriseRegNr);
 	}
 
-	public Enterprise queryEnterprise(String regNr) {
-		return erImpl.findEnterprise(regNr);
+	public Enterprise queryEnterprise(String name, String regNr) {
+		return erImpl.findEnterprise(name, regNr);
 	}
 
 	public MtrAndCustomsQueryResult queryMTRAndCustoms(String enterpriseRegNr) {
