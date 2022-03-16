@@ -12,7 +12,7 @@ import ee.agri.alkor.web.service.XteeQueryService;
 public class XteeQueryServiceImpl implements  XteeQueryService {
 
 	public ObjectList makeBusinessRegisterQuery(String name, String registrationId) {
-		Enterprise enterprise = ServiceFactory.getXteeServices().queryEnterprise(registrationId);
+		Enterprise enterprise = ServiceFactory.getXteeServices().queryEnterprise(name, registrationId);
 		ObjectList result = new ObjectList();
 		if (enterprise != null) {
 			result.add(ClientDataFactory.create(enterprise));

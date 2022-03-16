@@ -70,13 +70,14 @@ public class EnterpriseRegisterQueryImpl {
 
 	private String queringPersonRegNr;
 
-	public Enterprise findEnterprise(String regNr) {
+	public Enterprise findEnterprise(String name, String regNr) {
 		
 		String url = "";
 		try {
 			HashMap<String, String> rs = ServiceFactory.getRegistryService().getConfigFromDatabase();
 			url = rs.get("XTEESERVICE_URL");
-			
+
+			LOGGER.debug("arireg xtee findEnterprise: name: '"+ name + "', regNr: '"+ regNr + "'");
 			
 			AriregLocator service = new AriregLocator();
 			AriregXteeStub port = null;
@@ -88,10 +89,21 @@ public class EnterpriseRegisterQueryImpl {
 				port.setHeader(elem);
 			}
 	
-			BigInteger regNumber = new BigInteger(regNr);
+			if(name != null) {
+				name = name.trim();
+			}
+			if(regNr != null) {
+				regNr = regNr.trim();
+			}
 
 			Detailandmed_v5_Query keha = new Detailandmed_v5_Query();
-            keha.setAriregistri_kood(regNumber);
+			if(regNr != null && regNr.length() > 0){
+				BigInteger regNumber = new BigInteger(regNr);
+	            keha.setAriregistri_kood(regNumber);
+			}
+			if(name != null && name.length() > 0) {
+	            keha.setArinimi(name);
+			}
             keha.setYandmed(true);
             keha.setIandmed(false);
             keha.setKandmed(false);
@@ -108,7 +120,7 @@ public class EnterpriseRegisterQueryImpl {
 			}
 			int evsize = result.value.getEttevotjad().length;
 			if (LOGGER.isDebugEnabled())
-				LOGGER.debug("Enterprise query for regNr: '"+ regNumber + "' result size=" + evsize);
+				LOGGER.debug("Enterprise query for name: '"+ name + "', regNr: '"+ regNr + "' result size=" + evsize);
 			if (evsize > 0) {
 				return convertNew(result.value.getEttevotjad()[0]);
 			}
@@ -156,12 +168,14 @@ public class EnterpriseRegisterQueryImpl {
 					
 					try{
 						String[] sp = aadress.getTanav_maja_korter().split(" ");
-						
-						String street = "";
-						for(int i = 0; i < sp.length-1 ;i++){
-							street += sp[i];
+
+						if(sp.length > 0) {
+							String[] street = new String[sp.length-1];
+							for(int i = 0; i < sp.length-1 ;i++){
+								street[i] = sp[i];
+							}
+							adr.setStreet(String.join(" ", street));
 						}
-						adr.setStreet(street);
 						
 						if(sp[sp.length-1].contains("-")){
 							String[] apartment = sp[sp.length-1].split("-");

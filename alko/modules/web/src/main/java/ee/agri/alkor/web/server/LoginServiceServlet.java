@@ -222,7 +222,7 @@ public class LoginServiceServlet extends HttpServlet {
 						try {
 							EnterpriseRegisterQueryImpl erImpl = new EnterpriseRegisterQueryImpl();
 							erImpl.setQueringPersonRegNr(ik);
-							Enterprise entrpr = erImpl.findEnterprise(regNr);
+							Enterprise entrpr = erImpl.findEnterprise(null, regNr);
 
 							entrpr.setId(entr_id);
 							entrpr.setVersion(1);
