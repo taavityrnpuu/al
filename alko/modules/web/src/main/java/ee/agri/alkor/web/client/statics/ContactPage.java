@@ -38,9 +38,12 @@ public class ContactPage extends Form {
 		super.init();
 		//create the main table
 		HTML html = new HTML();
+		
+		/* testimiseks
 		String title = getLabel("title");
 		String linkName = getLabel("linkName");
 		String linkWeb = getLabel("linkWeb");
+		
 		html.setHTML(
 			"<table width='100%'>"+
 			"	<tr>"+
@@ -81,6 +84,7 @@ public class ContactPage extends Form {
 			"	</tr>"+
 			"</table>"
 		);
+		*/
 		
 		html.setHTML(getLabel(ContactPageMessages.CONTENT));
 		initWidget(html);
