@@ -322,7 +322,7 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 	
 	public String[] getLoginBackURL() {
 		
-		String[] urls = new String[3];
+		String[] urls = new String[4];
 		
 		String sql = "SELECT * FROM config WHERE type = 'cas_urls'";
 		try {
@@ -338,6 +338,9 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 						break;
 					case "CAS_LOGOUT_URL": 
 						urls[2] = rs.getString("value"); 
+						break;
+					case "CAS_TARACANCEL_URL": 
+						urls[3] = rs.getString("value"); 
 						break;
 					default: continue;
 				}

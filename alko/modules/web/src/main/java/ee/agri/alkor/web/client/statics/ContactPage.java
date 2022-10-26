@@ -56,10 +56,13 @@ public class ContactPage extends Form {
 			"					<td>Peaspetsialist</td>"+
 			"				</tr>"+
 			"				<tr>"+
-			"					<td>Liia Maamägi</td>"+
+			"					<td>Ingrid Hamburg</td>"+
 			"				</tr>"+
 			"				<tr>"+
-			"					<td>Tel: 372 605 1738, 372 56 693 183</td>"+
+			"					<td>E-post: ingrid.hamburg@pta.agri.ee</td>"+
+			"				</tr>"+
+			"				<tr>"+
+			"					<td>Tel: 372 605 1738, 372 5193 7145</td>"+
 			"				</tr>"+
 			"				<tr>"+
 			"					<td></td>"+
@@ -71,7 +74,10 @@ public class ContactPage extends Form {
 			"					<td>Astrid Aulik</td>"+
 			"				</tr>"+
 			"				<tr>"+
-			"					<td>Tel: 372 605 6878</td>"+
+			"					<td>E-post: astrid.aulik@pta.agri.ee</td>"+
+			"				</tr>"+
+			"				<tr>"+
+			"					<td>Tel: 372 605 6878, 372 5860 9110</td>"+
 			"				</tr>"+
 			"			</table>"+
 			"		</td>"+

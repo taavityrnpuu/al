@@ -159,6 +159,7 @@ public class EmailNotificationJobs extends HibernateDaoSupport {
 						if(to_mail.length() != 0) {
 							try {
 								LOGGER.info("messagePreparator");
+
 								MimeMessagePreparator preparator = new MimeMessagePreparator() {
 							         public void prepare(MimeMessage mimeMessage) throws Exception {
 							        	 

@@ -91,7 +91,7 @@ public class LoginServiceServlet extends HttpServlet {
 					}
 					
 					if(isVta) {
-						tableBody += getTableRow("Riik (VTA, EMTA jt)", "", null, null);
+						tableBody += getTableRow("Riik (PTA, EMTA jt)", "", null, null);
 					}
 					
 					PostgreUtils.update("UPDATE enterprise_person_ref SET valid = false where valid = true and id_code = '"
@@ -178,7 +178,7 @@ public class LoginServiceServlet extends HttpServlet {
 
 				if (saadaEdasi) {
 					String sql = "SELECT ent_name FROM user_arireg WHERE reg_nr = '" + regNr
-							+ "' ORDER BY created DESC LIMIT 1";
+							+ "' ORDER BY last_checked DESC, created DESC LIMIT 1";
 					String entName = null;
 					boolean enterpriseExists = false;
 

@@ -160,7 +160,7 @@ public class LoginForm extends Form {
 		} else if (error != null && NO_ENTERPRISE.equals(error)) {
 			HTML errorHtml = new HTML("<div style='color:red;margin-top:20px;margin-left:40px;font-size:12px'>"
 					+ loginFailed + "<br/><br/>" + reason6
-					+ "<br/><br/><a href='http://www.vet.agri.ee/?arc=&op=body&LaID=1&id=472&setlang=est'>" + linkTitle
+					+ "<br/><br/><a href='http://pta.agri.ee'>" + linkTitle
 					+ "</a></div>");
 			main.setWidget(1, 0, errorHtml);
 		}
@@ -199,7 +199,7 @@ public class LoginForm extends Form {
 					String[] urls = (String[]) result;
 					String baseiframe = ""
 						+ "<div id='login-iframe'>"
-                      		+ "<a href='"+urls[0]+"?service="+urls[1]+"&cancellation_uri="+urls[2]+"' class='login-cas'>Sisene Alkoholiregistrisse</a>"
+                      		+ "<a href='"+urls[0]+"?service="+urls[1]+"&cancellationUri="+urls[3]+"' class='login-cas'>Sisene Alkoholiregistrisse</a>"
 						+ "</div>";
 					
 					idForm.setHTML(0, 0, baseiframe);

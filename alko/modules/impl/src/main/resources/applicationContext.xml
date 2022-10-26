@@ -51,10 +51,9 @@
 			<props>
 				<prop key="regnr">70000094</prop>
 				<prop key="phone">605 1710</prop>
-				<prop key="fax">621 1441</prop>
-				<prop key="email">vet@vet.agri.ee</prop>
+				<prop key="email">pta@pta.agri.ee</prop>
 				<prop key="address">Väike-Paala 3, 11415 Tallinn</prop>
-				<prop key="url">http://www.vet.agri.ee</prop>
+				<prop key="url">https://pta.agri.ee</prop>
 				<prop key="streetAdr">Väike-Paala 3</prop>
 				<prop key="cityAdr">11415 Tallinn</prop>
 			</props>
@@ -138,7 +137,7 @@
 
 	<bean id="notificationJobs"
 		class="ee.agri.alkor.impl.EmailNotificationJobs">
-		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
+		<property name="mailFrom" value="alkoreg@pta.agri.ee" />
 		<property name="mode" value="@mode@" />
 		<property name="testNotificationMail" value="@testNotificationMail@" />
 		<property name="testNotificationAmount" value="@testNotificationAmount@" />
@@ -157,7 +156,7 @@
 	
 	<bean id="ExpiredExendUntilApplicationJobs"
 		class="ee.agri.alkor.impl.ExendUntilApplicationExpiryNotificationJobs">
-		<property name="mailFrom" value="alkoreg@vet.agri.ee" />
+		<property name="mailFrom" value="alkoreg@pta.agri.ee" />
 		<property name="mode" value="@mode@" />
 		<property name="daysBeforeNotificationIsSent" value="1" />
 		<property name="sessionFactory" ref="mySessionFactory" />

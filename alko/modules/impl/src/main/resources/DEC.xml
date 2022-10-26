@@ -224,7 +224,7 @@
 				<newline/>
 				<newline/>
 				Otsusega mitten&#245;ustumise korral on taotlejal &#245;igus 30 p&#228;eva jooksul arvates registrikande
-				 tegemisest keeldumise otsuse kättesaamisest esitada vaie Veterinaar- ja Toiduameti peadirektorile või kaebus halduskohtusse halduskohtumenetluse seadustikus sätestatud korras.
+				 tegemisest keeldumise otsuse kättesaamisest esitada vaie Põllumajandus- ja Toiduameti peadirektorile või kaebus halduskohtusse halduskohtumenetluse seadustikus sätestatud korras.
 			#end
 			#if($application.decision.regEntryDecision.code != "RGE" && $application.decision.prodExamplesDecision.code == "PEN")
 			<newline />
