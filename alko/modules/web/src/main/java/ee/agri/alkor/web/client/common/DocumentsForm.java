@@ -392,7 +392,7 @@ public abstract class DocumentsForm extends Form {
 		main.setWidget(5, 0, docsTablePublic);
 		main.setWidget(6, 0, UIutils.createSpacer(700, 1));
 		
-		boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK });
+		boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK, ServiceConstants.ROLE_AUDIT });
 		
 		if (!showOnlyPublic) {
 			main.setWidget(7, 0, UIutils.createSpacer(700, 10));
@@ -670,7 +670,7 @@ public abstract class DocumentsForm extends Form {
 								docsTable.resetRows();
 								docsTable.show();
 								
-								boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK });
+								boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK, ServiceConstants.ROLE_AUDIT });
 								if (hasPrivsArchive) {
 									docsTableArchive.resetRows();
 									docsTableArchive.show();
@@ -794,7 +794,7 @@ public abstract class DocumentsForm extends Form {
 							}
 
 							public void onSuccess(Object result) {
-								boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK });
+								boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK, ServiceConstants.ROLE_AUDIT });
 								if (hasPrivsArchive) {
 									docsTableArchive.resetRows();
 									docsTableArchive.show();
@@ -968,7 +968,7 @@ public abstract class DocumentsForm extends Form {
 							}
 							
 							public void onSuccess(Object result) {
-								boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK });
+								boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK, ServiceConstants.ROLE_AUDIT });
 								if (hasPrivsArchive) {
 									docsTableArchive.resetRows();
 									docsTableArchive.show();
@@ -1117,7 +1117,7 @@ public abstract class DocumentsForm extends Form {
 						ServiceContext.getInstance().getRegistryService().deleteDocument(id, DocumentsTableArchive.this);
 						getRows().remove(row - 1);
 						
-						boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK });
+						boolean hasPrivsArchive = UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_REG_WRK, ServiceConstants.ROLE_AUDIT });
 						if (hasPrivsArchive) {
 							docsTableArchive.resetRows();
 							docsTableArchive.show();
