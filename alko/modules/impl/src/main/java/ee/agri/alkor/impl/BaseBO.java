@@ -20,6 +20,7 @@ import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.HibernateTemplate;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
 import org.springframework.transaction.annotation.Transactional;
 
 import ee.agri.alkor.model.ABaseBean;
@@ -37,6 +38,8 @@ import ee.agri.alkor.service.SystemException;
  * @author ivar
  * 
  */
+@EnableTransactionManagement
+@Transactional
 public abstract class BaseBO extends HibernateDaoSupport implements IBaseService {
 
 	private static Logger LOGGER = Logger.getLogger(BaseBO.class);

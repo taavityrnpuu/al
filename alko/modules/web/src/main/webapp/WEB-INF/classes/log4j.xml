@@ -13,7 +13,7 @@
   </appender>
   
 	<appender name="FILE" class="org.apache.log4j.DailyRollingFileAppender">
-    <param name="File" value="/var/log/tomcat8/app.log"/>
+    <param name="File" value="app.log"/>
     <param name="DatePattern" value="'.'dd.MM.yyyy"/>
     <param name="ImmediateFlush" value="true"/>
 		<layout class="org.apache.log4j.PatternLayout">
@@ -22,12 +22,12 @@
 	</appender>
   
 	<category name="ee">
-		<priority value="DEBUG"/>
+		<priority value="WARN"/>
 		<appender-ref ref="CONSOLE"/>
 		<appender-ref ref="FILE"/>
 	</category>
  	<category name="org.springframework">
-		<priority value="DEBUG"/>
+		<priority value="WARN"/>
 		<appender-ref ref="CONSOLE"/>
 		<appender-ref ref="FILE"/>
 	</category>
@@ -39,7 +39,7 @@
 	
 	<!-- Root Logger -->
 	<root>
-		<priority value="DEBUG" />
+		<priority value="WARN" />
 		<appender-ref ref="CONSOLE" />
 		<appender-ref ref="FILE" />
 	</root>
