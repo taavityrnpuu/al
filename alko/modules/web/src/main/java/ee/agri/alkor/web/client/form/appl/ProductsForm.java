@@ -1189,7 +1189,7 @@ public class ProductsForm extends Form implements CacheListener {
 				} else if (value == "excluded") {
 					map.put(ProductSearchFilter.REGISTRY_ENTRY_VALID_UNTIL,
 							ProductSearchFilter.LESS_OR_EQUAL_THAN_CURRENT_DATE);
-					map.put(ProductSearchFilter.REGISTRY_ENTRY_CHANGE_REASON_NOT_LIKE, ServiceConstants.EXPIRED_REASON);
+					map.put(ProductSearchFilter.REGISTRY_ENTRY_CHANGE_REASON_NOT_LIKE_COALESCE, ServiceConstants.EXPIRED_REASON);
 				}
 				map.remove(ProductSearchFilter.INVALID_PRODUCT);
 			} else {

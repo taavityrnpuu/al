@@ -32,6 +32,7 @@ public class ProductSearchFilter
 	public static final String REGISTRY_ENTRY_DECISION_TYPE_CODE = ProductMap.REGISTRY_ENTRY_DECISION_TYPE_CODE;
 	public static final String REGISTRY_ENTRY_CHANGE_REASON = ProductMap.APPLICATION + "." + ApplicationMap.REGISTRY_ENTRY+ "." + RegistryEntryMap.CHANGE_REASON;
 	public static final String REGISTRY_ENTRY_CHANGE_REASON_NOT_LIKE = SearchFilter.NOT_LIKE + ProductMap.APPLICATION + "." + ApplicationMap.REGISTRY_ENTRY+ "." + RegistryEntryMap.CHANGE_REASON;
+	public static final String REGISTRY_ENTRY_CHANGE_REASON_NOT_LIKE_COALESCE = SearchFilter.NOT_LIKE + "coalesce(" + ProductMap.APPLICATION + "." + ApplicationMap.REGISTRY_ENTRY+ "." + RegistryEntryMap.CHANGE_REASON + ", '')";
 	public static final String DECISION_DATE = ProductMap.DECISION_DATE;
 //	public static final String START_TIME ="startTime";
 //	public static final String END_TIME ="endTime";
