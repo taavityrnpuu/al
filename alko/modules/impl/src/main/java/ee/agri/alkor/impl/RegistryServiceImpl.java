@@ -4088,6 +4088,15 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		getHibernateTemplate().execute(new HibernateCallback<Object>() {
 			public Object doInHibernate(Session session) {
 				session.save(entity);
+				
+				Transaction tx = session.getTransaction();
+				if(!tx.isActive()) {
+					tx.begin();
+				}
+				
+				session.flush();
+				tx.commit();
+					
 				return null;
 			}
 		});
