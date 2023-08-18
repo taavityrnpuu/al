@@ -753,89 +753,211 @@ public class DecisionForm extends Form implements CacheListener {
 								}
 							});
 				} else {
+
 					// Ei valitud otsuse tegemist.
-					ServiceContext.getInstance().getRegistryService().saveApplicationDecision(
-							(ApplicationMap) cleanDataBeforeSave(getData()), new AsyncCallback() {
 
-								public void onFailure(Throwable caught) {
-									setError(caught.toString());
-									save.setVisible(true);
-									mainSender.setVisible(true);
-								}
-
-								public void onSuccess(Object result) {
-									DecisionForm.this.setData((ApplicationMap) result);
-									DecisionForm.this.parent.onDataEvent(new DataChangeEvent(
-											DataChangeEvent.DATA_MODIFIED, (ApplicationMap) result));
-									setFormFieldsFromData(FORM_NAME);
-									// DecisionForm.this.returnToParent();
-									DecisionForm.this.setButtonsEnabled(true);
-									setPrintLinks();
-									setInfo("Salvestamine õnnestus");
-									Cookies.setCookie("RL", "TRUE");
-									DecisionForm.this.save.setVisible(false);
-									DecisionForm.this.reprocess.setVisible(true);
-
-									ServiceContext.getInstance().getRegistryService().isSigned(
-											Integer.valueOf(getData().getText(ApplicationMap.ID)),
-											ServiceConstants.DECISION_DOC_NAME
-													+ getData().getText(ApplicationMap.DECISION_NR) + " (asice)",
-											new AsyncCallback() {
-
-										public void onFailure(Throwable caught) {
-											Window.alert(String.valueOf(caught.getMessage()));
-										}
-
-										public void onSuccess(Object result) {
-											try {
-												boolean res = ((Boolean) result).booleanValue();
-												boolean enabled = getData()
-														.getProperty(ApplicationMap.DECISION_NR) != null;
-												if (!res && enabled) {
-
-													decisionSignLink.setVisible(true);
+					ServiceContext.getInstance().getRegistryService().processPaymentMatching(
+							(ApplicationMap) cleanDataBeforeSave(getData()), "10", new AsyncCallback() {
+								public void onSuccess(Object arg0) {
+					
+									ServiceContext.getInstance().getRegistryService().saveApplicationDecision(
+											(ApplicationMap) cleanDataBeforeSave(getData()), new AsyncCallback() {
+				
+												public void onFailure(Throwable caught) {
+													setError(caught.toString());
+													save.setVisible(true);
+													mainSender.setVisible(true);
 												}
-											} catch (Exception ex) {
-
-											}
-
-										}
-									});
-
-									ServiceContext.getInstance().getRegistryService().isSigned(
-											Integer.valueOf(getData().getText(ApplicationMap.ID)),
-											ServiceConstants.COR_DOC_NAME
-													+ getData().getText(ApplicationMap.DECISION_NR) + " (asice)",
-											new AsyncCallback() {
-
-										public void onFailure(Throwable caught) {
-											Window.alert(String.valueOf(caught.getMessage()));
-										}
-
-										public void onSuccess(Object result) {
-
-											try {
-												boolean res = ((Boolean) result).booleanValue();
-												boolean enabled = getData()
-														.getProperty(ApplicationMap.DECISION_NR) != null;
-												boolean oiendKeelatud = ((String) getData()
-														.getProperty(ApplicationMap.STATE_CODE)).equals(
-																ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY);
-
-												if (!res && enabled && !oiendKeelatud) {
-													correctionSignLink.setVisible(true);
+				
+												public void onSuccess(Object result) {
+													DecisionForm.this.setData((ApplicationMap) result);
+													DecisionForm.this.parent.onDataEvent(new DataChangeEvent(
+															DataChangeEvent.DATA_MODIFIED, (ApplicationMap) result));
+													setFormFieldsFromData(FORM_NAME);
+													// DecisionForm.this.returnToParent();
+													DecisionForm.this.setButtonsEnabled(true);
+													setPrintLinks();
+													setInfo("Salvestamine õnnestus");
+													Cookies.setCookie("RL", "TRUE");
+													DecisionForm.this.save.setVisible(false);
+													DecisionForm.this.reprocess.setVisible(true);
+				
+													ServiceContext.getInstance().getRegistryService().isSigned(
+															Integer.valueOf(getData().getText(ApplicationMap.ID)),
+															ServiceConstants.DECISION_DOC_NAME
+																	+ getData().getText(ApplicationMap.DECISION_NR) + " (asice)",
+															new AsyncCallback() {
+				
+														public void onFailure(Throwable caught) {
+															Window.alert(String.valueOf(caught.getMessage()));
+														}
+				
+														public void onSuccess(Object result) {
+															try {
+																boolean res = ((Boolean) result).booleanValue();
+																boolean enabled = getData()
+																		.getProperty(ApplicationMap.DECISION_NR) != null;
+																if (!res && enabled) {
+				
+																	decisionSignLink.setVisible(true);
+																}
+															} catch (Exception ex) {
+				
+															}
+				
+														}
+													});
+				
+													ServiceContext.getInstance().getRegistryService().isSigned(
+															Integer.valueOf(getData().getText(ApplicationMap.ID)),
+															ServiceConstants.COR_DOC_NAME
+																	+ getData().getText(ApplicationMap.DECISION_NR) + " (asice)",
+															new AsyncCallback() {
+				
+														public void onFailure(Throwable caught) {
+															Window.alert(String.valueOf(caught.getMessage()));
+														}
+				
+														public void onSuccess(Object result) {
+				
+															try {
+																boolean res = ((Boolean) result).booleanValue();
+																boolean enabled = getData()
+																		.getProperty(ApplicationMap.DECISION_NR) != null;
+																boolean oiendKeelatud = ((String) getData()
+																		.getProperty(ApplicationMap.STATE_CODE)).equals(
+																				ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY);
+				
+																if (!res && enabled && !oiendKeelatud) {
+																	correctionSignLink.setVisible(true);
+																}
+															} catch (Exception ex) {
+				
+															}
+				
+														}
+													});
+				
+													// switchButtons(save,
+													// reprocess);
 												}
-											} catch (Exception ex) {
+											});
+									}
+								
+								public void onFailure(Throwable arg0) {
+									if (!UIutils.userHasPriviledge(new String[] { ServiceConstants.ROLE_CLASS_ADM })) {
+										setError("Ettevõtte saldo pole piisav");
+										save.setVisible(true);
+										mainSender.setVisible(true);
+										return;
+									}
 
-											}
+									ConfirmDialog conf = new ConfirmDialog(
+											"Ettevõttel ei ole riigilõiv tasutud (Pole piisav saldo). Jätkan?",
+											new ClickListener() {
+										public void onClick(Widget arg0) {
+											ServiceContext.getInstance().getRegistryService().processPaymentMatching2(
+													(ApplicationMap) cleanDataBeforeSave(getData()), "10",
+													new AsyncCallback() {
+												public void onSuccess(Object arg0) {
+													ServiceContext.getInstance().getRegistryService().saveApplicationDecision(
+															(ApplicationMap) cleanDataBeforeSave(getData()), new AsyncCallback() {
+								
+																public void onFailure(Throwable caught) {
+																	setError(caught.toString());
+																	save.setVisible(true);
+																	mainSender.setVisible(true);
+																}
+								
+																public void onSuccess(Object result) {
+																	DecisionForm.this.setData((ApplicationMap) result);
+																	DecisionForm.this.parent.onDataEvent(new DataChangeEvent(
+																			DataChangeEvent.DATA_MODIFIED, (ApplicationMap) result));
+																	setFormFieldsFromData(FORM_NAME);
+																	// DecisionForm.this.returnToParent();
+																	DecisionForm.this.setButtonsEnabled(true);
+																	setPrintLinks();
+																	setInfo("Salvestamine õnnestus");
+																	Cookies.setCookie("RL", "TRUE");
+																	DecisionForm.this.save.setVisible(false);
+																	DecisionForm.this.reprocess.setVisible(true);
+								
+																	ServiceContext.getInstance().getRegistryService().isSigned(
+																			Integer.valueOf(getData().getText(ApplicationMap.ID)),
+																			ServiceConstants.DECISION_DOC_NAME
+																					+ getData().getText(ApplicationMap.DECISION_NR) + " (asice)",
+																			new AsyncCallback() {
+								
+																		public void onFailure(Throwable caught) {
+																			Window.alert(String.valueOf(caught.getMessage()));
+																		}
+								
+																		public void onSuccess(Object result) {
+																			try {
+																				boolean res = ((Boolean) result).booleanValue();
+																				boolean enabled = getData()
+																						.getProperty(ApplicationMap.DECISION_NR) != null;
+																				if (!res && enabled) {
+								
+																					decisionSignLink.setVisible(true);
+																				}
+																			} catch (Exception ex) {
+								
+																			}
+								
+																		}
+																	});
+								
+																	ServiceContext.getInstance().getRegistryService().isSigned(
+																			Integer.valueOf(getData().getText(ApplicationMap.ID)),
+																			ServiceConstants.COR_DOC_NAME
+																					+ getData().getText(ApplicationMap.DECISION_NR) + " (asice)",
+																			new AsyncCallback() {
+								
+																		public void onFailure(Throwable caught) {
+																			Window.alert(String.valueOf(caught.getMessage()));
+																		}
+								
+																		public void onSuccess(Object result) {
+								
+																			try {
+																				boolean res = ((Boolean) result).booleanValue();
+																				boolean enabled = getData()
+																						.getProperty(ApplicationMap.DECISION_NR) != null;
+																				boolean oiendKeelatud = ((String) getData()
+																						.getProperty(ApplicationMap.STATE_CODE)).equals(
+																								ApplicationMap.STATE_CODE_NOT_ENTERED_TO_REGISTRY);
+								
+																				if (!res && enabled && !oiendKeelatud) {
+																					correctionSignLink.setVisible(true);
+																				}
+																			} catch (Exception ex) {
+								
+																			}
+								
+																		}
+																	});
+								
+																	// switchButtons(save,
+																	// reprocess);
+																}
+															});
+												}
 
-										}
+												public void onFailure(Throwable caught) {
+
+													setError(caught.toString());
+													save.setVisible(true);
+													mainSender.setVisible(true);
+												}
+											});
+
+										};
 									});
-
-									// switchButtons(save,
-									// reprocess);
+									conf.hide();
+									conf.show();
 								}
-							});
+					});
 				}
 			}
 		}
