@@ -46,6 +46,7 @@ public interface RegistryService extends BaseService {
    
    long saveDeleteConfirmation(String title, String note, String id, int mode);
    boolean saveConfigValue(String key, String value);
+   String getMainInfoText();
    
    long saveEnterpriseReference(String firstname, String lastName, String idCode, String occupation, String toDate, String regCode);
    List<String[]> getAllDeleteConfirmations();

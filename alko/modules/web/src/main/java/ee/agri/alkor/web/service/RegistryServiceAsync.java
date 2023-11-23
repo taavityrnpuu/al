@@ -29,6 +29,7 @@ public interface RegistryServiceAsync {
    void getCanEditEnterprise(AsyncCallback callback);
    void saveDeleteConfirmation(String title, String note, String id, int mode, AsyncCallback callback);
    void saveConfigValue(String key, String value, AsyncCallback callback);
+   void getMainInfoText(AsyncCallback callback);
    
    void saveEnterpriseReference(String firstname, String lastName, String idCode, String occupation, String toDate, String regCode, AsyncCallback callback);
    void getAllDeleteConfirmations(AsyncCallback callback);
