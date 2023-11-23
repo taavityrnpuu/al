@@ -61,7 +61,7 @@ public class ConfigForm extends Form {
 	public ConfigTabel configTabel = null;
 
 	final TextBox tbKey = new TextBox();
-	final TextBox tbValue = new TextBox();
+	final TextArea tbValue = new TextArea();
 
 	final Button tyhista = new Button();
 
