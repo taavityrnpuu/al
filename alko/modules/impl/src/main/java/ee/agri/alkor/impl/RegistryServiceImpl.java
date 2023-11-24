@@ -360,6 +360,10 @@ public class RegistryServiceImpl extends BaseBO implements IRegistryService {
 		
 	}
 	
+	public String getMainInfoText() {		
+		return Config.getByCode("MAIN_INFO_TEXT");
+		
+	}
 
 	public boolean saveConfigValue(String key, String value) {
 		String changed_by = "";

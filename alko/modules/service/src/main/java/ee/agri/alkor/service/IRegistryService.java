@@ -57,6 +57,7 @@ public interface IRegistryService extends IBaseService {
    
    long saveDeleteConfirmation(String title, String note, String id, int mode);
    boolean saveConfigValue(String key, String value);
+   String getMainInfoText();
    
    
    long deleteEnterpriseReference(String id);   

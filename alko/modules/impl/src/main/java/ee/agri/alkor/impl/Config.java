@@ -34,4 +34,18 @@ public abstract class Config {
 			ex.printStackTrace();
 		}
 	}
+	
+	public static String getByCode(String key){
+		String value = "";
+		try{ 
+			ResultSet rs = PostgreUtils.query("SELECT value FROM config WHERE key  = '" + key + "'");
+			while(rs.next()){
+				value = rs.getString("value");
+			}
+		} catch (Exception ex){
+			ex.printStackTrace();
+		}
+		
+		return value;
+	}
 }

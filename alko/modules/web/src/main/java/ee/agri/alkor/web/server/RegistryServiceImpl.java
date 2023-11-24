@@ -123,7 +123,10 @@ public class RegistryServiceImpl implements RegistryService {
 	public boolean saveConfigValue(String key, String value) {
 		return ClientDataFactory.create(ServiceFactory.getRegistryService().saveConfigValue(key, value));
 	}
-
+	
+	public String getMainInfoText() {
+		return (String) ClientDataFactory.create(ServiceFactory.getRegistryService().getMainInfoText());
+	}
 
 	public long deleteEnterpriseReference(String id) {
 		return ClientDataFactory.create(ServiceFactory.getRegistryService().deleteEnterpriseReference(id));

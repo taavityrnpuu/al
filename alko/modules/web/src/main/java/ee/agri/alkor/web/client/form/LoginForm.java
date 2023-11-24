@@ -28,6 +28,7 @@ import ee.agri.alkor.web.client.LoginMessagesEst;
 import ee.agri.alkor.web.client.common.Form;
 import ee.agri.alkor.web.client.common.InfoPanel;
 import ee.agri.alkor.web.client.common.UIutils;
+import ee.agri.alkor.web.client.statics.HomePageMessages;
 
 /**
  * Login vorm ja enda avamise kuular.
@@ -165,7 +166,28 @@ public class LoginForm extends Form {
 			main.setWidget(1, 0, errorHtml);
 		}
 		main.setWidget(2, 0, UIutils.createSpacer(1, 15));
-		main.setWidget(3, 0, idLoginFormPanel);
+		
+		final HTML main_info_div = new HTML();
+		main.setWidget(3, 0, main_info_div);
+		ServiceContext.getInstance().getRegistryService().getMainInfoText(
+			new AsyncCallback() {
+
+				public void onFailure(Throwable caught) {
+					
+				}
+
+				public void onSuccess(Object result) {
+					String main_info = result.toString();
+					
+					if(main_info.length() > 0) {
+						main_info = main_info.replaceAll("(\r\n|\n)", "<br/>") + "<br/>";
+					}
+					main_info_div.setHTML(main_info);
+				}
+			}
+		);
+		
+		main.setWidget(4, 0, idLoginFormPanel);
 		
 		final Button ametnikule = new Button("Ametnikule");
 		ametnikule.addClickHandler(new ClickHandler() {
@@ -178,11 +200,9 @@ public class LoginForm extends Form {
 		ametnikule.setStyleName("gwt-Button");
 		ametnikule.getElement().getStyle().setProperty("margin-left", "40px");
 		
-		main.setWidget(4, 0, UIutils.createSpacer(700, 1));
-		main.setWidget(5, 0, loginFormPanel); 
-		main.setWidget(4, 0, ametnikule);
-		main.setWidget(5, 0, UIutils.createSpacer(700, 1));
-		main.setWidget(6, 0, loginFormPanel);
+		main.setWidget(5, 0, ametnikule);
+		main.setWidget(6, 0, UIutils.createSpacer(700, 1));
+		main.setWidget(7, 0, loginFormPanel);
 		
 		idLoginFormPanel.setVisible(false);
 		loginFormPanel.setVisible(false);
@@ -192,6 +212,7 @@ public class LoginForm extends Form {
 		idForm.setStyleName("Form");
 		idLoginFormPanel.setWidget(idForm);
 		idForm.setHTML(0, 0, "");
+		
 		
 		ServiceContext.getInstance().getRegistryService().getLoginBackURL(
 			new AsyncCallback() {
