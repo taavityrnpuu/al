@@ -324,7 +324,7 @@ public class RegistryApplication extends ABaseBean implements IClassificatorAwar
 	 *
 	 * @return Classificator
 	 */
-	@Column(name = "NOTES", length = 4000)
+	@Column(name = "NOTES")
 	public String getNotes() {
 		return notes;
 	}

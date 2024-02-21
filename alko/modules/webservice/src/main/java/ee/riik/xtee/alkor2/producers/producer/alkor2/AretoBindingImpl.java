@@ -1434,8 +1434,6 @@ ee.riik.xtee.alkor2.producers.producer.alkor2.AretoPortType {
       if((requestAppl.getMTRCode() == null) ||((requestAppl.getMTRCode() != null) && (requestAppl.getMTRCode().trim().length() == 0)))
          messages.append(Messages.getMessage("error.validation.Application.MTRCode")).append("\n");
       ee.riik.xtee.alkor2.producers.producer.alkor2.Product product= requestAppl.getProductInfo();
-      if(requestAppl.getNotes()!=null&&requestAppl.getNotes().length()>4000)
-         messages.append(Messages.getMessage("error.validation.Application.notes")).append("\n");
       if(product.getName() == null)
          messages.append(Messages.getMessage("error.validation.Product.name")).append("\n");
       if(product.getProductType() == null)
