@@ -52,10 +52,10 @@
 				<prop key="regnr">70000094</prop>
 				<prop key="phone">605 1710</prop>
 				<prop key="email">pta@pta.agri.ee</prop>
-				<prop key="address">Väike-Paala 3, 11415 Tallinn</prop>
+				<prop key="address">Teaduse 2, Saku, Harjumaa 75501</prop>
 				<prop key="url">https://pta.agri.ee</prop>
-				<prop key="streetAdr">Väike-Paala 3</prop>
-				<prop key="cityAdr">11415 Tallinn</prop>
+				<prop key="streetAdr">Teaduse 2</prop>
+				<prop key="cityAdr">Saku, Harjumaa 75501</prop>
 			</props>
 		</property>
 	</bean>
