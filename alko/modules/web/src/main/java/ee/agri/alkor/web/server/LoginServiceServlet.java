@@ -32,7 +32,6 @@ import org.jasig.cas.client.validation.Assertion;
 
 import ee.agri.alkor.impl.PostgreUtils;
 
-import sun.security.provider.X509Factory;
 import ee.agri.alkor.service.ServiceFactory;
 import ee.agri.alkor.xtee.impl.EnterpriseRegisterQueryImpl;
 import eu.x_road.arireg.producer.*;
@@ -44,6 +43,8 @@ import javax.xml.soap.SOAPElement;
 public class LoginServiceServlet extends HttpServlet {
 
 	private static final long serialVersionUID = 1L;
+	private static final String CERT_BEGIN = "-----BEGIN CERTIFICATE-----";
+	private static final String CERT_END = "-----END CERTIFICATE-----";
 
 	private String serviceEndpointURL;
 
@@ -141,8 +142,8 @@ public class LoginServiceServlet extends HttpServlet {
 		
 		if (fromCasLogin != null && fromCasLogin.equals("1")) {
 			try {
-				byte[] decoded = Base64.decode(request.getParameter("input_cert").replaceAll(X509Factory.BEGIN_CERT, "")
-						.replaceAll(X509Factory.END_CERT, ""));
+				byte[] decoded = Base64.decode(request.getParameter("input_cert").replaceAll(CERT_BEGIN, "")
+						.replaceAll(CERT_END, ""));
 				X509Certificate sert = (X509Certificate) CertificateFactory.getInstance("X.509")
 						.generateCertificate(new ByteArrayInputStream(decoded));
 				request.getSession().setAttribute("user_login_cert", sert);
