@@ -1,7 +1,5 @@
 package ee.agri.alkor.util.convert;
 
-import java.sql.SQLException;
-import java.util.Iterator;
 import java.util.List;
 
 import org.hibernate.HibernateException;
@@ -15,9 +13,9 @@ public class Alkor1Export extends HibernateDaoSupport {
 	private int pageSize = 500;
 	
 	public List findNext(final String entityName, final int startRow) {
-		return (List) getHibernateTemplate().execute(new HibernateCallback() {
+		return (List) getHibernateTemplate().execute(new HibernateCallback<List>() {
 
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public List doInHibernate(Session session) throws HibernateException {
 				Query q = session.createQuery("from " + entityName);
 				q.setFirstResult(startRow);
 				q.setMaxResults(Alkor1Export.this.pageSize);
@@ -29,9 +27,9 @@ public class Alkor1Export extends HibernateDaoSupport {
 	}
 	
 	public List fetchEntities(final String entityName, final int startRow, final int pageSize) {
-		return (List) getHibernateTemplate().execute(new HibernateCallback() {
+		return (List) getHibernateTemplate().execute(new HibernateCallback<List>() {
 
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public List doInHibernate(Session session) throws HibernateException {
 				Query q = session.createQuery("from " + entityName);
 				q.setFirstResult(startRow);
 				q.setMaxResults(pageSize);
@@ -43,9 +41,9 @@ public class Alkor1Export extends HibernateDaoSupport {
 	}
 	
 	public List fetchCountries() {
-		return (List) getHibernateTemplate().execute(new HibernateCallback() {
+		return (List) getHibernateTemplate().execute(new HibernateCallback<List>() {
 			
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+			public List doInHibernate(Session session) throws HibernateException {
 				Query q = session.createQuery("from ArCountry");
 				return q.list();
 			}
@@ -54,8 +52,8 @@ public class Alkor1Export extends HibernateDaoSupport {
 	}
 	
 	public List fetchCapacities() {
-		return (List) getHibernateTemplate().execute(new HibernateCallback() {
-			public Object doInHibernate(Session session) throws HibernateException, SQLException {
+		return (List) getHibernateTemplate().execute(new HibernateCallback<List>() {
+			public List doInHibernate(Session session) throws HibernateException {
 				Query q = session.createQuery("from ArCapacity");
 				return q.list();
 			}
