@@ -1,6 +1,5 @@
 package ee.agri.alkor.util.convert;
 
-import java.sql.SQLException;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.Hashtable;
@@ -64,11 +63,11 @@ public class PmrConverter {
 		List<IEntity> entrys = new LinkedList<IEntity>();
 		try {
 
-			getAlkor1Export().getHibernateTemplate().execute(new HibernateCallback() {
+			getAlkor1Export().getHibernateTemplate().execute(new HibernateCallback<Void>() {
 				/* (non-Javadoc)
 				 * @see org.springframework.orm.hibernate5.HibernateCallback#doInHibernate(org.hibernate.Session)
 				 */
-				public Object doInHibernate(Session arg0) throws HibernateException, SQLException {
+				public Void doInHibernate(Session arg0) throws HibernateException {
 					Object count = arg0.createQuery("select count(*) from AtReport").uniqueResult();
 					LOGGER.debug("Total of " + count + " AtReports");
 					Object count_r = arg0.createQuery("select count(*) from AtReportRcd").uniqueResult();

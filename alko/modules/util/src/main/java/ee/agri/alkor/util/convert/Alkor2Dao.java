@@ -1,13 +1,10 @@
 package ee.agri.alkor.util.convert;
 
-import java.sql.SQLException;
 import java.util.Hashtable;
 import java.util.List;
 
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
-import org.hibernate.StatelessSession;
-import org.hibernate.Transaction;
 import org.springframework.orm.hibernate5.HibernateCallback;
 import org.springframework.orm.hibernate5.support.HibernateDaoSupport;
 import org.springframework.transaction.annotation.Transactional;
@@ -18,7 +15,6 @@ import ee.agri.alkor.model.RegistryEntry;
 public class Alkor2Dao extends HibernateDaoSupport implements IAlkor2Service {
 
 	private final static int buffer = 50;
-	private int count = 0;
 	/* (non-Javadoc)
 	 * @see ee.agri.alkor.util.convert.IAlkor2Service#save(ee.agri.alkor.model.IEntity)
 	 */
@@ -45,7 +41,15 @@ public class Alkor2Dao extends HibernateDaoSupport implements IAlkor2Service {
 	}
 
 	public void saveList(List <IEntity>iEntityList) {
-		getHibernateTemplate().saveOrUpdateAll(iEntityList);
+		int count = 0;
+		for (IEntity entity : iEntityList) {
+			getHibernateTemplate().saveOrUpdate(entity);
+			count++;
+			if (count % buffer == 0) {
+				getHibernateTemplate().flush();
+				getHibernateTemplate().clear();
+			}
+		}
 		getHibernateTemplate().flush();
 		getHibernateTemplate().clear();
 	}
@@ -55,11 +59,11 @@ public class Alkor2Dao extends HibernateDaoSupport implements IAlkor2Service {
 	}
 
 	public Hashtable<String, RegistryEntry> findAllRegEntry() {
-		return (Hashtable<String, RegistryEntry>)getHibernateTemplate().execute(new HibernateCallback(){
+		return getHibernateTemplate().execute(new HibernateCallback<Hashtable<String, RegistryEntry>>() {
 			/* (non-Javadoc)
 			 * @see org.springframework.orm.hibernate5.HibernateCallback#doInHibernate(org.hibernate.Session)
 			 */
-			public Object doInHibernate(Session arg0) throws HibernateException, SQLException {
+			public Hashtable<String, RegistryEntry> doInHibernate(Session arg0) throws HibernateException {
 				//StatelessSession session = arg0.getSessionFactory().openStatelessSession();
 				//Transaction tx = session.beginTransaction();
 				List<RegistryEntry> entrys = arg0.createQuery("from RegistryEntry").list();
