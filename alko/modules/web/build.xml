@@ -31,6 +31,7 @@
             jar_only - paneb lihtsalt jari kokku, sõltuvusteta
 			jar_dev - teeb jar-i GWT arendustöödeks (GWT osa ei kompileerita, hosted modes töötamiseks)
 			jar_production - teeb produktsioonipaki (kompileeritakse ka GWT, võtab minuteid)
+			Tomcat 10 jaoks kasuta Apache Tomcat Jakarta EE migration tool-i, et konverteerida ${package.file} jakarta-nimeruumi.
             clean - kustutab selle build failiga tekitatud kompileeritud failide kausta (${classes.dir}) ja jar-faili (${package.file}), kui need eksisteerivad
 		</echo>
 	</target>
@@ -40,6 +41,8 @@
 		<mkdir dir="${build.dir}" />
 		<mkdir dir="${classes.dir}" />
 		<javac debug="on"
+			encoding="UTF-8"
+			release="${java.release}"
 			deprecation="off" destdir="${classes.dir}"
 			includes="ee/**/*.java" optimize="off"
 			srcdir="${src.dir}">
@@ -125,6 +128,8 @@
 		<javac
 			nowarn="on"
 			debug="on"
+			encoding="UTF-8"
+			release="${java.release}"
 			deprecation="off"
 			destdir="${war.dir}"
 			optimize="off"
