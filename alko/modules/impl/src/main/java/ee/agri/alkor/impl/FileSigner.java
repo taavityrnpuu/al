@@ -25,13 +25,13 @@ package ee.agri.alkor.impl;
 
 import org.digidoc4j.*;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.security.cert.CertificateException;
 import java.security.cert.CertificateFactory;
 import java.security.cert.X509Certificate;
+import java.util.HexFormat;
 
 
 public class FileSigner {
@@ -61,7 +61,7 @@ public class FileSigner {
     }
 
     public void signContainer(Container container, DataToSign dataToSign, String signatureInHex) {
-        byte[] signatureBytes = DatatypeConverter.parseHexBinary(signatureInHex);
+        byte[] signatureBytes = HexFormat.of().parseHex(signatureInHex);
         for(int i = 0; i < signatureBytes.length; i++){
         	System.out.println(signatureBytes[i]);
         }
@@ -81,7 +81,7 @@ public class FileSigner {
     }
 
     private X509Certificate getCertificate(String certificateInHex) {
-        byte[] certificateBytes = DatatypeConverter.parseHexBinary(certificateInHex);
+        byte[] certificateBytes = HexFormat.of().parseHex(certificateInHex);
         try  {
         	InputStream inStream = new ByteArrayInputStream(certificateBytes);
             CertificateFactory cf = CertificateFactory.getInstance("X.509");

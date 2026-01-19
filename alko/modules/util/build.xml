@@ -41,6 +41,8 @@
     	<mkdir dir="${build.dir}" />
     	<mkdir dir="${classes.dir}/" />
         <javac classpathref="compile.dependency.path" debug="on"
+        	encoding="UTF-8"
+        	release="${java.release}"
         	deprecation="on" destdir="${classes.dir}"
         	includes="ee/**/*.java" optimize="off"
         	srcdir="${src.dir}" />
@@ -103,6 +105,8 @@
     <target name="test" depends="jar" description="Run the local test suite">
     	<mkdir dir="${test.dir}/target" />
         <javac debug="on"
+        	encoding="UTF-8"
+        	release="${java.release}"
         	deprecation="on" destdir="${test.dir}/target"
         	includes="test/*Test.java" optimize="off"
         	srcdir="${test.src.dir}/java" >

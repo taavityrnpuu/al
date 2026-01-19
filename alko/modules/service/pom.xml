@@ -10,9 +10,9 @@
 		<relativePath>../../pom.xml</relativePath>
 	</parent>
 
-	<artifactId>alkor-util</artifactId>
+	<artifactId>alkor-service</artifactId>
 	<packaging>pom</packaging>
-	<name>Alkoholiregistri utiliitide arhiiv</name>
+	<name>Alkor Service</name>
 
 	<build>
 		<plugins>

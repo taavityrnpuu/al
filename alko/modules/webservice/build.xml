@@ -53,6 +53,7 @@
     	<mkdir dir="${classes.dir}" />
         <javac classpath="lib.dir" debug="on"
         	encoding="UTF-8" includeDestClasses="true"
+        	release="${java.release}"
         	deprecation="off" destdir="${classes.dir}"
         	includes="**/*.java" optimize="off"
         	srcdir="${src.dir}">
